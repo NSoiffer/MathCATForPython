@@ -1,0 +1,24 @@
+[package]
+name = "MathCatForPython"
+version = "0.1.0"
+authors = ["Neil Soiffer <soiffer@alum.mit.edu>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+# [dependencies]
+
+[lib]
+name = "libmathcat_py"
+crate-type = ["cdylib"]
+
+[dependencies.MathCAT]
+path = "../MathCAT/"
+
+[dependencies.pyo3]
+version = "0.15.1"
+features = ["extension-module", "abi3"]
+
+# 32 bit target stable-i686-pc-windows-msvc
+# if changing to building 32 bit python version, change .cargo/config.toml
+#  along with changing env variable PYO3_PYTHON
