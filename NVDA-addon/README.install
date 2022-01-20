@@ -1,0 +1,10 @@
+To install this addon for NVDA:
+1. Open the NVDA menu
+2. Choose Tools
+3. Choose Manage add-ons...
+4. Click Install...
+5. Pick the location where you saved mathCAT (the file name starts with "mathCAT" and ends with ".nvda-addon". The version number in the middle will change)
+6. Click "Open"
+7. Click "Yes" to agree you want to install it.
+8. Click "Close" to restart NVDA with MathCAT enabled.
+
