@@ -36,7 +36,7 @@ fn convert_error<T>(result: Result<T, libmathcat::errors::Error>) -> PyResult<T>
     return match result {
         Ok(answer) => Ok(answer),
         Err(e) => {
-            Err( PyOSError::new_err(e.to_string()) )
+            Err( PyOSError::new_err(libmathcat::interface::errors_to_string(&e)) )
         },
     };
 }

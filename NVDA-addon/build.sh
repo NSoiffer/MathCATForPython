@@ -9,6 +9,6 @@ rm -f addon/globalPlugins/Rules/Nemeth/unicode.yaml-with-all
 rm -rf addon/globalPlugins/Rules/zz
 
 cp ../target/i686-pc-windows-msvc/release/libmathcat_py.dll addon/globalPlugins/libmathcat.pyd
-rm mathCAT-0.1.1.nvda-addon
+rm mathCAT-*.nvda-addon
 scons
 
