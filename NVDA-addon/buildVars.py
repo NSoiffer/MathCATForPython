@@ -20,7 +20,7 @@ addon_info = {
 	# Add-on summary, usually the user visible name of the addon.
 	# Translators: Summary for this add-on
 	# to be shown on installation and add-on information found in Add-ons Manager.
-	"addon_summary": _("MathCAT: speech and braille to MathML"),
+	"addon_summary": _("MathCAT: speech and braille from MathML"),
 	# Add-on description
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description": _("""
@@ -29,7 +29,7 @@ addon_info = {
 		The initial version of MathCAT is English-only but is designed with translations in mind.
 		"""),
 	# version
-	"addon_version": "0.1.2",
+	"addon_version": "0.1.3",
 	# Author(s)
 	"addon_author": "Neil Soiffer <soiffer@alum.mit.edu>",
 	# URL for the add-on documentation support

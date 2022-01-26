@@ -3,12 +3,12 @@
 cargo build --release
 
 # copy over all the rules and then remove a few "extra" files
-cp -r ../../MathCAT/Rules addon/globalPlugins/
-rm -rf addon/globalPlugins/Rules/.tmp.driveupload
-rm -f addon/globalPlugins/Rules/Nemeth/unicode.yaml-with-all
-rm -rf addon/globalPlugins/Rules/zz
+cp -r ../../MathCAT/Rules addon/globalPlugins/MathCAT
+rm -rf addon/globalPlugins/MathCAT/Rules/.tmp.driveupload
+rm -f addon/globalPlugins/MathCAT/Rules/Nemeth/unicode.yaml-with-all
+rm -rf addon/globalPlugins/MathCAT/Rules/zz
 
-cp ../target/i686-pc-windows-msvc/release/libmathcat_py.dll addon/globalPlugins/libmathcat.pyd
+cp ../target/i686-pc-windows-msvc/release/libmathcat_py.dll addon/globalPlugins/MathCAT/libmathcat.pyd
 rm mathCAT-*.nvda-addon
 scons
 
