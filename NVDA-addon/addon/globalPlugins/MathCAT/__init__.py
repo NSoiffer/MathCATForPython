@@ -120,6 +120,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 
 
     def getBrailleRegions(self, review=False):
+        log.info("***MathCAT start getBrailleRegions")
         yield braille.NVDAObjectRegion(self, appendText=" ")
         region = braille.Region()
         region.focusToHardLeft = True
@@ -129,6 +130,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         except Exception as e:
             log.error(e)
 
+        log.info("***MathCAT end getBrailleRegions ***")
         yield region
 
     def getScript(self, gesture):
@@ -145,6 +147,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         return super().getScript(gesture)
 
     def script_navigate(self, gesture):
+        log.info("***MathCAT script_navigate")
         modNames = gesture.modifierNames
         try:
             text = libmathcat.DoNavigateKeyPress(gesture.vkCode,
@@ -280,6 +283,8 @@ class MathCAT(mathPres.MathPresentationProvider):
         except Exception as e:
             log.error(e)
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
+        try:
+            log.info("***MathCAT getBrailleForMathMl")
             return libmathcat.GetBraille("")
         except Exception as e:
             log.error(e)
@@ -307,4 +312,4 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         super().__init__(*args, **kwargs)
         MathCAT.__init__(self)
 
-log.info("********  message 1 **********")
+log.info("---- read mathcat file 1 ---")
