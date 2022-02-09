@@ -13,7 +13,7 @@ name = "libmathcat_py"
 crate-type = ["cdylib"]
 
 [dependencies.MathCAT]
-path = "../MathCAT/"
+path = "../mathcat/"
 
 [dependencies.pyo3]
 version = "0.15.1"
