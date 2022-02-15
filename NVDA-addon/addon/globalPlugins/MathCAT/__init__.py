@@ -4,8 +4,11 @@
 # Copyright: this file is copyright GPL2
 #   The code additionally makes use of the MathCAT library (written in Rust) which is covered by the MIT license
 #   and also (obviously) requires external speech engines and braille drivers.
-# Note: this code is a lot of cut/paste from other code and very likely could be substantially improved/cleaned.
+#   The plugin also requires the use of a small python dll: python3.dll
+#   python3.dll has "Copyright © 2001-2022 Python Software Foundation; All Rights Reserved"
 
+
+# Note: this code is a lot of cut/paste from other code and very likely could be substantially improved/cleaned.
 import braille                              # we generate braille
 import globalPlugins                        # we are a global plugin
 import globalPluginHandler                  # we are a global plugin
@@ -278,13 +281,13 @@ class MathCAT(mathPres.MathPresentationProvider):
 
 
     def getBrailleForMathMl(self, mathml):
+        log.info("***MathCAT getBrailleForMathMl")
         try:
             libmathcat.SetMathML(mathml)
         except Exception as e:
             log.error(e)
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
         try:
-            log.info("***MathCAT getBrailleForMathMl")
             return libmathcat.GetBraille("")
         except Exception as e:
             log.error(e)
@@ -311,5 +314,3 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         MathCAT.__init__(self)
-
-log.info("---- read mathcat file 1 ---")

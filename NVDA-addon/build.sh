@@ -1,6 +1,6 @@
 #!/bin/csh
 
-cargo build --release
+cargo build --target i686-pc-windows-msvc --release
 
 # copy over all the rules and then remove a few "extra" files
 cp -r ../../MathCAT/Rules addon/globalPlugins/MathCAT

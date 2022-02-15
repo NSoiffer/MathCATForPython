@@ -25,7 +25,7 @@
 #![allow(non_snake_case)]
 #![allow(clippy::needless_return)]
 
-use libmathcat::interface::StringOrFloat;
+use libmathcat::*;
 use pyo3::prelude::*;
 use pyo3::wrap_pyfunction;
 use pyo3::exceptions::PyOSError;
@@ -36,7 +36,7 @@ fn convert_error<T>(result: Result<T, libmathcat::errors::Error>) -> PyResult<T>
     return match result {
         Ok(answer) => Ok(answer),
         Err(e) => {
-            Err( PyOSError::new_err(libmathcat::interface::errors_to_string(&e)) )
+            Err( PyOSError::new_err(errors_to_string(&e)) )
         },
     };
 }
@@ -45,7 +45,7 @@ fn convert_error<T>(result: Result<T, libmathcat::errors::Error>) -> PyResult<T>
 /// The absolute path location of the MathCAT Rules dir.
 /// IMPORTANT: This should be the first call to MathCAT
 pub fn SetRulesDir(_py: Python, rules_dir_location: String) -> PyResult<()> {
-    return convert_error( libmathcat::interface::SetRulesDir(rules_dir_location) );
+    return convert_error( set_rules_dir(rules_dir_location) );
 }
 
 #[pyfunction]
@@ -55,13 +55,13 @@ pub fn SetRulesDir(_py: Python, rules_dir_location: String) -> PyResult<()> {
 /// Returns: the MathML that was set, annotated with 'id' values on each node (if none were present)
 /// The 'id' values can be used during navigation for highlighting the current node
 pub fn SetMathML(_py: Python, mathml_str: String) -> PyResult<String> {
-    return convert_error( libmathcat::interface::SetMathML(mathml_str) );
+    return convert_error( set_mathml(mathml_str) );
 }
 #[pyfunction]
 /// Get the spoken text of the MathML that was set.
 /// The speech takes into account any AT or user preferences.
 pub fn GetSpokenText(_py: Python) -> PyResult<String> {
-    return convert_error( libmathcat::interface::GetSpokenText() );
+    return convert_error( get_spoken_text() );
 }
 
 #[pyfunction]
@@ -71,12 +71,7 @@ pub fn GetSpokenText(_py: Python) -> PyResult<String> {
 /// This function can be called multiple times to set different values.
 /// The values are persistent but can be overwritten by setting a preference with the same name and a different value.
 pub fn SetPreference(_py: Python, name: String, value: String) -> PyResult<()> {
-    let as_float = value.parse::<f64>();
-    let str_or_float = match as_float {
-        Ok(f) => StringOrFloat::AsFloat(f),
-        Err(_) => StringOrFloat::AsString(value),
-    };
-    return convert_error( libmathcat::interface::SetPreference(name, str_or_float) );
+    return convert_error( set_preference(name, value) );
 }
 
 #[pyfunction]
@@ -86,7 +81,7 @@ pub fn SetPreference(_py: Python, name: String, value: String) -> PyResult<()> {
 /// This function can be called multiple times to set different values.
 /// The values are persistent but can be overwritten by setting a preference with the same name and a different value.
 pub fn GetPreference(_py: Python, name: String) -> PyResult<String> {
-    return match libmathcat::interface::GetPreference(name) {
+    return match get_preference(name) {
         Some(value) => Ok(value),
         None => Err( PyOSError::new_err("Unknown preference name") ),
     }
@@ -99,7 +94,7 @@ pub fn GetPreference(_py: Python, name: String) -> PyResult<String> {
 /// 
 /// The braille returned depends upon the preference for braille output.
 pub fn GetBraille(_py: Python, nav_node_id: String) -> PyResult<String> {
-    return convert_error( libmathcat::interface::GetBraille(nav_node_id) );
+    return convert_error( get_braille(nav_node_id) );
 }
 
 #[pyfunction]
@@ -107,7 +102,7 @@ pub fn GetBraille(_py: Python, nav_node_id: String) -> PyResult<String> {
 ///
 /// The spoken text for the new current node is returned.
 pub fn DoNavigateKeyPress(_py: Python, key: usize, shift_key: bool, control_key: bool, alt_key: bool, meta_key: bool) -> PyResult<String> {
-    return convert_error( libmathcat::interface::DoNavigateKeyPress(key, shift_key, control_key, alt_key, meta_key) );
+    return convert_error( do_navigate_keypress(key, shift_key, control_key, alt_key, meta_key) );
 }
 
 #[pyfunction]
@@ -130,19 +125,19 @@ pub fn DoNavigateKeyPress(_py: Python, key: usize, shift_key: bool, control_key:
 /// "Describe0","Describe1","Describe2","Describe3","Describe4","Describe5","Describe6","Describe7","Describe8","Describe9",
 /// "SetPlacemarker0","SetPlacemarker1","SetPlacemarker2","SetPlacemarker3","SetPlacemarker4","SetPlacemarker5","SetPlacemarker6","SetPlacemarker7","SetPlacemarker8","SetPlacemarker9",
 pub fn DoNavigateCommand(_py: Python, command: String) -> PyResult<String> {
-    return convert_error( libmathcat::interface::DoNavigateCommand(command) );
+    return convert_error( do_navigate_command(command) );
 }
 
 #[pyfunction]
 /// Return the MathML associated with the current (navigation) node.
 pub fn GetNavigationMathMLId(_py: Python) -> PyResult<(String, usize)> {
-    return convert_error( libmathcat::interface::GetNavigationMathMLId() );
+    return convert_error( get_navigation_mathml_id() );
 }
 
 #[pyfunction]
 /// Return the MathML associated with the current (navigation) node.
 pub fn GetNavigationMathML(_py: Python) -> PyResult<(String, usize)> {
-    return convert_error( libmathcat::interface::GetNavigationMathML() );
+    return convert_error( get_navigation_mathml() );
 }
 
 #[pymodule]

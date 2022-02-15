@@ -1,6 +1,6 @@
 [package]
 name = "MathCatForPython"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Neil Soiffer <soiffer@alum.mit.edu>"]
 edition = "2018"
 
@@ -12,8 +12,8 @@ edition = "2018"
 name = "libmathcat_py"
 crate-type = ["cdylib"]
 
-[dependencies.MathCAT]
-path = "../mathcat/"
+[dependencies]
+mathcat = "0.1.2"
 
 [dependencies.pyo3]
 version = "0.15.1"
