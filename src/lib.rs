@@ -165,12 +165,12 @@ mod py_tests {
         // this isn't a real test
         pyo3::prepare_freethreaded_python();
         let mathml_str = "<math><mo>(</mo><mrow><mn>451</mn><mo>,</mo><mn>231</mn></mrow><mo>)</mo></math>";
-        match convert_error( libmathcat::interface::SetMathML(mathml_str.to_string()) ) {
+        match convert_error( libmathcat::interface::set_mathml(mathml_str.to_string()) ) {
             Ok(_mathml_with_ids) => println!("MathML is set w/o error"),
             Err(e) => println!("Error is {}", e.to_string()),
         }
         // still alive?
-        match convert_error( libmathcat::interface::SetMathML(mathml_str.to_string()) ) {
+        match convert_error( libmathcat::interface::set_mathml(mathml_str.to_string()) ) {
             Ok(_mathml_with_ids) => panic!("MathML is set 2nd time w/o error"),
             Err(e) => panic!("Error remains {}", e.to_string()),
         }

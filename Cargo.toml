@@ -1,6 +1,6 @@
 [package]
 name = "MathCatForPython"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Neil Soiffer <soiffer@alum.mit.edu>"]
 edition = "2018"
 
@@ -13,12 +13,16 @@ name = "libmathcat_py"
 crate-type = ["cdylib"]
 
 [dependencies]
-mathcat = "0.1.2"
+mathcat = "0.1.6"
 
 [dependencies.pyo3]
 version = "0.15.1"
 features = ["extension-module", "abi3"]
 
-# 32 bit target stable-i686-pc-windows-msvc
-# if changing to building 32 bit python version, change .cargo/config.toml
-#  along with changing env variable PYO3_PYTHON
+[build-dependencies]
+mathcat = "0.1.6"
+zip = "0.5.8"
+
+[profile.release]
+lto = true
+# opt-level = "z"  # Optimize for size.

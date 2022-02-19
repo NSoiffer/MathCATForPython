@@ -1,0 +1,6 @@
+# first run "rustup target add i686-pc-windows-msvc" to download needed files
+#
+# NVDA only runs on windows and only supports 32 bit builds (at this time)
+# Because of this, we force the target architecture.
+[build]
+target = "i686-pc-windows-msvc"
