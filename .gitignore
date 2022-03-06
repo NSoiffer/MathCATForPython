@@ -1,3 +1,5 @@
 target
 Cargo.lock
+NVDA-addon/addon/globalPlugins/MathCAT/Rules/
+NVDA-addon/addon/globalPlugins/MathCAT/libmathcat.pyd
 
