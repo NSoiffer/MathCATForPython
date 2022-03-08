@@ -4,7 +4,6 @@ import yaml
 import os
 import sys
 import webbrowser  
-from tendo import singleton
 import gettext
 _ = gettext.gettext
 
@@ -172,12 +171,6 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         if keyCode == wx.WXK_RETURN:
             UserInterface.OnClickOK(self,event)
         event.Skip()
-
-#if there is already an instance of MathCATPreferences running then terminate
-try:
-    me = singleton.SingleInstance() # will sys.exit(-1) if other instance is running
-except:
-    os.sys.exit(-2)
 
 app = wx.App(False)
 #get the default preferences (we don't write to this file)
