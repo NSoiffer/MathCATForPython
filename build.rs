@@ -18,6 +18,6 @@ fn main() {
     zip_archive.extract(&location).expect("Zip extraction failed");
 
     // the test dir 'zz' doesn't need to be part of the addon
-    std::fs::remove_dir_all("NVDA-addon/addon/globalPlugins/MathCAT/Rules/zz")
+    std::fs::remove_dir_all("NVDA-addon/addon/globalPlugins/MathCAT/Rules/Languages/zz")
         .expect("Failed to remove directory 'NVDA-addon/addon/globalPlugins/MathCAT/Rules/zz'");
 }
