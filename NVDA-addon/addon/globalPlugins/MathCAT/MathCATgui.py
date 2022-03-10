@@ -93,7 +93,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizer713.Add( self.m_staticText2111, 0, wx.ALL, 5 )
 
-		m_choiceSpeechStyleChoices = [ _(u"ClearSpeakxxxxxx") ]
+		m_choiceSpeechStyleChoices = [ _(u"xxxxxxxxxxxxxxxx") ]
 		self.m_choiceSpeechStyle = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSpeechStyleChoices, 0 )
 		self.m_choiceSpeechStyle.SetSelection( 0 )
 		bSizer713.Add( self.m_choiceSpeechStyle, 0, wx.ALL, 5 )
@@ -311,6 +311,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		self.Bind( wx.EVT_CHAR_HOOK, self.MathCATPreferencesDialogOnCharHook )
 		self.Bind( wx.EVT_KEY_UP, self.MathCATPreferencesDialogOnKeyUp )
 		self.m_listBoxPreferencesTopic.Bind( wx.EVT_LISTBOX, self.OnListBoxCategories )
+		self.m_choiceLanguage.Bind( wx.EVT_CHOICE, self.OnLanguage )
 		self.m_buttonOK.Bind( wx.EVT_BUTTON, self.OnClickOK )
 		self.m_buttonCancel.Bind( wx.EVT_BUTTON, self.OnClickCancel )
 		self.m_buttonApply.Bind( wx.EVT_BUTTON, self.OnClickApply )
@@ -329,6 +330,9 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		event.Skip()
 
 	def OnListBoxCategories( self, event ):
+		event.Skip()
+
+	def OnLanguage( self, event ):
 		event.Skip()
 
 	def OnClickOK( self, event ):
