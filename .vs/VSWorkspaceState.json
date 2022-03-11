@@ -6,6 +6,6 @@
     "\\NVDA-addon\\addon\\globalPlugins",
     "\\NVDA-addon\\addon\\globalPlugins\\MathCAT"
   ],
-  "SelectedNode": "\\NVDA-addon\\addon\\globalPlugins\\MathCAT\\MathCATPreferences.py",
+  "SelectedNode": "\\NVDA-addon\\addon\\globalPlugins\\MathCAT\\MathCATgui.py",
   "PreviewInSolutionExplorer": false
 }

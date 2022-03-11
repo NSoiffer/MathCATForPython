@@ -37,6 +37,10 @@ def path_to_user_preferences():
     #the user preferences file is stored at: C:\Users\<user-name>AppData\Roaming\MathCAT\prefs.yaml
     return path_to_user_preferences_folder() + "\\prefs.yaml"
 
+def path_to_languages_folder():
+    #the user preferences file is stored at: MathCAT\Rules\Languages
+    return os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Languages"
+
 def load_default_preferences():
     global user_preferences
     #load default preferences into the user preferences data structure (overwites existing)
@@ -65,13 +69,12 @@ def write_user_preferences():
         yaml.dump(user_preferences, f)
 
 class UserInterface(MathCATgui.MathCATPreferencesDialog):
-
     def GetLanguages(self):
         #clear the language choices
         self.m_choiceLanguage.Clear()
         #populate the language choices
-        for f in os.listdir(os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Languages"):
-            if os.path.isdir(os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Languages\\"+f):
+        for f in os.listdir(path_to_languages_folder()):
+            if os.path.isdir(path_to_languages_folder()+"\\"+f):
                 self.m_choiceLanguage.Append(f)
 
     def GetSpeechStyles(self, this_SpeechStyle):
@@ -79,7 +82,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         self.m_choiceSpeechStyle.Clear()
         #get the currently selected language
         this_language = self.m_choiceLanguage.GetStringSelection()
-        this_path = os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Languages\\"+this_language+"\\*_Rules.yaml"
+        this_path = path_to_languages_folder()+"\\"+this_language+"\\*_Rules.yaml"
         #populate the m_choiceSpeechStyle choices
         for f in glob.glob(this_path):
             fname = os.path.basename(f)
@@ -190,6 +193,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             UserInterface.OnClickCancel(self,event)
         if keyCode == wx.WXK_RETURN:
             UserInterface.OnClickOK(self,event)
+        #if keyCode == wx.WXK_TAB and wx.KeyboardState.GetModifiers():
+        #    print("Tab")
         event.Skip()
 
 app = wx.App(False)

@@ -78,7 +78,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizer7.Add( self.m_staticText311, 0, wx.ALL, 5 )
 
-		m_choiceLanguageChoices = [ _(u"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") ]
+		m_choiceLanguageChoices = [ _(u"xxxxxxxxxxxxxxxx") ]
 		self.m_choiceLanguage = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceLanguageChoices, 0 )
 		self.m_choiceLanguage.SetSelection( 0 )
 		bSizer7.Add( self.m_choiceLanguage, 0, wx.ALL, 5 )
