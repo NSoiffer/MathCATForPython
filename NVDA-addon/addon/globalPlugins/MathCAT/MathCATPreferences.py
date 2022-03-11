@@ -193,8 +193,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             UserInterface.OnClickCancel(self,event)
         if keyCode == wx.WXK_RETURN:
             UserInterface.OnClickOK(self,event)
-        #if keyCode == wx.WXK_TAB and wx.KeyboardState.GetModifiers():
-        #    print("Tab")
+        if keyCode == wx.WXK_TAB:
+            print("Tab")
         event.Skip()
 
 app = wx.App(False)
