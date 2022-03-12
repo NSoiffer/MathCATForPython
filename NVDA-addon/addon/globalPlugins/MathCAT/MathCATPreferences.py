@@ -56,7 +56,7 @@ def load_user_preferences():
     global user_preferences
     #merge user file values into the user preferences data structure
     if os.path.exists(path_to_user_preferences()):
-        with open(path_to_user_preferences()) as f:
+        with open(path_to_user_preferences(), encoding='utf-8') as f:
             # merge with the default preferences, overwriting with the user's values
             user_preferences |= yaml.load(f, Loader=yaml.FullLoader)
 
@@ -64,9 +64,9 @@ def write_user_preferences():
     if not os.path.exists(path_to_user_preferences_folder()):
         #create a folder for the user preferences
         os.mkdir(path_to_user_preferences_folder())
-    with open(path_to_user_preferences(), 'w') as f:
+    with open(path_to_user_preferences(), 'w', encoding="utf-8") as f:
         #write values to the user preferences file, NOT the default
-        yaml.dump(user_preferences, f)
+        yaml.dump(user_preferences, stream=f, allow_unicode=True)
 
 class UserInterface(MathCATgui.MathCATPreferencesDialog):
     def GetLanguages(self):
@@ -106,6 +106,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             #now get the available SpeechStyles from the folder structure and set to the preference setting is possible
             UserInterface.GetSpeechStyles(self, user_preferences["Speech"]["SpeechStyle"])
             self.m_choiceSpeechAmount.SetSelection(Speech_Verbosity.index(user_preferences["Speech"]["Verbosity"]))
+            self.m_sliderRelativeSpeed.SetValue(user_preferences["Speech"]["MathRate"])
             self.m_choiceSpeechForChemical.SetSelection(Speech_Chemistry.index(user_preferences["Speech"]["Chemistry"]))
             self.m_choiceNavigationMode.SetSelection(Navigation_NavMode.index(user_preferences["Navigation"]["NavMode"]))
             self.m_checkBoxResetNavigationMode.SetValue(user_preferences["Navigation"]["ResetNavMode"])
@@ -128,6 +129,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         user_preferences["Speech"]["Language"] = self.m_choiceLanguage.GetStringSelection()
         user_preferences["Speech"]["SpeechStyle"] = self.m_choiceSpeechStyle.GetStringSelection()
         user_preferences["Speech"]["Verbosity"] = Speech_Verbosity[self.m_choiceSpeechAmount.GetSelection()]
+        user_preferences["Speech"]["MathRate"] = self.m_sliderRelativeSpeed.GetValue()
         user_preferences["Speech"]["Chemistry"] = Speech_Chemistry[self.m_choiceSpeechForChemical.GetSelection()]
         user_preferences["Navigation"]["NavMode"] = Navigation_NavMode[self.m_choiceNavigationMode.GetSelection()]
         user_preferences["Navigation"]["ResetNavMode"] = self.m_checkBoxResetNavigationMode.GetValue()
@@ -193,8 +195,30 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             UserInterface.OnClickCancel(self,event)
         if keyCode == wx.WXK_RETURN:
             UserInterface.OnClickOK(self,event)
-        #if keyCode == wx.WXK_TAB and wx.KeyboardState.GetModifiers():
-        #    print("Tab")
+        if keyCode == wx.WXK_TAB and (event.GetModifiers()  == wx.MOD_CONTROL):
+            #cycle the category forward
+            new_category = self.m_listBoxPreferencesTopic.GetSelection() + 1
+            if new_category == 3:
+                new_category = 0
+            self.m_listBoxPreferencesTopic.SetSelection(new_category)
+            #update the ui to show the new page
+            UserInterface.OnListBoxCategories(self,event)
+            #set the focus into the category list box
+            self.m_listBoxPreferencesTopic.SetFocus()
+            #jump out so the tab key is not processed
+            return
+        if keyCode == wx.WXK_TAB and (event.GetModifiers()  == wx.MOD_CONTROL|wx.MOD_SHIFT):
+            #cycle the category back
+            new_category = self.m_listBoxPreferencesTopic.GetSelection() - 1
+            if new_category == -1:
+                new_category = 2
+            self.m_listBoxPreferencesTopic.SetSelection(new_category)
+            #update the ui to show the new page
+            UserInterface.OnListBoxCategories(self,event)
+            #update the ui to show the new page
+            self.m_listBoxPreferencesTopic.SetFocus()
+            #jump out so the tab key is not processed
+            return
         event.Skip()
 
 app = wx.App(False)

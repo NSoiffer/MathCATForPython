@@ -8,7 +8,7 @@
 ###########################################################################
 
 import wx
-# from . import xrc
+import wx.xrc
 
 import gettext
 _ = gettext.gettext
@@ -116,6 +116,19 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizer121.Add( bSizer71, 1, wx.EXPAND, 5 )
 
+		bSizer7131 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText21111 = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _(u"Relative speed:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText21111.Wrap( -1 )
+
+		bSizer7131.Add( self.m_staticText21111, 0, wx.ALL, 5 )
+
+		self.m_sliderRelativeSpeed = wx.Slider( self.m_panelSpeech, wx.ID_ANY, 100, 10, 1000, wx.DefaultPosition, wx.DefaultSize, wx.SL_HORIZONTAL )
+		bSizer7131.Add( self.m_sliderRelativeSpeed, 0, wx.ALL, 5 )
+
+
+		bSizer121.Add( bSizer7131, 1, wx.EXPAND, 5 )
+
 		bSizer712 = wx.BoxSizer( wx.HORIZONTAL )
 
 		self.m_staticText411 = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _(u"Subject area to be used when it cannot be determined automatically:"), wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -145,12 +158,6 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 
 		bSizer121.Add( bSizer711, 1, wx.EXPAND, 5 )
-
-
-		bSizer121.Add( ( 0, 0), 1, wx.EXPAND, 5 )
-
-
-		bSizer121.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 
 
 		self.m_panelSpeech.SetSizer( bSizer121 )
