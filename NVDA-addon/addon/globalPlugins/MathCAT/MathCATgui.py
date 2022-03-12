@@ -8,7 +8,7 @@
 ###########################################################################
 
 import wx
-import wx.xrc
+# from . import xrc
 
 import gettext
 _ = gettext.gettext

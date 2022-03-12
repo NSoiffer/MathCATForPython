@@ -1,6 +1,6 @@
 import wx
-import MathCATgui
-import yaml
+from . import MathCATgui
+from . import yaml
 import os
 import glob
 import sys
@@ -10,7 +10,7 @@ _ = gettext.gettext
 
 # initialize the user preferences tuples
 user_preferences = dict([("", "")])
-#Sepech_Language is derived from the folder structure
+#Speech_Language is derived from the folder structure
 Speech_Impairment = ("LearningDisability", "Blindness", "LowVision")
 #Speech_SpeechStyle is derived from the yaml files under the selected language
 Speech_Verbosity = ("Terse", "Medium", "Verbose")
@@ -43,7 +43,7 @@ def path_to_languages_folder():
 
 def load_default_preferences():
     global user_preferences
-    #load default preferences into the user preferences data structure (overwites existing)
+    #load default preferences into the user preferences data structure (overwrites existing)
     if os.path.exists(path_to_default_preferences()):
         with open(path_to_default_preferences(), encoding='utf-8') as f:
             user_preferences = yaml.load(f, Loader=yaml.FullLoader)
