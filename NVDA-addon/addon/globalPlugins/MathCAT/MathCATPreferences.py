@@ -193,6 +193,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         keyCode = event.GetKeyCode()
         if keyCode == wx.WXK_ESCAPE:
             UserInterface.OnClickCancel(self,event)
+            return
         if keyCode == wx.WXK_RETURN:
             UserInterface.OnClickOK(self,event)
         if keyCode == wx.WXK_TAB and (event.GetModifiers()  == wx.MOD_CONTROL):
