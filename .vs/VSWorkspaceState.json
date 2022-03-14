@@ -1,10 +1,6 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\NVDA-addon",
-    "\\NVDA-addon\\addon",
-    "\\NVDA-addon\\addon\\globalPlugins",
-    "\\NVDA-addon\\addon\\globalPlugins\\MathCAT"
+    ""
   ],
   "SelectedNode": "\\NVDA-addon\\addon\\globalPlugins\\MathCAT\\MathCATgui.py",
   "PreviewInSolutionExplorer": false
