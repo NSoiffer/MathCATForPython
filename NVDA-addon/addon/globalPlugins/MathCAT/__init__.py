@@ -24,6 +24,8 @@ from scriptHandler import script            # copy MathML via ctrl-c
 from synthDriverHandler import getSynth     # speech engine param setting
 import winUser                              # clipboard manipultation
 from ctypes import windll                   # register clipboard formats
+from gui import mainFrame
+import wx
 
 from . import libmathcat
 
@@ -170,7 +172,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         except Exception as e:
             log.error(e)
 
-    _startsWithMath = re.compile("\s*?<math")
+    _startsWithMath = re.compile("\\s*?<math")
     @script(
         gesture="kb:control+c",
     )
@@ -203,10 +205,9 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         # copied from api.py and modified to use CF_MathML_Presentation 
         if not isinstance(text, str) or len(text) == 0:
             return False
-        import gui
         from api import getClipData
         try:
-            with winUser.openClipboard(gui.mainFrame.Handle):
+            with winUser.openClipboard(mainFrame.Handle):
                 winUser.emptyClipboard()
                 self._setClipboardData(self.CF_MathML, self._wrapMathMLForClipBoard(text))
                 self._setClipboardData(self.CF_MathML_Presentation, self._wrapMathMLForClipBoard(text))
@@ -247,7 +248,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         # NULL the global memory handle so that it is not freed at the end of scope as the clipboard now has it.
         h.forget()
 
-
+from .MathCATPreferences import UserInterface
 class MathCAT(mathPres.MathPresentationProvider):
     def __init__(self):
         # super(MathCAT, self).__init__(*args, **kwargs)
@@ -305,7 +306,7 @@ class MathCAT(mathPres.MathPresentationProvider):
             libmathcat.SetPreference("Language", lang.replace("_", "-"))
             self._language = lang
         except Exception as e:
-            log.error(e)     
+            log.error(e)
 
 
 mathPres.registerProvider(MathCAT(), speech=True, braille=True, interaction=True)
@@ -314,3 +315,22 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         MathCAT.__init__(self)
+        log.info("about to call add_MathCAT_menu\n")
+        self.add_MathCAT_menu()
+
+    def add_MathCAT_menu(self):
+        log.info("in add_MathCAT_menu\n")
+        self.toolsMenu = mainFrame.sysTrayIcon.toolsMenu
+        self.settings = self.toolsMenu.Append(wx.ID_ANY, _("&MathCAT Settings..."))
+        mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.on_settings, self.settings)
+
+    def on_settings(self, evt):
+        mainFrame._popupSettingsDialog(UserInterface)
+
+    def terminate(self):
+        log.info("======== in terminate (remove settings menu\n")
+        try:
+            self.toolsMenu.Remove(self.settings)
+        except (AttributeError, RuntimeError):
+            pass
+

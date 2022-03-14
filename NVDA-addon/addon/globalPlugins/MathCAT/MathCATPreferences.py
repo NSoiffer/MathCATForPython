@@ -8,6 +8,8 @@ import webbrowser
 import gettext
 _ = gettext.gettext
 
+from logHandler import log                  # logging
+
 # initialize the user preferences tuples
 user_preferences = dict([("", "")])
 #Speech_Language is derived from the folder structure
@@ -37,10 +39,6 @@ def path_to_user_preferences():
     #the user preferences file is stored at: C:\Users\<user-name>AppData\Roaming\MathCAT\prefs.yaml
     return path_to_user_preferences_folder() + "\\prefs.yaml"
 
-def path_to_languages_folder():
-    #the user preferences file is stored at: MathCAT\Rules\Languages
-    return os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Languages"
-
 def load_default_preferences():
     global user_preferences
     #load default preferences into the user preferences data structure (overwrites existing)
@@ -58,7 +56,7 @@ def load_user_preferences():
     if os.path.exists(path_to_user_preferences()):
         with open(path_to_user_preferences(), encoding='utf-8') as f:
             # merge with the default preferences, overwriting with the user's values
-            user_preferences |= yaml.load(f, Loader=yaml.FullLoader)
+            user_preferences.update(yaml.load(f, Loader=yaml.FullLoader))
 
 def write_user_preferences():
     if not os.path.exists(path_to_user_preferences_folder()):
@@ -69,6 +67,7 @@ def write_user_preferences():
         yaml.dump(user_preferences, stream=f, allow_unicode=True)
 
 class UserInterface(MathCATgui.MathCATPreferencesDialog):
+
     def GetLanguages(self):
         #clear the language choices
         self.m_choiceLanguage.Clear()
@@ -82,7 +81,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         self.m_choiceSpeechStyle.Clear()
         #get the currently selected language
         this_language = self.m_choiceLanguage.GetStringSelection()
-        this_path = path_to_languages_folder()+"\\"+this_language+"\\*_Rules.yaml"
+        this_path = os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Languages\\"+this_language+"\\*_Rules.yaml"
         #populate the m_choiceSpeechStyle choices
         for f in glob.glob(this_path):
             fname = os.path.basename(f)
@@ -147,6 +146,11 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
     def __init__(self,parent):
         #initialize parent class
         MathCATgui.MathCATPreferencesDialog.__init__(self,parent)
+
+        # load in the system values followed by the user prefs (if any)
+        load_default_preferences()
+        load_user_preferences()
+
         if "MathCATPreferencesLastCategory" in user_preferences:
             #set the categories selection to what we used on last run
             self.m_listBoxPreferencesTopic.SetSelection(user_preferences["MathCATPreferencesLastCategory"])
@@ -164,10 +168,10 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
     def OnClickOK(self,event):
         UserInterface.get_ui_values(self)
         write_user_preferences()
-        app.ExitMainLoop()
+        self.Destroy()
  
     def OnClickCancel(self,event):
-        app.ExitMainLoop()
+        self.Destroy()
  
     def OnClickApply(self,event):
         UserInterface.get_ui_values(self)
@@ -220,13 +224,4 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             self.m_listBoxPreferencesTopic.SetFocus()
             #jump out so the tab key is not processed
             return
-        event.Skip()
-
-app = wx.App(False)
-#get the default preferences (we don't write to this file)
-load_default_preferences()
-#having grabbed the default values, let's see if there is a preferences file for this user
-load_user_preferences()
-frame = UserInterface(None)
-frame.Show(True)
-app.MainLoop()
+          
