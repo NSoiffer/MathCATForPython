@@ -13,14 +13,14 @@ name = "libmathcat_py"
 crate-type = ["cdylib"]
 
 [dependencies]
-mathcat = "0.1.7"
+mathcat = "0.1.13"
 
 [dependencies.pyo3]
 version = "0.15.1"
 features = ["extension-module", "abi3"]
 
 [build-dependencies]
-mathcat = "0.1.6"
+mathcat = "0.1.13"
 zip = "0.5.8"
 
 [profile.release]

@@ -8,7 +8,8 @@
 ###########################################################################
 
 import wx
-import wx.xrc
+# import wx.xrc
+import os
 
 import gettext
 _ = gettext.gettext
@@ -43,7 +44,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerCategories.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 
-		self.m_bitmapLogo = wx.StaticBitmap( self.m_panelCategories, wx.ID_ANY, wx.Bitmap( u"logo.png", wx.BITMAP_TYPE_ANY ), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_bitmapLogo = wx.StaticBitmap( self.m_panelCategories, wx.ID_ANY, wx.Bitmap( os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\logo.png", wx.BITMAP_TYPE_ANY ), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerCategories.Add( self.m_bitmapLogo, 0, wx.ALL, 5 )
 
 
@@ -242,7 +243,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizer171 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticTextBrailleHighlights = wx.StaticText( self.m_panelBraille, wx.ID_ANY, _(u"Highlight with dots 7 & 8 the current nav node:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticTextBrailleHighlights = wx.StaticText( self.m_panelBraille, wx.ID_ANY, _(u"Highlight with dots 7 && 8 the current nav node:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextBrailleHighlights.Wrap( -1 )
 
 		bSizer171.Add( self.m_staticTextBrailleHighlights, 0, wx.ALL, 5 )

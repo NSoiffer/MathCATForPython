@@ -314,12 +314,10 @@ mathPres.registerProvider(MathCAT(), speech=True, braille=True, interaction=True
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        MathCAT.__init__(self)
-        log.info("about to call add_MathCAT_menu\n")
+        # MathCAT.__init__(self)
         self.add_MathCAT_menu()
 
     def add_MathCAT_menu(self):
-        log.info("in add_MathCAT_menu\n")
         self.toolsMenu = mainFrame.sysTrayIcon.toolsMenu
         self.settings = self.toolsMenu.Append(wx.ID_ANY, _("&MathCAT Settings..."))
         mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.on_settings, self.settings)
@@ -328,7 +326,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         mainFrame._popupSettingsDialog(UserInterface)
 
     def terminate(self):
-        log.info("======== in terminate (remove settings menu\n")
         try:
             self.toolsMenu.Remove(self.settings)
         except (AttributeError, RuntimeError):

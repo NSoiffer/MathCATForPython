@@ -5,6 +5,6 @@ cargo build --target i686-pc-windows-msvc --release
 
 cp target/i686-pc-windows-msvc/release/libmathcat_py.dll NVDA-addon/addon/globalPlugins/MathCAT/libmathcat.pyd
 cd NVDA-addon
-rm mathCAT-*.nvda-addon
+rm MathCAT-*.nvda-addon
 scons
 

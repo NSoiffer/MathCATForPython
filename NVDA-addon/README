@@ -1,3 +1,3 @@
 To build the addon, type "scons".
 This rebuilds addon/manifest.ini and then zips up the addon dir to create 
-  mathCAT-0.1.nvda-addon  (where the version number comes from the manifest)
+  MathCAT-0.1.nvda-addon  (where the version number comes from the manifest)
