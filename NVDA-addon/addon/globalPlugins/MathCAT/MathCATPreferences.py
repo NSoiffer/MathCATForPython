@@ -228,4 +228,6 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             self.m_listBoxPreferencesTopic.SetFocus()
             #jump out so the tab key is not processed
             return
+        #continue handling keyboard event
+        event.Skip()
           
