@@ -19,7 +19,7 @@
         <property name="internationalize">1</property>
         <property name="name">MathCATPreferences</property>
         <property name="namespace"></property>
-        <property name="path">C:\Users\Rorme\source\repos\NSoiffer\MathCATForPython\NVDA-addon\addon\globalPlugins\MathCAT</property>
+        <property name="path">C:\Users\Rorme\OneDrive - DAISY Consortium\DAISY\Activities\Software tools\MathCAT\MathCATForPython\NVDA-addon\addon\globalPlugins\MathCAT</property>
         <property name="precompiled_header"></property>
         <property name="relative_path">1</property>
         <property name="skip_lua_events">1</property>
@@ -282,7 +282,7 @@
                                     <property name="aui_row"></property>
                                     <property name="best_size"></property>
                                     <property name="bg"></property>
-                                    <property name="bitmap">Load From File; logo.png</property>
+                                    <property name="bitmap"></property>
                                     <property name="caption"></property>
                                     <property name="caption_visible">1</property>
                                     <property name="center_pane">0</property>
@@ -316,7 +316,7 @@
                                     <property name="pos"></property>
                                     <property name="resize">Resizable</property>
                                     <property name="show">1</property>
-                                    <property name="size"></property>
+                                    <property name="size">126,85</property>
                                     <property name="subclass">; ; forward_declare</property>
                                     <property name="toolbar_pane">0</property>
                                     <property name="tooltip"></property>
@@ -1031,7 +1031,7 @@
                                                     <property name="gripper">0</property>
                                                     <property name="hidden">0</property>
                                                     <property name="id">wxID_ANY</property>
-                                                    <property name="label">Relative speed:</property>
+                                                    <property name="label">Relative rate %:</property>
                                                     <property name="markup">0</property>
                                                     <property name="max_size"></property>
                                                     <property name="maximize_button">0</property>
@@ -2195,7 +2195,7 @@
                                                     <property name="gripper">0</property>
                                                     <property name="hidden">0</property>
                                                     <property name="id">wxID_ANY</property>
-                                                    <property name="label">Highlight with dots 7 &amp; 8 the current nav node:</property>
+                                                    <property name="label">Highlight with dots 7 &amp;&amp; 8 the current nav node:</property>
                                                     <property name="markup">0</property>
                                                     <property name="max_size"></property>
                                                     <property name="maximize_button">0</property>
