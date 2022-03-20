@@ -7,7 +7,7 @@
 ## PLEASE DO *NOT* EDIT THIS FILE!
 ###########################################################################
 
-import wx
+#import wx
 import wx.xrc
 
 import gettext
