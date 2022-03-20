@@ -7,8 +7,8 @@
 ## PLEASE DO *NOT* EDIT THIS FILE!
 ###########################################################################
 
-#import wx
-import wx.xrc
+import wx
+#import wx.xrc
 
 import gettext
 _ = gettext.gettext
