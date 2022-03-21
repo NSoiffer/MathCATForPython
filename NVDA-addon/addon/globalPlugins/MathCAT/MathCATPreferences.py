@@ -33,6 +33,11 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         #initialize parent class
         MathCATgui.MathCATPreferencesDialog.__init__(self,parent)
 
+        #load the logo into the dialog
+        full_path_to_logo = os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\logo.png"
+        if os.path.exists(full_path_to_logo):
+            self.m_bitmapLogo.SetBitmap(wx.Bitmap(full_path_to_logo))
+
         # load in the system values followed by the user prefs (if any)
         UserInterface.load_default_preferences()
         UserInterface.load_user_preferences()

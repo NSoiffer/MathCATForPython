@@ -8,8 +8,7 @@
 ###########################################################################
 
 import wx
-# import wx.xrc
-import os
+#import wx.xrc
 
 import gettext
 _ = gettext.gettext
@@ -44,7 +43,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerCategories.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 
-		self.m_bitmapLogo = wx.StaticBitmap( self.m_panelCategories, wx.ID_ANY, wx.Bitmap( os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\logo.png", wx.BITMAP_TYPE_ANY ), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_bitmapLogo = wx.StaticBitmap( self.m_panelCategories, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 126,85 ), 0 )
 		bSizerCategories.Add( self.m_bitmapLogo, 0, wx.ALL, 5 )
 
 
@@ -119,7 +118,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizer7131 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText21111 = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _(u"Relative speed:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText21111 = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _(u"Relative rate %:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText21111.Wrap( -1 )
 
 		bSizer7131.Add( self.m_staticText21111, 0, wx.ALL, 5 )
