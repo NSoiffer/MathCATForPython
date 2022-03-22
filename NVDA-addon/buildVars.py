@@ -29,7 +29,7 @@ addon_info = {
 		The initial version of MathCAT is English-only but is designed with translations in mind.
 		"""),
 	# version
-	"addon_version": "0.1.7",
+	"addon_version": "0.1.8",
 	# Author(s)
 	"addon_author": "Neil Soiffer <soiffer@alum.mit.edu>",
 	# URL for the add-on documentation support
@@ -37,9 +37,9 @@ addon_info = {
 	# Documentation file name
 	"addon_docFileName": "readme.html",
 	# Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)
-	"addon_minimumNVDAVersion": None,
+	"addon_minimumNVDAVersion": 2018.1,
 	# Last NVDA version supported/tested (e.g. "2018.4.0", ideally more recent than minimum version)
-	"addon_lastTestedNVDAVersion": "2021.3",
+	"addon_lastTestedNVDAVersion": "2022.1",
 	# Add-on update channel (default is None, denoting stable releases,
 	# and for development releases, use "dev".)
 	# Do not change unless you know what you are doing!
