@@ -126,6 +126,9 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		self.m_sliderRelativeSpeed = wx.Slider( self.m_panelSpeech, wx.ID_ANY, 100, 20, 200, wx.DefaultPosition, wx.DefaultSize, wx.SL_HORIZONTAL )
 		bSizer7131.Add( self.m_sliderRelativeSpeed, 0, wx.ALL, 5 )
 
+		self.m_buttonPreviewVoice = wx.Button( self.m_panelSpeech, wx.ID_ANY, _(u"Preview voice"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer7131.Add( self.m_buttonPreviewVoice, 0, wx.ALL, 5 )
+
 
 		bSizer121.Add( bSizer7131, 1, wx.EXPAND, 5 )
 
@@ -319,6 +322,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		self.Bind( wx.EVT_KEY_UP, self.MathCATPreferencesDialogOnKeyUp )
 		self.m_listBoxPreferencesTopic.Bind( wx.EVT_LISTBOX, self.OnListBoxCategories )
 		self.m_choiceLanguage.Bind( wx.EVT_CHOICE, self.OnLanguage )
+		self.m_buttonPreviewVoice.Bind( wx.EVT_BUTTON, self.OnClickPreviewVoiceButton )
 		self.m_buttonOK.Bind( wx.EVT_BUTTON, self.OnClickOK )
 		self.m_buttonCancel.Bind( wx.EVT_BUTTON, self.OnClickCancel )
 		self.m_buttonApply.Bind( wx.EVT_BUTTON, self.OnClickApply )
@@ -340,6 +344,9 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		event.Skip()
 
 	def OnLanguage( self, event ):
+		event.Skip()
+
+	def OnClickPreviewVoiceButton( self, event ):
 		event.Skip()
 
 	def OnClickOK( self, event ):

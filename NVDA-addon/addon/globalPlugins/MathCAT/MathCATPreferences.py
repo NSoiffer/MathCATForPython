@@ -174,6 +174,10 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             #write values to the user preferences file, NOT the default
             yaml.dump(user_preferences, stream=f, allow_unicode=True)
 
+    def OnClickPreviewVoiceButton(self,event):
+        #insert code to preview the voice at the selected rate and delete following line
+        pass
+
     def OnClickOK(self,event):
         UserInterface.get_ui_values(self)
         UserInterface.write_user_preferences()
