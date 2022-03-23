@@ -209,7 +209,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizer15.Add( self.m_staticText3111, 0, wx.ALL, 5 )
 
-		m_choiceSpeechAmountNavigationChoices = [ _(u"Terse"), _(u"Medium"), _(u"Full") ]
+		m_choiceSpeechAmountNavigationChoices = [ _(u"Terse"), _(u"Medium"), _(u"Verbose") ]
 		self.m_choiceSpeechAmountNavigation = wx.Choice( self.m_panelNavigation, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSpeechAmountNavigationChoices, 0 )
 		self.m_choiceSpeechAmountNavigation.SetSelection( 0 )
 		bSizer15.Add( self.m_choiceSpeechAmountNavigation, 0, wx.ALL, 5 )
