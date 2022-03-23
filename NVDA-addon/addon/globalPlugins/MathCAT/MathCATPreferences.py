@@ -175,8 +175,11 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             yaml.dump(user_preferences, stream=f, allow_unicode=True)
 
     def OnClickPreviewVoiceButton(self,event):
-        #insert code to preview the voice at the selected rate and delete following line
-        pass
+        from .MathCAT import ConvertSSMLTextForNVDA
+        from  speech import speak
+        rate = self.m_sliderRelativeSpeed.GetValue()
+        text = "<prosody rate='XXX%'>the square root of x squared plus y squared</prosody>".replace("XXX", str(rate), 1)
+        speak( ConvertSSMLTextForNVDA(text) )
 
     def OnClickOK(self,event):
         UserInterface.get_ui_values(self)
