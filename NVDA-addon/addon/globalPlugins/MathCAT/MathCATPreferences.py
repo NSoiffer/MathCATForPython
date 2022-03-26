@@ -41,6 +41,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         # load in the system values followed by the user prefs (if any)
         UserInterface.load_default_preferences()
         UserInterface.load_user_preferences()
+        UserInterface.validate_user_preferences()
 
         if "MathCATPreferencesLastCategory" in user_preferences:
             #set the categories selection to what we used on last run
@@ -166,6 +167,139 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 # merge with the default preferences, overwriting with the user's values
                 user_preferences.update(yaml.load(f, Loader=yaml.FullLoader))
 
+    def validate_user_preferences():
+    global user_preferences
+    #check each user preference value to ensure it is present and valid, set default value if not
+
+    #  Speech:
+    #Impairment: Blindness       # LearningDisability, LowVision, Blindness
+    valid_test_passed = False
+    try: 
+        if user_preferences["Speech"]["Impairment"] in ["LearningDisability", "LowVision", "Blindness"]:
+            valid_test_passed = True
+    except:
+        pass
+    if not valid_test_passed:
+        user_preferences["Speech"]["Impairment"] = "Blindness"
+
+    #    Verbosity: Medium           # Terse, Medium, Verbose
+    valid_test_passed = False
+    try: 
+        if user_preferences["Speech"]["Verbosity"] in ["Terse", "Medium", "Verbose"]:
+            valid_test_passed = True
+    except:
+        pass
+    if not valid_test_passed:
+        user_preferences["Speech"]["Verbosity"] = "Medium"
+
+    #    MathRate: 100               # Change from text speech rate (%)
+    valid_test_passed = False
+    try: 
+        if (user_preferences["Speech"]["MathRate"] >= 10) and (user_preferences["Speech"]["MathRate"] <= 1000):
+            valid_test_passed = True
+    except:
+        pass
+    if not valid_test_passed:
+        user_preferences["Speech"]["MathRate"] = "100"
+
+    #    SpeechStyle: ClearSpeak     # Any known speech style (falls back to ClearSpeak)
+    #no validity test
+
+    #    SubjectArea: General        # FIX: still working on this
+    #no validity test
+
+    #    Chemistry: SpellOut         # SpellOut (H 2 0), AsCompound (Water), Off (H sub 2 O)
+    valid_test_passed = False
+    try: 
+        if user_preferences["Speech"]["Chemistry"] in ["SpellOut", "AsCompound", "Off"]:
+            valid_test_passed = True
+    except:
+        pass
+    if not valid_test_passed:
+        user_preferences["Speech"]["Chemistry"] = "SpellOut"
+
+    #Navigation:
+    #  NavMode: Enhanced         # Enhanced, Simple, Character
+    valid_test_passed = False
+    try: 
+        if user_preferences["Navigation"]["NavMode"] in ["Enhanced", "Simple", "Character"]:
+            valid_test_passed = True
+    except:
+        pass
+    if not valid_test_passed:
+        user_preferences["Navigation"]["NavMode"] = "Enhanced"
+
+    #  ResetNavMode: false       # remember previous value and use it
+    valid_test_passed = False
+    try: 
+        if (user_preferences["Navigation"]["ResetNavMode"]) or (not user_preferences["Navigation"]["ResetNavMode"]) :
+            valid_test_passed = True
+    except:
+        pass
+    if not valid_test_passed:
+        user_preferences["Navigation"]["ResetNavMode"] = "false"
+
+    #  Overview: false             # speak the expression or give a description/overview
+    valid_test_passed = False
+    try: 
+        if (user_preferences["Navigation"]["Overview"]) or True :
+            valid_test_passed = True
+    except:
+        pass
+    if not valid_test_passed:
+        user_preferences["Navigation"]["Overview"] = "false"
+
+    #  ResetOverview: true        # remember previous value and use it
+    valid_test_passed = False
+    try: 
+        if (user_preferences["Navigation"]["ResetOverview"]) or True :
+            valid_test_passed = True
+    except:
+        pass
+    if not valid_test_passed:
+        user_preferences["Navigation"]["ResetOverview"] = "true"
+
+    #  NavVerbosity: Medium        # Terse, Medium, Full (words to say for nav command)
+    valid_test_passed = False
+    try: 
+        if user_preferences["Navigation"]["NavVerbosity"] in ["Terse", "Medium", "Full"]:
+            valid_test_passed = True
+    except:
+        pass
+    if not valid_test_passed:
+        user_preferences["Navigation"]["NavVerbosity"] = "Medium"
+
+    #  AutoZoomOut: true           # Auto zoom out of 2D exprs (use shift-arrow to force zoom out if unchecked)
+    valid_test_passed = False
+    try: 
+        if (user_preferences["Navigation"]["AutoZoomOut"]) or True :
+            valid_test_passed = True
+    except:
+        pass
+    if not valid_test_passed:
+        user_preferences["Navigation"]["AutoZoomOut"] = "true"
+
+    #Braille:
+    #  BrailleNavHighlight: EndPoints   # Highlight with dots 7 & 8 the current nav node -- values are Off, FirstChar, EndPoints, All
+    valid_test_passed = False
+    try: 
+        if user_preferences["Braille"]["BrailleNavHighlight"] in ["Off", "FirstChar", "EndPoints", "All"]:
+            valid_test_passed = True
+    except:
+        pass
+    if not valid_test_passed:
+        user_preferences["Braille"]["BrailleNavHighlight"] = "EndPoints"
+
+    #  BrailleCode: "Nemeth"                # Any supported braille code (currently Nemeth, UEB)
+    valid_test_passed = False
+    try: 
+        if user_preferences["Braille"]["BrailleCode"] in ["Nemeth", "UEB"]:
+            valid_test_passed = True
+    except:
+        pass
+    if not valid_test_passed:
+        user_preferences["Braille"]["BrailleCode"] = "Nemeth"
+
     def write_user_preferences():
         if not os.path.exists(UserInterface.path_to_user_preferences_folder()):
             #create a folder for the user preferences
@@ -195,6 +329,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
  
     def OnClickReset(self,event):
         UserInterface.load_default_preferences()
+        UserInterface.validate_user_preferences()
         UserInterface.set_ui_values(self)
  
     def OnClickHelp(self,event):
