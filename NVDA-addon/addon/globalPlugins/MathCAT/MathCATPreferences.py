@@ -168,137 +168,161 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 user_preferences.update(yaml.load(f, Loader=yaml.FullLoader))
 
     def validate_user_preferences():
-    global user_preferences
-    #check each user preference value to ensure it is present and valid, set default value if not
+        global user_preferences
+        #check each user preference value to ensure it is present and valid, set default value if not
 
-    #  Speech:
-    #Impairment: Blindness       # LearningDisability, LowVision, Blindness
-    valid_test_passed = False
-    try: 
-        if user_preferences["Speech"]["Impairment"] in ["LearningDisability", "LowVision", "Blindness"]:
-            valid_test_passed = True
-    except:
-        pass
-    if not valid_test_passed:
-        user_preferences["Speech"]["Impairment"] = "Blindness"
+        #  Speech:
+        #Impairment: Blindness       # LearningDisability, LowVision, Blindness
+        valid_test_passed = False
+        try: 
+            if user_preferences["Speech"]["Impairment"] in ["LearningDisability", "LowVision", "Blindness"]:
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Speech"]["Impairment"] = "Blindness"
 
-    #    Verbosity: Medium           # Terse, Medium, Verbose
-    valid_test_passed = False
-    try: 
-        if user_preferences["Speech"]["Verbosity"] in ["Terse", "Medium", "Verbose"]:
-            valid_test_passed = True
-    except:
-        pass
-    if not valid_test_passed:
-        user_preferences["Speech"]["Verbosity"] = "Medium"
+        #    Language: en                # any known language code and sub-code -- could be en-uk, etc
+        valid_test_passed = False
+        try: 
+            if user_preferences["Speech"]["Language"] != "":
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Speech"]["Language"] = "en"
 
-    #    MathRate: 100               # Change from text speech rate (%)
-    valid_test_passed = False
-    try: 
-        if (user_preferences["Speech"]["MathRate"] >= 10) and (user_preferences["Speech"]["MathRate"] <= 1000):
-            valid_test_passed = True
-    except:
-        pass
-    if not valid_test_passed:
-        user_preferences["Speech"]["MathRate"] = "100"
+        #    Verbosity: Medium           # Terse, Medium, Verbose
+        valid_test_passed = False
+        try: 
+            if user_preferences["Speech"]["Verbosity"] in ["Terse", "Medium", "Verbose"]:
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Speech"]["Verbosity"] = "Medium"
 
-    #    SpeechStyle: ClearSpeak     # Any known speech style (falls back to ClearSpeak)
-    #no validity test
+        #    MathRate: 100               # Change from text speech rate (%)
+        valid_test_passed = False
+        try: 
+            if (user_preferences["Speech"]["MathRate"] > 0):
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Speech"]["MathRate"] = 100
 
-    #    SubjectArea: General        # FIX: still working on this
-    #no validity test
+        #    SpeechStyle: ClearSpeak     # Any known speech style (falls back to ClearSpeak)
+        valid_test_passed = False
+        try: 
+            if user_preferences["Speech"]["SpeechStyle"] != "":
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Speech"]["SpeechStyle"] = "ClearSpeak"
 
-    #    Chemistry: SpellOut         # SpellOut (H 2 0), AsCompound (Water), Off (H sub 2 O)
-    valid_test_passed = False
-    try: 
-        if user_preferences["Speech"]["Chemistry"] in ["SpellOut", "AsCompound", "Off"]:
-            valid_test_passed = True
-    except:
-        pass
-    if not valid_test_passed:
-        user_preferences["Speech"]["Chemistry"] = "SpellOut"
+        #    SubjectArea: General        # FIX: still working on this
+        valid_test_passed = False
+        try: 
+            if user_preferences["Speech"]["SubjectArea"] != "":
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Speech"]["SubjectArea"] = "General"
 
-    #Navigation:
-    #  NavMode: Enhanced         # Enhanced, Simple, Character
-    valid_test_passed = False
-    try: 
-        if user_preferences["Navigation"]["NavMode"] in ["Enhanced", "Simple", "Character"]:
-            valid_test_passed = True
-    except:
-        pass
-    if not valid_test_passed:
-        user_preferences["Navigation"]["NavMode"] = "Enhanced"
+        #    Chemistry: SpellOut         # SpellOut (H 2 0), AsCompound (Water), Off (H sub 2 O)
+        valid_test_passed = False
+        try: 
+            if user_preferences["Speech"]["Chemistry"] in ["SpellOut", "AsCompound", "Off"]:
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Speech"]["Chemistry"] = "SpellOut"
 
-    #  ResetNavMode: false       # remember previous value and use it
-    valid_test_passed = False
-    try: 
-        if (user_preferences["Navigation"]["ResetNavMode"]) or (not user_preferences["Navigation"]["ResetNavMode"]) :
-            valid_test_passed = True
-    except:
-        pass
-    if not valid_test_passed:
-        user_preferences["Navigation"]["ResetNavMode"] = "false"
+        #Navigation:
+        #  NavMode: Enhanced         # Enhanced, Simple, Character
+        valid_test_passed = False
+        try: 
+            if user_preferences["Navigation"]["NavMode"] in ["Enhanced", "Simple", "Character"]:
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Navigation"]["NavMode"] = "Enhanced"
 
-    #  Overview: false             # speak the expression or give a description/overview
-    valid_test_passed = False
-    try: 
-        if (user_preferences["Navigation"]["Overview"]) or True :
-            valid_test_passed = True
-    except:
-        pass
-    if not valid_test_passed:
-        user_preferences["Navigation"]["Overview"] = "false"
+        #  ResetNavMode: false       # remember previous value and use it
+        valid_test_passed = False
+        try: 
+            if (user_preferences["Navigation"]["ResetNavMode"]) or (not user_preferences["Navigation"]["ResetNavMode"]) :
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Navigation"]["ResetNavMode"] = False
 
-    #  ResetOverview: true        # remember previous value and use it
-    valid_test_passed = False
-    try: 
-        if (user_preferences["Navigation"]["ResetOverview"]) or True :
-            valid_test_passed = True
-    except:
-        pass
-    if not valid_test_passed:
-        user_preferences["Navigation"]["ResetOverview"] = "true"
+        #  Overview: false             # speak the expression or give a description/overview
+        valid_test_passed = False
+        try: 
+            if (user_preferences["Navigation"]["Overview"]) or True :
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Navigation"]["Overview"] = False
 
-    #  NavVerbosity: Medium        # Terse, Medium, Full (words to say for nav command)
-    valid_test_passed = False
-    try: 
-        if user_preferences["Navigation"]["NavVerbosity"] in ["Terse", "Medium", "Full"]:
-            valid_test_passed = True
-    except:
-        pass
-    if not valid_test_passed:
-        user_preferences["Navigation"]["NavVerbosity"] = "Medium"
+        #  ResetOverview: true        # remember previous value and use it
+        valid_test_passed = False
+        try: 
+            if (user_preferences["Navigation"]["ResetOverview"]) or True :
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Navigation"]["ResetOverview"] = True
 
-    #  AutoZoomOut: true           # Auto zoom out of 2D exprs (use shift-arrow to force zoom out if unchecked)
-    valid_test_passed = False
-    try: 
-        if (user_preferences["Navigation"]["AutoZoomOut"]) or True :
-            valid_test_passed = True
-    except:
-        pass
-    if not valid_test_passed:
-        user_preferences["Navigation"]["AutoZoomOut"] = "true"
+        #  NavVerbosity: Medium        # Terse, Medium, Verbose (words to say for nav command)
+        valid_test_passed = False
+        try: 
+            if user_preferences["Navigation"]["NavVerbosity"] in ["Terse", "Medium", "Verbose"]:
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Navigation"]["NavVerbosity"] = "Medium"
 
-    #Braille:
-    #  BrailleNavHighlight: EndPoints   # Highlight with dots 7 & 8 the current nav node -- values are Off, FirstChar, EndPoints, All
-    valid_test_passed = False
-    try: 
-        if user_preferences["Braille"]["BrailleNavHighlight"] in ["Off", "FirstChar", "EndPoints", "All"]:
-            valid_test_passed = True
-    except:
-        pass
-    if not valid_test_passed:
-        user_preferences["Braille"]["BrailleNavHighlight"] = "EndPoints"
+        #  AutoZoomOut: true           # Auto zoom out of 2D exprs (use shift-arrow to force zoom out if unchecked)
+        valid_test_passed = False
+        try: 
+            if (user_preferences["Navigation"]["AutoZoomOut"]) or True :
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Navigation"]["AutoZoomOut"] = True
 
-    #  BrailleCode: "Nemeth"                # Any supported braille code (currently Nemeth, UEB)
-    valid_test_passed = False
-    try: 
-        if user_preferences["Braille"]["BrailleCode"] in ["Nemeth", "UEB"]:
-            valid_test_passed = True
-    except:
-        pass
-    if not valid_test_passed:
-        user_preferences["Braille"]["BrailleCode"] = "Nemeth"
+        #Braille:
+        #  BrailleNavHighlight: EndPoints   # Highlight with dots 7 & 8 the current nav node -- values are Off, FirstChar, EndPoints, All
+        valid_test_passed = False
+        try: 
+            if user_preferences["Braille"]["BrailleNavHighlight"] in ["Off", "FirstChar", "EndPoints", "All"]:
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Braille"]["BrailleNavHighlight"] = "EndPoints"
+
+        #  BrailleCode: "Nemeth"                # Any supported braille code (currently Nemeth, UEB)
+        valid_test_passed = False
+        try: 
+            if user_preferences["Braille"]["BrailleCode"] in ["Nemeth", "UEB"]:
+                valid_test_passed = True
+        except:
+            pass
+        if not valid_test_passed:
+            user_preferences["Braille"]["BrailleCode"] = "Nemeth"
 
     def write_user_preferences():
         if not os.path.exists(UserInterface.path_to_user_preferences_folder()):
