@@ -87,7 +87,11 @@ def  ConvertSSMLTextForNVDA(text, language=""):
         elif m.lastgroup == "phonemeText":
             out.append(PhonemeCommand(m.group("ipa"), text=m.group("phonemeText")))
         elif m.lastgroup == "content":
+            # MathCAT puts out spaces between words, but the previous pattern might eat it, so we put it back if needed
+            if not(m.group(0).startswith(" ")):
+                out.append(" ")
             out.append(m.group(0))
+
     if language:
         out.append(LangChangeCommand(None))
     return out
