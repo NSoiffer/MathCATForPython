@@ -11,7 +11,7 @@ _ = gettext.gettext
 from logHandler import log                  # logging
 
 # initialize the user preferences tuples
-user_preferences = dict([("", "")])
+user_preferences = {}
 #Speech_Language is derived from the folder structure
 Speech_Impairment = ("LearningDisability", "Blindness", "LowVision")
 #Speech_SpeechStyle is derived from the yaml files under the selected language
@@ -23,10 +23,8 @@ Navigation_NavMode = ("Enhanced", "Simple", "Character")
 #Navigation_OverView is boolean
 Navigation_NavVerbosity = ("Terse", "Medium", "Verbose")
 #Navigation_AutoZoomOut is boolean
-
 Braille_BrailleNavHighlight = ("Off", "FirstChar", "EndPoints", "All")
 Braille_BrailleCode = ("Nemeth", "UEB")
-
 
 class UserInterface(MathCATgui.MathCATPreferencesDialog):
     def __init__(self,parent):
@@ -41,6 +39,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         # load in the system values followed by the user prefs (if any)
         UserInterface.load_default_preferences()
         UserInterface.load_user_preferences()
+        UserInterface.validate_user_preferences()
 
         if "MathCATPreferencesLastCategory" in user_preferences:
             #set the categories selection to what we used on last run
@@ -96,6 +95,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 self.m_choiceLanguage.SetSelection(0)
             #now get the available SpeechStyles from the folder structure and set to the preference setting is possible
             self.GetSpeechStyles(user_preferences["Speech"]["SpeechStyle"])
+            #set the rest of the UI elements
             self.m_choiceSpeechAmount.SetSelection(Speech_Verbosity.index(user_preferences["Speech"]["Verbosity"]))
             self.m_sliderRelativeSpeed.SetValue(user_preferences["Speech"]["MathRate"])
             self.m_choiceSpeechForChemical.SetSelection(Speech_Chemistry.index(user_preferences["Speech"]["Chemistry"]))
@@ -153,10 +153,6 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         if os.path.exists(UserInterface.path_to_default_preferences()):
             with open(UserInterface.path_to_default_preferences(), encoding='utf-8') as f:
                 user_preferences = yaml.load(f, Loader=yaml.FullLoader)
-        else:
-            #default preferences file is NOT found
-            wx.MessageBox(_(u"MathCat preferences file not found. The program will now exit."), "Error", wx.OK | wx.ICON_ERROR)
-            os.sys.exit(-1)
 
     def load_user_preferences():
         global user_preferences
@@ -165,6 +161,65 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             with open(UserInterface.path_to_user_preferences(), encoding='utf-8') as f:
                 # merge with the default preferences, overwriting with the user's values
                 user_preferences.update(yaml.load(f, Loader=yaml.FullLoader))
+
+    def validate(key1, key2, valid_values, default_value):
+        global user_preferences
+        try:
+            if valid_values == None:
+                #any value is valid
+                if user_preferences[key1][key2] != "":
+                    return
+            if (type(valid_values[0]) == int) and (type(valid_values[1]) == int):
+                #any value between lower and upper bounds is valid
+                if (user_preferences[key1][key2] >= valid_values(0)) and (user_preferences[key1][key2] <= valid_values(1)):
+                    return
+            else:
+                #any value in the list is valid
+                if user_preferences[key1][key2] in valid_values:
+                    return
+        except:
+            #the preferences entry does not exist
+            pass
+        if not key1 in user_preferences:
+            user_preferences[key1] = {key2: default_value}
+        else:
+            user_preferences[key1][key2] = default_value
+
+    def validate_user_preferences():
+        #check each user preference value to ensure it is present and valid, set default value if not
+        #  Speech:
+        #Impairment: Blindness       # LearningDisability, LowVision, Blindness
+        UserInterface.validate("Speech", "Impairment", ["LearningDisability", "LowVision", "Blindness"], "Blindness")
+    #   Language: en                # any known language code and sub-code -- could be en-uk, etc
+        UserInterface.validate("Speech", "Language", None, "en")
+        #    Verbosity: Medium           # Terse, Medium, Verbose
+        UserInterface.validate("Speech", "Verbosity", ["Terse", "Medium", "Verbose"], "Medium")
+        #    MathRate: 100               # Change from text speech rate (%)
+        UserInterface.validate("Speech", "MathRate", [0,200], 100)
+        #    SpeechStyle: ClearSpeak     # Any known speech style (falls back to ClearSpeak)
+        UserInterface.validate("Speech", "SpeechStyle", None, "ClearSpeak")
+        #    SubjectArea: General        # FIX: still working on this
+        UserInterface.validate("Speech", "SubjectArea", None, "General")
+        #    Chemistry: SpellOut         # SpellOut (H 2 0), AsCompound (Water), Off (H sub 2 O)
+        UserInterface.validate("Speech", "Chemistry", ["SpellOut", "AsCompound", "Off"], "SpellOut")
+        #Navigation:
+        #  NavMode: Enhanced         # Enhanced, Simple, Character
+        UserInterface.validate("Navigation", "NavMode", ["Enhanced", "Simple", "Character"], "Enhanced")
+        #  ResetNavMode: false       # remember previous value and use it
+        UserInterface.validate("Navigation", "ResetNavMode", [False, True], False)
+            #  Overview: false             # speak the expression or give a description/overview
+        UserInterface.validate("Navigation", "Overview", [False, True] ,False)
+        #  ResetOverview: true        # remember previous value and use it
+        UserInterface.validate("Navigation", "ResetOverview", [False, True], True)
+        #  NavVerbosity: Medium        # Terse, Medium, Full (words to say for nav command)
+        UserInterface.validate("Navigation", "NavVerbosity", ["Terse", "Medium", "Full"], "Medium")
+        #  AutoZoomOut: true           # Auto zoom out of 2D exprs (use shift-arrow to force zoom out if unchecked)
+        UserInterface.validate("Navigation", "AutoZoomOut", [False, True], True)
+        #Braille:
+        #  BrailleNavHighlight: EndPoints   # Highlight with dots 7 & 8 the current nav node -- values are Off, FirstChar, EndPoints, All
+        UserInterface.validate("Braille", "BrailleNavHighlight", ["Off", "FirstChar", "EndPoints", "All"], "EndPoints")
+        #  BrailleCode: "Nemeth"                # Any supported braille code (currently Nemeth, UEB)
+        UserInterface.validate("Braille", "BrailleCode", ["Nemeth", "UEB"], "Nemeth")
 
     def write_user_preferences():
         if not os.path.exists(UserInterface.path_to_user_preferences_folder()):
@@ -195,6 +250,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
  
     def OnClickReset(self,event):
         UserInterface.load_default_preferences()
+        UserInterface.validate_user_preferences()
         UserInterface.set_ui_values(self)
  
     def OnClickHelp(self,event):
