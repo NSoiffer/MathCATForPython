@@ -81,9 +81,9 @@ pub fn SetPreference(_py: Python, name: String, value: String) -> PyResult<()> {
 /// This function can be called multiple times to set different values.
 /// The values are persistent but can be overwritten by setting a preference with the same name and a different value.
 pub fn GetPreference(_py: Python, name: String) -> PyResult<String> {
-    return match get_preference(name) {
-        Some(value) => Ok(value),
-        None => Err( PyOSError::new_err("Unknown preference name") ),
+    return match get_preference(name.clone()) {
+        Ok(value) => Ok(value),
+        Err(_e) => Err( PyOSError::new_err(format!("Unknown preference name {}", &name)) ),
     }
 }
 
