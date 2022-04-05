@@ -171,7 +171,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                     return
             if (type(valid_values[0]) == int) and (type(valid_values[1]) == int):
                 #any value between lower and upper bounds is valid
-                if (user_preferences[key1][key2] >= valid_values(0)) and (user_preferences[key1][key2] <= valid_values(1)):
+                if (user_preferences[key1][key2] >= valid_values[0]) and (user_preferences[key1][key2] <= valid_values[1]):
                     return
             else:
                 #any value in the list is valid
