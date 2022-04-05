@@ -272,48 +272,47 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             return
         if keyCode == wx.WXK_RETURN:
             UserInterface.OnClickOK(self,event)
-        if keyCode == wx.WXK_TAB and (event.GetModifiers()  == wx.MOD_CONTROL):
-            #cycle the category forward
-            new_category = self.m_listBoxPreferencesTopic.GetSelection() + 1
-            if new_category == 3:
-                new_category = 0
-            self.m_listBoxPreferencesTopic.SetSelection(new_category)
-            #update the ui to show the new page
-            UserInterface.OnListBoxCategories(self,event)
-            #set the focus into the category list box
-            self.m_listBoxPreferencesTopic.SetFocus()
-            #jump out so the tab key is not processed
-            return
-        if keyCode == wx.WXK_TAB and (event.GetModifiers()  == wx.MOD_CONTROL|wx.MOD_SHIFT):
-            #cycle the category back
-            new_category = self.m_listBoxPreferencesTopic.GetSelection() - 1
-            if new_category == -1:
-                new_category = 2
-            self.m_listBoxPreferencesTopic.SetSelection(new_category)
-            #update the ui to show the new page
-            UserInterface.OnListBoxCategories(self,event)
-            #update the ui to show the new page
-            self.m_listBoxPreferencesTopic.SetFocus()
-            #jump out so the tab key is not processed
-            return
-        if (event.GetModifiers()  == wx.MOD_NONE) and (MathCATgui.MathCATPreferencesDialog.FindFocus() == self.m_listBoxPreferencesTopic):
-            #user tabbed from into the paged content, set the focus on the first control
-            if self.m_listBoxPreferencesTopic.GetSelection() == 0:
-                self.m_choiceImpairment.SetFocus()
-            elif self.m_listBoxPreferencesTopic.GetSelection() == 1:
-                self.m_choiceNavigationMode.SetFocus()
-            elif self.m_listBoxPreferencesTopic.GetSelection() == 2:
-                self.m_choiceBrailleMathCode.SetFocus()
-            return
-        if (event.GetModifiers()  == wx.MOD_SHIFT) and (MathCATgui.MathCATPreferencesDialog.FindFocus() == self.m_buttonOK):
-            #user shift+tabbed from into the paged content, set the focus on the last control
-            if self.m_listBoxPreferencesTopic.GetSelection() == 0:
-                self.m_choiceSpeechForChemical.SetFocus()
-            elif self.m_listBoxPreferencesTopic.GetSelection() == 1:
-                self.m_choiceSpeechAmountNavigation.SetFocus()
-            elif self.m_listBoxPreferencesTopic.GetSelection() == 2:
-                self.m_choiceBrailleHighlights.SetFocus()
-            return
+        if keyCode == wx.WXK_TAB:
+            if event.GetModifiers()  == wx.MOD_CONTROL:
+                #cycle the category forward
+                new_category = self.m_listBoxPreferencesTopic.GetSelection() + 1
+                if new_category == 3:
+                    new_category = 0
+                self.m_listBoxPreferencesTopic.SetSelection(new_category)
+                #update the ui to show the new page
+                UserInterface.OnListBoxCategories(self,event)
+                #set the focus into the category list box
+                self.m_listBoxPreferencesTopic.SetFocus()
+                #jump out so the tab key is not processed
+                return
+            if event.GetModifiers()  == wx.MOD_CONTROL|wx.MOD_SHIFT:
+                #cycle the category back
+                new_category = self.m_listBoxPreferencesTopic.GetSelection() - 1
+                if new_category == -1:
+                    new_category = 2
+                self.m_listBoxPreferencesTopic.SetSelection(new_category)
+                #update the ui to show the new page
+                UserInterface.OnListBoxCategories(self,event)
+                #update the ui to show the new page
+                self.m_listBoxPreferencesTopic.SetFocus()
+                #jump out so the tab key is not processed
+                return
+            if (event.GetModifiers()  == wx.MOD_NONE) and (MathCATgui.MathCATPreferencesDialog.FindFocus() == self.m_listBoxPreferencesTopic):
+                if self.m_listBoxPreferencesTopic.GetSelection() == 0:
+                    self.m_choiceImpairment.SetFocus()
+                elif self.m_listBoxPreferencesTopic.GetSelection() == 1:
+                    self.m_choiceNavigationMode.SetFocus()
+                elif self.m_listBoxPreferencesTopic.GetSelection() == 2:
+                    self.m_choiceBrailleMathCode.SetFocus()
+                return
+            if (event.GetModifiers()  == wx.MOD_SHIFT) and (MathCATgui.MathCATPreferencesDialog.FindFocus() == self.m_buttonOK):
+                if self.m_listBoxPreferencesTopic.GetSelection() == 0:
+                    self.m_choiceSpeechForChemical.SetFocus()
+                elif self.m_listBoxPreferencesTopic.GetSelection() == 1:
+                    self.m_choiceSpeechAmountNavigation.SetFocus()
+                elif self.m_listBoxPreferencesTopic.GetSelection() == 2:
+                    self.m_choiceBrailleHighlights.SetFocus()
+                return
         #continue handling keyboard event
         event.Skip()
           

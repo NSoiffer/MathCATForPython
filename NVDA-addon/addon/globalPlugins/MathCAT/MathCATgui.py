@@ -20,7 +20,7 @@ _ = gettext.gettext
 class MathCATPreferencesDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"MathCAT Preferences"), pos = wx.DefaultPosition, size = wx.Size( 636,389 ), style = wx.DEFAULT_DIALOG_STYLE )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"MathCAT Preferences"), pos = wx.DefaultPosition, size = wx.Size( -1,-1 ), style = wx.DEFAULT_DIALOG_STYLE )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -311,6 +311,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		self.SetSizer( gbSizer1 )
 		self.Layout()
+		gbSizer1.Fit( self )
 
 		self.Centre( wx.BOTH )
 
