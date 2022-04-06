@@ -152,11 +152,12 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 
     def script_navigate(self, gesture):
         # log.info("***MathCAT script_navigate")
-        modNames = gesture.modifierNames
         try:
-            text = libmathcat.DoNavigateKeyPress(gesture.vkCode,
-                "shift" in modNames, "control" in modNames, "alt" in modNames, False)
-            speech.speak(ConvertSSMLTextForNVDA(text, self.provider._language))
+            if gesture != None:
+                modNames = gesture.modifierNames
+                text = libmathcat.DoNavigateKeyPress(gesture.vkCode,
+                    "shift" in modNames, "control" in modNames, "alt" in modNames, False)
+                speech.speak(ConvertSSMLTextForNVDA(text, self.provider._language))
             
             # update the braille to reflect the nav position (might be excess code, but it works)
             nav_node = libmathcat.GetNavigationMathMLId()
@@ -295,6 +296,7 @@ class MathCAT(mathPres.MathPresentationProvider):
 
     def interactWithMathMl(self, mathMl):
         MathCATInteraction(provider=self, mathMl=mathMl).setFocus()
+        MathCATInteraction(provider=self, mathMl=mathMl).script_navigate(None)
 
     def _setSpeechLanguage(self, mathMl):
         lang = mathPres.getLanguageFromMath(mathMl)
