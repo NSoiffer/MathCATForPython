@@ -17,6 +17,7 @@ import mathPres                             # math plugin stuff
 from os import path                         # set rule dir path
 import re                                   # regexp patter match
 import speech                               # speech commands
+import config                               # look up caps setting
 import ui                                   # copy message
 from scriptHandler import script            # copy MathML via ctrl-c
 from synthDriverHandler import getSynth     # speech engine param setting
@@ -27,6 +28,7 @@ from . import libmathcat
 
 # speech/SSML processing borrowed from NVDA's mathPres/mathPlayer.py
 from speech.commands import (
+    BeepCommand,
     PitchCommand,
     VolumeCommand,
     RateCommand,
@@ -65,6 +67,7 @@ def  ConvertSSMLTextForNVDA(text, language=""):
     synth = getSynth()
     wpm = synth._percentToParam(synth.rate, 80, 450)
     breakMulti = 180.0 / wpm
+    synthConfig = config.conf["speech"][synth.name]
     out = []
     if language:
         out.append(LangChangeCommand(language))
@@ -73,7 +76,17 @@ def  ConvertSSMLTextForNVDA(text, language=""):
         if m.lastgroup == "break":
             out.append(BreakCommand(time=int(m.group("break")) * breakMulti))
         elif m.lastgroup == "char":
-            out.extend((CharacterModeCommand(True), m.group("char"), CharacterModeCommand(False)))
+            # get the NVDA settings for what to do for a capital char and apply them
+            ch = m.group("char")
+            if ch.isupper():
+                if synthConfig["sayCapForCapitals"]:
+                    out.append(_(u"cap"))           # capital letter prefix
+                out.append(PitchCommand(multiplier=int(synthConfig["capPitchChange"])))
+                if synthConfig["beepForCapitals"]:
+                    out.append(BeepCommand(2000, 50))
+            out.extend((CharacterModeCommand(True), ch, CharacterModeCommand(False)))
+            if ch.isupper():
+                out.append(PitchCommand(multiplier=1))
         elif m.lastgroup == "comma":
             out.append(BreakCommand(time=100))
         elif m.lastgroup in PROSODY_COMMANDS:
@@ -87,10 +100,11 @@ def  ConvertSSMLTextForNVDA(text, language=""):
         elif m.lastgroup == "phonemeText":
             out.append(PhonemeCommand(m.group("ipa"), text=m.group("phonemeText")))
         elif m.lastgroup == "content":
-            # MathCAT puts out spaces between words, but the previous pattern might eat it, so we put it back if needed
-            if not(m.group(0).startswith(" ")):
-                out.append(" ")
+            # MathCAT puts out spaces between words, the speak command seems to want to glom the strings together at times,
+            #  so we need to add individual " "s to the output
+            out.append(" ")
             out.append(m.group(0))
+            out.append(" ")
 
     if language:
         out.append(LangChangeCommand(None))
