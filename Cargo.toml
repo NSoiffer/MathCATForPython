@@ -15,7 +15,7 @@ crate-type = ["cdylib"]
 [dependencies.mathcat]
 version = "0.1.18"
 # for testing MathCAT without having to publish a new version (change two occurences)
-path = "../MathCAT/"
+# path = "../MathCAT/"
 
 [dependencies.pyo3]
 version = "0.15.1"
@@ -23,9 +23,9 @@ features = ["extension-module", "abi3"]
 
 [build-dependencies]
 zip = { version = "0.5", default-features = false }
-#mathcat = "0.1.18"
+mathcat = "0.1.18"
 # for testing MathCAT without having to publish a new version (change two occurences)
-mathcat = {version= "0.1.18", path = "../MathCAT/"}
+#mathcat = {version= "0.1.18", path = "../MathCAT/"}
 
 
 [profile.release]
