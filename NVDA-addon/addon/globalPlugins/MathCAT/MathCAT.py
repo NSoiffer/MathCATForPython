@@ -297,7 +297,7 @@ class MathCAT(mathPres.MathPresentationProvider):
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
             libmathcat.SetMathML("<math></math>")    # set it to something
         try:
-            return ConvertSSMLTextForNVDA(libmathcat.GetSpokenText())
+            return [BeepCommand(800,25)] + ConvertSSMLTextForNVDA(libmathcat.GetSpokenText()) + [BeepCommand(600,15)]
         except Exception as e:
             log.error(e)
             speech.speakMessage(_("Error in speaking math: see NVDA error log for details"))
