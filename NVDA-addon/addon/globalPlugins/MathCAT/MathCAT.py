@@ -147,6 +147,8 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             region.rawText = libmathcat.GetBraille("")
         except Exception as e:
             log.error(e)
+            speech.speakMessage(_("Error in brailling math: see NVDA error log for details"))
+            region.rawText = ""
 
         # log.info("***MathCAT end getBrailleRegions ***")
         yield region
@@ -185,6 +187,8 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             braille.handler.update()
         except Exception as e:
             log.error(e)
+            speech.speakMessage(_("Error in navigating math: see NVDA error log for details"))
+
 
     _startsWithMath = re.compile("\\s*?<math")
     @script(
@@ -199,6 +203,8 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             ui.message(_("copy"))
         except Exception as e:
             log.error(e)
+            speech.speakMessage(_("unable to copy math: see NVDA error log for details"))
+
 
      # not a perfect match sequence, but should capture normal MathML
     _mathTagHasNameSpace = re.compile("<math .*?xmlns.+?>")
@@ -275,6 +281,8 @@ class MathCAT(mathPres.MathPresentationProvider):
 
         except Exception as e:
             log.error(e)
+            speech.speakMessage(_("MathCAT initialization failed: see NVDA error log for details"))
+
 
         # store mathcontent for navigation and copy
         mathcontent = None   
@@ -287,11 +295,13 @@ class MathCAT(mathPres.MathPresentationProvider):
         except Exception as e:
             log.error(e)
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
+            libmathcat.SetMathML("<math></math>")    # set it to something
         try:
             return ConvertSSMLTextForNVDA(libmathcat.GetSpokenText())
         except Exception as e:
             log.error(e)
             speech.speakMessage(_("Error in speaking math: see NVDA error log for details"))
+            return [""]
 
 
     def getBrailleForMathMl(self, mathml):
@@ -301,11 +311,13 @@ class MathCAT(mathPres.MathPresentationProvider):
         except Exception as e:
             log.error(e)
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
+            libmathcat.SetMathML("<math></math>")    # set it to something
         try:
             return libmathcat.GetBraille("")
         except Exception as e:
             log.error(e)
             speech.speakMessage(_("Error in brailling math: see NVDA error log for details"))
+            return ""
 
 
     def interactWithMathMl(self, mathMl):
@@ -321,3 +333,5 @@ class MathCAT(mathPres.MathPresentationProvider):
             self._language = lang
         except Exception as e:
             log.error(e)
+            speech.speakMessage(_("MathCAT does not support language %s: see NVDA error log for details" % lang))
+
