@@ -8,7 +8,7 @@
 ###########################################################################
 
 import wx
-# import wx.xrc
+import wx.xrc
 
 import gettext
 _ = gettext.gettext
@@ -128,6 +128,14 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 
 		bSizer121.Add( bSizer7131, 1, wx.EXPAND, 5 )
+
+		bSizer7121 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_checkBoxSpeechSound = wx.CheckBox( self.m_panelSpeech, wx.ID_ANY, _(u"Make a sound when starting/ending math speech"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer7121.Add( self.m_checkBoxSpeechSound, 0, wx.ALL, 5 )
+
+
+		bSizer121.Add( bSizer7121, 1, wx.EXPAND, 5 )
 
 		bSizer712 = wx.BoxSizer( wx.HORIZONTAL )
 

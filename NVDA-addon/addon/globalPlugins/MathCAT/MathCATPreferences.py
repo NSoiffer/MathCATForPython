@@ -98,6 +98,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             #set the rest of the UI elements
             self.m_choiceSpeechAmount.SetSelection(Speech_Verbosity.index(user_preferences["Speech"]["Verbosity"]))
             self.m_sliderRelativeSpeed.SetValue(user_preferences["Speech"]["MathRate"])
+            self.m_checkBoxSpeechSound.SetValue(user_preferences["Speech"]["SpeechSound"] == "Beep")
             self.m_choiceSpeechForChemical.SetSelection(Speech_Chemistry.index(user_preferences["Speech"]["Chemistry"]))
             self.m_choiceNavigationMode.SetSelection(Navigation_NavMode.index(user_preferences["Navigation"]["NavMode"]))
             self.m_checkBoxResetNavigationMode.SetValue(user_preferences["Navigation"]["ResetNavMode"])
@@ -121,6 +122,10 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         user_preferences["Speech"]["SpeechStyle"] = self.m_choiceSpeechStyle.GetStringSelection()
         user_preferences["Speech"]["Verbosity"] = Speech_Verbosity[self.m_choiceSpeechAmount.GetSelection()]
         user_preferences["Speech"]["MathRate"] = self.m_sliderRelativeSpeed.GetValue()
+        if self.m_checkBoxSpeechSound.GetValue():
+            user_preferences["Speech"]["SpeechSound"] = "Beep"
+        else:
+            user_preferences["Speech"]["SpeechSound"] = "None"
         user_preferences["Speech"]["Chemistry"] = Speech_Chemistry[self.m_choiceSpeechForChemical.GetSelection()]
         user_preferences["Navigation"]["NavMode"] = Navigation_NavMode[self.m_choiceNavigationMode.GetSelection()]
         user_preferences["Navigation"]["ResetNavMode"] = self.m_checkBoxResetNavigationMode.GetValue()
@@ -196,6 +201,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         UserInterface.validate("Speech", "Verbosity", ["Terse", "Medium", "Verbose"], "Medium")
         #    MathRate: 100               # Change from text speech rate (%)
         UserInterface.validate("Speech", "MathRate", [0,200], 100)
+        #  SpeechSound: None           # make a sound when starting/ending math speech -- None, Beep
+        UserInterface.validate("Speech", "SpeechSound", ["None", "Beep"], "None")
         #    SpeechStyle: ClearSpeak     # Any known speech style (falls back to ClearSpeak)
         UserInterface.validate("Speech", "SpeechStyle", None, "ClearSpeak")
         #    SubjectArea: General        # FIX: still working on this
