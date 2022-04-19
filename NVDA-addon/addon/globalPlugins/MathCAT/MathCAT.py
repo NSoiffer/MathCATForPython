@@ -68,43 +68,56 @@ def  ConvertSSMLTextForNVDA(text, language=""):
     wpm = synth._percentToParam(synth.rate, 80, 450)
     breakMulti = 180.0 / wpm
     synthConfig = config.conf["speech"][synth.name]
+    supported_commands = synth.supportedCommands
+    use_break = BreakCommand in supported_commands
+    use_pitch = PitchCommand in supported_commands
+    use_phoneme = PhonemeCommand in supported_commands
+    use_character = CharacterModeCommand in supported_commands
     out = []
     if language:
         out.append(LangChangeCommand(language))
     resetProsody = set()
     for m in RE_MP_SPEECH.finditer(text):
         if m.lastgroup == "break":
-            out.append(BreakCommand(time=int(m.group("break")) * breakMulti))
+            if use_break:
+                out.append(BreakCommand(time=int(m.group("break")) * breakMulti))
         elif m.lastgroup == "char":
             # get the NVDA settings for what to do for a capital char and apply them
             ch = m.group("char")
             if ch.isupper():
                 if synthConfig["sayCapForCapitals"]:
                     out.append(_(u"cap"))           # capital letter prefix
-                out.append(PitchCommand(multiplier=int(synthConfig["capPitchChange"])))
+                if use_pitch:
+                    out.append(PitchCommand(multiplier=int(synthConfig["capPitchChange"])))
                 if synthConfig["beepForCapitals"]:
                     out.append(BeepCommand(2000, 50))
-            out.extend((CharacterModeCommand(True), ch, CharacterModeCommand(False)))
-            if ch.isupper():
+            if use_character:
+                out.extend((CharacterModeCommand(True), ch, CharacterModeCommand(False)))
+            else:
+                out.extend((" ", ch, " "))
+            if use_pitch and ch.isupper():
                 out.append(PitchCommand(multiplier=1))
         elif m.lastgroup == "comma":
-            out.append(BreakCommand(time=100))
+            if use_break:
+                out.append(BreakCommand(time=100))
         elif m.lastgroup in PROSODY_COMMANDS:
             command = PROSODY_COMMANDS[m.lastgroup]
-            out.append(command(multiplier=int(m.group(m.lastgroup)) / 100.0))
-            resetProsody.add(command)
+            if command in supported_commands:
+                out.append(command(multiplier=int(m.group(m.lastgroup)) / 100.0))
+                resetProsody.add(command)
         elif m.lastgroup == "prosodyReset":
-            for command in resetProsody:
+            for command in resetProsody:    # only supported commands were added, so no need to check
                 out.append(command(multiplier=1))
             resetProsody.clear()
         elif m.lastgroup == "phonemeText":
-            out.append(PhonemeCommand(m.group("ipa"), text=m.group("phonemeText")))
+            if use_phoneme:
+                out.append(PhonemeCommand(m.group("ipa"), text=m.group("phonemeText")))
+            else:
+                out.append(m.group("phonemeText"))
         elif m.lastgroup == "content":
             # MathCAT puts out spaces between words, the speak command seems to want to glom the strings together at times,
             #  so we need to add individual " "s to the output
-            out.append(" ")
-            out.append(m.group(0))
-            out.append(" ")
+            out.extend((" ", m.group(0), " "))
 
     if language:
         out.append(LangChangeCommand(None))
@@ -297,12 +310,21 @@ class MathCAT(mathPres.MathPresentationProvider):
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
             libmathcat.SetMathML("<math></math>")    # set it to something
         try:
-            return [BeepCommand(800,25)] + ConvertSSMLTextForNVDA(libmathcat.GetSpokenText()) + [BeepCommand(600,15)]
+            if self._add_sounds():
+                return [BeepCommand(800,25)] + ConvertSSMLTextForNVDA(libmathcat.GetSpokenText()) + [BeepCommand(600,15)]
+            else:
+                return ConvertSSMLTextForNVDA(libmathcat.GetSpokenText())
+
         except Exception as e:
             log.error(e)
             speech.speakMessage(_("Error in speaking math: see NVDA error log for details"))
             return [""]
 
+    def _add_sounds(self):
+        try:
+            return libmathcat.GetPreference("SpeechSound") != "None"
+        except:
+            return False
 
     def getBrailleForMathMl(self, mathml):
         # log.info("***MathCAT getBrailleForMathMl")
