@@ -80,7 +80,7 @@ def  ConvertSSMLTextForNVDA(text, language=""):
     for m in RE_MP_SPEECH.finditer(text):
         if m.lastgroup == "break":
             if use_break:
-                out.append(BreakCommand(time=int(m.group("break")) * breakMulti))
+                out.append(BreakCommand(time=int(int(m.group("break")) * breakMulti)))
         elif m.lastgroup == "char":
             # get the NVDA settings for what to do for a capital char and apply them
             ch = m.group("char")
@@ -118,7 +118,6 @@ def  ConvertSSMLTextForNVDA(text, language=""):
             # MathCAT puts out spaces between words, the speak command seems to want to glom the strings together at times,
             #  so we need to add individual " "s to the output
             out.extend((" ", m.group(0), " "))
-
     if language:
         out.append(LangChangeCommand(None))
     return out
