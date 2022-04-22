@@ -44,7 +44,7 @@ RE_MP_SPEECH = re.compile(
     # Pronunciation of characters.
     r"|<say-as interpret-as='characters'>(?P<char>[^<]+)</say-as> ?"
     # Specific pronunciation.
-    r"|<phoneme alphabet='ipa' ph='(?P<ipa>[^']+)'> (?P<phonemeText>[^ <]+)</phoneme> ?"
+    r"|<phoneme alphabet='ipa' ph='(?P<ipa>[^']+)'>(?P<phonemeText>[^ <]+)</phoneme> ?"
     # Prosody.
     r"|<prosody(?: pitch='(?P<pitch>\d+)%')?(?: volume='(?P<volume>\d+)%')?(?: rate='(?P<rate>\d+)%')?> ?"
     r"|(?P<prosodyReset></prosody>) ?"
