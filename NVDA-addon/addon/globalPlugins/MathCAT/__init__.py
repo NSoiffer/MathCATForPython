@@ -28,16 +28,18 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         self.add_MathCAT_menu()
 
     def add_MathCAT_menu(self):
-        self.toolsMenu = mainFrame.sysTrayIcon.toolsMenu
-        self.settings = self.toolsMenu.Append(wx.ID_ANY, _("&MathCAT Settings..."))
-        mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.on_settings, self.settings)
+        if not globalVars.appArgs.secure:
+            self.preferencesMenu = mainFrame.sysTrayIcon.preferencesMenu
+            self.settings = self.preferencesMenu.Append(wx.ID_ANY, _("&MathCAT Settings..."))
+            mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.on_settings, self.settings)
 
     def on_settings(self, evt):
         mainFrame._popupSettingsDialog(UserInterface)
 
     def terminate(self):
         try:
-            self.toolsMenu.Remove(self.settings)
+            if not globalVars.appArgs.secure:
+                self.preferencesMenu.Remove(self.settings)
         except (AttributeError, RuntimeError):
             pass
 
