@@ -296,14 +296,10 @@ class MathCAT(mathPres.MathPresentationProvider):
             speech.speakMessage(_("MathCAT initialization failed: see NVDA error log for details"))
 
 
-        # store mathcontent for navigation and copy
-        mathcontent = None   
-
     def getSpeechForMathMl(self, mathml):
         self._setSpeechLanguage(mathml)
         try:
             libmathcat.SetMathML(mathml)
-            mathcontent = mathml
         except Exception as e:
             log.error(e)
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
