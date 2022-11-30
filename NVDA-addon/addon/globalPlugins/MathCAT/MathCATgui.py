@@ -129,6 +129,19 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizer121.Add( bSizer7131, 1, wx.EXPAND, 5 )
 
+		bSizerPauseFactor = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticPauseFactor = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _(u"Pause factor:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticPauseFactor.Wrap( -1 )
+
+		bSizerPauseFactor.Add( self.m_staticPauseFactor, 0, wx.ALL, 5 )
+
+		self.m_sliderPauseFactor = wx.Slider( self.m_panelSpeech, wx.ID_ANY, 100, 0, 400, wx.DefaultPosition, wx.DefaultSize, wx.SL_HORIZONTAL )
+		bSizerPauseFactor.Add( self.m_sliderPauseFactor, 0, wx.ALL, 5 )
+
+
+		bSizer121.Add( bSizerPauseFactor, 1, wx.EXPAND, 5 )
+
 		bSizer7121 = wx.BoxSizer( wx.HORIZONTAL )
 
 		self.m_checkBoxSpeechSound = wx.CheckBox( self.m_panelSpeech, wx.ID_ANY, _(u"Make a sound when starting/ending math speech"), wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -329,6 +342,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		self.m_listBoxPreferencesTopic.Bind( wx.EVT_LISTBOX, self.OnListBoxCategories )
 		self.m_choiceLanguage.Bind( wx.EVT_CHOICE, self.OnLanguage )
 		self.m_sliderRelativeSpeed.Bind( wx.EVT_SCROLL_CHANGED, self.OnRelativeSpeedChanged )
+		self.m_sliderPauseFactor.Bind( wx.EVT_SCROLL_CHANGED, self.OnPauseFactorChanged )
 		self.m_buttonOK.Bind( wx.EVT_BUTTON, self.OnClickOK )
 		self.m_buttonCancel.Bind( wx.EVT_BUTTON, self.OnClickCancel )
 		self.m_buttonApply.Bind( wx.EVT_BUTTON, self.OnClickApply )
@@ -353,6 +367,9 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		event.Skip()
 
 	def OnRelativeSpeedChanged( self, event ):
+		event.Skip()
+
+	def OnPauseFactorChanged( self, event ):
 		event.Skip()
 
 	def OnClickOK( self, event ):

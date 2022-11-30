@@ -98,6 +98,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             #set the rest of the UI elements
             self.m_choiceSpeechAmount.SetSelection(Speech_Verbosity.index(user_preferences["Speech"]["Verbosity"]))
             self.m_sliderRelativeSpeed.SetValue(user_preferences["Speech"]["MathRate"])
+            self.m_sliderPauseFactor.SetValue(user_preferences["Speech"]["PauseFactor"])
             self.m_checkBoxSpeechSound.SetValue(user_preferences["Speech"]["SpeechSound"] == "Beep")
             self.m_choiceSpeechForChemical.SetSelection(Speech_Chemistry.index(user_preferences["Speech"]["Chemistry"]))
             self.m_choiceNavigationMode.SetSelection(Navigation_NavMode.index(user_preferences["Navigation"]["NavMode"]))
@@ -122,6 +123,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         user_preferences["Speech"]["SpeechStyle"] = self.m_choiceSpeechStyle.GetStringSelection()
         user_preferences["Speech"]["Verbosity"] = Speech_Verbosity[self.m_choiceSpeechAmount.GetSelection()]
         user_preferences["Speech"]["MathRate"] = self.m_sliderRelativeSpeed.GetValue()
+        user_preferences["Speech"]["PauseFactor"] = self.m_sliderPauseFactor.GetValue()
         if self.m_checkBoxSpeechSound.GetValue():
             user_preferences["Speech"]["SpeechSound"] = "Beep"
         else:
@@ -201,6 +203,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         UserInterface.validate("Speech", "Verbosity", ["Terse", "Medium", "Verbose"], "Medium")
         #    MathRate: 100               # Change from text speech rate (%)
         UserInterface.validate("Speech", "MathRate", [0,200], 100)
+        #    PauseFactor: 100            # TBC
+        UserInterface.validate("Speech", "PauseFactor", [0,400], 100)
         #  SpeechSound: None           # make a sound when starting/ending math speech -- None, Beep
         UserInterface.validate("Speech", "SpeechSound", ["None", "Beep"], "None")
         #    SpeechStyle: ClearSpeak     # Any known speech style (falls back to ClearSpeak)
@@ -241,6 +245,13 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         from  speech import speak
         rate = self.m_sliderRelativeSpeed.GetValue()
         text = _(u"<prosody rate='XXX%'>the square root of x squared plus y squared</prosody>").replace("XXX", str(rate), 1)
+        speak( ConvertSSMLTextForNVDA(text) )
+
+    def OnPauseFactorChanged( self, event ):
+        from .MathCAT import ConvertSSMLTextForNVDA
+        from  speech import speak
+        pausefactor = self.m_sliderPauseFactor.GetValue()
+        text = _(f"the fraction with numerator <break time='{300*pausefactor//100}ms'/> <mark name='M63i335o-4'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-5'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{128*pausefactor//100}ms'/> <mark name='M63i335o-6'/> plus  <mark name='M63i335o-7'/> 1 <break time='{300*pausefactor//100}ms'/> and denominator <mark name='M63i335o-10'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-11'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{128*pausefactor//100}ms'/> <mark name='M63i335o-12'/> minus  <mark name='M63i335o-13'/> 1 <break time='{600*pausefactor//100}ms'/>end fraction <break time='{150*pausefactor//100}ms'/>")
         speak( ConvertSSMLTextForNVDA(text) )
 
     def OnClickOK(self,event):
