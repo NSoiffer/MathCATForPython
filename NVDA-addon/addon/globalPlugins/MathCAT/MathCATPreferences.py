@@ -204,7 +204,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         #    MathRate: 100               # Change from text speech rate (%)
         UserInterface.validate("Speech", "MathRate", [0,200], 100)
         #    PauseFactor: 100            # TBC
-        UserInterface.validate("Speech", "PauseFactor", [0,400], 100)
+        UserInterface.validate("Speech", "PauseFactor", [0,1000], 100)
         #  SpeechSound: None           # make a sound when starting/ending math speech -- None, Beep
         UserInterface.validate("Speech", "SpeechSound", ["None", "Beep"], "None")
         #    SpeechStyle: ClearSpeak     # Any known speech style (falls back to ClearSpeak)
