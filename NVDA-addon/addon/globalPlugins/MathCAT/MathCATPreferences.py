@@ -250,8 +250,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
     def OnPauseFactorChanged( self, event ):
         from .MathCAT import ConvertSSMLTextForNVDA
         from  speech import speak
+        rate = self.m_sliderRelativeSpeed.GetValue()
         pausefactor = self.m_sliderPauseFactor.GetValue()
-        text = _(f"the fraction with numerator <break time='{300*pausefactor//100}ms'/> <mark name='M63i335o-4'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-5'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{128*pausefactor//100}ms'/> <mark name='M63i335o-6'/> plus  <mark name='M63i335o-7'/> 1 <break time='{300*pausefactor//100}ms'/> and denominator <mark name='M63i335o-10'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-11'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{128*pausefactor//100}ms'/> <mark name='M63i335o-12'/> minus  <mark name='M63i335o-13'/> 1 <break time='{600*pausefactor//100}ms'/>end fraction <break time='{150*pausefactor//100}ms'/>")
+        text = _(f"<prosody rate='{rate}%'>the fraction with numerator <break time='{300*pausefactor//100}ms'/> <mark name='M63i335o-4'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-5'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{128*pausefactor//100}ms'/> <mark name='M63i335o-6'/> plus  <mark name='M63i335o-7'/> 1 <break time='{300*pausefactor//100}ms'/> and denominator <mark name='M63i335o-10'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-11'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{128*pausefactor//100}ms'/> <mark name='M63i335o-12'/> minus  <mark name='M63i335o-13'/> 1 <break time='{600*pausefactor//100}ms'/>end fraction <break time='{150*pausefactor//100}ms'/>")
         speak( ConvertSSMLTextForNVDA(text) )
 
     def OnClickOK(self,event):
