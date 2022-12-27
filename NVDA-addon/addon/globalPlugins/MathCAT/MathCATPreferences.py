@@ -60,19 +60,40 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         return os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Languages"
 
     def GetLanguages(self):
-        #clear the language choices
+        # initialise the language list
+        languages_dict = {}
+        try:
+            #load list of languages
+            full_path_to_languages_dict = os.path.expanduser('~') + "\\AppData\\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\Rules\\Languages\\languages_list.yaml"
+            with open(full_path_to_languages_dict, encoding='utf-8') as f:
+                languages_dict = yaml.load(f, Loader=yaml.FullLoader)
+        except:
+            #something went wrong loading the list of languages
+            languages_dict["en"] = "English"
+
+        #clear the language names in the dialog
         self.m_choiceLanguage.Clear()
-        #populate the language choices
+
+        #populate the available language names in the dialog
         for f in os.listdir(UserInterface.path_to_languages_folder()):
-            if os.path.isdir(UserInterface.path_to_languages_folder()+"\\"+f):
-                self.m_choiceLanguage.Append(f)
+             if os.path.isdir(UserInterface.path_to_languages_folder()+"\\"+f):
+                 if languages_dict.get(f, 'missing') == 'missing':
+                     self.m_choiceLanguage.Append(f + " (" + f + ")")
+                 else:
+                    self.m_choiceLanguage.Append(languages_dict[f] + " (" + f + ")")
+
+    def GetLanguageCode(self):
+        langselection = self.m_choiceLanguage.GetStringSelection()
+        langcode = langselection[langselection.find("(")+1 : langselection.find(")")]
+        return langcode
 
     def GetSpeechStyles(self, this_SpeechStyle):
         #clear the SpeechStyle choices
         self.m_choiceSpeechStyle.Clear()
-        #get the currently selected language
-        this_language = self.m_choiceLanguage.GetStringSelection()
-        this_path = os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\Rules\\Languages\\"+this_language+"\\*_Rules.yaml"
+        #get the currently selected language code
+        this_language_code = UserInterface.GetLanguageCode(self)
+
+        this_path = os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\Rules\\Languages\\"+this_language_code+"\\*_Rules.yaml"
         #populate the m_choiceSpeechStyle choices
         for f in glob.glob(this_path):
             fname = os.path.basename(f)
@@ -89,12 +110,24 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         try:
             self.m_choiceImpairment.SetSelection(Speech_Impairment.index(user_preferences["Speech"]["Impairment"]))
             try:
-                self.m_choiceLanguage.SetStringSelection(user_preferences["Speech"]["Language"])
+                langpref = user_preferences["Speech"]["Language"]
+                i = 0
+                while "(" + langpref + ")" not in self.m_choiceLanguage.GetString(i):
+                    i = i + 1
+                    if i == self.m_choiceLanguage.GetCount():
+                        break
+                if "(" + langpref + ")" in self.m_choiceLanguage.GetString(i):
+                    self.m_choiceLanguage.SetSelection(i)
+                else:
+                    self.m_choiceLanguage.SetSelection(0)
             except:
                 #the language in the settings file is not in the folder structure, something went wrong, set to the first in the list
                 self.m_choiceLanguage.SetSelection(0)
-            #now get the available SpeechStyles from the folder structure and set to the preference setting is possible
-            self.GetSpeechStyles(user_preferences["Speech"]["SpeechStyle"])
+            try:
+                #now get the available SpeechStyles from the folder structure and set to the preference setting is possible
+                self.GetSpeechStyles(user_preferences["Speech"]["SpeechStyle"])
+            except:
+                self.m_choiceSpeechStyle.Append("Error when setting SpeechStyle for " + self.m_choiceLanguage.GetStringSelection())
             #set the rest of the UI elements
             self.m_choiceSpeechAmount.SetSelection(Speech_Verbosity.index(user_preferences["Speech"]["Verbosity"]))
             self.m_sliderRelativeSpeed.SetValue(user_preferences["Speech"]["MathRate"])
@@ -119,7 +152,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         global user_preferences
         # read the values from the UI and update the user preferences dictionary
         user_preferences["Speech"]["Impairment"] = Speech_Impairment[self.m_choiceImpairment.GetSelection()]
-        user_preferences["Speech"]["Language"] = self.m_choiceLanguage.GetStringSelection()
+        user_preferences["Speech"]["Language"] = self.GetLanguageCode()
         user_preferences["Speech"]["SpeechStyle"] = self.m_choiceSpeechStyle.GetStringSelection()
         user_preferences["Speech"]["Verbosity"] = Speech_Verbosity[self.m_choiceSpeechAmount.GetSelection()]
         user_preferences["Speech"]["MathRate"] = self.m_sliderRelativeSpeed.GetValue()
