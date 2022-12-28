@@ -59,20 +59,202 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         #the user preferences file is stored at: MathCAT\Rules\Languages
         return os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Languages"
 
+    def LanguagesDict():
+        languages = {
+            "aa": "Afar",
+            "ab": "Аҧсуа",
+            "af": "Afrikaans",
+            "ak": "Akana",
+            "an": "Aragonés",
+            "ar": "العربية",
+            "as": "অসমীয়া",
+            "av": "Авар",
+            "ay": "Aymar",
+            "az": "Azərbaycanca / آذربايجان",
+            "ba": "Башҡорт",
+            "be": "Беларуская",
+            "bg": "Български",
+            "bh": "भोजपुरी",
+            "bi": "Bislama",
+            "bm": "Bamanankan",
+            "bn": "বাংলা",
+            "bo": "བོད་ཡིག / Bod skad",
+            "bs": "Bosanski",
+            "ca": "Català",
+            "ce": "Нохчийн",
+            "ch": "Chamoru",
+            "co": "Corsu",
+            "cr": "Nehiyaw",
+            "cs": "Česky",
+            "cu": "словѣньскъ / slověnĭskŭ",
+            "cv": "Чăваш",
+            "cy": "Cymraeg",
+            "da": "Dansk",
+            "de": "Deutsch",
+            "dv": "ދިވެހިބަސް",
+            "dz": "རྫོང་ཁ",
+            "ee": "Ɛʋɛ",
+            "en": "English",
+            "eo": "Esperanto",
+            "es": "Español",
+            "fa": "فارسی",
+            "fi": "Suomi",
+            "fj": "Na Vosa Vakaviti",
+            "fo": "Føroyskt",
+            "fr": "Français",
+            f"ur": "Furlan",
+            "fy": "Frysk",
+            "ga": "Gaeilge",
+            "gd": "Gàidhlig",
+            "gl": "Galego",
+            "gn": "Avañe'ẽ",
+            "gu": "ગુજરાતી",
+            "gv": "Gaelg",
+            "ha": "هَوُسَ",
+            "he": "עברית",
+            "hi": "हिन्दी",
+            "ho": "Hiri Motu",
+            "hr": "Hrvatski",
+            "ht": "Krèyol ayisyen",
+            "hu": "Magyar",
+            "hy": "Հայերեն",
+            "hz": "Otsiherero",
+            "ia": "Interlingua",
+            "id": "Bahasa Indonesia",
+            "ig": "Igbo",
+            "ii": "ꆇꉙ / 四川彝语",
+            "ik": "Iñupiak",
+            "io": "Ido",
+            "is": "Íslenska",
+            "iu": "ᐃᓄᒃᑎᑐᑦ",
+            "ja": "日本語",
+            "jv": "Basa Jawa",
+            "ka": "ქართული",
+            "kg": "KiKongo",
+            "ki": "Gĩkũyũ",
+            "kj": "Kuanyama",
+            "kk": "Қазақша",
+            "km": "ភាសាខ្មែរ",
+            "kn": "ಕನ್ನಡ",
+            "ko": "한국어",
+            "ks": "कॉशुर / کٲش",
+            "ku": "Kurdî",
+            "kv": "Коми",
+            "kw": "Kernewek",
+            "ky": "Kırgızca / Кыргызча",
+            "la": "Latina",
+            "lb": "Lëtzebuergesch",
+            "lg": "Luganda",
+            "li": "Limburgs",
+            "ln": "Lingála",
+            "lo": "ລາວ / Pha xa lao",
+            "lt": "Lietuvių",
+            "lv": "Latviešu",
+            "mg": "Malagasy",
+            "mh": "Kajin Majel / Ebon",
+            "mk": "Македонски",
+            "ml": "മലയാളം",
+            "mn": "Монгол",
+            "mo": "Moldovenească",
+            "ms": "Bahasa Melayu",
+            "mt": "bil-Malti",
+            "my": "Myanmasa",
+            "na": "Dorerin Naoero",
+            "ne": "नेपाली",
+            "ng": "Oshiwambo",
+            "nl": "Nederlands",
+            "nn": "Norsk (nynorsk)",
+            "nr": "isiNdebele",
+            "nv": "Diné bizaad",
+            "ny": "Chi-Chewa",
+            "oc": "Occitan",
+            "oj": "ᐊᓂᔑᓈᐯᒧᐎᓐ / Anishinaabemowin",
+            "om": "Oromoo",
+            "os": "Иронау",
+            "pa": "ਪੰਜਾਬੀ / پنجابی",
+            "pi": "Pāli / पाऴि",
+            "pl": "Polski",
+            "ps": "پښتو",
+            "pt": "Português",
+            "qu": "Runa Simi",
+            "rm": "Rumantsch",
+            "ro": "Română",
+            "ru": "Русский",
+            "rw": "Kinyarwandi",
+            "sa": "संस्कृतम्",
+            "sc": "Sardu",
+            "sd": "सिंधी / سنڌي",
+            "se": "Davvisámegiella",
+            "sg": "Sängö",
+            "sh": "Srpskohrvatski / Српскохрватски",
+            "si": "සිංහල",
+            "sk": "Slovenčina",
+            "sl": "Slovenščina",
+            "sm": "Gagana Samoa",
+            "sn": "chiShona",
+            "so": "Soomaaliga",
+            "sq": "Shqip",
+            "sr": "Српски",
+            "ss": "SiSwati",
+            "st": "Sesotho",
+            "su": "Basa Sunda",
+            "sv": "Svenska",
+            "sw": "Kiswahili",
+            "ta": "தமிழ்",
+            "tg": "Тоҷикӣ",
+            "th": "ไทย / Phasa Thai",
+            "ti": "ትግርኛ",
+            "tk": "Туркмен / تركمن",
+            "tl": "Tagalog",
+            "to": "Lea Faka-Tonga",
+            "tr": "Türkçe",
+            "ts": "Xitsonga",
+            "tt": "Tatarça",
+            "tw": "Twi",
+            "ty": "Reo Mā`ohi",
+            "ug": "Uyƣurqə / ئۇيغۇرچە",
+            "uk": "Українська",
+            "ur": "اردو",
+            "uz": "Ўзбек",
+            "ve": "Tshivenḓa",
+            "vi": "Tiếng Việt",
+            "vo": "Volapük",
+            "wa": "Walon",
+            "wo": "Wollof",
+            "xh": "isiXhosa",
+            "yi": "ייִדיש",
+            "yo": "Yorùbá",
+            "za": "Cuengh / Tôô / 壮语",
+            "zh": "中文",
+            "zu": "isiZulu"
+        }
+        return languages
+
     def GetLanguages(self):
-        #clear the language choices
+        # initialise the language list
+        languages_dict = UserInterface.LanguagesDict()
+        #clear the language names in the dialog
         self.m_choiceLanguage.Clear()
-        #populate the language choices
+        #populate the available language names in the dialog
         for f in os.listdir(UserInterface.path_to_languages_folder()):
-            if os.path.isdir(UserInterface.path_to_languages_folder()+"\\"+f):
-                self.m_choiceLanguage.Append(f)
+             if os.path.isdir(UserInterface.path_to_languages_folder()+"\\"+f):
+                 if languages_dict.get(f, 'missing') == 'missing':
+                     self.m_choiceLanguage.Append(f + " (" + f + ")")
+                 else:
+                    self.m_choiceLanguage.Append(languages_dict[f] + " (" + f + ")")
+
+    def GetLanguageCode(self):
+        langselection = self.m_choiceLanguage.GetStringSelection()
+        langcode = langselection[langselection.find("(")+1 : langselection.find(")")]
+        return langcode
 
     def GetSpeechStyles(self, this_SpeechStyle):
         #clear the SpeechStyle choices
         self.m_choiceSpeechStyle.Clear()
-        #get the currently selected language
-        this_language = self.m_choiceLanguage.GetStringSelection()
-        this_path = os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\Rules\\Languages\\"+this_language+"\\*_Rules.yaml"
+        #get the currently selected language code
+        this_language_code = UserInterface.GetLanguageCode(self)
+
+        this_path = os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\Rules\\Languages\\"+this_language_code+"\\*_Rules.yaml"
         #populate the m_choiceSpeechStyle choices
         for f in glob.glob(this_path):
             fname = os.path.basename(f)
@@ -89,12 +271,24 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         try:
             self.m_choiceImpairment.SetSelection(Speech_Impairment.index(user_preferences["Speech"]["Impairment"]))
             try:
-                self.m_choiceLanguage.SetStringSelection(user_preferences["Speech"]["Language"])
+                langpref = user_preferences["Speech"]["Language"]
+                i = 0
+                while "(" + langpref + ")" not in self.m_choiceLanguage.GetString(i):
+                    i = i + 1
+                    if i == self.m_choiceLanguage.GetCount():
+                        break
+                if "(" + langpref + ")" in self.m_choiceLanguage.GetString(i):
+                    self.m_choiceLanguage.SetSelection(i)
+                else:
+                    self.m_choiceLanguage.SetSelection(0)
             except:
                 #the language in the settings file is not in the folder structure, something went wrong, set to the first in the list
                 self.m_choiceLanguage.SetSelection(0)
-            #now get the available SpeechStyles from the folder structure and set to the preference setting is possible
-            self.GetSpeechStyles(user_preferences["Speech"]["SpeechStyle"])
+            try:
+                #now get the available SpeechStyles from the folder structure and set to the preference setting is possible
+                self.GetSpeechStyles(user_preferences["Speech"]["SpeechStyle"])
+            except:
+                self.m_choiceSpeechStyle.Append("Error when setting SpeechStyle for " + self.m_choiceLanguage.GetStringSelection())
             #set the rest of the UI elements
             self.m_choiceSpeechAmount.SetSelection(Speech_Verbosity.index(user_preferences["Speech"]["Verbosity"]))
             self.m_sliderRelativeSpeed.SetValue(user_preferences["Speech"]["MathRate"])
@@ -119,7 +313,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         global user_preferences
         # read the values from the UI and update the user preferences dictionary
         user_preferences["Speech"]["Impairment"] = Speech_Impairment[self.m_choiceImpairment.GetSelection()]
-        user_preferences["Speech"]["Language"] = self.m_choiceLanguage.GetStringSelection()
+        user_preferences["Speech"]["Language"] = self.GetLanguageCode()
         user_preferences["Speech"]["SpeechStyle"] = self.m_choiceSpeechStyle.GetStringSelection()
         user_preferences["Speech"]["Verbosity"] = Speech_Verbosity[self.m_choiceSpeechAmount.GetSelection()]
         user_preferences["Speech"]["MathRate"] = self.m_sliderRelativeSpeed.GetValue()
