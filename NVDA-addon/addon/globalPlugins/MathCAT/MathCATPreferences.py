@@ -59,180 +59,180 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         #the user preferences file is stored at: MathCAT\Rules\Languages
         return os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Languages"
 
-    def BuildLanguagesDict():
-        # initialise the language list
-        languages = {}
-        languages["aa"] = "Afar"
-        languages["ab"] = "Аҧсуа"
-        languages["af"] = "Afrikaans"
-        languages["ak"] = "Akana"
-        languages["an"] = "Aragonés"
-        languages["ar"] = "العربية"
-        languages["as"] = "অসমীয়া"
-        languages["av"] = "Авар"
-        languages["ay"] = "Aymar"
-        languages["az"] = "Azərbaycanca / آذربايجان"
-        languages["ba"] = "Башҡорт"
-        languages["be"] = "Беларуская"
-        languages["bg"] = "Български"
-        languages["bh"] = "भोजपुरी"
-        languages["bi"] = "Bislama"
-        languages["bm"] = "Bamanankan"
-        languages["bn"] = "বাংলা"
-        languages["bo"] = "བོད་ཡིག / Bod skad"
-        languages["bs"] = "Bosanski"
-        languages["ca"] = "Català"
-        languages["ce"] = "Нохчийн"
-        languages["ch"] = "Chamoru"
-        languages["co"] = "Corsu"
-        languages["cr"] = "Nehiyaw"
-        languages["cs"] = "Česky"
-        languages["cu"] = "словѣньскъ / slověnĭskŭ"
-        languages["cv"] = "Чăваш"
-        languages["cy"] = "Cymraeg"
-        languages["da"] = "Dansk"
-        languages["de"] = "Deutsch"
-        languages["dv"] = "ދިވެހިބަސް"
-        languages["dz"] = "རྫོང་ཁ"
-        languages["ee"] = "Ɛʋɛ"
-        languages["en"] = "English"
-        languages["eo"] = "Esperanto"
-        languages["es"] = "Español"
-        languages["fa"] = "فارسی"
-        languages["fi"] = "Suomi"
-        languages["fj"] = "Na Vosa Vakaviti"
-        languages["fo"] = "Føroyskt"
-        languages["fr"] = "Français"
-        languages["ur"] = "Furlan"
-        languages["fy"] = "Frysk"
-        languages["ga"] = "Gaeilge"
-        languages["gd"] = "Gàidhlig"
-        languages["gl"] = "Galego"
-        languages["gn"] = "Avañe'ẽ"
-        languages["gu"] = "ગુજરાતી"
-        languages["gv"] = "Gaelg"
-        languages["ha"] = "هَوُسَ"
-        languages["he"] = "עברית"
-        languages["hi"] = "हिन्दी"
-        languages["ho"] = "Hiri Motu"
-        languages["hr"] = "Hrvatski"
-        languages["ht"] = "Krèyol ayisyen"
-        languages["hu"] = "Magyar"
-        languages["hy"] = "Հայերեն"
-        languages["hz"] = "Otsiherero"
-        languages["ia"] = "Interlingua"
-        languages["id"] = "Bahasa Indonesia"
-        languages["ig"] = "Igbo"
-        languages["ii"] = "ꆇꉙ / 四川彝语"
-        languages["ik"] = "Iñupiak"
-        languages["io"] = "Ido"
-        languages["is"] = "Íslenska"
-        languages["iu"] = "ᐃᓄᒃᑎᑐᑦ"
-        languages["ja"] = "日本語"
-        languages["jv"] = "Basa Jawa"
-        languages["ka"] = "ქართული"
-        languages["kg"] = "KiKongo"
-        languages["ki"] = "Gĩkũyũ"
-        languages["kj"] = "Kuanyama"
-        languages["kk"] = "Қазақша"
-        languages["km"] = "ភាសាខ្មែរ"
-        languages["kn"] = "ಕನ್ನಡ"
-        languages["ko"] = "한국어"
-        languages["ks"] = "कॉशुर / کٲش"
-        languages["ku"] = "Kurdî"
-        languages["kv"] = "Коми"
-        languages["kw"] = "Kernewek"
-        languages["ky"] = "Kırgızca / Кыргызча"
-        languages["la"] = "Latina"
-        languages["lb"] = "Lëtzebuergesch"
-        languages["lg"] = "Luganda"
-        languages["li"] = "Limburgs"
-        languages["ln"] = "Lingála"
-        languages["lo"] = "ລາວ / Pha xa lao"
-        languages["lt"] = "Lietuvių"
-        languages["lv"] = "Latviešu"
-        languages["mg"] = "Malagasy"
-        languages["mh"] = "Kajin Majel / Ebon"
-        languages["mk"] = "Македонски"
-        languages["ml"] = "മലയാളം"
-        languages["mn"] = "Монгол"
-        languages["mo"] = "Moldovenească"
-        languages["ms"] = "Bahasa Melayu"
-        languages["mt"] = "bil-Malti"
-        languages["my"] = "Myanmasa"
-        languages["na"] = "Dorerin Naoero"
-        languages["ne"] = "नेपाली"
-        languages["ng"] = "Oshiwambo"
-        languages["nl"] = "Nederlands"
-        languages["nn"] = "Norsk (nynorsk)"
-        languages["nr"] = "isiNdebele"
-        languages["nv"] = "Diné bizaad"
-        languages["ny"] = "Chi-Chewa"
-        languages["oc"] = "Occitan"
-        languages["oj"] = "ᐊᓂᔑᓈᐯᒧᐎᓐ / Anishinaabemowin"
-        languages["om"] = "Oromoo"
-        languages["os"] = "Иронау"
-        languages["pa"] = "ਪੰਜਾਬੀ / پنجابی"
-        languages["pi"] = "Pāli / पाऴि"
-        languages["pl"] = "Polski"
-        languages["ps"] = "پښتو"
-        languages["pt"] = "Português"
-        languages["qu"] = "Runa Simi"
-        languages["rm"] = "Rumantsch"
-        languages["ro"] = "Română"
-        languages["ru"] = "Русский"
-        languages["rw"] = "Kinyarwandi"
-        languages["sa"] = "संस्कृतम्"
-        languages["sc"] = "Sardu"
-        languages["sd"] = "सिंधी / سنڌي"
-        languages["se"] = "Davvisámegiella"
-        languages["sg"] = "Sängö"
-        languages["sh"] = "Srpskohrvatski / Српскохрватски"
-        languages["si"] = "සිංහල"
-        languages["sk"] = "Slovenčina"
-        languages["sl"] = "Slovenščina"
-        languages["sm"] = "Gagana Samoa"
-        languages["sn"] = "chiShona"
-        languages["so"] = "Soomaaliga"
-        languages["sq"] = "Shqip"
-        languages["sr"] = "Српски"
-        languages["ss"] = "SiSwati"
-        languages["st"] = "Sesotho"
-        languages["su"] = "Basa Sunda"
-        languages["sv"] = "Svenska"
-        languages["sw"] = "Kiswahili"
-        languages["ta"] = "தமிழ்"
-        languages["tg"] = "Тоҷикӣ"
-        languages["th"] = "ไทย / Phasa Thai"
-        languages["ti"] = "ትግርኛ"
-        languages["tk"] = "Туркмен / تركمن"
-        languages["tl"] = "Tagalog"
-        languages["to"] = "Lea Faka-Tonga"
-        languages["tr"] = "Türkçe"
-        languages["ts"] = "Xitsonga"
-        languages["tt"] = "Tatarça"
-        languages["tw"] = "Twi"
-        languages["ty"] = "Reo Mā`ohi"
-        languages["ug"] = "Uyƣurqə / ئۇيغۇرچە"
-        languages["uk"] = "Українська"
-        languages["ur"] = "اردو"
-        languages["uz"] = "Ўзбек"
-        languages["ve"] = "Tshivenḓa"
-        languages["vi"] = "Tiếng Việt"
-        languages["vo"] = "Volapük"
-        languages["wa"] = "Walon"
-        languages["wo"] = "Wollof"
-        languages["xh"] = "isiXhosa"
-        languages["yi"] = "ייִדיש"
-        languages["yo"] = "Yorùbá"
-        languages["za"] = "Cuengh / Tôô / 壮语"
-        languages["zh"] = "中文"
-        languages["zu"] = "isiZulu"
+    def LanguagesDict():
+        languages = {
+            "aa": "Afar",
+            "ab": "Аҧсуа",
+            "af": "Afrikaans",
+            "ak": "Akana",
+            "an": "Aragonés",
+            "ar": "العربية",
+            "as": "অসমীয়া",
+            "av": "Авар",
+            "ay": "Aymar",
+            "az": "Azərbaycanca / آذربايجان",
+            "ba": "Башҡорт",
+            "be": "Беларуская",
+            "bg": "Български",
+            "bh": "भोजपुरी",
+            "bi": "Bislama",
+            "bm": "Bamanankan",
+            "bn": "বাংলা",
+            "bo": "བོད་ཡིག / Bod skad",
+            "bs": "Bosanski",
+            "ca": "Català",
+            "ce": "Нохчийн",
+            "ch": "Chamoru",
+            "co": "Corsu",
+            "cr": "Nehiyaw",
+            "cs": "Česky",
+            "cu": "словѣньскъ / slověnĭskŭ",
+            "cv": "Чăваш",
+            "cy": "Cymraeg",
+            "da": "Dansk",
+            "de": "Deutsch",
+            "dv": "ދިވެހިބަސް",
+            "dz": "རྫོང་ཁ",
+            "ee": "Ɛʋɛ",
+            "en": "English",
+            "eo": "Esperanto",
+            "es": "Español",
+            "fa": "فارسی",
+            "fi": "Suomi",
+            "fj": "Na Vosa Vakaviti",
+            "fo": "Føroyskt",
+            "fr": "Français",
+            f"ur": "Furlan",
+            "fy": "Frysk",
+            "ga": "Gaeilge",
+            "gd": "Gàidhlig",
+            "gl": "Galego",
+            "gn": "Avañe'ẽ",
+            "gu": "ગુજરાતી",
+            "gv": "Gaelg",
+            "ha": "هَوُسَ",
+            "he": "עברית",
+            "hi": "हिन्दी",
+            "ho": "Hiri Motu",
+            "hr": "Hrvatski",
+            "ht": "Krèyol ayisyen",
+            "hu": "Magyar",
+            "hy": "Հայերեն",
+            "hz": "Otsiherero",
+            "ia": "Interlingua",
+            "id": "Bahasa Indonesia",
+            "ig": "Igbo",
+            "ii": "ꆇꉙ / 四川彝语",
+            "ik": "Iñupiak",
+            "io": "Ido",
+            "is": "Íslenska",
+            "iu": "ᐃᓄᒃᑎᑐᑦ",
+            "ja": "日本語",
+            "jv": "Basa Jawa",
+            "ka": "ქართული",
+            "kg": "KiKongo",
+            "ki": "Gĩkũyũ",
+            "kj": "Kuanyama",
+            "kk": "Қазақша",
+            "km": "ភាសាខ្មែរ",
+            "kn": "ಕನ್ನಡ",
+            "ko": "한국어",
+            "ks": "कॉशुर / کٲش",
+            "ku": "Kurdî",
+            "kv": "Коми",
+            "kw": "Kernewek",
+            "ky": "Kırgızca / Кыргызча",
+            "la": "Latina",
+            "lb": "Lëtzebuergesch",
+            "lg": "Luganda",
+            "li": "Limburgs",
+            "ln": "Lingála",
+            "lo": "ລາວ / Pha xa lao",
+            "lt": "Lietuvių",
+            "lv": "Latviešu",
+            "mg": "Malagasy",
+            "mh": "Kajin Majel / Ebon",
+            "mk": "Македонски",
+            "ml": "മലയാളം",
+            "mn": "Монгол",
+            "mo": "Moldovenească",
+            "ms": "Bahasa Melayu",
+            "mt": "bil-Malti",
+            "my": "Myanmasa",
+            "na": "Dorerin Naoero",
+            "ne": "नेपाली",
+            "ng": "Oshiwambo",
+            "nl": "Nederlands",
+            "nn": "Norsk (nynorsk)",
+            "nr": "isiNdebele",
+            "nv": "Diné bizaad",
+            "ny": "Chi-Chewa",
+            "oc": "Occitan",
+            "oj": "ᐊᓂᔑᓈᐯᒧᐎᓐ / Anishinaabemowin",
+            "om": "Oromoo",
+            "os": "Иронау",
+            "pa": "ਪੰਜਾਬੀ / پنجابی",
+            "pi": "Pāli / पाऴि",
+            "pl": "Polski",
+            "ps": "پښتو",
+            "pt": "Português",
+            "qu": "Runa Simi",
+            "rm": "Rumantsch",
+            "ro": "Română",
+            "ru": "Русский",
+            "rw": "Kinyarwandi",
+            "sa": "संस्कृतम्",
+            "sc": "Sardu",
+            "sd": "सिंधी / سنڌي",
+            "se": "Davvisámegiella",
+            "sg": "Sängö",
+            "sh": "Srpskohrvatski / Српскохрватски",
+            "si": "සිංහල",
+            "sk": "Slovenčina",
+            "sl": "Slovenščina",
+            "sm": "Gagana Samoa",
+            "sn": "chiShona",
+            "so": "Soomaaliga",
+            "sq": "Shqip",
+            "sr": "Српски",
+            "ss": "SiSwati",
+            "st": "Sesotho",
+            "su": "Basa Sunda",
+            "sv": "Svenska",
+            "sw": "Kiswahili",
+            "ta": "தமிழ்",
+            "tg": "Тоҷикӣ",
+            "th": "ไทย / Phasa Thai",
+            "ti": "ትግርኛ",
+            "tk": "Туркмен / تركمن",
+            "tl": "Tagalog",
+            "to": "Lea Faka-Tonga",
+            "tr": "Türkçe",
+            "ts": "Xitsonga",
+            "tt": "Tatarça",
+            "tw": "Twi",
+            "ty": "Reo Mā`ohi",
+            "ug": "Uyƣurqə / ئۇيغۇرچە",
+            "uk": "Українська",
+            "ur": "اردو",
+            "uz": "Ўзбек",
+            "ve": "Tshivenḓa",
+            "vi": "Tiếng Việt",
+            "vo": "Volapük",
+            "wa": "Walon",
+            "wo": "Wollof",
+            "xh": "isiXhosa",
+            "yi": "ייִדיש",
+            "yo": "Yorùbá",
+            "za": "Cuengh / Tôô / 壮语",
+            "zh": "中文",
+            "zu": "isiZulu"
+        }
         return languages
 
     def GetLanguages(self):
         # initialise the language list
-        languages_dict = UserInterface.BuildLanguagesDict()
+        languages_dict = UserInterface.LanguagesDict()
         #clear the language names in the dialog
         self.m_choiceLanguage.Clear()
         #populate the available language names in the dialog
