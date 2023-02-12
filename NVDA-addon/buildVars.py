@@ -34,16 +34,22 @@ addon_info = {
 	"addon_author": "Neil Soiffer <soiffer@alum.mit.edu>",
 	# URL for the add-on documentation support
 	"addon_url": "https://nsoiffer.github.io/MathCAT/",
+	# URL for the add-on repository where the source code can be found
+	"addon_sourceURL": "https://github.com/NSoiffer/MathCAT",
 	# Documentation file name
 	"addon_docFileName": "readme.html",
 	# Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)
-	"addon_minimumNVDAVersion": 2018.1,
+	"addon_minimumNVDAVersion": "2018.1",
 	# Last NVDA version supported/tested (e.g. "2018.4.0", ideally more recent than minimum version)
-	"addon_lastTestedNVDAVersion": "2022.3",
+	"addon_lastTestedNVDAVersion": "2022.4",
 	# Add-on update channel (default is None, denoting stable releases,
 	# and for development releases, use "dev".)
 	# Do not change unless you know what you are doing!
-	"addon_updateChannel": "dev",
+	"addon_updateChannel": None,
+	# Add-on license such as GPL 2
+	"addon_license": "MIT and GPL 2",
+	# URL for the license document the ad-on is licensed under
+	"addon_licenseURL": "https://raw.githubusercontent.com/NSoiffer/MathCAT/main/LICENSE",
 }
 
 # Define the python files that are the sources of your add-on.
