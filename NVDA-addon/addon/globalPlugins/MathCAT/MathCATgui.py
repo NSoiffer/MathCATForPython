@@ -136,7 +136,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerPauseFactor.Add( self.m_staticPauseFactor, 0, wx.ALL, 5 )
 
-		self.m_sliderPauseFactor = wx.Slider( self.m_panelSpeech, wx.ID_ANY, 100, 0, 1000, wx.DefaultPosition, wx.DefaultSize, wx.SL_HORIZONTAL )
+		self.m_sliderPauseFactor = wx.Slider( self.m_panelSpeech, wx.ID_ANY, 7, 0, 14, wx.DefaultPosition, wx.DefaultSize, wx.SL_HORIZONTAL )
 		bSizerPauseFactor.Add( self.m_sliderPauseFactor, 0, wx.ALL, 5 )
 
 

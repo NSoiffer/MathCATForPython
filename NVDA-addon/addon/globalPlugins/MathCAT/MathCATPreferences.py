@@ -1,3 +1,4 @@
+import math
 import wx
 from . import MathCATgui
 from . import yaml
@@ -9,9 +10,15 @@ import gettext
 _ = gettext.gettext
 
 from logHandler import log                  # logging
+from typing import Any, Dict, Union
+
+# two constants to scale "PauseFactor"
+# these work out so that a slider that goes [0,14] has value ~100 at 7 and ~1000 at 14
+PAUSE_FACTOR_SCALE = 9.5
+PAUSE_FACTOR_LOG_BASE = 1.4
 
 # initialize the user preferences tuples
-user_preferences = {}
+user_preferences: Dict[str, Dict[str, Union[int, str, bool]]] = {}
 #Speech_Language is derived from the folder structure
 Speech_Impairment = ("LearningDisability", "Blindness", "LowVision")
 #Speech_SpeechStyle is derived from the yaml files under the selected language
@@ -55,10 +62,12 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         #set the ui items to match the preferences
         UserInterface.set_ui_values(self)
 
+    @staticmethod
     def path_to_languages_folder():
         #the user preferences file is stored at: MathCAT\Rules\Languages
         return os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Languages"
 
+    @staticmethod
     def LanguagesDict():
         languages = {
             "aa": "Afar",
@@ -76,7 +85,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             "bg": "Български",
             "bh": "भोजपुरी",
             "bi": "Bislama",
-            "bm": "Bamanankan",
+            "bm": "Bahamanian",
             "bn": "বাংলা",
             "bo": "བོད་ཡིག / Bod skad",
             "bs": "Bosanski",
@@ -102,7 +111,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             "fj": "Na Vosa Vakaviti",
             "fo": "Føroyskt",
             "fr": "Français",
-            f"ur": "Furlan",
+            "ur": "Furlan",
             "fy": "Frysk",
             "ga": "Gaeilge",
             "gd": "Gàidhlig",
@@ -244,11 +253,11 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                     self.m_choiceLanguage.Append(languages_dict[f] + " (" + f + ")")
 
     def GetLanguageCode(self):
-        langselection = self.m_choiceLanguage.GetStringSelection()
-        langcode = langselection[langselection.find("(")+1 : langselection.find(")")]
-        return langcode
+        lang_selection = self.m_choiceLanguage.GetStringSelection()
+        lang_code = lang_selection[lang_selection.find("(")+1 : lang_selection.find(")")]
+        return lang_code
 
-    def GetSpeechStyles(self, this_SpeechStyle):
+    def GetSpeechStyles(self, this_SpeechStyle: str):
         #clear the SpeechStyle choices
         self.m_choiceSpeechStyle.Clear()
         #get the currently selected language code
@@ -271,13 +280,13 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         try:
             self.m_choiceImpairment.SetSelection(Speech_Impairment.index(user_preferences["Speech"]["Impairment"]))
             try:
-                langpref = user_preferences["Speech"]["Language"]
+                lang_pref = user_preferences["Speech"]["Language"]
                 i = 0
-                while "(" + langpref + ")" not in self.m_choiceLanguage.GetString(i):
+                while "(" + lang_pref + ")" not in self.m_choiceLanguage.GetString(i):
                     i = i + 1
                     if i == self.m_choiceLanguage.GetCount():
                         break
-                if "(" + langpref + ")" in self.m_choiceLanguage.GetString(i):
+                if "(" + lang_pref + ")" in self.m_choiceLanguage.GetString(i):
                     self.m_choiceLanguage.SetSelection(i)
                 else:
                     self.m_choiceLanguage.SetSelection(0)
@@ -292,7 +301,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             #set the rest of the UI elements
             self.m_choiceSpeechAmount.SetSelection(Speech_Verbosity.index(user_preferences["Speech"]["Verbosity"]))
             self.m_sliderRelativeSpeed.SetValue(user_preferences["Speech"]["MathRate"])
-            self.m_sliderPauseFactor.SetValue(user_preferences["Speech"]["PauseFactor"])
+            pause_factor = 0 if user_preferences["Speech"]["PauseFactor"]<=1 else round(math.log(user_preferences["Speech"]["PauseFactor"]/PAUSE_FACTOR_SCALE, PAUSE_FACTOR_LOG_BASE))
+            self.m_sliderPauseFactor.SetValue(pause_factor)
             self.m_checkBoxSpeechSound.SetValue(user_preferences["Speech"]["SpeechSound"] == "Beep")
             self.m_choiceSpeechForChemical.SetSelection(Speech_Chemistry.index(user_preferences["Speech"]["Chemistry"]))
             self.m_choiceNavigationMode.SetSelection(Navigation_NavMode.index(user_preferences["Navigation"]["NavMode"]))
@@ -317,7 +327,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         user_preferences["Speech"]["SpeechStyle"] = self.m_choiceSpeechStyle.GetStringSelection()
         user_preferences["Speech"]["Verbosity"] = Speech_Verbosity[self.m_choiceSpeechAmount.GetSelection()]
         user_preferences["Speech"]["MathRate"] = self.m_sliderRelativeSpeed.GetValue()
-        user_preferences["Speech"]["PauseFactor"] = self.m_sliderPauseFactor.GetValue()
+        pf_slider = self.m_sliderPauseFactor.GetValue()
+        pause_factor = 0 if pf_slider==0 else round(PAUSE_FACTOR_SCALE *math.pow(PAUSE_FACTOR_LOG_BASE, pf_slider)) # avoid log(0)
+        user_preferences["Speech"]["PauseFactor"] = pause_factor
         if self.m_checkBoxSpeechSound.GetValue():
             user_preferences["Speech"]["SpeechSound"] = "Beep"
         else:
@@ -336,18 +348,22 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         user_preferences["Braille"]["BrailleCode"] = Braille_BrailleCode[self.m_choiceBrailleMathCode.GetSelection()]
         user_preferences["MathCATPreferencesLastCategory"] = self.m_listBoxPreferencesTopic.GetSelection()
 
+    @staticmethod
     def path_to_default_preferences():
         #the default preferences file is: C:\Users\<user-name>AppData\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\Rules\\prefs.yaml
         return os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\Rules\\prefs.yaml"
 
+    @staticmethod
     def path_to_user_preferences_folder():
         #the user preferences file is stored at: C:\Users\<user-name>AppData\Roaming\MathCAT\prefs.yaml
         return os.path.expanduser('~')+"\\AppData\\Roaming\\MathCAT"
 
+    @staticmethod
     def path_to_user_preferences():
         #the user preferences file is stored at: C:\Users\<user-name>AppData\Roaming\MathCAT\prefs.yaml
         return UserInterface.path_to_user_preferences_folder() + "\\prefs.yaml"
 
+    @staticmethod
     def load_default_preferences():
         global user_preferences
         #load default preferences into the user preferences data structure (overwrites existing)
@@ -355,6 +371,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             with open(UserInterface.path_to_default_preferences(), encoding='utf-8') as f:
                 user_preferences = yaml.load(f, Loader=yaml.FullLoader)
 
+    @staticmethod
     def load_user_preferences():
         global user_preferences
         #merge user file values into the user preferences data structure
@@ -363,7 +380,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 # merge with the default preferences, overwriting with the user's values
                 user_preferences.update(yaml.load(f, Loader=yaml.FullLoader))
 
-    def validate(key1, key2, valid_values, default_value):
+    @staticmethod
+    def validate(key1: str, key2: str, valid_values: list, default_value: Union[str, int, bool]):
         global user_preferences
         try:
             if valid_values == None:
@@ -386,6 +404,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         else:
             user_preferences[key1][key2] = default_value
 
+    @staticmethod
     def validate_user_preferences():
         #check each user preference value to ensure it is present and valid, set default value if not
         #  Speech:
@@ -426,6 +445,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         #  BrailleCode: "Nemeth"                # Any supported braille code (currently Nemeth, UEB)
         UserInterface.validate("Braille", "BrailleCode", ["Nemeth", "UEB"], "Nemeth")
 
+    @staticmethod
     def write_user_preferences():
         if not os.path.exists(UserInterface.path_to_user_preferences_folder()):
             #create a folder for the user preferences
@@ -445,8 +465,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         from .MathCAT import ConvertSSMLTextForNVDA
         from  speech import speak
         rate = self.m_sliderRelativeSpeed.GetValue()
-        pausefactor = self.m_sliderPauseFactor.GetValue()
-        text = _(f"<prosody rate='{rate}%'>the fraction with numerator <break time='{300*pausefactor//100}ms'/> <mark name='M63i335o-4'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-5'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{128*pausefactor//100}ms'/> <mark name='M63i335o-6'/> plus  <mark name='M63i335o-7'/> 1 <break time='{300*pausefactor//100}ms'/> and denominator <mark name='M63i335o-10'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-11'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{128*pausefactor//100}ms'/> <mark name='M63i335o-12'/> minus  <mark name='M63i335o-13'/> 1 <break time='{600*pausefactor//100}ms'/>end fraction <break time='{150*pausefactor//100}ms'/>")
+        pf_slider = self.m_sliderPauseFactor.GetValue()
+        pause_factor = 0 if pf_slider==0 else round(PAUSE_FACTOR_SCALE *math.pow(PAUSE_FACTOR_LOG_BASE, pf_slider))
+        text = _(f"<prosody rate='{rate}%'>the fraction with numerator <break time='{300*pause_factor//100}ms'/> <mark name='M63i335o-4'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-5'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{128*pause_factor//100}ms'/> <mark name='M63i335o-6'/> plus  <mark name='M63i335o-7'/> 1 <break time='{300*pause_factor//100}ms'/> and denominator <mark name='M63i335o-10'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-11'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{128*pause_factor//100}ms'/> <mark name='M63i335o-12'/> minus  <mark name='M63i335o-13'/> 1 <break time='{600*pause_factor//100}ms'/>end fraction <break time='{150*pause_factor//100}ms'/>")
         speak( ConvertSSMLTextForNVDA(text) )
 
     def OnClickOK(self,event):
@@ -477,7 +498,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         #the language changed, get the SpeechStyles for the new language
         UserInterface.GetSpeechStyles(self, self.m_choiceSpeechStyle.GetSelection())
 
-    def MathCATPreferencesDialogOnCharHook(self,event):
+    def MathCATPreferencesDialogOnCharHook(self,event: wx.KeyEvent):
         #designed choice is that Enter is the same as clicking OK, and Escape is the same as clicking Cancel
         keyCode = event.GetKeyCode()
         if keyCode == wx.WXK_ESCAPE:

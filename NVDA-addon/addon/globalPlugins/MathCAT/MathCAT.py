@@ -21,8 +21,11 @@ import config                               # look up caps setting
 import ui                                   # copy message
 from scriptHandler import script            # copy MathML via ctrl-c
 from synthDriverHandler import getSynth     # speech engine param setting
-import winUser                              # clipboard manipultation
+import winUser                              # clipboard manipulation
+import gettext
+_ = gettext.gettext
 from ctypes import windll                   # register clipboard formats
+from typing import Any, Optional
 
 from . import libmathcat
 
@@ -48,6 +51,7 @@ RE_MP_SPEECH = re.compile(
     # Prosody.
     r"|<prosody(?: pitch='(?P<pitch>\d+)%')?(?: volume='(?P<volume>\d+)%')?(?: rate='(?P<rate>\d+)%')?> ?"
     r"|(?P<prosodyReset></prosody>) ?"
+    r"|<audio src='(?P<beep>beep.mp4)'>.*?</audio> ?" # hack for beeps
     # Other tags, which we don't care about.
     r"|<[^>]+> ?"
     # Commas indicating pauses in navigation messages.
@@ -61,7 +65,7 @@ PROSODY_COMMANDS = {
     "rate": RateCommand,
 }
 
-def  ConvertSSMLTextForNVDA(text, language=""):
+def  ConvertSSMLTextForNVDA(text:str, language:str=""):
     # MathCAT's default rate is 180 wpm.
     # Assume that 0% is 80 wpm and 100% is 450 wpm and scale accordingly.
     synth = getSynth()
@@ -82,24 +86,20 @@ def  ConvertSSMLTextForNVDA(text, language=""):
             if use_break:
                 out.append(BreakCommand(time=int(int(m.group("break")) * breakMulti)))
         elif m.lastgroup == "char":
-            # get the NVDA settings for what to do for a capital char and apply them
             ch = m.group("char")
-            if ch.isupper():
-                if synthConfig["sayCapForCapitals"]:
-                    out.append(_(u"cap"))           # capital letter prefix
-                if use_pitch:
-                    out.append(PitchCommand(multiplier=int(synthConfig["capPitchChange"])))
-                if synthConfig["beepForCapitals"]:
-                    out.append(BeepCommand(2000, 50))
             if use_character:
                 out.extend((CharacterModeCommand(True), ch, CharacterModeCommand(False)))
             else:
                 out.extend((" ", ch, " "))
-            if use_pitch and ch.isupper():
-                out.append(PitchCommand(multiplier=1))
         elif m.lastgroup == "comma":
             if use_break:
                 out.append(BreakCommand(time=100))
+        elif m.lastgroup == "beep":
+            out.append(BeepCommand(2000, 50))
+        elif m.lastgroup == "pitch":
+            if use_pitch:
+                out.append(PitchCommand(multiplier=int(m.group(m.lastgroup))))
+                resetProsody.add(PitchCommand)
         elif m.lastgroup in PROSODY_COMMANDS:
             command = PROSODY_COMMANDS[m.lastgroup]
             if command in supported_commands:
@@ -130,7 +130,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
     CF_MathML_Presentation = windll.user32.RegisterClipboardFormatW("MathML Presentation")
     # log.info("2**** MathCAT registering data formats: CF_MathML %x, CF_MathML_Presentation %x" % (CF_MathML, CF_MathML_Presentation))
 
-    def __init__(self, provider=None, mathMl=None):
+    def __init__(self, provider=None, mathMl: Optional[str]=None):
         super(MathCATInteraction, self).__init__(provider=provider, mathMl=mathMl)
         provider._setSpeechLanguage(mathMl)
         try:
@@ -149,7 +149,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             speech.speakMessage(_("Error in speaking math: see NVDA error log for details"))
 
 
-    def getBrailleRegions(self, review=False):
+    def getBrailleRegions(self, review: bool = False):
         # log.info("***MathCAT start getBrailleRegions")
         yield braille.NVDAObjectRegion(self, appendText=" ")
         region = braille.Region()
@@ -165,7 +165,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         # log.info("***MathCAT end getBrailleRegions ***")
         yield region
 
-    def getScript(self, gesture):
+    def getScript(self, gesture: KeyboardInputGesture):
         # Pass most keys to MathCAT. Pretty ugly.
         if isinstance(gesture, KeyboardInputGesture) and "NVDA" not in gesture.modifierNames and (
             gesture.mainKeyName in {
@@ -178,7 +178,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             return self.script_navigate
         return super().getScript(gesture)
 
-    def script_navigate(self, gesture):
+    def script_navigate(self, gesture: KeyboardInputGesture):
         # log.info("***MathCAT script_navigate")
         try:
             if gesture != None:
@@ -206,11 +206,11 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
     @script(
         gesture="kb:control+c",
     )
-    def script_rawdataToClip(self, gesture):
+    def script_rawdataToClip(self, gesture: KeyboardInputGesture):
         try:
             mathml = libmathcat.GetNavigationMathML()[0]
             if not re.match(self._startsWithMath, mathml):
-                mathml = "<math>" + mathml + "</math>"  # copy will fix up namespacing
+                mathml = "<math>" + mathml + "</math>"  # copy will fix up name spacing
             self._copyToClipAsMathML(mathml)
             ui.message(_("copy"))
         except Exception as e:
@@ -227,7 +227,6 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             mathml_with_ns = mathml_with_ns.replace('math', 'math xmlns="http://www.w3.org/1998/Math/MathML"', 1)
         return '<?xml version="1.0"?>' + mathml_with_ns
 
-    from typing import Any, Optional
     def _copyToClipAsMathML(self, text: str, notify: Optional[bool] = False) -> bool:
         """Copies the given text to the windows clipboard.
         @returns: True if it succeeds, False otherwise.
@@ -238,8 +237,9 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         if not isinstance(text, str) or len(text) == 0:
             return False
         from api import getClipData
+        from mainFrame import Handle
         try:
-            with winUser.openClipboard(mainFrame.Handle):
+            with winUser.openClipboard(Handle):
                 winUser.emptyClipboard()
                 self._setClipboardData(self.CF_MathML, self._wrapMathMLForClipBoard(text))
                 self._setClipboardData(self.CF_MathML_Presentation, self._wrapMathMLForClipBoard(text))
@@ -257,13 +257,13 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             ui.reportTextCopiedToClipboard()  # No argument reports a failure.
         return False
 
-    def _setClipboardData(self, format,data):
+    def _setClipboardData(self, format, data: str):
         # Need to support MathML Presentation, so this copied from winUser.py and the first two lines are commented out
         # For now only unicode is a supported format
         # if format!=CF_UNICODETEXT:
         #     raise ValueError("Unsupported format")
         from textUtils import WCHAR_ENCODING
-        from ctypes import c_wchar
+        from ctypes import c_wchar, WinError
         import winKernel
         text = data
         bufLen = len(text.encode(WCHAR_ENCODING, errors="surrogatepass")) + 2
@@ -276,7 +276,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             buf.value=text
         # Set the clipboard data with the global memory
         if not windll.user32.SetClipboardData(format,h):
-            raise ctypes.WinError()
+            raise WinError()
         # NULL the global memory handle so that it is not freed at the end of scope as the clipboard now has it.
         h.forget()
 
@@ -296,7 +296,7 @@ class MathCAT(mathPres.MathPresentationProvider):
             speech.speakMessage(_("MathCAT initialization failed: see NVDA error log for details"))
 
 
-    def getSpeechForMathMl(self, mathml):
+    def getSpeechForMathMl(self, mathml: str):
         self._setSpeechLanguage(mathml)
         try:
             libmathcat.SetMathML(mathml)
@@ -305,6 +305,14 @@ class MathCAT(mathPres.MathPresentationProvider):
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
             libmathcat.SetMathML("<math></math>")    # set it to something
         try:
+            synth = getSynth()
+            synthConfig = config.conf["speech"][synth.name]
+            supported_commands = synth.supportedCommands
+            # Set preferences for capital letters
+            libmathcat.SetPreference("CapitalLetters_Beep", "true" if synthConfig["beepForCapitals"] else "false")
+            libmathcat.SetPreference("CapitalLetters_UseWord", "true" if synthConfig["sayCapForCapitals"] else "false")
+            if PitchCommand in supported_commands:
+                libmathcat.SetPreference("CapitalLetters_Pitch", str(synthConfig["capPitchChange"]))
             if self._add_sounds():
                 return [BeepCommand(800,25)] + ConvertSSMLTextForNVDA(libmathcat.GetSpokenText()) + [BeepCommand(600,15)]
             else:
@@ -321,7 +329,7 @@ class MathCAT(mathPres.MathPresentationProvider):
         except:
             return False
 
-    def getBrailleForMathMl(self, mathml):
+    def getBrailleForMathMl(self, mathml: str):
         # log.info("***MathCAT getBrailleForMathMl")
         try:
             libmathcat.SetMathML(mathml)
@@ -337,18 +345,14 @@ class MathCAT(mathPres.MathPresentationProvider):
             return ""
 
 
-    def interactWithMathMl(self, mathMl):
-        MathCATInteraction(provider=self, mathMl=mathMl).setFocus()
-        MathCATInteraction(provider=self, mathMl=mathMl).script_navigate(None)
+    def interactWithMathMl(self, mathml: str):
+        MathCATInteraction(provider=self, mathMl=mathml).setFocus()
+        MathCATInteraction(provider=self, mathMl=mathml).script_navigate(None)
 
-    def _setSpeechLanguage(self, mathMl):
-        lang = mathPres.getLanguageFromMath(mathMl)
-        if not lang:
-            lang = speech.getCurrentLanguage()
-        try:
-            libmathcat.SetPreference("Language", lang.replace("_", "-"))
-            self._language = lang
-        except Exception as e:
-            log.error(e)
-            speech.speakMessage(_("MathCAT does not support language %s: see NVDA error log for details" % lang))
+    def _setSpeechLanguage(self, mathml: str):
+        # NVDA inserts its notion of the current language into the math tag, so we can't use it
+        # see nvda\source\mathPres\mathPlayer.py for original version of this code
+        # lang = mathPres.getLanguageFromMath(mathml)
 
+        # it might have changed, so can't just set it in init()
+        self._language = libmathcat.GetPreference("Language")
