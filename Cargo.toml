@@ -1,3 +1,9 @@
+# This will build for the target platform
+# The python must match that (i.e., 64 bit platforms need 64 bit pythons by default)
+# You can specify which python to use by setting the environment variable PYO3_PYTHON to point to that python
+# For example
+#   env PYO3_PYTHON=C:/usr/bin/python32-3.8 cargo build --target i686-pc-windows-msvc --release
+
 [package]
 name = "MathCatForPython"
 version = "0.1.4"
@@ -13,9 +19,9 @@ name = "libmathcat_py"
 crate-type = ["cdylib"]
 
 [dependencies.mathcat]
-version = "0.1.22"
+version = "0.1.27"
 # for testing MathCAT without having to publish a new version (change two occurences)
-# path = "../MathCAT/"
+path = "../MathCAT/"
 
 [dependencies.pyo3]
 version = "0.15.1"
@@ -23,9 +29,9 @@ features = ["extension-module", "abi3"]
 
 [build-dependencies]
 zip = { version = "0.6.2", default-features = false, features = ["deflate"] }
-mathcat = "0.1.22"
+# mathcat = "0.1.27"
 # for testing MathCAT without having to publish a new version (change two occurences)
-#mathcat = {version= "0.1.22", path = "../MathCAT/"}
+mathcat = {version= "0.1.27", path = "../MathCAT/"}
 
 
 [profile.release]
