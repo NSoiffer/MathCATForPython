@@ -54,10 +54,8 @@ RE_MP_SPEECH = re.compile(
     r"|<audio src='(?P<beep>beep.mp4)'>.*?</audio> ?" # hack for beeps
     # Other tags, which we don't care about.
     r"|<[^>]+> ?"
-    # Commas indicating pauses in navigation messages.
-    r"| ?(?P<comma>,) ?"
     # Actual content.
-    r"|(?P<content>[^<,]+)")
+    r"|(?P<content>[^<]+)")
 
 PROSODY_COMMANDS = {
     "pitch": PitchCommand,
@@ -68,6 +66,7 @@ PROSODY_COMMANDS = {
 def  ConvertSSMLTextForNVDA(text:str, language:str=""):
     # MathCAT's default rate is 180 wpm.
     # Assume that 0% is 80 wpm and 100% is 450 wpm and scale accordingly.
+    # log.info("Speech str: '{}'".format(text))
     synth = getSynth()
     wpm = synth._percentToParam(synth.rate, 80, 450)
     breakMulti = 180.0 / wpm
@@ -91,9 +90,6 @@ def  ConvertSSMLTextForNVDA(text:str, language:str=""):
                 out.extend((CharacterModeCommand(True), ch, CharacterModeCommand(False)))
             else:
                 out.extend((" ", ch, " "))
-        elif m.lastgroup == "comma":
-            if use_break:
-                out.append(BreakCommand(time=100))
         elif m.lastgroup == "beep":
             out.append(BeepCommand(2000, 50))
         elif m.lastgroup == "pitch":
@@ -120,6 +116,7 @@ def  ConvertSSMLTextForNVDA(text:str, language:str=""):
             out.extend((" ", m.group(0), " "))
     if language:
         out.append(LangChangeCommand(None))
+    # log.info("Speech commands: '{}'".format(out))
     return out
 
 class MathCATInteraction(mathPres.MathInteractionNVDAObject):
