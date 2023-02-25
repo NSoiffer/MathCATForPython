@@ -309,9 +309,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             self.m_checkBoxResetNavigationMode.SetValue(user_preferences["Navigation"]["ResetNavMode"])
             self.m_choiceSpeechAmountNavigation.SetSelection(Navigation_NavVerbosity.index(user_preferences["Navigation"]["NavVerbosity"]))
             if user_preferences["Navigation"]["Overview"]:
-                self.m_choiceNavigationSpeech.SetSelection(0)
-            else:
                 self.m_choiceNavigationSpeech.SetSelection(1)
+            else:
+                self.m_choiceNavigationSpeech.SetSelection(0)
             self.m_checkBoxResetNavigationSpeech.SetValue(user_preferences["Navigation"]["ResetOverview"])
             self.m_checkBoxAutomaticZoom.SetValue(user_preferences["Navigation"]["AutoZoomOut"])
             self.m_choiceBrailleHighlights.SetSelection(Braille_BrailleNavHighlight.index(user_preferences["Braille"]["BrailleNavHighlight"]))
@@ -338,10 +338,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         user_preferences["Navigation"]["NavMode"] = Navigation_NavMode[self.m_choiceNavigationMode.GetSelection()]
         user_preferences["Navigation"]["ResetNavMode"] = self.m_checkBoxResetNavigationMode.GetValue()
         user_preferences["Navigation"]["NavVerbosity"] = Navigation_NavVerbosity[self.m_choiceSpeechAmountNavigation.GetSelection()]
-        if self.m_choiceNavigationSpeech.GetSelection() == 0:
-            user_preferences["Navigation"]["Overview"] = True
-        else:
-            user_preferences["Navigation"]["Overview"] = False
+        user_preferences["Navigation"]["Overview"] = self.m_choiceNavigationSpeech.GetSelection() != 0
         user_preferences["Navigation"]["ResetOverview"] = self.m_checkBoxResetNavigationSpeech.GetValue()
         user_preferences["Navigation"]["AutoZoomOut"] = self.m_checkBoxAutomaticZoom.GetValue()
         user_preferences["Braille"]["BrailleNavHighlight"] = Braille_BrailleNavHighlight[self.m_choiceBrailleHighlights.GetSelection()]
