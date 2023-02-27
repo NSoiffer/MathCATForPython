@@ -66,7 +66,7 @@ PROSODY_COMMANDS = {
 def  ConvertSSMLTextForNVDA(text:str, language:str=""):
     # MathCAT's default rate is 180 wpm.
     # Assume that 0% is 80 wpm and 100% is 450 wpm and scale accordingly.
-    # log.info("Speech str: '{}'".format(text))
+    log.info("Speech str: '{}'".format(text))
     synth = getSynth()
     wpm = synth._percentToParam(synth.rate, 80, 450)
     breakMulti = 180.0 / wpm
@@ -74,12 +74,14 @@ def  ConvertSSMLTextForNVDA(text:str, language:str=""):
     supported_commands = synth.supportedCommands
     use_break = BreakCommand in supported_commands
     use_pitch = PitchCommand in supported_commands
+    use_rate = RateCommand in supported_commands
+    use_volume = VolumeCommand in supported_commands
     use_phoneme = PhonemeCommand in supported_commands
     use_character = CharacterModeCommand in supported_commands
     out = []
     if language:
         out.append(LangChangeCommand(language))
-    resetProsody = set()
+    resetProsody = []
     for m in RE_MP_SPEECH.finditer(text):
         if m.lastgroup == "break":
             if use_break:
@@ -95,16 +97,16 @@ def  ConvertSSMLTextForNVDA(text:str, language:str=""):
         elif m.lastgroup == "pitch":
             if use_pitch:
                 out.append(PitchCommand(multiplier=int(m.group(m.lastgroup))))
-                resetProsody.add(PitchCommand)
+                resetProsody.append(PitchCommand)
         elif m.lastgroup in PROSODY_COMMANDS:
             command = PROSODY_COMMANDS[m.lastgroup]
             if command in supported_commands:
                 out.append(command(multiplier=int(m.group(m.lastgroup)) / 100.0))
-                resetProsody.add(command)
+                resetProsody.append(command)
         elif m.lastgroup == "prosodyReset":
-            for command in resetProsody:    # only supported commands were added, so no need to check
-                out.append(command(multiplier=1))
-            resetProsody.clear()
+            # for command in resetProsody:    # only supported commands were added, so no need to check
+            command = resetProsody.pop()
+            out.append(command(multiplier=1))
         elif m.lastgroup == "phonemeText":
             if use_phoneme:
                 out.append(PhonemeCommand(m.group("ipa"), text=m.group("phonemeText")))
@@ -116,7 +118,7 @@ def  ConvertSSMLTextForNVDA(text:str, language:str=""):
             out.extend((" ", m.group(0), " "))
     if language:
         out.append(LangChangeCommand(None))
-    # log.info("Speech commands: '{}'".format(out))
+    log.info("Speech commands: '{}'".format(out))
     return out
 
 class MathCATInteraction(mathPres.MathInteractionNVDAObject):
