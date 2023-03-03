@@ -237,9 +237,10 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         if not isinstance(text, str) or len(text) == 0:
             return False
         from api import getClipData
-        from mainFrame import Handle
+        import gui
+
         try:
-            with winUser.openClipboard(Handle):
+            with winUser.openClipboard(gui.mainFrame.Handle):
                 winUser.emptyClipboard()
                 self._setClipboardData(self.CF_MathML, self._wrapMathMLForClipBoard(text))
                 self._setClipboardData(self.CF_MathML_Presentation, self._wrapMathMLForClipBoard(text))
