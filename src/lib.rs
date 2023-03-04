@@ -57,6 +57,13 @@ pub fn SetRulesDir(_py: Python, rules_dir_location: String) -> PyResult<()> {
 pub fn SetMathML(_py: Python, mathml_str: String) -> PyResult<String> {
     return convert_error( set_mathml(mathml_str) );
 }
+
+#[pyfunction]
+/// Get the version number (e.g., "0.2.0") of MathCAT.
+pub fn GetVersion(_py: Python) -> PyResult<String> {
+    return Ok( get_version() );
+}
+
 #[pyfunction]
 /// Get the spoken text of the MathML that was set.
 /// The speech takes into account any AT or user preferences.
@@ -144,6 +151,7 @@ pub fn GetNavigationMathML(_py: Python) -> PyResult<(String, usize)> {
 fn libmathcat(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(SetRulesDir, m)?)?;
     m.add_function(wrap_pyfunction!(SetMathML, m)?)?;
+    m.add_function(wrap_pyfunction!(GetVersion, m)?)?;
     m.add_function(wrap_pyfunction!(GetSpokenText, m)?)?;
     m.add_function(wrap_pyfunction!(SetPreference, m)?)?;
     m.add_function(wrap_pyfunction!(GetPreference, m)?)?;

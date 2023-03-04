@@ -48,6 +48,7 @@ def GetSpeech():
 
 
 SetMathCATPreferences()   # you only need to this once
+print("Using MathCAT version '{}'".format(libmathcat.GetVersion()))
 
 mathml = "<math><mfrac> <mn>1</mn> <mi>X</mi> </mfrac> </math>"
 SetMathMLForMathCAT(mathml)
