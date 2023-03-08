@@ -66,7 +66,7 @@ PROSODY_COMMANDS = {
 def  ConvertSSMLTextForNVDA(text:str, language:str=""):
     # MathCAT's default rate is 180 wpm.
     # Assume that 0% is 80 wpm and 100% is 450 wpm and scale accordingly.
-    log.info("Speech str: '{}'".format(text))
+    # log.info("Speech str: '{}'".format(text))
     synth = getSynth()
     wpm = synth._percentToParam(synth.rate, 80, 450)
     breakMulti = 180.0 / wpm
@@ -118,7 +118,7 @@ def  ConvertSSMLTextForNVDA(text:str, language:str=""):
             out.extend((" ", m.group(0), " "))
     if language:
         out.append(LangChangeCommand(None))
-    log.info("Speech commands: '{}'".format(out))
+    # log.info("Speech commands: '{}'".format(out))
     return out
 
 class MathCATInteraction(mathPres.MathInteractionNVDAObject):
@@ -132,6 +132,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
     def __init__(self, provider=None, mathMl: Optional[str]=None):
         super(MathCATInteraction, self).__init__(provider=provider, mathMl=mathMl)
         provider._setSpeechLanguage(mathMl)
+        self.init_mathml = mathMl
         try:
             libmathcat.SetMathML(mathMl)
         except Exception as e:
@@ -204,13 +205,19 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 
     _startsWithMath = re.compile("\\s*?<math")
     @script(
+        # For translators: Message to be announced during Keyboard Help
+        description=_("Copy navigation focus to clipboard"), 
+        # For translators: Name of the section in "Input gestures" dialog. 
+        category = _("Clipboard"),
         gesture="kb:control+c",
     )
     def script_rawdataToClip(self, gesture: KeyboardInputGesture):
         try:
             mathml = libmathcat.GetNavigationMathML()[0]
             if not re.match(self._startsWithMath, mathml):
-                mathml = "<math>" + mathml + "</math>"  # copy will fix up name spacing
+                mathml = "<math>\n" + mathml + "</math>"  # copy will fix up name spacing
+            elif self.init_mathml != '':
+                mathml = self.init_mathml
             self._copyToClipAsMathML(mathml)
             ui.message(_("copy"))
         except Exception as e:
@@ -219,13 +226,17 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 
 
      # not a perfect match sequence, but should capture normal MathML
+     # not a perfect match sequence, but should capture normal MathML
     _mathTagHasNameSpace = re.compile("<math .*?xmlns.+?>")
+    _hasAddedId = re.compile(" id='[^'].+' data-id-added='true'")
+    _hasDataAttr = re.compile(" data-[^=]+='[^']*'")
     def _wrapMathMLForClipBoard(self, text: str) -> str:
         # cleanup the MathML a little
-        mathml_with_ns = text.replace(" data-changed='added'", "").replace(" data-id-added='true'", "")
-        if not re.match(self._mathTagHasNameSpace, text):
-            mathml_with_ns = mathml_with_ns.replace('math', 'math xmlns="http://www.w3.org/1998/Math/MathML"', 1)
-        return '<?xml version="1.0"?>' + mathml_with_ns
+        text = re.sub(self._hasAddedId, "", text)
+        mathml_with_ns = re.sub(self._hasDataAttr, "", text)
+        if not re.match(self._mathTagHasNameSpace, mathml_with_ns):
+            mathml_with_ns = mathml_with_ns.replace('math', "math xmlns='http://www.w3.org/1998/Math/MathML'", 1)
+        return mathml_with_ns
 
     def _copyToClipAsMathML(self, text: str, notify: Optional[bool] = False) -> bool:
         """Copies the given text to the windows clipboard.
@@ -242,8 +253,9 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         try:
             with winUser.openClipboard(gui.mainFrame.Handle):
                 winUser.emptyClipboard()
-                self._setClipboardData(self.CF_MathML, self._wrapMathMLForClipBoard(text))
-                self._setClipboardData(self.CF_MathML_Presentation, self._wrapMathMLForClipBoard(text))
+                text = self._wrapMathMLForClipBoard(text)
+                self._setClipboardData(self.CF_MathML, '<?xml version="1.0"?>' + text)
+                self._setClipboardData(self.CF_MathML_Presentation, '<?xml version="1.0"?>' + text)
                 self._setClipboardData(winUser.CF_UNICODETEXT, text)
             got = getClipData()
         except OSError:
