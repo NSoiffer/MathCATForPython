@@ -26,16 +26,18 @@ addon_info = {
 	"addon_description": _("""
 		MathCAT is a replacement for MathPlayer which has been discontinued.
 		It provides speech and braille support, and also supports MathPlayer's three modes of navigation.
-		The initial version of MathCAT is English-only but is designed with translations in mind.
+		The speech quality is not quite as good as MathPlayer's speech yet,
+		but the braille support is much better and includes both Nemeth and UEB Technical.
+		Translations to languages other than English are in progress.
 		"""),
 	# version
-	"addon_version": "0.2.0",
+	"addon_version": "0.2.1",
 	# Author(s)
 	"addon_author": "Neil Soiffer <soiffer@alum.mit.edu>",
 	# URL for the add-on documentation support
 	"addon_url": "https://nsoiffer.github.io/MathCAT/",
 	# URL for the add-on repository where the source code can be found
-	"addon_sourceURL": "https://github.com/NSoiffer/MathCAT",
+	"addon_sourceURL": "https://github.com/NSoiffer/MathCATForPython",
 	# Documentation file name
 	"addon_docFileName": "readme.html",
 	# Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)
