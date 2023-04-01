@@ -57,3 +57,11 @@ print("MathML: {}\nSpeech: '{}'".format(mathml, GetSpeech()))
 mathml = "<math><msup> <mi>x</mi> <mn>3</mn> </msup> </math>"
 SetMathMLForMathCAT(mathml)
 print("MathML: {}\nSpeech: '{}'".format(mathml, GetSpeech()))
+
+mathml = "<math><msup intent='transpose:postfix($x)'> <mi arg='x'>x</mi> <mi>T</mi> </msup> </math>"
+SetMathMLForMathCAT(mathml)
+print("MathML: {}\nSpeech: '{}'".format(mathml, GetSpeech()))
+
+mathml = "<math><mrow intent='_(x, $op)'><mo arg='op'>!</mo></mrow></math>"
+SetMathMLForMathCAT(mathml)
+print("MathML: {}\nSpeech: '{}'".format(mathml, GetSpeech()))
