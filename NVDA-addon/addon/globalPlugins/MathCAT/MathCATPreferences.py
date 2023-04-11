@@ -24,7 +24,7 @@ Speech_Impairment = ("LearningDisability", "Blindness", "LowVision")
 #Speech_SpeechStyle is derived from the yaml files under the selected language
 Speech_Verbosity = ("Terse", "Medium", "Verbose")
 Speech_SubjectArea = ("General")
-Speech_Chemistry = ("SpellOut", "AsCompound", "Off")
+Speech_Chemistry = ("SpellOut", "Off")
 Navigation_NavMode = ("Enhanced", "Simple", "Character")
 #Navigation_ResetNavMode is boolean
 #Navigation_OverView is boolean
@@ -422,7 +422,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         #    SubjectArea: General        # FIX: still working on this
         UserInterface.validate("Speech", "SubjectArea", None, "General")
         #    Chemistry: SpellOut         # SpellOut (H 2 0), AsCompound (Water), Off (H sub 2 O)
-        UserInterface.validate("Speech", "Chemistry", ["SpellOut", "AsCompound", "Off"], "SpellOut")
+        UserInterface.validate("Speech", "Chemistry", ["SpellOut", "Off"], "SpellOut")
         #Navigation:
         #  NavMode: Enhanced         # Enhanced, Simple, Character
         UserInterface.validate("Navigation", "NavMode", ["Enhanced", "Simple", "Character"], "Enhanced")
