@@ -31,7 +31,7 @@ addon_info = {
 		Translations to languages other than English are in progress.
 		"""),
 	# version
-	"addon_version": "0.2.1",
+	"addon_version": "0.2.5",
 	# Author(s)
 	"addon_author": "Neil Soiffer <soiffer@alum.mit.edu>",
 	# URL for the add-on documentation support
