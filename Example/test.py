@@ -54,6 +54,10 @@ mathml = "<math><mfrac> <mn>1</mn> <mi>X</mi> </mfrac> </math>"
 SetMathMLForMathCAT(mathml)
 print("MathML: {}\nSpeech: '{}'".format(mathml, GetSpeech()))
 
+mathml = "<math display='block'><mi>x</mi><mo>⨯</mo><mi>y</mi></math>"
+SetMathMLForMathCAT(mathml)
+print("MathML: {}\nSpeech: '{}'".format(mathml, GetSpeech()))
+
 mathml = "<math><msup> <mi>x</mi> <mn>3</mn> </msup> </math>"
 SetMathMLForMathCAT(mathml)
 print("MathML: {}\nSpeech: '{}'".format(mathml, GetSpeech()))
@@ -65,3 +69,7 @@ print("MathML: {}\nSpeech: '{}'".format(mathml, GetSpeech()))
 mathml = "<math><mrow intent='_(x, $op)'><mo arg='op'>!</mo></mrow></math>"
 SetMathMLForMathCAT(mathml)
 print("MathML: {}\nSpeech: '{}'".format(mathml, GetSpeech()))
+
+mathml = "<math intent=':structure'><mrow><mo>(</mo><mfrac linethickness='0'><mn arg='n'>7</mn><mn arg='m'>3</mn></mfrac><mo>)</mo></mrow></math>"
+SetMathMLForMathCAT(mathml)
+print("MathML: {}\nSpeech (no inference): '{}'".format(mathml, GetSpeech()))
