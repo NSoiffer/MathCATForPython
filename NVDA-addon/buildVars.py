@@ -23,13 +23,11 @@ addon_info = {
 	"addon_summary": _("MathCAT: speech and braille from MathML"),
 	# Add-on description
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
-	"addon_description": _("""
-		MathCAT is a replacement for MathPlayer which has been discontinued.
+	"addon_description": _("""MathCAT is a replacement for MathPlayer which has been discontinued.
 		It provides speech and braille support, and also supports MathPlayer's three modes of navigation.
 		The speech quality is not quite as good as MathPlayer's speech yet,
 		but the braille support is much better and includes both Nemeth and UEB Technical.
-		Translations to languages other than English are in progress.
-		"""),
+		Translations to languages other than English are in progress."""),
 	# version
 	"addon_version": "0.2.6",
 	# Author(s)
