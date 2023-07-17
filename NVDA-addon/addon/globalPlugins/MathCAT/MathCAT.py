@@ -133,17 +133,12 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         super(MathCATInteraction, self).__init__(provider=provider, mathMl=mathMl)
         provider._setSpeechLanguage(mathMl)
         self.init_mathml = mathMl
-        try:
-            libmathcat.SetMathML(mathMl)
-        except Exception as e:
-            speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
-            log.error(e)
 
     def reportFocus(self):
         super(MathCATInteraction, self).reportFocus()
         try:
-            speech.speak(ConvertSSMLTextForNVDA(libmathcat.GetSpokenText(),
-                        self.provider._language))
+            text = libmathcat.DoNavigateCommand("ZoomIn")
+            speech.speak(ConvertSSMLTextForNVDA(text, self.provider._language))
         except Exception as e:
             log.error(e)
             speech.speakMessage(_("Error in speaking math: see NVDA error log for details"))
@@ -182,7 +177,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
     def script_navigate(self, gesture: KeyboardInputGesture):
         # log.info("***MathCAT script_navigate")
         try:
-            if gesture != None:
+            if gesture != None:     # == None when initial focus -- handled in reportFocus()
                 modNames = gesture.modifierNames
                 text = libmathcat.DoNavigateKeyPress(gesture.vkCode,
                     "shift" in modNames, "control" in modNames, "alt" in modNames, False)
