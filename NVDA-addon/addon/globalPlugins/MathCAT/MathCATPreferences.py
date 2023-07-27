@@ -31,7 +31,7 @@ Navigation_NavMode = ("Enhanced", "Simple", "Character")
 Navigation_NavVerbosity = ("Terse", "Medium", "Verbose")
 #Navigation_AutoZoomOut is boolean
 Braille_BrailleNavHighlight = ("Off", "FirstChar", "EndPoints", "All")
-Braille_BrailleCode = ("Nemeth", "UEB")
+Braille_BrailleCode = ("Nemeth", "UEB", "Vietnam")
 
 class UserInterface(MathCATgui.MathCATPreferencesDialog):
     def __init__(self,parent):
@@ -439,8 +439,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         #Braille:
         #  BrailleNavHighlight: EndPoints   # Highlight with dots 7 & 8 the current nav node -- values are Off, FirstChar, EndPoints, All
         UserInterface.validate("Braille", "BrailleNavHighlight", ["Off", "FirstChar", "EndPoints", "All"], "EndPoints")
-        #  BrailleCode: "Nemeth"                # Any supported braille code (currently Nemeth, UEB)
-        UserInterface.validate("Braille", "BrailleCode", ["Nemeth", "UEB"], "Nemeth")
+        #  BrailleCode: "Nemeth"                # Any supported braille code (currently Nemeth, UEB, Vietnam)
+        UserInterface.validate("Braille", "BrailleCode", ["Nemeth", "UEB", "Vietnam"], "Nemeth")
 
     @staticmethod
     def write_user_preferences():

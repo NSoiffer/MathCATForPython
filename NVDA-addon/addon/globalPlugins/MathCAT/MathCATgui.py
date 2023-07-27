@@ -253,7 +253,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerBrailleMathCode.Add( self.m_staticTextBrailleMathCode, 0, wx.ALL, 5 )
 
-		m_choiceBrailleMathCodeChoices = [ _(u"Nemeth"), _(u"UEB") ]
+		m_choiceBrailleMathCodeChoices = [ _(u"Nemeth"), _(u"UEB"), _(u"Vietnam") ]
 		self.m_choiceBrailleMathCode = wx.Choice( self.m_panelBraille, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceBrailleMathCodeChoices, 0 )
 		self.m_choiceBrailleMathCode.SetSelection( 1 )
 		bSizerBrailleMathCode.Add( self.m_choiceBrailleMathCode, 0, wx.ALL, 5 )
