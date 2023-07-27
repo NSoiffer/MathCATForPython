@@ -1,5 +1,5 @@
-# MathCAT add-on: generates speech, braille, and allows exploration of expressions written in MathML
-# The goal of this add-on is to replicate/improve upon the functionality of MathPlayer which has been discontinued.
+"""MathCAT add-on: generates speech, braille, and allows exploration of expressions written in MathML.
+The goal of this add-on is to replicate/improve upon the functionality of MathPlayer which has been discontinued."""
 # Author: Neil Soiffer
 # Copyright: this file is copyright GPL2
 #   The code additionally makes use of the MathCAT library (written in Rust) which is covered by the MIT license
@@ -41,7 +41,7 @@ from speech.commands import (
     PhonemeCommand,
 )
 
-RE_MP_SPEECH = re.compile(
+RE_MATHML_SPEECH = re.compile(
     # Break.
     r"<break time='(?P<break>\d+)ms'/> ?"
     # Pronunciation of characters.
@@ -62,11 +62,37 @@ PROSODY_COMMANDS = {
     "volume": VolumeCommand,
     "rate": RateCommand,
 }
+RE_MATH_LANG = re.compile(r'''<math .*(xml:)?lang=["']([^'"]+)["'].*>''')
+def getLanguageToUse(mathMl:str) -> str:
+    """Get the language specified in a math tag if the language pref is Auto, else the language preference."""
+    mathCATLanguageSetting = "Auto"
+    try:
+        # ignore regional differences if the MathCAT language setting doesn't have it.
+        mathCATLanguageSetting = libmathcat.GetPreference("Language")
+    except Exception as e:
+        log.error(e)
+    
+    if mathCATLanguageSetting != 'Auto':
+        return mathCATLanguageSetting
+    
+    languageMatch = RE_MATH_LANG.search(mathMl)
+    language = languageMatch.group(2) if languageMatch else speech.getCurrentLanguage() # seems to be current voice's language
+    language = language.lower().replace("_", "-")
+    return language
 
-def  ConvertSSMLTextForNVDA(text:str, language:str=""):
+def  ConvertSSMLTextForNVDA(text:str, language:str="") -> list:
     # MathCAT's default rate is 180 wpm.
     # Assume that 0% is 80 wpm and 100% is 450 wpm and scale accordingly.
-    # log.info("Speech str: '{}'".format(text))
+    # log.info(f"Speech str: '{text}'")
+    if language == "":    # shouldn't happen
+        language = "en"   # fallback to what was being used
+
+    mathCATLanguageSetting = "en"   # fallback in case GetPreference fails for unknown reasons
+    try:
+        mathCATLanguageSetting = libmathcat.GetPreference("Language")
+    except Exception as e:
+        log.error(e)    
+
     synth = getSynth()
     wpm = synth._percentToParam(synth.rate, 80, 450)
     breakMulti = 180.0 / wpm
@@ -77,12 +103,20 @@ def  ConvertSSMLTextForNVDA(text:str, language:str=""):
     use_rate = RateCommand in supported_commands
     use_volume = VolumeCommand in supported_commands
     use_phoneme = PhonemeCommand in supported_commands
-    use_character = CharacterModeCommand in supported_commands
+    # as of 7/23, oneCore voices do not implement the CharacterModeCommand despite it being in supported_commands
+    use_character = CharacterModeCommand in supported_commands and synth.name != 'oneCore'
     out = []
-    if language:
-        out.append(LangChangeCommand(language))
+    if mathCATLanguageSetting != language:
+        try:
+            log.info(f"Setting language to {language}")
+            libmathcat.SetPreference("Language", language)
+            out.append(LangChangeCommand(language))
+        except Exception as e:
+            log.error(e) 
+            language = mathCATLanguageSetting   # didn't do the 'append'
+
     resetProsody = []
-    for m in RE_MP_SPEECH.finditer(text):
+    for m in RE_MATHML_SPEECH.finditer(text):
         if m.lastgroup == "break":
             if use_break:
                 out.append(BreakCommand(time=int(int(m.group("break")) * breakMulti)))
@@ -91,7 +125,7 @@ def  ConvertSSMLTextForNVDA(text:str, language:str=""):
             if use_character:
                 out.extend((CharacterModeCommand(True), ch, CharacterModeCommand(False)))
             else:
-                out.extend((" ", ch, " "))
+                out.extend((" ", "eigh" if ch=="a" else ch, " "))
         elif m.lastgroup == "beep":
             out.append(BeepCommand(2000, 50))
         elif m.lastgroup == "pitch":
@@ -116,9 +150,14 @@ def  ConvertSSMLTextForNVDA(text:str, language:str=""):
             # MathCAT puts out spaces between words, the speak command seems to want to glom the strings together at times,
             #  so we need to add individual " "s to the output
             out.extend((" ", m.group(0), " "))
-    if language:
-        out.append(LangChangeCommand(None))
-    # log.info("Speech commands: '{}'".format(out))
+    if mathCATLanguageSetting != language:
+        try:
+            libmathcat.SetPreference("Language", mathCATLanguageSetting)
+            out.append(LangChangeCommand(None))
+        except Exception as e:
+            log.error(e) 
+        
+    # log.info(f"Speech commands: '{out}'")
     return out
 
 class MathCATInteraction(mathPres.MathInteractionNVDAObject):
@@ -131,17 +170,18 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 
     def __init__(self, provider=None, mathMl: Optional[str]=None):
         super(MathCATInteraction, self).__init__(provider=provider, mathMl=mathMl)
-        provider._setSpeechLanguage(mathMl)
+        self._language = getLanguageToUse(mathMl)
         self.init_mathml = mathMl
+
 
     def reportFocus(self):
         super(MathCATInteraction, self).reportFocus()
         try:
             text = libmathcat.DoNavigateCommand("ZoomIn")
-            speech.speak(ConvertSSMLTextForNVDA(text, self.provider._language))
+            speech.speak(ConvertSSMLTextForNVDA(text, self._language))
         except Exception as e:
             log.error(e)
-            speech.speakMessage(_("Error in speaking math: see NVDA error log for details"))
+            speech.speakMessage(_("Error in starting navigation of math: see NVDA error log for details"))
 
 
     def getBrailleRegions(self, review: bool = False):
@@ -181,7 +221,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
                 modNames = gesture.modifierNames
                 text = libmathcat.DoNavigateKeyPress(gesture.vkCode,
                     "shift" in modNames, "control" in modNames, "alt" in modNames, False)
-                speech.speak(ConvertSSMLTextForNVDA(text, self.provider._language))
+                speech.speak(ConvertSSMLTextForNVDA(text, self._language))
             
             # update the braille to reflect the nav position (might be excess code, but it works)
             nav_node = libmathcat.GetNavigationMathMLId()
@@ -295,21 +335,22 @@ class MathCAT(mathPres.MathPresentationProvider):
         try:
             # IMPORTANT -- SetRulesDir must be the first call to libmathcat
             rules_dir = path.join( path.dirname(path.abspath(__file__)), "Rules")
-            log.info("MathCAT Rules dir: %s" % rules_dir)
+            log.info(f"MathCAT installed. Using rules dir: {rules_dir}")
             libmathcat.SetRulesDir(rules_dir)
             libmathcat.SetPreference("TTS", "SSML")
-
         except Exception as e:
             log.error(e)
             speech.speakMessage(_("MathCAT initialization failed: see NVDA error log for details"))
+        self._language = ""
 
 
     def getSpeechForMathMl(self, mathml: str):
-        self._setSpeechLanguage(mathml)
         try:
+            self._language = getLanguageToUse(mathml)
             libmathcat.SetMathML(mathml)
         except Exception as e:
             log.error(e)
+            log.error(f"MathML is {mathml}")
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
             libmathcat.SetMathML("<math></math>")    # set it to something
         try:
@@ -322,9 +363,9 @@ class MathCAT(mathPres.MathPresentationProvider):
             if PitchCommand in supported_commands:
                 libmathcat.SetPreference("CapitalLetters_Pitch", str(synthConfig["capPitchChange"]))
             if self._add_sounds():
-                return [BeepCommand(800,25)] + ConvertSSMLTextForNVDA(libmathcat.GetSpokenText()) + [BeepCommand(600,15)]
+                return [BeepCommand(800,25)] + ConvertSSMLTextForNVDA(libmathcat.GetSpokenText(), self._language) + [BeepCommand(600,15)]
             else:
-                return ConvertSSMLTextForNVDA(libmathcat.GetSpokenText())
+                return ConvertSSMLTextForNVDA(libmathcat.GetSpokenText(), self._language)
 
         except Exception as e:
             log.error(e)
@@ -343,6 +384,7 @@ class MathCAT(mathPres.MathPresentationProvider):
             libmathcat.SetMathML(mathml)
         except Exception as e:
             log.error(e)
+            log.error(f"MathML is {mathml}")
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
             libmathcat.SetMathML("<math></math>")    # set it to something
         try:
@@ -356,11 +398,3 @@ class MathCAT(mathPres.MathPresentationProvider):
     def interactWithMathMl(self, mathml: str):
         MathCATInteraction(provider=self, mathMl=mathml).setFocus()
         MathCATInteraction(provider=self, mathMl=mathml).script_navigate(None)
-
-    def _setSpeechLanguage(self, mathml: str):
-        # NVDA inserts its notion of the current language into the math tag, so we can't use it
-        # see nvda\source\mathPres\mathPlayer.py for original version of this code
-        # lang = mathPres.getLanguageFromMath(mathml)
-
-        # it might have changed, so can't just set it in init()
-        self._language = libmathcat.GetPreference("Language")
