@@ -29,7 +29,7 @@ addon_info = {
 		but the braille support is much better and includes both Nemeth and UEB Technical.
 		Translations to Indonesian, Spanish, and Vietnamese exist and other translations are in progress."""),
 	# version
-	"addon_version": "0.3.0",
+	"addon_version": "0.3.1",
 	# Author(s)
 	"addon_author": "Neil Soiffer <soiffer@alum.mit.edu>",
 	# URL for the add-on documentation support
