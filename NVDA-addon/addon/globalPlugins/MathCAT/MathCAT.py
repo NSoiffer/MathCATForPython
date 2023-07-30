@@ -83,10 +83,9 @@ def getLanguageToUse(mathMl:str) -> str:
 def  ConvertSSMLTextForNVDA(text:str, language:str="") -> list:
     # MathCAT's default rate is 180 wpm.
     # Assume that 0% is 80 wpm and 100% is 450 wpm and scale accordingly.
-    # log.info(f"Speech str: '{text}'")
+    # log.info(f"\nSpeech str: '{text}'")
     if language == "":    # shouldn't happen
         language = "en"   # fallback to what was being used
-
     mathCATLanguageSetting = "en"   # fallback in case GetPreference fails for unknown reasons
     try:
         mathCATLanguageSetting = libmathcat.GetPreference("Language")
@@ -94,21 +93,21 @@ def  ConvertSSMLTextForNVDA(text:str, language:str="") -> list:
         log.error(e)    
 
     synth = getSynth()
+    _monkeyPatchESpeak()
     wpm = synth._percentToParam(synth.rate, 80, 450)
     breakMulti = 180.0 / wpm
-    synthConfig = config.conf["speech"][synth.name]
     supported_commands = synth.supportedCommands
     use_break = BreakCommand in supported_commands
     use_pitch = PitchCommand in supported_commands
-    use_rate = RateCommand in supported_commands
-    use_volume = VolumeCommand in supported_commands
+    # use_rate = RateCommand in supported_commands
+    # use_volume = VolumeCommand in supported_commands
     use_phoneme = PhonemeCommand in supported_commands
     # as of 7/23, oneCore voices do not implement the CharacterModeCommand despite it being in supported_commands
     use_character = CharacterModeCommand in supported_commands and synth.name != 'oneCore'
     out = []
     if mathCATLanguageSetting != language:
         try:
-            log.info(f"Setting language to {language}")
+            # log.info(f"Setting language to {language}")
             libmathcat.SetPreference("Language", language)
             out.append(LangChangeCommand(language))
         except Exception as e:
@@ -125,7 +124,7 @@ def  ConvertSSMLTextForNVDA(text:str, language:str="") -> list:
             if use_character:
                 out.extend((CharacterModeCommand(True), ch, CharacterModeCommand(False)))
             else:
-                out.extend((" ", "eigh" if ch=="a" else ch, " "))
+                out.extend((" ", "eigh" if ch=="a" and language=="en" else ch, " "))
         elif m.lastgroup == "beep":
             out.append(BeepCommand(2000, 50))
         elif m.lastgroup == "pitch":
@@ -156,7 +155,6 @@ def  ConvertSSMLTextForNVDA(text:str, language:str="") -> list:
             out.append(LangChangeCommand(None))
         except Exception as e:
             log.error(e) 
-        
     # log.info(f"Speech commands: '{out}'")
     return out
 
@@ -343,7 +341,6 @@ class MathCAT(mathPres.MathPresentationProvider):
             speech.speakMessage(_("MathCAT initialization failed: see NVDA error log for details"))
         self._language = ""
 
-
     def getSpeechForMathMl(self, mathml: str):
         try:
             self._language = getLanguageToUse(mathml)
@@ -398,3 +395,91 @@ class MathCAT(mathPres.MathPresentationProvider):
     def interactWithMathMl(self, mathml: str):
         MathCATInteraction(provider=self, mathMl=mathml).setFocus()
         MathCATInteraction(provider=self, mathMl=mathml).script_navigate(None)
+
+CACHED_SYNTH = None
+def _monkeyPatchESpeak():
+    global CACHED_SYNTH
+    currentSynth = getSynth()
+    if currentSynth.name != "espeak" or CACHED_SYNTH == currentSynth:
+        return  # already patched
+
+    CACHED_SYNTH = currentSynth
+    currentSynth.speak = patched_speak.__get__(currentSynth, type(currentSynth))
+
+
+from speech.types import SpeechSequence
+from speech.commands import (
+	IndexCommand,
+	CharacterModeCommand,
+	LangChangeCommand,
+	BreakCommand,
+	PitchCommand,
+	RateCommand,
+	VolumeCommand,
+	PhonemeCommand,
+)
+def patched_speak(self, speechSequence: SpeechSequence):  # noqa: C901
+    from synthDrivers import _espeak
+    # log.info(f"patched_speak input: {speechSequence}")
+    textList: List[str] = []
+    langChanged = False
+    prosody: Dict[str, int] = {}
+    # We output malformed XML, as we might close an outer tag after opening an inner one; e.g.
+    # <voice><prosody></voice></prosody>.
+    # However, eSpeak doesn't seem to mind.
+    for item in speechSequence:
+        if isinstance(item,str):
+            textList.append(self._processText(item))
+        elif isinstance(item, IndexCommand):
+            textList.append("<mark name=\"%d\" />"%item.index)
+        elif isinstance(item, CharacterModeCommand):
+            textList.append("<say-as interpret-as=\"characters\">" if item.state else "</say-as>")
+        elif isinstance(item, LangChangeCommand):
+            langChangeXML = self._handleLangChangeCommand(item, langChanged)
+            textList.append(langChangeXML)
+            langChanged = True
+        elif isinstance(item, BreakCommand):
+            textList.append(f'<break time="{item.time}ms" />')
+        elif type(item) in self.PROSODY_ATTRS:
+            if prosody:
+                # Close previous prosody tag.
+                textList.append("</prosody>")
+            attr=self.PROSODY_ATTRS[type(item)]
+            if item.multiplier==1:
+                # Returning to normal.
+                try:
+                    del prosody[attr]
+                except KeyError:
+                    pass
+            else:
+                prosody[attr]=int(item.multiplier* 100)
+            if not prosody:
+                continue
+            textList.append("<prosody")
+            for attr,val in prosody.items():
+                textList.append(' %s="%d%%"'%(attr,val))
+            textList.append(">")
+        elif isinstance(item, PhonemeCommand):
+            # We can't use str.translate because we want to reject unknown characters.
+            try:
+                phonemes="".join([self.IPA_TO_ESPEAK[char] for char in item.ipa])
+                # There needs to be a space after the phoneme command.
+                # Otherwise, eSpeak will announce a subsequent SSML tag instead of processing it.
+                textList.append(u"[[%s]] "%phonemes)
+            except KeyError:
+                log.debugWarning("Unknown character in IPA string: %s"%item.ipa)
+                if item.text:
+                    textList.append(self._processText(item.text))
+        else:
+            log.error("Unknown speech: %s"%item)
+    # Close any open tags.
+    if langChanged:
+        textList.append("</voice>")
+    if prosody:
+        textList.append("</prosody>")
+    text=u"".join(textList)
+    # Added saving old rate and then resetting to that -- work around for https://github.com/nvaccess/nvda/issues/15221
+    # I'm not clear why this works since _set_rate() is called before the speech is finished speaking
+    oldRate = getSynth()._get_rate()
+    _espeak.speak(text)
+    getSynth()._set_rate(oldRate)
