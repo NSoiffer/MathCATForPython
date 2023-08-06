@@ -1,6 +1,11 @@
-target
-Cargo.lock
-NVDA-addon/addon/globalPlugins/MathCAT/Rules/
-NVDA-addon/addon/globalPlugins/MathCAT/libmathcat.pyd
-Example/*.pyd
-
+addon/doc/*.css
+addon/doc/en/
+*_docHandler.py
+*.html
+manifest.ini
+*.mo
+*.pot
+*.py[co]
+*.nvda-addon
+.sconsign.dblite
+/[0-9]*.[0-9]*.[0-9]*.json

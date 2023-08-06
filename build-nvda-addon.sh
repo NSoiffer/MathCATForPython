@@ -8,7 +8,7 @@ set PYO3_PYTHON_64=c:/Users/neils/AppData/Local/Programs/Python/Python39/python.
 set PYO3_PYTHON_32=c:/Users/neils/AppData/Local/Programs/Python/Python37-32/python.exe
 env PYO3_PYTHON=$PYO3_PYTHON_32 cargo build --target i686-pc-windows-msvc --release
 cp target/i686-pc-windows-msvc/release/libmathcat_py.dll NVDA-addon/addon/globalPlugins/MathCAT/libmathcat.pyd
-cd NVDA-addon
+# cd NVDA-addon
 sed 's/^import wx\.xrc/# import wx.xrc/' --in-place "addon/globalPlugins/MathCAT/MathCATgui.py"
 rm MathCAT-*.nvda-addon
 scons
