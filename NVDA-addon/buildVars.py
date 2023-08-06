@@ -29,7 +29,7 @@ addon_info = {
 		but the braille support is much better and includes both Nemeth and UEB Technical.
 		Translations to Indonesian, Spanish, and Vietnamese exist and other translations are in progress."""),
 	# version
-	"addon_version": "0.3.2",
+	"addon_version": "0.3.3",
 	# Author(s)
 	"addon_author": "Neil Soiffer <soiffer@alum.mit.edu>",
 	# URL for the add-on documentation support
@@ -60,7 +60,7 @@ addon_info = {
 # pythonSources = ["addon/globalPlugins/*.py"]
 # For more information on SCons Glob expressions please take a look at:
 # https://scons.org/doc/production/HTML/scons-user/apd.html
-pythonSources = ["addon/globalPlugins/mathcat.py"]
+pythonSources = ["addon/globalPlugins/*.py"]
 
 # Files that contain strings for translation. Usually your python sources
 i18nSources = pythonSources + ["buildVars.py"]
