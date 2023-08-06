@@ -1,0 +1,61 @@
+name: Check that all translatable strings have translators comments
+
+on:
+  push:
+    # Run this workflow if push tag or in master branch
+    tags: ["*"]
+    branches: [ main , master ]
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  buildPotFileAndCheckTranslatorsComments:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        pip install scons markdown
+        sudo apt update
+        sudo apt install gettext
+    
+    - name: Generate the .pot file
+      run: scons pot
+
+    - name: Download NVDA's checkPot.py
+      run: curl https://raw.githubusercontent.com/nvaccess/nvda/master/tests/checkPot.py -O
+
+    - name: Run checkPot
+      id: runCheckPot
+      #run: |
+      #  from . import checkPot
+      #  checkPot.EXPECTED_MESSAGES_WITHOUT_COMMENTS = set()
+      #  res = checkPot.checkPot('$(ls *.pot)')
+      #  exit(res)
+      #shell: python 
+      run: |
+        python -c "import checkPot;checkPot.EXPECTED_MESSAGES_WITHOUT_COMMENTS = set();exit(checkPot.checkPot('$(ls *.pot)'))"
+        echo "nb_errors=$?" >> "$GITHUB_OUTPUT"
+
+    - name: Notify
+      run: |
+        if [[ ${{ steps.runCheckPot.outputs.nb_errors }} == 0 ]];
+        then
+        echo "Translators comments: PASS"
+        exit 0;
+        else
+        echo "Translators comments: FAIL"
+        exit 1;
+        fi
+      
