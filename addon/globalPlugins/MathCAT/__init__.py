@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 # MathCAT add-on: generates speech, braille, and allows exploration of expressions written in MathML
 # The goal of this add-on is to replicate/improve upon the functionality of MathPlayer which has been discontinued.
 # Author: Neil Soiffer
