@@ -9,7 +9,7 @@ use zip::ZipArchive;
 fn main() {
     let archive = libmathcat::ZIPPED_RULE_FILES;
     let archive = std::io::Cursor::new(archive);
-    let location = PathBuf::from("NVDA-addon/addon/globalPlugins/MathCAT");
+    let location = PathBuf::from("addon/globalPlugins/MathCAT");
 
     let mut zip_archive = ZipArchive::new(archive).unwrap();
     zip_archive.extract(&location).expect("Zip extraction failed");
