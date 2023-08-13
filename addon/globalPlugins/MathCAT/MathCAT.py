@@ -333,9 +333,9 @@ class MathCAT(mathPres.MathPresentationProvider):
         # super(MathCAT, self).__init__(*args, **kwargs)
 
         try:
-            # IMPORTANT -- SetRulesDir must be the first call to libmathcat
+            # IMPORTANT -- SetRulesDir must be the first call to libmathcat besides GetVersion()
             rules_dir = path.join( path.dirname(path.abspath(__file__)), "Rules")
-            log.info(f"MathCAT installed. Using rules dir: {rules_dir}")
+            log.info(f"MathCAT {libmathcat.GetVersion()} installed. Using rules dir: {rules_dir}")
             libmathcat.SetRulesDir(rules_dir)
             libmathcat.SetPreference("TTS", "SSML")
         except Exception as e:
