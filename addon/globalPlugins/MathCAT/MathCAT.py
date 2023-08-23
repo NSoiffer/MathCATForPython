@@ -85,7 +85,7 @@ def getLanguageToUse(mathMl:str) -> str:
 def  ConvertSSMLTextForNVDA(text:str, language:str="") -> list:
     # MathCAT's default rate is 180 wpm.
     # Assume that 0% is 80 wpm and 100% is 450 wpm and scale accordingly.
-    # log.info(f"\nSpeech str: '{text}'")
+    # log.info(f"\nSpeech ({language}) str: '{text}'")
     if language == "":    # shouldn't happen
         language = "en"   # fallback to what was being used
     mathCATLanguageSetting = "en"   # fallback in case GetPreference fails for unknown reasons
@@ -109,7 +109,7 @@ def  ConvertSSMLTextForNVDA(text:str, language:str="") -> list:
     out = []
     if mathCATLanguageSetting != language:
         try:
-            # log.info(f"Setting language to {language}")
+            # log.info(f"ConvertSSMLTextForNVDA: setting language to {language}")
             libmathcat.SetPreference("Language", language)
             out.append(LangChangeCommand(language))
         except Exception as e:
@@ -153,6 +153,7 @@ def  ConvertSSMLTextForNVDA(text:str, language:str="") -> list:
             out.extend((" ", m.group(0), " "))
     if mathCATLanguageSetting != language:
         try:
+            # log.info(f"   ...: resetting language to {language}")
             libmathcat.SetPreference("Language", mathCATLanguageSetting)
             out.append(LangChangeCommand(None))
         except Exception as e:
@@ -160,10 +161,26 @@ def  ConvertSSMLTextForNVDA(text:str, language:str="") -> list:
     # log.info(f"Speech commands: '{out}'")
     return out
 
+def GetSpokenTextUsingLanguage(lang: str) -> str:
+    """
+    Returns the MathCAT generated text in the given language. This is used to resolve 'Auto'
+    """
+    try:
+        old_lang = libmathcat.GetPreference("Language")
+        libmathcat.SetPreference("Language", lang)
+        text = libmathcat.GetSpokenText()
+        libmathcat.SetPreference("Language", old_lang)
+    except Exception as e:
+        log.error(e) 
+        speech.speakMessage(_("Error in starting navigation of math: see NVDA error log for details"))
+        text = _("Error")
+    return text
+
 class MathCATInteraction(mathPres.MathInteractionNVDAObject):
-    # Put MathML on the clipboard using the two formats below (defined by MathML spec)
-    # We use both formats because some apps may only use one or the other
-    # Note: filed https://github.com/nvaccess/nvda/issues/13240 to make this usable outside of MathCAT
+    """Put MathML on the clipboard using the two formats below (defined by MathML spec)
+       We use both formats because some apps may only use one or the other
+       Note: filed https://github.com/nvaccess/nvda/issues/13240 to make this usable outside of MathCAT
+    """
     CF_MathML = windll.user32.RegisterClipboardFormatW("MathML")
     CF_MathML_Presentation = windll.user32.RegisterClipboardFormatW("MathML Presentation")
     # log.info("2**** MathCAT registering data formats: CF_MathML %x, CF_MathML_Presentation %x" % (CF_MathML, CF_MathML_Presentation))
@@ -177,7 +194,10 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
     def reportFocus(self):
         super(MathCATInteraction, self).reportFocus()
         try:
+            old_lang = libmathcat.GetPreference("Language")   # handle Auto
+            libmathcat.SetPreference("Language", self._language)
             text = libmathcat.DoNavigateCommand("ZoomIn")
+            libmathcat.SetPreference("Language", old_lang)
             speech.speak(ConvertSSMLTextForNVDA(text, self._language))
         except Exception as e:
             log.error(e)
@@ -219,8 +239,11 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         try:
             if gesture != None:     # == None when initial focus -- handled in reportFocus()
                 modNames = gesture.modifierNames
+                old_lang = libmathcat.GetPreference("Language")   # handle Auto
+                libmathcat.SetPreference("Language", self._language)
                 text = libmathcat.DoNavigateKeyPress(gesture.vkCode,
                     "shift" in modNames, "control" in modNames, "alt" in modNames, False)
+                libmathcat.SetPreference("Language", old_lang)
                 speech.speak(ConvertSSMLTextForNVDA(text, self._language))
             
             # update the braille to reflect the nav position (might be excess code, but it works)
@@ -362,9 +385,11 @@ class MathCAT(mathPres.MathPresentationProvider):
             if PitchCommand in supported_commands:
                 libmathcat.SetPreference("CapitalLetters_Pitch", str(synthConfig["capPitchChange"]))
             if self._add_sounds():
-                return [BeepCommand(800,25)] + ConvertSSMLTextForNVDA(libmathcat.GetSpokenText(), self._language) + [BeepCommand(600,15)]
+                return [BeepCommand(800,25)] + \
+                        ConvertSSMLTextForNVDA(GetSpokenTextUsingLanguage(self._language), self._language) + \
+                        [BeepCommand(600,15)]
             else:
-                return ConvertSSMLTextForNVDA(libmathcat.GetSpokenText(), self._language)
+                return ConvertSSMLTextForNVDA(GetSpokenTextUsingLanguage(self._language), self._language)
 
         except Exception as e:
             log.error(e)

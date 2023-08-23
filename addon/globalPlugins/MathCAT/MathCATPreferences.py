@@ -2,8 +2,11 @@
 
 import math
 import wx
+from . import libmathcat
 from . import MathCATgui
 from . import yaml
+from .MathCAT import getLanguageToUse
+
 import os
 import glob
 import sys
@@ -33,7 +36,7 @@ Navigation_NavMode = ("Enhanced", "Simple", "Character")
 Navigation_NavVerbosity = ("Terse", "Medium", "Verbose")
 #Navigation_AutoZoomOut is boolean
 Braille_BrailleNavHighlight = ("Off", "FirstChar", "EndPoints", "All")
-Braille_BrailleCode = ("Nemeth", "UEB", "Vietnam")
+Braille_BrailleCode = ("CMU", "Nemeth", "UEB", "Vietnam")
 
 class UserInterface(MathCATgui.MathCATPreferencesDialog):
     def __init__(self,parent):
@@ -247,6 +250,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         #clear the language names in the dialog
         self.m_choiceLanguage.Clear()
         #populate the available language names in the dialog
+        self.m_choiceLanguage.Append(_("Auto"))
         for f in os.listdir(UserInterface.path_to_languages_folder()):
              if os.path.isdir(UserInterface.path_to_languages_folder()+"\\"+f):
                  if languages_dict.get(f, 'missing') == 'missing':
@@ -254,16 +258,24 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                  else:
                     self.m_choiceLanguage.Append(languages_dict[f] + " (" + f + ")")
 
-    def GetLanguageCode(self):
+    def GetLanguageCode(self, expand_auto: bool):
         lang_selection = self.m_choiceLanguage.GetStringSelection()
-        lang_code = lang_selection[lang_selection.find("(")+1 : lang_selection.find(")")]
+        if lang_selection == "Auto":
+            if not(expand_auto):
+                return "Auto"
+            lang_code = getLanguageToUse("")
+            region_start = lang_code.find('-')
+            if region_start != -1:
+                lang_code = lang_code[0:region_start]
+        else:
+            lang_code = lang_selection[lang_selection.find("(")+1 : lang_selection.find(")")]
         return lang_code
 
     def GetSpeechStyles(self, this_SpeechStyle: str):
         #clear the SpeechStyle choices
         self.m_choiceSpeechStyle.Clear()
         #get the currently selected language code
-        this_language_code = UserInterface.GetLanguageCode(self)
+        this_language_code = UserInterface.GetLanguageCode(self, True)
 
         this_path = os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\Rules\\Languages\\"+this_language_code+"\\*_Rules.yaml"
         #populate the m_choiceSpeechStyle choices
@@ -325,7 +337,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         global user_preferences
         # read the values from the UI and update the user preferences dictionary
         user_preferences["Speech"]["Impairment"] = Speech_Impairment[self.m_choiceImpairment.GetSelection()]
-        user_preferences["Speech"]["Language"] = self.GetLanguageCode()
+        user_preferences["Speech"]["Language"] = self.GetLanguageCode(False)
         user_preferences["Speech"]["SpeechStyle"] = self.m_choiceSpeechStyle.GetStringSelection()
         user_preferences["Speech"]["Verbosity"] = Speech_Verbosity[self.m_choiceSpeechAmount.GetSelection()]
         user_preferences["Speech"]["MathRate"] = self.m_sliderRelativeSpeed.GetValue()
@@ -441,13 +453,11 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         #Braille:
         #  BrailleNavHighlight: EndPoints   # Highlight with dots 7 & 8 the current nav node -- values are Off, FirstChar, EndPoints, All
         UserInterface.validate("Braille", "BrailleNavHighlight", ["Off", "FirstChar", "EndPoints", "All"], "EndPoints")
-        #  BrailleCode: "Nemeth"                # Any supported braille code (currently Nemeth, UEB, Vietnam)
-        UserInterface.validate("Braille", "BrailleCode", ["Nemeth", "UEB", "Vietnam"], "Nemeth")
+        #  BrailleCode: "Nemeth"                # Any supported braille code (currently CMU, Nemeth, UEB, Vietnam)
+        UserInterface.validate("Braille", "BrailleCode", ["CMU", "Nemeth", "UEB", "Vietnam"], "Nemeth")
 
-    @staticmethod
-    def write_user_preferences():
+    def write_user_preferences(self):
         # Language is special because it is set elsewhere by SetPreference which overrides the user_prefs -- so set it here
-        from . import libmathcat
         libmathcat.SetPreference("Language", user_preferences["Speech"]["Language"])
         if not os.path.exists(UserInterface.path_to_user_preferences_folder()):
             #create a folder for the user preferences
@@ -474,7 +484,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 
     def OnClickOK(self,event):
         UserInterface.get_ui_values(self)
-        UserInterface.write_user_preferences()
+        UserInterface.write_user_preferences(self)
         self.Destroy()
  
     def OnClickCancel(self,event):
@@ -482,7 +492,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
  
     def OnClickApply(self,event):
         UserInterface.get_ui_values(self)
-        UserInterface.write_user_preferences()
+        UserInterface.write_user_preferences(self)
  
     def OnClickReset(self,event):
         UserInterface.load_default_preferences()
