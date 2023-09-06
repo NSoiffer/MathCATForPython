@@ -126,7 +126,7 @@ def  ConvertSSMLTextForNVDA(text:str, language:str="") -> list:
             if use_character:
                 out.extend((CharacterModeCommand(True), ch, CharacterModeCommand(False)))
             else:
-                out.extend((" ", "eigh" if ch=="a" and language=="en" else ch, " "))
+                out.extend((" ", "eigh" if ch=="a" and language.startswith("en") else ch, " "))
         elif m.lastgroup == "beep":
             out.append(BeepCommand(2000, 50))
         elif m.lastgroup == "pitch":
