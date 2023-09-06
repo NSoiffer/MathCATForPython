@@ -8,7 +8,7 @@ n'est plus pris en charge. MathCAT génère la parole et le braille à partir
 de  MathML. La parole produite par MathCAT pour les mathématiques est
 améliorée avec intonation afin qu'elle semble plus naturelle. Vous pouvez
 naviguer dans la parole de trois façons en utilisant les mêmes commandes que
-dans MathPlayer. De plus, le nœud de navigation est indiqué sur lafficheur
+dans MathPlayer. De plus, le nœud de navigation est indiqué sur l'afficheur
 braille. Nemeth et UEB technique sont pris en charge.
 
 MathCAT a un certain nombre d'options de configuration qui contrôlent la
@@ -64,7 +64,7 @@ pas encore complètement établi.
 * Beaucoup de correctifs de bogues
 * Améliorations de la parole
 * Un paramètre de préférence pour contrôler la durée de la pause (fonctionne
-  avec le changement du débit de la parole relatif pour les mathématiques)
+  avec le changement du débit relatif de la parole pour les mathématiques)
 * Prise en charge de la reconnaissance de la notation chimique et à la
   verbaliser de manière appropriée
 * Traductions vers indonésien et vietnamien
@@ -101,7 +101,8 @@ de bogues pour Nemeth et UEB.
 Remarque : il y a maintenant une option pour obtenir la norme en braille
 Vietnamien comme sortie braille. Il s'agit toujours d'un travail en cours et
 il y a trop de bogues pour être utilisé autrement que pour les tests. Je
-m'attends à ce qu
+m'attends à ce que la prochaine version de MathCAT contienne une
+implémentation fiable.
 
 [[!tag dev stable]]
 

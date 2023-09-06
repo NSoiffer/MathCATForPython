@@ -1,0 +1,269 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the MathCAT package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: MathCAT 0.3.3\n"
+"Report-Msgid-Bugs-To: nvda-translations@groups.io\n"
+"POT-Creation-Date: 2023-08-14 03:25+0000\n"
+"PO-Revision-Date: 2023-08-14 21:37+0300\n"
+"Last-Translator: Umut KORKMAZ <umutkork@gmail.com>\n"
+"Language-Team: \n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.3.2\n"
+
+msgid "Error in starting navigation of math: see NVDA error log for details"
+msgstr ""
+"Matematik gezintisi başlatılırken hata oluştu: ayrıntılar için NVDA hata "
+"günlüğüne bakın"
+
+msgid "Error in brailling math: see NVDA error log for details"
+msgstr "Braille matematikte hata: ayrıntılar için NVDA hata günlüğüne bakın"
+
+msgid "Error in navigating math: see NVDA error log for details"
+msgstr "Matematikte gezinme hatası: ayrıntılar için NVDA hata günlüğüne bakın"
+
+#. For translators: Message to be announced during Keyboard Help
+msgid "Copy navigation focus to clipboard"
+msgstr "Gezinme odağını panoya kopyala"
+
+#. For translators: Name of the section in "Input gestures" dialog.
+msgid "Clipboard"
+msgstr "Pano"
+
+msgid "copy"
+msgstr "kopyala"
+
+msgid "unable to copy math: see NVDA error log for details"
+msgstr "matematik kopyalanamıyor: ayrıntılar için NVDA hata günlüğüne bakın"
+
+msgid "MathCAT initialization failed: see NVDA error log for details"
+msgstr ""
+"MathCAT başlatma başarısız oldu: ayrıntılar için NVDA hata günlüğüne bakın"
+
+msgid "Illegal MathML found: see NVDA error log for details"
+msgstr "Geçersiz MathML bulundu: ayrıntılar için NVDA hata günlüğüne bakın"
+
+msgid "Error in speaking math: see NVDA error log for details"
+msgstr "Matematik konuşma hatası: ayrıntılar için NVDA hata günlüğüne bakın"
+
+msgid ""
+"<prosody rate='XXX%'>the square root of x squared plus y squared</prosody>"
+msgstr "<prozodi oranı='XXX%'>x kare artı y karenin karekökü</prozodi>"
+
+msgid ""
+"<prosody rate='{rate}%'>the fraction with numerator <break "
+"time='{300*pause_factor//100}ms'/> <mark name='M63i335o-4'/> <say-as "
+"interpret-as='characters'>x</say-as> to the <mark name='M63i335o-5'/> <say-"
+"as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph=''>-th</"
+"phoneme> power <break time='{128*pause_factor//100}ms'/> <mark "
+"name='M63i335o-6'/> plus  <mark name='M63i335o-7'/> 1 <break "
+"time='{300*pause_factor//100}ms'/> and denominator <mark name='M63i335o-10'/"
+"> <say-as interpret-as='characters'>x</say-as> to the <mark "
+"name='M63i335o-11'/> <say-as interpret-as='characters'>n</say-as> <phoneme "
+"alphabet='ipa' ph=''>-th</phoneme> power <break time='{128*pause_factor//100}"
+"ms'/> <mark name='M63i335o-12'/> minus  <mark name='M63i335o-13'/> 1 <break "
+"time='{600*pause_factor//100}ms'/>end fraction <break "
+"time='{150*pause_factor//100}ms'/>"
+msgstr ""
+"<prosody rate='{rate}%'>the fraction with numerator <break "
+"time='{300*pause_factor//100}ms'/> <mark name='M63i335o-4'/> <say-as "
+"interpret-as='characters'>x</say-as> to the <mark name='M63i335o-5'/> <say-"
+"as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph=''>-th</"
+"phoneme> power <break time='{128*pause_factor//100}ms'/> <mark "
+"name='M63i335o-6'/> plus  <mark name='M63i335o-7'/> 1 <break "
+"time='{300*pause_factor//100}ms'/> and denominator <mark name='M63i335o-10'/"
+"> <say-as interpret-as='characters'>x</say-as> to the <mark "
+"name='M63i335o-11'/> <say-as interpret-as='characters'>n</say-as> <phoneme "
+"alphabet='ipa' ph=''>-th</phoneme> power <break time='{128*pause_factor//100}"
+"ms'/> <mark name='M63i335o-12'/> minus  <mark name='M63i335o-13'/> 1 <break "
+"time='{600*pause_factor//100}ms'/>end fraction <break "
+"time='{150*pause_factor//100}ms'/>"
+
+msgid "MathCAT Preferences"
+msgstr "MathCAT Tercihleri"
+
+msgid "Categories:"
+msgstr "Kategoriler:"
+
+msgid "Speech"
+msgstr "Konuşma"
+
+msgid "Navigation"
+msgstr "Gezinme"
+
+msgid "Braille"
+msgstr "Braille"
+
+msgid "Generate speech for:"
+msgstr "Aşağıdakiler için konuş:"
+
+msgid "Learning disabilities"
+msgstr "Öğrenme güçlüğü çekenler"
+
+msgid "Blindness"
+msgstr "Körler"
+
+msgid "Low vision"
+msgstr "Az görenler"
+
+msgid "Language:"
+msgstr "Dil:"
+
+msgid "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+msgstr "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+msgid "Speech style:"
+msgstr "Konuşma stili:"
+
+msgid "xxxxxxxxxxxxxxxx"
+msgstr "xxxxxxxxxxxxxxxx"
+
+msgid "Speech amount:"
+msgstr "Konuşma Düzeği:"
+
+msgid "Terse"
+msgstr "Kısa"
+
+msgid "Medium"
+msgstr "Orta"
+
+msgid "Verbose"
+msgstr "Ayrıntılı"
+
+msgid "Relative speech rate:"
+msgstr "Oransal konuşma hızı:"
+
+msgid "Pause factor:"
+msgstr "Duraklatma faktörü:"
+
+msgid "Make a sound when starting/ending math speech"
+msgstr "Matematik konuşmasını başlatırken/bitirirken ses çal"
+
+msgid "Subject area to be used when it cannot be determined automatically:"
+msgstr "Otomatik olarak belirlenemediği durumlarda kullanılacak konu alanı:"
+
+msgid "General"
+msgstr "Genel"
+
+msgid "Speech for chemical formulas:"
+msgstr "Kimyasal formüller için konuşma:"
+
+msgid "Spell it out (H 2 O)"
+msgstr "Hecele (H 2 O)"
+
+msgid "Off (H sub 2 O)"
+msgstr "Kapalı (H sub 2 O)"
+
+msgid "a page"
+msgstr "bir sayfa"
+
+msgid "Navigation mode to use when beginning to navigate an equation:"
+msgstr "Bir denklemde dolaşmaya başlarken kullanılacak gezinme modu:"
+
+msgid "Enhanced"
+msgstr "Gelişmiş"
+
+msgid "Simple"
+msgstr "Basit"
+
+msgid "Character"
+msgstr "Karakter"
+
+msgid "Reset navigation mode on entry to an expression"
+msgstr "Bir ifadeye girişte gezinme modunu sıfırla"
+
+msgid "Navigation speech to use when beginning to navigate an equation:"
+msgstr "Bir denklemde gezinmeye başlarken kullanılacak gezinme konuşması:"
+
+msgid "Speak"
+msgstr "Konuşma"
+
+msgid "Describe/overview"
+msgstr "Açıklama/genel bakış"
+
+msgid "Reset navigation speech on entry to an expression"
+msgstr "Bir ifadeye girişte gezinme konuşmasını sıfırla"
+
+msgid "Automatic zoom out of 2D notations"
+msgstr "2B gösterimlerde otomatik uzaklaştırma"
+
+msgid "Speech amount for navigation:"
+msgstr "Gezinme için konuşma düzeyi:"
+
+msgid "Braille math code for refreshable displays:"
+msgstr "Yenilenebilir ekranlar için Braille matematik kodu:"
+
+msgid "Nemeth"
+msgstr "Nemet"
+
+msgid "UEB"
+msgstr "UEB"
+
+msgid "Vietnam"
+msgstr "Vietnam"
+
+msgid "Highlight with dots 7 && 8 the current nav node:"
+msgstr "Geçerli gezinme noktasını 7 ve 8 noktalarıyla &vurgulayın:"
+
+msgid "Off"
+msgstr "Kapalı"
+
+msgid "First character"
+msgstr "İlk karakter"
+
+msgid "Endpoints"
+msgstr "Uç noktalar"
+
+msgid "All"
+msgstr "Tümü"
+
+msgid "OK"
+msgstr "Tamam"
+
+msgid "Cancel"
+msgstr "İptal"
+
+msgid "Apply"
+msgstr "Uygula"
+
+msgid "Reset to defaults"
+msgstr "Varsayılanlara sıfırla"
+
+msgid "Help"
+msgstr "Yardım"
+
+msgid "&MathCAT Settings..."
+msgstr "&MathCAT Ayarları..."
+
+#. Add-on summary, usually the user visible name of the addon.
+#. Translators: Summary for this add-on
+#. to be shown on installation and add-on information found in Add-ons Manager.
+msgid "MathCAT: speech and braille from MathML"
+msgstr "MathCAT: MathML'den konuşma ve braille"
+
+#. Add-on description
+#. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
+msgid ""
+"MathCAT is a replacement for MathPlayer which has been discontinued.\n"
+"\t\tIt provides speech and braille support, and also supports MathPlayer's "
+"three modes of navigation.\n"
+"\t\tThe speech quality is not quite as good as MathPlayer's speech yet,\n"
+"\t\tbut the braille support is much better and includes both Nemeth and UEB "
+"Technical.\n"
+"\t\tTranslations to Indonesian, Spanish, and Vietnamese exist and other "
+"translations are in progress."
+msgstr ""
+"MathCAT, kullanımdan kaldırılan MathPlayer'ın yerini almıştır.\n"
+"\t\tKonuşma ve braille desteği sağlar ve ayrıca MathPlayer'ın üç gezinme "
+"modunu destekler.\n"
+"\t\tKonuşma kalitesi henüz MathPlayer'ın konuşması kadar iyi değil,\n"
+"\t\tancak braille desteği çok daha iyi ve hem Nemeth'i hem de UEB Teknik'i "
+"içeriyor.\n"
+"\t\tEndonezce, İspanyolca ve Vietnamca çeviriler mevcuttur ve diğer "
+"çeviriler devam etmektedir."
