@@ -59,3 +59,18 @@ This release has a number of bug fixes in it. The major new features and bug fix
 There are lots of small tweaks to the speech and some bug fixes for both Nemeth and UEB.
 
 Note: there is now an option to get Vietnam's braille standard as braille output. This is still a work in progress and is too buggy to be used other than for testing. I expect the next MathCAT release will contain a reliable implementation.
+
+### Version 0.3.7
+Braille:
+* Dialog has been internationalized (many thanks to the translators!)
+* Initial implementation of CMU -- braille code used in Spain and several Portuguese speaking countries
+* Significant improvements to Vietnamese braille
+* Change relative rate dialog slider to have a maximum value of 100% (now only allows setting slower rates). Also, added step sizes so it is easier to raise/lower the rate significantly.
+* Fix some UEB bugs and added some characters for UEB
+
+Other fixes:
+* Improvements to Vietnamese speech
+* Fixed bug with OneCore voices saying "a"
+* Fixed some navigation bugs when `AutoZoomOut` is False (not the default)
+* Fix updating around language changes and some other dialog changes so they take effect immediately upon clicking "Apply" or "OK".
+
