@@ -45,6 +45,12 @@ jobs:
         sudo apt install gettext
     - name: Build
       run: scons version=${{ github.sha }}
+    - uses: actions/checkout@v2
+    - name: Set up Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
     - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
       with:
