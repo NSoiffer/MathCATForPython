@@ -10,13 +10,15 @@
 #   python3.dll has "Copyright © 2001-2022 Python Software Foundation; All Rights Reserved"
 
 
-import globalPlugins                        # we are a global plugin
 import globalPluginHandler                  # we are a global plugin
 import globalVars
 from logHandler import log                  # logging
 import mathPres                             # math plugin stuff
 from gui import mainFrame
 import wx
+
+import addonHandler
+addonHandler.initTranslation() 
 
 from .MathCAT import MathCAT
 from .MathCATPreferences import UserInterface

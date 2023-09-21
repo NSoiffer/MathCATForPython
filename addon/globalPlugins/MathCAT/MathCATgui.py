@@ -13,6 +13,9 @@ import wx
 import gettext
 _ = gettext.gettext
 
+import addonHandler
+addonHandler.initTranslation() 
+
 ###########################################################################
 ## Class MathCATPreferencesDialog
 ###########################################################################

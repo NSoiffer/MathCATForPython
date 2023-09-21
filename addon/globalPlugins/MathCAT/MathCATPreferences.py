@@ -11,6 +11,9 @@ import webbrowser
 import gettext
 _ = gettext.gettext
 
+import addonHandler
+addonHandler.initTranslation() 
+
 from logHandler import log                  # logging
 from typing import Any, Dict, Union
 

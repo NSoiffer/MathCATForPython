@@ -26,6 +26,10 @@ from synthDriverHandler import getSynth     # speech engine param setting
 import winUser                              # clipboard manipulation
 import gettext
 _ = gettext.gettext
+
+import addonHandler
+addonHandler.initTranslation() 
+
 from ctypes import windll                   # register clipboard formats
 from typing import Any, Optional
 
