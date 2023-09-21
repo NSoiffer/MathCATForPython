@@ -32,6 +32,9 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: 3.8
+    - name: Build Rust Project
+      run: |
+        cargo build --release
     - name: Install dependencies
       run: |
         pip install scons markdown
