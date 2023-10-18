@@ -472,7 +472,12 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         rate = self.m_sliderRelativeSpeed.GetValue()
         pf_slider = self.m_sliderPauseFactor.GetValue()
         pause_factor = 0 if pf_slider==0 else round(PAUSE_FACTOR_SCALE *math.pow(PAUSE_FACTOR_LOG_BASE, pf_slider))
-        text = _(f"<prosody rate='{rate}%'>the fraction with numerator <break time='{300*pause_factor//100}ms'/> <mark name='M63i335o-4'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-5'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{128*pause_factor//100}ms'/> <mark name='M63i335o-6'/> plus  <mark name='M63i335o-7'/> 1 <break time='{300*pause_factor//100}ms'/> and denominator <mark name='M63i335o-10'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-11'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{128*pause_factor//100}ms'/> <mark name='M63i335o-12'/> minus  <mark name='M63i335o-13'/> 1 <break time='{600*pause_factor//100}ms'/>end fraction <break time='{150*pause_factor//100}ms'/>")
+        text = _("<prosody rate='{rate}%'>the fraction with numerator <break time='{pause_factor_300}ms'/> <mark name='M63i335o-4'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-5'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{pause_factor_128}ms'/> <mark name='M63i335o-6'/> plus  <mark name='M63i335o-7'/> 1 <break time='{pause_factor_300}ms'/> and denominator <mark name='M63i335o-10'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-11'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{pause_factor_128}ms'/> <mark name='M63i335o-12'/> minus  <mark name='M63i335o-13'/> 1 <break time='{pause_factor_600}ms'/>end fraction <break time='{pause_factor_150}ms'/>").format(
+            rate=rate,
+            pause_factor_128=128*pause_factor//100,
+            pause_factor_150=150*pause_factor//100,
+            pause_factor_300=300*pause_factor//100,
+            pause_factor_600=600*pause_factor//100)
         speak( ConvertSSMLTextForNVDA(text) )
 
     def OnClickOK(self,event):
