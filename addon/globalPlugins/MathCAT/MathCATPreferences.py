@@ -108,7 +108,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             "dv": "ދިވެހިބަސް",
             "dz": "རྫོང་ཁ",
             "ee": "Ɛʋɛ",
-            "el": "Ellêniká",
+            "el": "Ελληνικά",
             "en": "English",
             "eo": "Esperanto",
             "es": "Español",
