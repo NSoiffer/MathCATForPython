@@ -26,10 +26,11 @@ addon_info = {
 	"addon_description": _("""MathCAT is a replacement for MathPlayer which has been discontinued.
 		It provides speech and braille support, and also supports MathPlayer's three modes of navigation.
 		The speech quality is not quite as good as MathPlayer's speech yet,
-		but the braille support is much better and includes both Nemeth and UEB Technical. It also includes support for CMU (Spanish/Portuguese) and Vietnamese braille standards.
+		but the braille support is much better and includes both Nemeth and UEB Technical.
+		It also includes support for CMU (Spanish/Portuguese) and Vietnamese braille code standards.
 		Translations to Indonesian, Spanish, and Vietnamese exist and other translations are in progress."""),
 	# version
-	"addon_version": "0.3.7",
+	"addon_version": "0.3.8",
 	# Author(s)
 	"addon_author": "Neil Soiffer <soiffer@alum.mit.edu>",
 	# URL for the add-on documentation support
@@ -41,7 +42,7 @@ addon_info = {
 	# Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)
 	"addon_minimumNVDAVersion": "2019.3",
 	# Last NVDA version supported/tested (e.g. "2018.4.0", ideally more recent than minimum version)
-	"addon_lastTestedNVDAVersion": "2023.1",
+	"addon_lastTestedNVDAVersion": "2024.1",
 	# Add-on update channel (default is None, denoting stable releases,
 	# and for development releases, use "dev".)
 	# Do not change unless you know what you are doing!
