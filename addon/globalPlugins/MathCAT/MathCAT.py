@@ -449,6 +449,7 @@ def patched_speak(self, speechSequence: SpeechSequence):  # noqa: C901
         elif type(item) in self.PROSODY_ATTRS:
             if prosody:
                 # Close previous prosody tag.
+                textList.append('<break time="1ms" />')  # hack added for cutoff speech (github.com/NSoiffer/MathCATForPython/issues/55)
                 textList.append("</prosody>")
             attr=self.PROSODY_ATTRS[type(item)]
             if item.multiplier==1:
@@ -486,6 +487,7 @@ def patched_speak(self, speechSequence: SpeechSequence):  # noqa: C901
     text=u"".join(textList)
     # Added saving old rate and then resetting to that -- work around for https://github.com/nvaccess/nvda/issues/15221
     # I'm not clear why this works since _set_rate() is called before the speech is finished speaking
-    oldRate = getSynth()._get_rate()
+    synth = getSynth()
+    oldRate = synth._get_rate()
     _espeak.speak(text)
-    getSynth()._set_rate(oldRate)
+    synth._set_rate(oldRate)
