@@ -101,6 +101,12 @@ def  ConvertSSMLTextForNVDA(text:str, language:str="") -> list:
     synth = getSynth()
     _monkeyPatchESpeak()
     wpm = synth._percentToParam(synth.rate, 80, 450)
+    try:
+        if synth.rateBoost:
+            wpm *= 3    # a guess based on espeak -- not sure what oneCore does
+    except AttributeError:
+        pass            # SAPI voices don't have 'rateBoost' attr
+
     breakMulti = 180.0 / wpm
     supported_commands = synth.supportedCommands
     use_break = BreakCommand in supported_commands
@@ -485,6 +491,7 @@ def patched_speak(self, speechSequence: SpeechSequence):  # noqa: C901
     if prosody:
         textList.append("</prosody>")
     text=u"".join(textList)
+    # log.info(f"\ntext={text}")
     # Added saving old rate and then resetting to that -- work around for https://github.com/nvaccess/nvda/issues/15221
     # I'm not clear why this works since _set_rate() is called before the speech is finished speaking
     synth = getSynth()
