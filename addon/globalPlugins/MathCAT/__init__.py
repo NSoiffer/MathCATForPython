@@ -38,7 +38,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
             mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.on_settings, self.settings)
 
     def on_settings(self, evt):
-        mainFrame._popupSettingsDialog(UserInterface)
+        mainFrame.popupSettingsDialog(UserInterface)
 
     def terminate(self):
         try:
