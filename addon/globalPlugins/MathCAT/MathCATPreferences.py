@@ -249,13 +249,13 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         languages_dict = UserInterface.LanguagesDict()
         #clear the language names in the dialog
         self.m_choiceLanguage.Clear()
-        #populate the available language names in the dialog
         self.m_choiceLanguage.Append(_("Use Voice's Language") + " (Auto)")
+        #populate the available language names in the dialog
         for f in os.listdir(UserInterface.path_to_languages_folder()):
-            if os.path.isdir(UserInterface.path_to_languages_folder()+"\\"+f):
-                if languages_dict.get(f, 'missing') == 'missing':
-                    self.m_choiceLanguage.Append(f + " (" + f + ")")
-                else:
+             if os.path.isdir(UserInterface.path_to_languages_folder()+"\\"+f):
+                 if languages_dict.get(f, 'missing') == 'missing':
+                     self.m_choiceLanguage.Append(f + " (" + f + ")")
+                 else:
                     self.m_choiceLanguage.Append(languages_dict[f] + " (" + f + ")")
 
     def GetLanguageCode(self):
@@ -264,10 +264,18 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         return lang_code
 
     def GetSpeechStyles(self, this_SpeechStyle: str):
+        from speech import getCurrentLanguage
         #clear the SpeechStyle choices
         self.m_choiceSpeechStyle.Clear()
         #get the currently selected language code
         this_language_code = UserInterface.GetLanguageCode(self)
+        log.info(f"\nthis lang={this_language_code}, getCurrentLanguage = {getCurrentLanguage()}")
+
+        if this_language_code == 'Auto':
+            # list the speech styles for the current voice rather than have none listed
+            this_language_code = getCurrentLanguage().lower().replace("_", "-")           
+            # FIX: when dialog is aware of regional dialects, remove this next line that removes the dialect part
+            this_language_code = this_language_code.split('-')[0]   # grab the first part
 
         this_path = os.path.expanduser('~')+"\\AppData\\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\Rules\\Languages\\"+this_language_code+"\\*_Rules.yaml"
         #populate the m_choiceSpeechStyle choices

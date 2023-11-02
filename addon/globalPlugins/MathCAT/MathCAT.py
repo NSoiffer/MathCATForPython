@@ -32,6 +32,7 @@ addonHandler.initTranslation()
 
 from ctypes import windll                   # register clipboard formats
 from typing import Any, Optional
+from speech import getCurrentLanguage
 
 from . import libmathcat
 
@@ -71,7 +72,7 @@ PROSODY_COMMANDS = {
 RE_MATH_LANG = re.compile(r'''<math .*(xml:)?lang=["']([^'"]+)["'].*>''')
 def getLanguageToUse(mathMl:str) -> str:
     """Get the language specified in a math tag if the language pref is Auto, else the language preference."""
-    mathCATLanguageSetting = "Auto"
+    mathCATLanguageSetting = 'Auto'
     try:
         # ignore regional differences if the MathCAT language setting doesn't have it.
         mathCATLanguageSetting = libmathcat.GetPreference("Language")
@@ -82,7 +83,7 @@ def getLanguageToUse(mathMl:str) -> str:
         return mathCATLanguageSetting
     
     languageMatch = RE_MATH_LANG.search(mathMl)
-    language = languageMatch.group(2) if languageMatch else speech.getCurrentLanguage() # seems to be current voice's language
+    language = languageMatch.group(2) if languageMatch else getCurrentLanguage()  # seems to be current voice's language
     language = language.lower().replace("_", "-")
     return language
 
