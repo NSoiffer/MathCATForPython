@@ -23,7 +23,7 @@ addonHandler.initTranslation()
 class MathCATPreferencesDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"MathCAT Preferences"), pos = wx.DefaultPosition, size = wx.Size( -1,-1 ), style = wx.DEFAULT_DIALOG_STYLE )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _("MathCAT Preferences"), pos = wx.DefaultPosition, size = wx.Size( -1,-1 ), style = wx.DEFAULT_DIALOG_STYLE )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -34,12 +34,12 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		self.m_panelCategories = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizerCategories = wx.BoxSizer( wx.VERTICAL )
 
-		self.m_staticTextCategories = wx.StaticText( self.m_panelCategories, wx.ID_ANY, _(u"Categories:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticTextCategories = wx.StaticText( self.m_panelCategories, wx.ID_ANY, _("Categories:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextCategories.Wrap( -1 )
 
 		bSizerCategories.Add( self.m_staticTextCategories, 0, wx.ALL, 5 )
 
-		m_listBoxPreferencesTopicChoices = [ _(u"Speech"), _(u"Navigation"), _(u"Braille") ]
+		m_listBoxPreferencesTopicChoices = [ _("Speech"), _("Navigation"), _("Braille") ]
 		self.m_listBoxPreferencesTopic = wx.ListBox( self.m_panelCategories, wx.ID_ANY, wx.Point( -1,-1 ), wx.Size( -1,-1 ), m_listBoxPreferencesTopicChoices, wx.LB_NO_SB|wx.LB_SINGLE )
 		bSizerCategories.Add( self.m_listBoxPreferencesTopic, 0, wx.ALL, 5 )
 
@@ -61,12 +61,12 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerImpairment = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticTextImpairment = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _(u"Generate speech for:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticTextImpairment = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Generate speech for:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextImpairment.Wrap( -1 )
 
 		bSizerImpairment.Add( self.m_staticTextImpairment, 0, wx.ALL, 5 )
 
-		m_choiceImpairmentChoices = [ _(u"Learning disabilities"), _(u"Blindness"), _(u"Low vision") ]
+		m_choiceImpairmentChoices = [ _("Learning disabilities"), _("Blindness"), _("Low vision") ]
 		self.m_choiceImpairment = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceImpairmentChoices, 0 )
 		self.m_choiceImpairment.SetSelection( 1 )
 		bSizerImpairment.Add( self.m_choiceImpairment, 0, wx.ALL, 5 )
@@ -76,12 +76,12 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerLanguage = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticTextLanguage = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _(u"Language:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticTextLanguage = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Language:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextLanguage.Wrap( -1 )
 
 		bSizerLanguage.Add( self.m_staticTextLanguage, 0, wx.ALL, 5 )
 
-		m_choiceLanguageChoices = [ _(u"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") ]
+		m_choiceLanguageChoices = [ _("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") ]
 		self.m_choiceLanguage = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceLanguageChoices, 0 )
 		self.m_choiceLanguage.SetSelection( 0 )
 		bSizerLanguage.Add( self.m_choiceLanguage, 0, wx.ALL, 5 )
@@ -91,12 +91,12 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerSpeechStyle = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticTextSpeechStyle = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _(u"Speech style:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticTextSpeechStyle = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Speech style:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextSpeechStyle.Wrap( -1 )
 
 		bSizerSpeechStyle.Add( self.m_staticTextSpeechStyle, 0, wx.ALL, 5 )
 
-		m_choiceSpeechStyleChoices = [ _(u"xxxxxxxxxxxxxxxx") ]
+		m_choiceSpeechStyleChoices = [ _("xxxxxxxxxxxxxxxx") ]
 		self.m_choiceSpeechStyle = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSpeechStyleChoices, 0 )
 		self.m_choiceSpeechStyle.SetSelection( 0 )
 		bSizerSpeechStyle.Add( self.m_choiceSpeechStyle, 0, wx.ALL, 5 )
@@ -106,12 +106,12 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizer71 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticTextSpeechAmount = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _(u"Speech amount:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticTextSpeechAmount = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Speech amount:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextSpeechAmount.Wrap( -1 )
 
 		bSizer71.Add( self.m_staticTextSpeechAmount, 0, wx.ALL, 5 )
 
-		m_choiceSpeechAmountChoices = [ _(u"Terse"), _(u"Medium"), _(u"Verbose") ]
+		m_choiceSpeechAmountChoices = [ _("Terse"), _("Medium"), _("Verbose") ]
 		self.m_choiceSpeechAmount = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSpeechAmountChoices, 0 )
 		self.m_choiceSpeechAmount.SetSelection( 0 )
 		bSizer71.Add( self.m_choiceSpeechAmount, 0, wx.ALL, 5 )
@@ -121,7 +121,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerRelativeSpeed = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticTextRelativeSpeed = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _(u"Relative speech rate:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticTextRelativeSpeed = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Relative speech rate:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextRelativeSpeed.Wrap( -1 )
 
 		bSizerRelativeSpeed.Add( self.m_staticTextRelativeSpeed, 0, wx.ALL, 5 )
@@ -135,7 +135,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerPauseFactor = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticPauseFactor = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _(u"Pause factor:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticPauseFactor = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Pause factor:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticPauseFactor.Wrap( -1 )
 
 		bSizerPauseFactor.Add( self.m_staticPauseFactor, 0, wx.ALL, 5 )
@@ -148,7 +148,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerSpeechSound = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_checkBoxSpeechSound = wx.CheckBox( self.m_panelSpeech, wx.ID_ANY, _(u"Make a sound when starting/ending math speech"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_checkBoxSpeechSound = wx.CheckBox( self.m_panelSpeech, wx.ID_ANY, _("Make a sound when starting/ending math speech"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerSpeechSound.Add( self.m_checkBoxSpeechSound, 0, wx.ALL, 5 )
 
 
@@ -156,12 +156,12 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerSubjectArea = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticTextSubjectArea = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _(u"Subject area to be used when it cannot be determined automatically:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticTextSubjectArea = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Subject area to be used when it cannot be determined automatically:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextSubjectArea.Wrap( -1 )
 
 		bSizerSubjectArea.Add( self.m_staticTextSubjectArea, 0, wx.ALL, 5 )
 
-		m_choiceSubjectAreaChoices = [ _(u"General") ]
+		m_choiceSubjectAreaChoices = [ _("General") ]
 		self.m_choiceSubjectArea = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSubjectAreaChoices, 0 )
 		self.m_choiceSubjectArea.SetSelection( 0 )
 		bSizerSubjectArea.Add( self.m_choiceSubjectArea, 0, wx.ALL, 5 )
@@ -171,12 +171,12 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerSpeechForChemical = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticTextSpeechForChemical = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _(u"Speech for chemical formulas:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticTextSpeechForChemical = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Speech for chemical formulas:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextSpeechForChemical.Wrap( -1 )
 
 		bSizerSpeechForChemical.Add( self.m_staticTextSpeechForChemical, 0, wx.ALL, 5 )
 
-		m_choiceSpeechForChemicalChoices = [ _(u"Spell it out (H 2 O)"), _(u"Off (H sub 2 O)") ]
+		m_choiceSpeechForChemicalChoices = [ _("Spell it out (H 2 O)"), _("Off (H sub 2 O)") ]
 		self.m_choiceSpeechForChemical = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSpeechForChemicalChoices, 0 )
 		self.m_choiceSpeechForChemical.SetSelection( 0 )
 		bSizerSpeechForChemical.Add( self.m_choiceSpeechForChemical, 0, wx.ALL, 5 )
@@ -188,31 +188,31 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		self.m_panelSpeech.SetSizer( bSizerSpeech )
 		self.m_panelSpeech.Layout()
 		bSizerSpeech.Fit( self.m_panelSpeech )
-		self.m_simplebookPanelsCategories.AddPage( self.m_panelSpeech, _(u"a page"), False )
+		self.m_simplebookPanelsCategories.AddPage( self.m_panelSpeech, _("a page"), False )
 		self.m_panelNavigation = wx.Panel( self.m_simplebookPanelsCategories, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.BORDER_SIMPLE|wx.TAB_TRAVERSAL )
 		bSizerNavigation = wx.BoxSizer( wx.VERTICAL )
 
-		sbSizerNavigationMode = wx.StaticBoxSizer( wx.StaticBox( self.m_panelNavigation, wx.ID_ANY, _(u"Navigation mode to use when beginning to navigate an equation:") ), wx.VERTICAL )
+		sbSizerNavigationMode = wx.StaticBoxSizer( wx.StaticBox( self.m_panelNavigation, wx.ID_ANY, _("Navigation mode to use when beginning to navigate an equation:") ), wx.VERTICAL )
 
-		m_choiceNavigationModeChoices = [ _(u"Enhanced"), _(u"Simple"), _(u"Character") ]
+		m_choiceNavigationModeChoices = [ _("Enhanced"), _("Simple"), _("Character") ]
 		self.m_choiceNavigationMode = wx.Choice( sbSizerNavigationMode.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceNavigationModeChoices, 0 )
 		self.m_choiceNavigationMode.SetSelection( 1 )
 		sbSizerNavigationMode.Add( self.m_choiceNavigationMode, 0, wx.ALL, 5 )
 
-		self.m_checkBoxResetNavigationMode = wx.CheckBox( sbSizerNavigationMode.GetStaticBox(), wx.ID_ANY, _(u"Reset navigation mode on entry to an expression"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_checkBoxResetNavigationMode = wx.CheckBox( sbSizerNavigationMode.GetStaticBox(), wx.ID_ANY, _("Reset navigation mode on entry to an expression"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		sbSizerNavigationMode.Add( self.m_checkBoxResetNavigationMode, 0, wx.ALL, 5 )
 
 
 		bSizerNavigation.Add( sbSizerNavigationMode, 1, wx.EXPAND, 5 )
 
-		sbSizerNavigationSpeech = wx.StaticBoxSizer( wx.StaticBox( self.m_panelNavigation, wx.ID_ANY, _(u"Navigation speech to use when beginning to navigate an equation:") ), wx.VERTICAL )
+		sbSizerNavigationSpeech = wx.StaticBoxSizer( wx.StaticBox( self.m_panelNavigation, wx.ID_ANY, _("Navigation speech to use when beginning to navigate an equation:") ), wx.VERTICAL )
 
-		m_choiceNavigationSpeechChoices = [ _(u"Speak"), _(u"Describe/overview") ]
+		m_choiceNavigationSpeechChoices = [ _("Speak"), _("Describe/overview") ]
 		self.m_choiceNavigationSpeech = wx.Choice( sbSizerNavigationSpeech.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceNavigationSpeechChoices, 0 )
 		self.m_choiceNavigationSpeech.SetSelection( 1 )
 		sbSizerNavigationSpeech.Add( self.m_choiceNavigationSpeech, 0, wx.ALL, 5 )
 
-		self.m_checkBoxResetNavigationSpeech = wx.CheckBox( sbSizerNavigationSpeech.GetStaticBox(), wx.ID_ANY, _(u"Reset navigation speech on entry to an expression"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_checkBoxResetNavigationSpeech = wx.CheckBox( sbSizerNavigationSpeech.GetStaticBox(), wx.ID_ANY, _("Reset navigation speech on entry to an expression"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_checkBoxResetNavigationSpeech.SetValue(True)
 		sbSizerNavigationSpeech.Add( self.m_checkBoxResetNavigationSpeech, 0, wx.ALL, 5 )
 
@@ -221,17 +221,17 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerNavigationZoom = wx.BoxSizer( wx.VERTICAL )
 
-		self.m_checkBoxAutomaticZoom = wx.CheckBox( self.m_panelNavigation, wx.ID_ANY, _(u"Automatic zoom out of 2D notations"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_checkBoxAutomaticZoom = wx.CheckBox( self.m_panelNavigation, wx.ID_ANY, _("Automatic zoom out of 2D notations"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerNavigationZoom.Add( self.m_checkBoxAutomaticZoom, 0, wx.ALL, 5 )
 
 		bSizerSpeechAmountNavigation = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticTextSpeechAmountNavigation = wx.StaticText( self.m_panelNavigation, wx.ID_ANY, _(u"Speech amount for navigation:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticTextSpeechAmountNavigation = wx.StaticText( self.m_panelNavigation, wx.ID_ANY, _("Speech amount for navigation:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextSpeechAmountNavigation.Wrap( -1 )
 
 		bSizerSpeechAmountNavigation.Add( self.m_staticTextSpeechAmountNavigation, 0, wx.ALL, 5 )
 
-		m_choiceSpeechAmountNavigationChoices = [ _(u"Terse"), _(u"Medium"), _(u"Verbose") ]
+		m_choiceSpeechAmountNavigationChoices = [ _("Terse"), _("Medium"), _("Verbose") ]
 		self.m_choiceSpeechAmountNavigation = wx.Choice( self.m_panelNavigation, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSpeechAmountNavigationChoices, 0 )
 		self.m_choiceSpeechAmountNavigation.SetSelection( 0 )
 		bSizerSpeechAmountNavigation.Add( self.m_choiceSpeechAmountNavigation, 0, wx.ALL, 5 )
@@ -246,18 +246,18 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		self.m_panelNavigation.SetSizer( bSizerNavigation )
 		self.m_panelNavigation.Layout()
 		bSizerNavigation.Fit( self.m_panelNavigation )
-		self.m_simplebookPanelsCategories.AddPage( self.m_panelNavigation, _(u"a page"), False )
+		self.m_simplebookPanelsCategories.AddPage( self.m_panelNavigation, _("a page"), False )
 		self.m_panelBraille = wx.Panel( self.m_simplebookPanelsCategories, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.BORDER_SIMPLE|wx.TAB_TRAVERSAL )
 		bSizerBraille = wx.BoxSizer( wx.VERTICAL )
 
 		bSizerBrailleMathCode = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticTextBrailleMathCode = wx.StaticText( self.m_panelBraille, wx.ID_ANY, _(u"Braille math code for refreshable displays:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticTextBrailleMathCode = wx.StaticText( self.m_panelBraille, wx.ID_ANY, _("Braille math code for refreshable displays:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextBrailleMathCode.Wrap( -1 )
 
 		bSizerBrailleMathCode.Add( self.m_staticTextBrailleMathCode, 0, wx.ALL, 5 )
 
-		m_choiceBrailleMathCodeChoices = [ _(u"Nemeth"), _(u"UEB"), _(u"Vietnam") ]
+		m_choiceBrailleMathCodeChoices = [ _("Nemeth"), _("UEB"), _("Vietnam") ]
 		self.m_choiceBrailleMathCode = wx.Choice( self.m_panelBraille, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceBrailleMathCodeChoices, 0 )
 		self.m_choiceBrailleMathCode.SetSelection( 1 )
 		bSizerBrailleMathCode.Add( self.m_choiceBrailleMathCode, 0, wx.ALL, 5 )
@@ -267,12 +267,12 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerBrailleHighlights = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticTextBrailleHighlights = wx.StaticText( self.m_panelBraille, wx.ID_ANY, _(u"Highlight with dots 7 && 8 the current nav node:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticTextBrailleHighlights = wx.StaticText( self.m_panelBraille, wx.ID_ANY, _("Highlight with dots 7 && 8 the current nav node:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextBrailleHighlights.Wrap( -1 )
 
 		bSizerBrailleHighlights.Add( self.m_staticTextBrailleHighlights, 0, wx.ALL, 5 )
 
-		m_choiceBrailleHighlightsChoices = [ _(u"Off"), _(u"First character"), _(u"Endpoints"), _(u"All") ]
+		m_choiceBrailleHighlightsChoices = [ _("Off"), _("First character"), _("Endpoints"), _("All") ]
 		self.m_choiceBrailleHighlights = wx.Choice( self.m_panelBraille, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceBrailleHighlightsChoices, 0 )
 		self.m_choiceBrailleHighlights.SetSelection( 1 )
 		bSizerBrailleHighlights.Add( self.m_choiceBrailleHighlights, 0, wx.ALL, 5 )
@@ -299,7 +299,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		self.m_panelBraille.SetSizer( bSizerBraille )
 		self.m_panelBraille.Layout()
 		bSizerBraille.Fit( self.m_panelBraille )
-		self.m_simplebookPanelsCategories.AddPage( self.m_panelBraille, _(u"a page"), False )
+		self.m_simplebookPanelsCategories.AddPage( self.m_panelBraille, _("a page"), False )
 
 		gbSizerMathCATPreferences.Add( self.m_simplebookPanelsCategories, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.EXPAND |wx.ALL, 10 )
 
@@ -312,19 +312,19 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerButtons.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 
-		self.m_buttonOK = wx.Button( self.m_panelButtons, wx.ID_ANY, _(u"OK"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_buttonOK = wx.Button( self.m_panelButtons, wx.ID_ANY, _("OK"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerButtons.Add( self.m_buttonOK, 0, wx.ALL, 5 )
 
-		self.m_buttonCancel = wx.Button( self.m_panelButtons, wx.ID_ANY, _(u"Cancel"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_buttonCancel = wx.Button( self.m_panelButtons, wx.ID_ANY, _("Cancel"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerButtons.Add( self.m_buttonCancel, 0, wx.ALL, 5 )
 
-		self.m_buttonApply = wx.Button( self.m_panelButtons, wx.ID_ANY, _(u"Apply"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_buttonApply = wx.Button( self.m_panelButtons, wx.ID_ANY, _("Apply"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerButtons.Add( self.m_buttonApply, 0, wx.ALL, 5 )
 
-		self.m_buttonReset = wx.Button( self.m_panelButtons, wx.ID_ANY, _(u"Reset to defaults"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_buttonReset = wx.Button( self.m_panelButtons, wx.ID_ANY, _("Reset to defaults"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerButtons.Add( self.m_buttonReset, 0, wx.ALL, 5 )
 
-		self.m_buttonHelp = wx.Button( self.m_panelButtons, wx.ID_ANY, _(u"Help"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_buttonHelp = wx.Button( self.m_panelButtons, wx.ID_ANY, _("Help"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerButtons.Add( self.m_buttonHelp, 0, wx.ALL, 5 )
 
 
