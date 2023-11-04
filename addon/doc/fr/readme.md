@@ -1,6 +1,8 @@
 # MathCAT #
 
 * Auteur : Neil Soiffer
+* Compatibilité NVDA : 2018.1 ou version ultérieure (non testée dans les
+  versions antérieures)
 * Télécharger [version stable][1]
 
 MathCAT est conçu pour éventuellement remplacer MathPlayer, car ce dernier
@@ -73,10 +75,11 @@ pas encore complètement établi.
 ### Version 0.2.5
 * Plus d'améliorations chimique
 * Correction pour Nemeth :
-* Règles "omission" ajoutées
-* Ajout des règles pour les indicateurs de langue anglaise
-* Ajout de plus de cas où l'indicateur Mulitpurpose est nécessaire
-* Correction liée à Nemeth et à la ponctuation
+
+	* Règles "omission" ajoutées
+	* Ajout de quelques règles pour les indicateurs de langue Anglaise
+	* Ajout de plus de cas où l'indicateur polyvalent est nécessaire
+	* Correction liée à Nemeth et à la ponctuation
 
 
 ### Version 0.3.3
@@ -103,6 +106,31 @@ Vietnamien comme sortie braille. Il s'agit toujours d'un travail en cours et
 il y a trop de bogues pour être utilisé autrement que pour les tests. Je
 m'attends à ce que la prochaine version de MathCAT contienne une
 implémentation fiable.
+
+### Version 0.3.8
+Braille :
+
+* Le dialogue s'est internationalisé (un grand merci aux traducteurs !)
+* Mise en œuvre initiale de la CMU - code braille utilisé en Espagne et dans
+  plusieurs pays Lusophones
+* Améliorations significatives du braille Vietnamien
+* Modifiez le curseur de la boîte de dialogue de débit relatif pour avoir
+  une valeur maximale de 100 % (permet désormais uniquement de définir des
+  débits  plus lents). En outre, des tailles de pas ont été ajoutées pour
+  qu'il soit plus facile d'augmenter/diminuer le débit de manière
+  significative.
+* Correction de quelques bugs de l'UEB et ajout de quelques caractères pour
+  l'UEB
+
+Autres correctifs :
+
+* Améliorations de la parole en Vietnamien
+* Correction d'un bug avec les voix OneCore disant "a"
+* Correction de quelques bugs de navigation lorsque `AutoZoomOut` est False
+  (pas la valeur par défaut)
+* Correction de la mise à jour autour des changements de langue et de
+  certains autres changements de boîte de dialogue afin qu'ils prennent
+  effet immédiatement après avoir cliqué sur "Appliquer" ou "OK".
 
 [[!tag dev stable]]
 

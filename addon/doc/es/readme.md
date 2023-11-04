@@ -1,6 +1,8 @@
 # MathCAT #
 
 * Autor: Neil Soiffer
+* Compatibilidad con NVDA: 2018.1 o posterior (no probado en versiones
+  anteriores)
 * Descargar [versión estable][1]
 
 MathCat está diseñado para sustituir eventualmente a MathPlayer, ya que este
@@ -68,10 +70,11 @@ establecido.
 ### Versión 0.2.5
 * Más mejoras en química
 * Correcciones en Nemeth:
-* Añadidas reglas de "omisión"
-* Añadidas algunas reglas para los indicadores en inglés
-* Añadidos más casos donde es necesario el indicador Mulitpurpose
-* Correcciones relacionadas con Nemeth y la puntuación
+
+	* Añadidas reglas de "omisión"
+	* Añadidas algunas reglas para los indicadores en inglés
+	* Añadidos más casos donde es necesario el indicador Mulitpurpose
+	* Correcciones relacionadas con Nemeth y la puntuación
 
 
 ### Versión 0.3.3
@@ -98,6 +101,28 @@ Nota: ahora hay una opción para obtener braille estándar vietnamita en la
 salida braille. Este trabajo todavía está en progreso y tiene demasiados
 fallos como para usarlo para otra cosa que no sean pruebas. Espero que la
 próxima versión de MathCat contenga una implementación fiable.
+
+### Versión 0.3.8
+Braille:
+
+* Se ha internacionalizado el diálogo (¡Muchas gracias a los traductores!)
+* Implementación inicial de CMU, código braille usado en España y varios
+  países de habla portuguesa
+* Mejoras importantes al braille vietnamita
+* Se cambia el deslizador del diálogo de velocidad relativa para que tenga
+  un valor máximo del 100% (ahora sólo permite configurar velocidades
+  menores). También se añaden pasos de tamaño para que sea más fácil
+  aumentar o disminuir la velocidad significativamente.
+* Se corrigen algunos fallos de UEB y se añaden algunos caracteres para UEB
+
+Otras correcciones:
+
+* Mejoras en la voz vietnamita
+* Corregido un fallo con las voces OneCore, que decían "a"
+* Se corrigen algunos fallos de navegación cuando `AutoZoomOut` es falso (no
+  el que hay por defecto)
+* Se corrigen algunos cambios en los diálogos y en el idioma para que tengan
+  efecto inmediato cuando se pulse "Aplicar" o "Aceptar".
 
 [[!tag dev stable]]
 

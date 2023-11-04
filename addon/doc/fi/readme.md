@@ -1,6 +1,7 @@
 # MathCAT #
 
 * Tekijä: Neil Soiffer
+* Yhteensopivuus: NVDA 2018.1 tai uudempi (ei testattu aiemmissa versioissa)
 * Lataa [vakaa versio][1]
 
 MathCAT on suunniteltu korvaamaan lopulta MathPlayerin, koska sitä ei enää
@@ -68,10 +69,11 @@ päättelemiseen, eikä niitä ole vielä täysin ratkaistu.
 ### Versio 0.2.5
 * Lisää parannuksia kemiallisiin merkintöihin
 * Korjauksia Nemeth-merkintöihin:
-* * Lisätty "jättösääntöjä"
-* * Lisätty sääntöjä englannin kielen ilmaisimille
-* * Lisätty enemmän tapauksia, joissa monitoimi-ilmaisinta tarvitaan
-* * Nemeth-merkintöihin ja välimerkkeihin liittyviä korjauksia
+
+	* Lisätty "jättösääntöjä"
+	* Lisätty sääntöjä englannin kielen ilmaisimille
+	* Lisätty enemmän tapauksia, joissa monitoimi-ilmaisinta tarvitaan
+	* Nemeth-merkintöihin ja välimerkkeihin liittyviä korjauksia
 
 
 ### Versio 0.3.3
@@ -106,6 +108,29 @@ pistekirjoitusstandardin pistekirjoituksen tuottamiseen. Tämä on edelleen
 keskeneräinen ja liian virhealtis käytettäväksi muuhun kuin
 testaamiseen. Seuraavassa MathCATin versiossa pitäisi jo olla luotettava
 toteutus.
+
+### Versio 0.3.8
+Pistekirjoitus:
+
+* Valintaikkuna on käännetty useille kielille (kiitokset kääntäjille!)
+* Alustava toteutus Espanjassa ja useissa portugalinkielisissä maissa
+  käytettävälle CMU-pistekirjoitusmerkistölle
+* Merkittäviä parannuksia vietnamilaiseen pistekirjoitukseen
+* Muutettu suhteellisen nopeuden liukusäädintä siten, että sen enimmäisarvo
+  on 100 % (sallii nyt vain hitaampien nopeuksien asettamisen). Lisätty myös
+  askelkokoja, jotta nopeuden merkittävä nostaminen/laskeminen olisi
+  helpompaa.
+* Korjattu UEB:n bugeja ja lisätty merkkejä
+
+Muita korjauksia:
+
+* Parannuksia vietnaminkieliseen puheeseen
+* Korjattu OneCore-äänien bugi, joka sai ne sanomaan "a"
+* Korjattu navigoinnin bugeja, joita esiintyi kun automaattinen
+  loitontaminen ei ole käytössä (ei oletuksena)
+* Korjattu kielen vaihtamisen ja muutaman muun valintaikkunan muutosten
+  päivittämistä siten, että muutokset tulevat voimaan heti Käytä- tai
+  OK-painiketta painettaessa.
 
 [[!tag dev stable]]
 
