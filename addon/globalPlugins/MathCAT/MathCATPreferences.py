@@ -251,12 +251,28 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         self.m_choiceLanguage.Clear()
         self.m_choiceLanguage.Append(_("Use Voice's Language") + " (Auto)")
         #populate the available language names in the dialog
-        for f in os.listdir(UserInterface.path_to_languages_folder()):
-             if os.path.isdir(UserInterface.path_to_languages_folder()+"\\"+f):
-                 if languages_dict.get(f, 'missing') == 'missing':
-                     self.m_choiceLanguage.Append(f + " (" + f + ")")
-                 else:
-                    self.m_choiceLanguage.Append(languages_dict[f] + " (" + f + ")")
+        #the implemented languages are in folders named using the relevant ISO 639-1 code https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+        for language in os.listdir(UserInterface.path_to_languages_folder()):
+             if os.path.isdir(os.path.join(UserInterface.path_to_languages_folder(),language)):
+                 path_to_language_folder = os.path.join(UserInterface.path_to_languages_folder(), language)
+                 #only add this language if there is a xxx_Rules.yaml file
+                 files = glob.glob(os.path.join(path_to_language_folder,"*_Rules.yaml"))
+                 if files:
+                     #add to the listbox the text for this language together with the language code
+                     if languages_dict.get(language, 'missing') != 'missing':
+                         self.m_choiceLanguage.Append(languages_dict[language] + " (" + language + ")")
+                     else:
+                         self.m_choiceLanguage.Append(language + " (" + language + ")")
+                 #the country variants are in folders named using ISO 3166-1 alpha-2 codes https://en.wikipedia.org/wiki/ISO_3166-2
+                 #check if there are countries in the language folder
+                 for country in os.listdir(path_to_language_folder):
+                     if os.path.isdir(os.path.join(path_to_language_folder, country)):
+                         if country != "SharedRules":
+                             #add to the listbox the text for this language together with the language and country codes
+                             if languages_dict.get(language, 'missing') != 'missing':
+                                 self.m_choiceLanguage.Append(languages_dict[language] + " (" + language + "-" + country + ")")
+                             else:
+                                 self.m_choiceLanguage.Append(language + " (" + language + "-" + country + ")")
 
     def GetLanguageCode(self):
         lang_selection = self.m_choiceLanguage.GetStringSelection()
