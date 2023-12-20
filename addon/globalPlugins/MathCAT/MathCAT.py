@@ -192,7 +192,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             speech.speak(ConvertSSMLTextForNVDA(text, self._language))
         except Exception as e:
             log.error(e)
-            # Translators: this message shows up in log file
+            # Translators: this message directs users to look in the log file 
             speech.speakMessage(_("Error in starting navigation of math: see NVDA error log for details"))
 
 
@@ -206,7 +206,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             region.rawText = libmathcat.GetBraille("")
         except Exception as e:
             log.error(e)
-            # Translators: this message shows up in log file
+            # Translators: this message directs users to look in the log file 
             speech.speakMessage(_("Error in brailling math: see NVDA error log for details"))
             region.rawText = ""
 
@@ -248,15 +248,15 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             braille.handler.update()
         except Exception as e:
             log.error(e)
-            # Translators: this message shows up in log file
+            # Translators: this message directs users to look in the log file 
             speech.speakMessage(_("Error in navigating math: see NVDA error log for details"))
 
 
     _startsWithMath = re.compile("\\s*?<math")
     @script(
-        # For translators: Message to be announced during Keyboard Help
+        # Translators: Message to be announced during Keyboard Help
         description=_("Copy navigation focus to clipboard"), 
-        # For translators: Name of the section in "Input gestures" dialog. 
+        # Translators: Name of the section in "Input gestures" dialog. 
         category = _("Clipboard"),
         gesture="kb:control+c",
     )
@@ -268,10 +268,11 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             elif self.init_mathml != '':
                 mathml = self.init_mathml
             self._copyToClipAsMathML(mathml)
+            # Translators: copy to clipboard
             ui.message(_("copy"))
         except Exception as e:
             log.error(e)
-            # Translators: this message shows up in log file
+            # Translators: this message directs users to look in the log file 
             speech.speakMessage(_("unable to copy math: see NVDA error log for details"))
 
 
@@ -355,6 +356,7 @@ class MathCAT(mathPres.MathPresentationProvider):
             libmathcat.SetPreference("TTS", "SSML")
         except Exception as e:
             log.error(e)
+            # Translators: this message directs users to look in the log file 
             speech.speakMessage(_("MathCAT initialization failed: see NVDA error log for details"))
         self._language = ""
 
@@ -365,6 +367,7 @@ class MathCAT(mathPres.MathPresentationProvider):
         except Exception as e:
             log.error(e)
             log.error(f"MathML is {mathml}")
+            # Translators: this message directs users to look in the log file 
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
             libmathcat.SetMathML("<math></math>")    # set it to something
         try:
@@ -383,6 +386,7 @@ class MathCAT(mathPres.MathPresentationProvider):
 
         except Exception as e:
             log.error(e)
+            # Translators: this message directs users to look in the log file 
             speech.speakMessage(_("Error in speaking math: see NVDA error log for details"))
             return [""]
 
@@ -399,12 +403,14 @@ class MathCAT(mathPres.MathPresentationProvider):
         except Exception as e:
             log.error(e)
             log.error(f"MathML is {mathml}")
+            # Translators: this message directs users to look in the log file 
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
             libmathcat.SetMathML("<math></math>")    # set it to something
         try:
             return libmathcat.GetBraille("")
         except Exception as e:
             log.error(e)
+            # Translators: this message directs users to look in the log file 
             speech.speakMessage(_("Error in brailling math: see NVDA error log for details"))
             return ""
 
