@@ -70,6 +70,8 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		bSizerImpairment.Add( self.m_staticTextImpairment, 0, wx.ALL, 5 )
 
 		# Translators: these are the categories of impairments that MathCAT supports
+		# Translators: Learning disabilities includes dyslexia and ADHD
+		# Translators: Blindness and Low Vision are the other two categories that are supported
 		m_choiceImpairmentChoices = [ _("Learning disabilities"), _("Blindness"), _("Low vision") ]
 		self.m_choiceImpairment = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceImpairmentChoices, 0 )
 		self.m_choiceImpairment.SetSelection( 1 )
