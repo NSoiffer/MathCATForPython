@@ -35,12 +35,13 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		self.m_panelCategories = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizerCategories = wx.BoxSizer( wx.VERTICAL )
 
+		# Translators: A heading that labels three navigation pane tab names in the MathCAT dialog
 		self.m_staticTextCategories = wx.StaticText( self.m_panelCategories, wx.ID_ANY, _("Categories:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextCategories.Wrap( -1 )
 
 		bSizerCategories.Add( self.m_staticTextCategories, 0, wx.ALL, 5 )
 
-		# Translators: these are tab headings for the MathCAT preferences dialog
+		# Translators: these are navigation pane headings for the MathCAT preferences dialog under the title "Categories"
 		m_listBoxPreferencesTopicChoices = [ _("Speech"), _("Navigation"), _("Braille") ]
 		self.m_listBoxPreferencesTopic = wx.ListBox( self.m_panelCategories, wx.ID_ANY, wx.Point( -1,-1 ), wx.Size( -1,-1 ), m_listBoxPreferencesTopicChoices, wx.LB_NO_SB|wx.LB_SINGLE )
 		bSizerCategories.Add( self.m_listBoxPreferencesTopic, 0, wx.ALL, 5 )
@@ -82,12 +83,13 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerLanguage = wx.BoxSizer( wx.HORIZONTAL )
 
+		# Translators: label for pull down allowing users to choose the speech language for math
 		self.m_staticTextLanguage = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Language:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextLanguage.Wrap( -1 )
 
 		bSizerLanguage.Add( self.m_staticTextLanguage, 0, wx.ALL, 5 )
 
-		m_choiceLanguageChoices = [ _("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") ]
+		m_choiceLanguageChoices = [ "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ]
 		self.m_choiceLanguage = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceLanguageChoices, 0 )
 		self.m_choiceLanguage.SetSelection( 0 )
 		bSizerLanguage.Add( self.m_choiceLanguage, 0, wx.ALL, 5 )
@@ -97,12 +99,13 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerSpeechStyle = wx.BoxSizer( wx.HORIZONTAL )
 
+		# Translators: label for pull down allowing users to choose the "style" (version, rules) of speech for math
 		self.m_staticTextSpeechStyle = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Speech style:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextSpeechStyle.Wrap( -1 )
 
 		bSizerSpeechStyle.Add( self.m_staticTextSpeechStyle, 0, wx.ALL, 5 )
 
-		m_choiceSpeechStyleChoices = [ _("xxxxxxxxxxxxxxxx") ]
+		m_choiceSpeechStyleChoices = [ "xxxxxxxxxxxxxxxx" ]
 		self.m_choiceSpeechStyle = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSpeechStyleChoices, 0 )
 		self.m_choiceSpeechStyle.SetSelection( 0 )
 		bSizerSpeechStyle.Add( self.m_choiceSpeechStyle, 0, wx.ALL, 5 )
@@ -112,11 +115,13 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizer71 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticTextSpeechAmount = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Speech amount:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		# Translators: label for pull down to specify how verbose/terse the speech should be
+		self.m_staticTextSpeechAmount = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Speech verbosity:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextSpeechAmount.Wrap( -1 )
 
 		bSizer71.Add( self.m_staticTextSpeechAmount, 0, wx.ALL, 5 )
 
+		# Translators: options for speech verbosity.
 		m_choiceSpeechAmountChoices = [ _("Terse"), _("Medium"), _("Verbose") ]
 		self.m_choiceSpeechAmount = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSpeechAmountChoices, 0 )
 		self.m_choiceSpeechAmount.SetSelection( 0 )
@@ -127,6 +132,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerRelativeSpeed = wx.BoxSizer( wx.HORIZONTAL )
 
+		# Translators: label for slider that specifies a percentage of the normal speech rate that should be used for math
 		self.m_staticTextRelativeSpeed = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Relative speech rate:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextRelativeSpeed.Wrap( -1 )
 
@@ -141,6 +147,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerPauseFactor = wx.BoxSizer( wx.HORIZONTAL )
 
+		# Translators: label for slider that specifies relative factor to increase or decrease pauses in the math speech
 		self.m_staticPauseFactor = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Pause factor:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticPauseFactor.Wrap( -1 )
 
@@ -154,6 +161,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerSpeechSound = wx.BoxSizer( wx.HORIZONTAL )
 
+		# Translators: label for check box controling a beep sound
 		self.m_checkBoxSpeechSound = wx.CheckBox( self.m_panelSpeech, wx.ID_ANY, _("Make a sound when starting/ending math speech"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerSpeechSound.Add( self.m_checkBoxSpeechSound, 0, wx.ALL, 5 )
 
@@ -162,11 +170,13 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerSubjectArea = wx.BoxSizer( wx.HORIZONTAL )
 
+		# Translators: label for pull down to specify a subject area (Geometry, Calculus, ...) to use speech for that subject area
 		self.m_staticTextSubjectArea = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Subject area to be used when it cannot be determined automatically:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextSubjectArea.Wrap( -1 )
 
 		bSizerSubjectArea.Add( self.m_staticTextSubjectArea, 0, wx.ALL, 5 )
 
+		# Translators: a generic (non-specific) math subject area
 		m_choiceSubjectAreaChoices = [ _("General") ]
 		self.m_choiceSubjectArea = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSubjectAreaChoices, 0 )
 		self.m_choiceSubjectArea.SetSelection( 0 )
@@ -177,6 +187,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerSpeechForChemical = wx.BoxSizer( wx.HORIZONTAL )
 
+		# Translators: label for pull down to specify how verbose/terse the speech should be
 		self.m_staticTextSpeechForChemical = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Speech for chemical formulas:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextSpeechForChemical.Wrap( -1 )
 
