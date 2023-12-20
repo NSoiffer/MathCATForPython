@@ -42,12 +42,14 @@ jobs:
     - name: Install dependencies
       run: |
         pip install scons markdown
-        # sudo apt update
-        # sudo apt install gettext
         pip install python-gettext
     - uses: actions/checkout@v3
     - name: Set up Rust 
       run:  cargo build --target i686-pc-windows-msvc --release
+    - name: Copy MathCAT.pyd file
+      run: cp target/i686-pc-windows-msvc/release/libmathcat_py.dll addon/globalPlugins/MathCAT/libmathcat.pyd
+    - name: Fix wx file
+      run: sed 's/^import wx\.xrc/# import wx.xrc/' --in-place "addon/globalPlugins/MathCAT/MathCATgui.py"
     - name: Build
       run: scons version=${{ github.sha }}
     - name: Automatic release
