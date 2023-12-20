@@ -192,6 +192,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             speech.speak(ConvertSSMLTextForNVDA(text, self._language))
         except Exception as e:
             log.error(e)
+            # Translators: this message shows up in log file
             speech.speakMessage(_("Error in starting navigation of math: see NVDA error log for details"))
 
 
@@ -205,6 +206,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             region.rawText = libmathcat.GetBraille("")
         except Exception as e:
             log.error(e)
+            # Translators: this message shows up in log file
             speech.speakMessage(_("Error in brailling math: see NVDA error log for details"))
             region.rawText = ""
 
@@ -246,6 +248,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             braille.handler.update()
         except Exception as e:
             log.error(e)
+            # Translators: this message shows up in log file
             speech.speakMessage(_("Error in navigating math: see NVDA error log for details"))
 
 
@@ -268,6 +271,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             ui.message(_("copy"))
         except Exception as e:
             log.error(e)
+            # Translators: this message shows up in log file
             speech.speakMessage(_("unable to copy math: see NVDA error log for details"))
 
 
