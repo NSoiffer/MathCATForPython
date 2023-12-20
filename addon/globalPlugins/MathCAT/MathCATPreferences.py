@@ -110,6 +110,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             "ee": "Ɛʋɛ",
             "el": "Ελληνικά",
             "en": "English",
+            "en-GB": "English, United Kingdom",
+            "en-US": "English, United States",
             "eo": "Esperanto",
             "es": "Español",
             "fa": "فارسی",
@@ -240,6 +242,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             "yo": "Yorùbá",
             "za": "Cuengh / Tôô / 壮语",
             "zh": "中文",
+            "zh-HANS": "Chinese, Simplified",
+            "zh-HANT": "Chinese, Traditional",
+            "zh-TW": "Chinese, Traditional, Taiwan",
             "zu": "isiZulu"
         }
         return languages
@@ -251,12 +256,31 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         self.m_choiceLanguage.Clear()
         self.m_choiceLanguage.Append(_("Use Voice's Language") + " (Auto)")
         #populate the available language names in the dialog
-        for f in os.listdir(UserInterface.path_to_languages_folder()):
-             if os.path.isdir(UserInterface.path_to_languages_folder()+"\\"+f):
-                 if languages_dict.get(f, 'missing') == 'missing':
-                     self.m_choiceLanguage.Append(f + " (" + f + ")")
-                 else:
-                    self.m_choiceLanguage.Append(languages_dict[f] + " (" + f + ")")
+        #the implemented languages are in folders named using the relevant ISO 639-1 code https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+        for language in os.listdir(UserInterface.path_to_languages_folder()):
+             if os.path.isdir(os.path.join(UserInterface.path_to_languages_folder(),language)):
+                 path_to_language_folder = os.path.join(UserInterface.path_to_languages_folder(), language)
+                 #only add this language if there is a xxx_Rules.yaml file
+                 files = glob.glob(os.path.join(path_to_language_folder,"*_Rules.yaml"))
+                 if files:
+                     #add to the listbox the text for this language together with the code
+                     if languages_dict.get(language, 'missing') != 'missing':
+                         self.m_choiceLanguage.Append(languages_dict[language] + " (" + language + ")")
+                     else:
+                         self.m_choiceLanguage.Append(language + " (" + language + ")")
+                 #the language variants are in folders named using ISO 3166-1 alpha-2 codes https://en.wikipedia.org/wiki/ISO_3166-2
+                 #check if there are language variants in the language folder
+                 for variant in os.listdir(path_to_language_folder):
+                     if os.path.isdir(os.path.join(path_to_language_folder, variant)):
+                         if variant != "SharedRules":
+                             #add to the listbox the text for this language variant together with the code
+                             if languages_dict.get(language + "-" + variant.upper(), 'missing') != 'missing':
+                                self.m_choiceLanguage.Append(languages_dict[language + "-" + variant.upper()] + " (" + language + "-" + variant + ")")
+                             else:
+                                 if languages_dict.get(language, 'missing') != 'missing':
+                                     self.m_choiceLanguage.Append(languages_dict[language] + " (" + language + "-" + variant + ")")
+                                 else:
+                                     self.m_choiceLanguage.Append(language + " (" + language + "-" + variant + ")")
 
     def GetLanguageCode(self):
         lang_selection = self.m_choiceLanguage.GetStringSelection()

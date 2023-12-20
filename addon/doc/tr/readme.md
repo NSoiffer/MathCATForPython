@@ -1,6 +1,7 @@
 # MathCAT #
 
 * Yazar: Neil Soiffer
+* NVDA uyumluluğu: 2018.1 veya sonrası (önceki sürümlerde denenmemiştir)
 * [Kararlı sürümü indir][1]
 
 MathCAT, sonunda MathPlayer'ın yerini alacak şekilde tasarlanmıştır çünkü
@@ -68,10 +69,11 @@ tam olarak çözülmediğinden, çok fazla kural eklemeyi erteledim.
 ### Sürüm 0.2.5
 * Kimya alanında daha fazla iyileştirme
 * Nemeth için Düzeltmeler:
-* "İhmal" kuralları eklendi
-* İngilizce Dil Göstergeleri için bazı kurallar eklendi
-* Çok amaçlı göstergenin gerekli olduğu daha fazla durum eklendi
-* Nemeth ve noktalama işaretleri ile ilgili düzeltmeler
+
+	* "İhmal" kuralları eklendi
+	* İngilizce Dil Göstergeleri için bazı kurallar eklendi
+	* Çok amaçlı göstergenin gerekli olduğu daha fazla durum eklendi
+	* Nemeth ve noktalama işaretleriyle ilgili düzeltmeler
 
 
 ### Sürüm 0.3.3
@@ -96,6 +98,29 @@ Not: Artık Vietnam'ın braille standardını braille çıktısı olarak alma
 seçeneği var. Bu hala devam eden bir çalışma ve test dışında
 kullanılamayacak kadar hatalı. Bir sonraki MathCAT sürümünün güvenilir bir
 uygulama içermesini bekliyorum.
+
+### Sürüm 0.3.8
+Braille:
+
+* Diyalog uluslararası hale getirildi (çevirmenlere çok teşekkürler!)
+* CMU'nun ilk uygulaması - İspanya'da ve Portekizce konuşulan birkaç ülkede
+  kullanılan braille kodu
+* Vietnamca braille alfabesinde önemli iyileştirmeler
+* Göreli hız iletişim kutusunun kaydırıcısı maksimum %100 değerine sahip
+  olacak şekilde değiştirildi (artık yalnızca daha yavaş hızların
+  ayarlanmasına izin veriyor). Ayrıca, hızı önemli ölçüde artırmak/düşürmek
+  daha kolay olacak şekilde adım boyutları eklendi.
+* Bazı UEB hataları düzeltildi ve UEB için bazı karakterler eklendi
+
+Diğer düzeltmeler:
+
+* Vietnamca konuşmada iyileştirmeler
+* OneCore seslerinin "a" demesiyle ilgili hata düzeltildi
+* 'Otomatik Yakınlaştırma' Yanlış olduğunda (varsayılan değil) bazı gezinme
+  hataları düzeltildi
+* Dil değişiklikleri ve diğer bazı iletişim kutusu değişiklikleriyle ilgili
+  güncellemeler düzeltildi; böylece bunların "Uygula" veya "Tamam"
+  tıklandığında hemen etkili olması sağlandı.
 
 [[!tag dev stable]]
 

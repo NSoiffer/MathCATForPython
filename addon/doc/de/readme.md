@@ -1,6 +1,8 @@
 # MathCAT #
 
 * Autor: Neil Soiffer
+* NVDA-Kompatibilität: 2018.1 oder neuer (nicht getestet in älteren
+  Versionen)
 * [Stabile Version herunterladen][1]
 
 MathCAT wurde entwickelt, um MathPlayer zu ersetzen, da MathPlayer nicht
@@ -74,11 +76,11 @@ geklärt sind.
 ### Version 0.2.5
 * Weitere Verbesserungen in Chemie
 * Korrekturen für Nemeth:
-* Regeln für "Auslassungen" hinzugefügt
-* Einige Regeln für englische Sprach-Indikatoren hinzugefügt
-* Es wurden weitere Fälle hinzugefügt, in denen der Mehrzweck-Indikator
-  benötigt wird.
-* Korrekturen im Zusammenhang mit Nemeth und Zeichensetzung
+
+	* Added "omission" rules
+	* Added some rules for English Language Indicators
+	* Added more cases where the Mulitpurpose indicator is needed
+	* Fixes related to Nemeth and punctuation
 
 
 ### Version 0.3.3
@@ -105,6 +107,26 @@ Hinweis: Es gibt jetzt eine Option, um den vietnamesischen Braille-Standard
 als Braille-Ausgabe zu erhalten. Diese ist noch in Arbeit und
 fehleranfällig, um außer zum Testen verwendet zu werden. Die nächste
 MathCAT-Version wird eine zuverlässige Implementierung enthalten.
+
+### Version 0.3.8
+Braille:
+
+* Dialog has been internationalized (many thanks to the translators!)
+* Initial implementation of CMU -- braille code used in Spain and several
+  Portuguese speaking countries
+* Significant improvements to Vietnamese braille
+* Change relative rate dialog slider to have a maximum value of 100% (now
+  only allows setting slower rates). Also, added step sizes so it is easier
+  to raise/lower the rate significantly.
+* Fix some UEB bugs and added some characters for UEB
+
+Other fixes:
+
+* Improvements to Vietnamese speech
+* Fixed bug with OneCore voices saying "a"
+* Fixed some navigation bugs when `AutoZoomOut` is False (not the default)
+* Fix updating around language changes and some other dialog changes so they
+  take effect immediately upon clicking "Apply" or "OK".
 
 [[!tag dev stable]]
 
