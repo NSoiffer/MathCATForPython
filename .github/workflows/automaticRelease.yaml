@@ -34,7 +34,7 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-    - name: Set up Python 3.8
+    - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: 3.7
@@ -50,6 +50,8 @@ jobs:
       run: |
         cp target/i686-pc-windows-msvc/release/libmathcat_py.dll addon/globalPlugins/MathCAT/libmathcat.pyd
         sed 's/^import wx\.xrc/# import wx.xrc/' --in-place "addon/globalPlugins/MathCAT/MathCATgui.py"
+    - name: Rename addon
+      run: mv *.nvda-addon MathCAT-latest.nvda-addon
     - name: Build with scons
       run: scons version=${{ github.sha }}
     - name: Automatic release
