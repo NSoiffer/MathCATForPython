@@ -44,7 +44,7 @@ jobs:
         pip install scons markdown
         # sudo apt update
         # sudo apt install gettext
-        pip install python-gettex
+        pip install python-gettext
     - uses: actions/checkout@v3
     - name: Set up Rust 
       run:  cargo build --target i686-pc-windows-msvc --release
