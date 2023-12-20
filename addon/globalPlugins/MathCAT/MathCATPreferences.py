@@ -24,7 +24,7 @@ PAUSE_FACTOR_LOG_BASE = 1.4
 
 # initialize the user preferences tuples
 user_preferences: Dict[str, Dict[str, Union[int, str, bool]]] = {}
-#Speech_Language is derived from the folder structure
+#Speech_Language is derived from the folder structures
 Speech_Impairment = ("LearningDisability", "Blindness", "LowVision")
 #Speech_SpeechStyle is derived from the yaml files under the selected language
 Speech_Verbosity = ("Terse", "Medium", "Verbose")
@@ -254,7 +254,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         languages_dict = UserInterface.LanguagesDict()
         #clear the language names in the dialog
         self.m_choiceLanguage.Clear()
-        self.m_choiceLanguage.Append(_("Use Voice's Language") + " (Auto)")
+        # Translators: menu item -- use the language of the voice chosen in the NVDA speech settings dialog
+        # "Auto" == "Automatic" -- this is done separately because other items in menu are "English (en)", etc., so this matches that style
+        self.m_choiceLanguage.Append(_("Use Voice's Language") + _(" (Auto)"))
         #populate the available language names in the dialog
         #the implemented languages are in folders named using the relevant ISO 639-1 code https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
         for language in os.listdir(UserInterface.path_to_languages_folder()):
@@ -496,6 +498,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         from .MathCAT import ConvertSSMLTextForNVDA
         from  speech import speak
         rate = self.m_sliderRelativeSpeed.GetValue()
+        # Translators: this is a test string that is spoken. Only translate "the square root of x squared plus y squared"
         text = _("<prosody rate='XXX%'>the square root of x squared plus y squared</prosody>").replace("XXX", str(rate), 1)
         speak( ConvertSSMLTextForNVDA(text) )
 
@@ -505,6 +508,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         rate = self.m_sliderRelativeSpeed.GetValue()
         pf_slider = self.m_sliderPauseFactor.GetValue()
         pause_factor = 0 if pf_slider==0 else round(PAUSE_FACTOR_SCALE *math.pow(PAUSE_FACTOR_LOG_BASE, pf_slider))
+        # Translators: this is a test string that is spoken. Only translate "the fraction with numerator" and other parts NOT inside '<.../>', 
         text = _("<prosody rate='{rate}%'>the fraction with numerator <break time='{pause_factor_300}ms'/> <mark name='M63i335o-4'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-5'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{pause_factor_128}ms'/> <mark name='M63i335o-6'/> plus  <mark name='M63i335o-7'/> 1 <break time='{pause_factor_300}ms'/> and denominator <mark name='M63i335o-10'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-11'/> <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme> power <break time='{pause_factor_128}ms'/> <mark name='M63i335o-12'/> minus  <mark name='M63i335o-13'/> 1 <break time='{pause_factor_600}ms'/>end fraction <break time='{pause_factor_150}ms'/>").format(
             rate=rate,
             pause_factor_128=128*pause_factor//100,

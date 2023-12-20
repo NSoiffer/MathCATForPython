@@ -23,6 +23,7 @@ addonHandler.initTranslation()
 class MathCATPreferencesDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
+		# Translators: title for MathCAT preferences dialog
 		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _("MathCAT Preferences"), pos = wx.DefaultPosition, size = wx.Size( -1,-1 ), style = wx.DEFAULT_DIALOG_STYLE )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
@@ -39,6 +40,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerCategories.Add( self.m_staticTextCategories, 0, wx.ALL, 5 )
 
+		# Translators: these are tab headings for the MathCAT preferences dialog
 		m_listBoxPreferencesTopicChoices = [ _("Speech"), _("Navigation"), _("Braille") ]
 		self.m_listBoxPreferencesTopic = wx.ListBox( self.m_panelCategories, wx.ID_ANY, wx.Point( -1,-1 ), wx.Size( -1,-1 ), m_listBoxPreferencesTopicChoices, wx.LB_NO_SB|wx.LB_SINGLE )
 		bSizerCategories.Add( self.m_listBoxPreferencesTopic, 0, wx.ALL, 5 )
@@ -61,11 +63,13 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerImpairment = wx.BoxSizer( wx.HORIZONTAL )
 
+		# Translators: this is the text label for whom to target the speech for (options are below)
 		self.m_staticTextImpairment = wx.StaticText( self.m_panelSpeech, wx.ID_ANY, _("Generate speech for:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextImpairment.Wrap( -1 )
 
 		bSizerImpairment.Add( self.m_staticTextImpairment, 0, wx.ALL, 5 )
 
+		# Translators: these are the categories of impairments that MathCAT supports
 		m_choiceImpairmentChoices = [ _("Learning disabilities"), _("Blindness"), _("Low vision") ]
 		self.m_choiceImpairment = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceImpairmentChoices, 0 )
 		self.m_choiceImpairment.SetSelection( 1 )
