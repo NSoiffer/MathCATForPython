@@ -37,20 +37,18 @@ jobs:
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:
-        python-version: 3.8
+        python-version: 3.7
+        architecture: 'x86'
     - name: Install dependencies
       run: |
         pip install scons markdown
         sudo apt update
         sudo apt install gettext
+    - uses: actions/checkout@v3
+    - name: Set up Rust 
+      run:  cargo build --target i686-pc-windows-msvc --release
     - name: Build
       run: scons version=${{ github.sha }}
-    - uses: actions/checkout@v2
-    - name: Set up Rust
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-        override: true
     - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
       with:
