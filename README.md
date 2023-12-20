@@ -69,10 +69,18 @@ Braille:
 
 Other fixes:
 * Change relative rate dialog slider to have a maximum value of 100% (now only allows setting slower rates). Also, added step sizes so it is easier to raise/lower the rate significantly.
-* Fix espeak bug that sometimes cut off speech when the relative rate was changed
+* Fix eSpeak bug that sometimes cut off speech when the relative rate was changed
 * Improvements to Vietnamese speech
 * Fixed bug with OneCore voices saying "a"
 * Fixed some navigation bugs when `AutoZoomOut` is False (not the default)
 * Fix updating around language changes and some other dialog changes so they take effect immediately upon clicking "Apply" or "OK".
+* Added an "Use Voice's Language" option so that out of the box, MathCAT will speak in the right language (if there is a translation)
 * Several improvements for cleaning up poor MathML code
 
+### Version 0.3.9
+* Added Traditional Chinese translation
+* Significantly changed the way whitespace is handled. This mainly affects braille output (spaces and "omission" detection).
+* Improved recognition of chemistry
+* UEB braille fixes that came up from adding chemistry examples
+* UEB fixes for adding auxillary parenthesis in some cases
+* Fixed bug with navigating into the base of a scripted expression that has parenthesis

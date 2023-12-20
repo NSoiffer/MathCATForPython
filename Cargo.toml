@@ -6,7 +6,7 @@
 
 [package]
 name = "MathCatForPython"
-version = "0.3.8"
+version = "0.3.9"
 authors = ["Neil Soiffer <soiffer@alum.mit.edu>"]
 edition = "2018"
 
@@ -19,9 +19,9 @@ name = "libmathcat_py"
 crate-type = ["cdylib"]
 
 [dependencies.mathcat]
-# version = "0.3.8"
+version = "0.3.9"
 # for testing MathCAT without having to publish a new version (change two occurences)
-path = "../MathCAT/"
+# path = "../MathCAT/"
 
 [dependencies.pyo3]
 version = "0.15.1"
@@ -29,9 +29,9 @@ features = ["extension-module", "abi3"]
 
 [build-dependencies]
 zip = { version = "0.6.2", default-features = false, features = ["deflate"] }
-# mathcat = "0.3.8"
+mathcat = "0.3.9"
 # for testing MathCAT without having to publish a new version (change two occurences)
-mathcat = {path = "../MathCAT/"}
+# mathcat = {path = "../MathCAT/"}
 
 
 [profile.release]

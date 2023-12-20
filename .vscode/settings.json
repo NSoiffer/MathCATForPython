@@ -228,6 +228,15 @@
         "中文",
         "日本語"
     ],
+    "pylint.args": [
+        "--class-naming-style=PascalCase",
+        "--function-naming-style=camelCase",
+        "--method-naming-style=camelCase",
+        "--attr-naming-style=camelCase",
+        "--argument-naming-style=camelCase",
+        "--variable-naming-style=camelCase",
+        "--inlinevar-naming-style=camelCase",
+      ],
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "python.linting.mypyEnabled": false,
@@ -235,4 +244,5 @@
     "python.analysis.diagnosticSeverityOverrides": {
         "reportMissingImports": "none"
     },
+    "git.ignoreLimitWarning": true,
 }

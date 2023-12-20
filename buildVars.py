@@ -26,11 +26,11 @@ addon_info = {
 	"addon_description": _("""MathCAT is a replacement for MathPlayer which has been discontinued.
 		It provides speech and braille support, and also supports MathPlayer's three modes of navigation.
 		The speech quality is not quite as good as MathPlayer's speech yet,
-		but the braille support is much better and includes both Nemeth and UEB Technical.
-		It also includes support for CMU (Spanish/Portuguese) and Vietnamese braille code standards.
-		Translations to Indonesian, Spanish, and Vietnamese exist and other translations are in progress."""),
+		but the braille support is much better and includes support for Nemeth, UEB Technical, CMU (Spanish/Portuguese),
+	    and Vietnamese braille code standards.
+		Translations to Chinese (Traditional), Indonesian, Spanish, and Vietnamese exist and other translations are in progress."""),
 	# version
-	"addon_version": "0.3.8",
+	"addon_version": "0.3.9",
 	# Author(s)
 	"addon_author": "Neil Soiffer <soiffer@alum.mit.edu>",
 	# URL for the add-on documentation support
