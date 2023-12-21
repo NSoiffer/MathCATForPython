@@ -41,8 +41,14 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerCategories.Add( self.m_staticTextCategories, 0, wx.ALL, 5 )
 
-		# Translators: these are navigation pane headings for the MathCAT preferences dialog under the title "Categories"
-		m_listBoxPreferencesTopicChoices = [ _("Speech"), _("Navigation"), _("Braille") ]
+		m_listBoxPreferencesTopicChoices = [
+			# Translators: these are navigation pane headings for the MathCAT preferences dialog under the title "Categories"
+			_("Speech"),
+			# Translators: these are navigation pane headings for the MathCAT preferences dialog under the title "Categories"
+			_("Navigation"),
+			# Translators: these are navigation pane headings for the MathCAT preferences dialog under the title "Categories"
+			_("Braille")
+		]
 		self.m_listBoxPreferencesTopic = wx.ListBox( self.m_panelCategories, wx.ID_ANY, wx.Point( -1,-1 ), wx.Size( -1,-1 ), m_listBoxPreferencesTopicChoices, wx.LB_NO_SB|wx.LB_SINGLE )
 		bSizerCategories.Add( self.m_listBoxPreferencesTopic, 0, wx.ALL, 5 )
 
@@ -70,10 +76,15 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerImpairment.Add( self.m_staticTextImpairment, 0, wx.ALL, 5 )
 
-		# Translators: these are the categories of impairments that MathCAT supports
-		# Translators: Learning disabilities includes dyslexia and ADHD
-		# Translators: Blindness and Low Vision are the other two categories that are supported
-		m_choiceImpairmentChoices = [ _("Learning disabilities"), _("Blindness"), _("Low vision") ]
+		m_choiceImpairmentChoices = [
+			# Translators: these are the categories of impairments that MathCAT supports
+			# Translators: Learning disabilities includes dyslexia and ADHD
+			_("Learning disabilities"),
+			# Translators: target people who are blind
+			_("Blindness"),
+			# Translators: target people who have low vision
+			_("Low vision")
+		]
 		self.m_choiceImpairment = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceImpairmentChoices, 0 )
 		self.m_choiceImpairment.SetSelection( 1 )
 		bSizerImpairment.Add( self.m_choiceImpairment, 0, wx.ALL, 5 )
@@ -121,8 +132,15 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizer71.Add( self.m_staticTextSpeechAmount, 0, wx.ALL, 5 )
 
-		# Translators: options for speech verbosity.
-		m_choiceSpeechAmountChoices = [ _("Terse"), _("Medium"), _("Verbose") ]
+			# Translators: options for speech verbosity.
+		m_choiceSpeechAmountChoices = [
+			# Translators: options for speech verbosity -- "terse" = use less words
+			_("Terse"),
+			# Translators: options for speech verbosity -- "medium" = try to be nether too terse nor too verbose words
+			_("Medium"),
+			# Translators: options for speech verbosity -- "verbose" = use more words
+			_("Verbose")
+		]
 		self.m_choiceSpeechAmount = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSpeechAmountChoices, 0 )
 		self.m_choiceSpeechAmount.SetSelection( 0 )
 		bSizer71.Add( self.m_choiceSpeechAmount, 0, wx.ALL, 5 )
@@ -193,8 +211,12 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerSpeechForChemical.Add( self.m_staticTextSpeechForChemical, 0, wx.ALL, 5 )
 
-		# Translators: values for chemistry options with example speech in parenthesis
-		m_choiceSpeechForChemicalChoices = [ _("Spell it out (H 2 O)"), _("Off (H sub 2 O)") ]
+		m_choiceSpeechForChemicalChoices = [
+			# Translators: values for chemistry options with example speech in parenthesis
+			_("Spell it out (H 2 O)"),
+			# Translators: values for chemistry options with example speech in parenthesis (never interpret as chemistry)
+			_("Off (H sub 2 O)")
+		]
 		self.m_choiceSpeechForChemical = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSpeechForChemicalChoices, 0 )
 		self.m_choiceSpeechForChemical.SetSelection( 0 )
 		bSizerSpeechForChemical.Add( self.m_choiceSpeechForChemical, 0, wx.ALL, 5 )
@@ -213,10 +235,14 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		# Translators: label for pull down to specify one of three modes use to navigate math expressions
 		sbSizerNavigationMode = wx.StaticBoxSizer( wx.StaticBox( self.m_panelNavigation, wx.ID_ANY, _("Navigation mode to use when beginning to navigate an equation:") ), wx.VERTICAL )
 
-		# Translators: names of different modes of navigation. "Enhanced" mode understands math structure
-		# Translators: "Simple" walks by character expect for things like fractions, roots, and scripts
-		# Translators: "Chracter" moves around by character, automatically moving into fractions, etc
-		m_choiceNavigationModeChoices = [ _("Enhanced"), _("Simple"), _("Character") ]
+		m_choiceNavigationModeChoices = [
+			# Translators: names of different modes of navigation. "Enhanced" mode understands math structure
+			_("Enhanced"),
+			# Translators: "Simple" walks by character expect for things like fractions, roots, and scripts
+			_("Simple"),
+			# Translators: "Character" moves around by character, automatically moving into fractions, etc
+			_("Character")
+		]
 		self.m_choiceNavigationMode = wx.Choice( sbSizerNavigationMode.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceNavigationModeChoices, 0 )
 		self.m_choiceNavigationMode.SetSelection( 1 )
 		sbSizerNavigationMode.Add( self.m_choiceNavigationMode, 0, wx.ALL, 5 )
@@ -232,7 +258,12 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		sbSizerNavigationSpeech = wx.StaticBoxSizer( wx.StaticBox( self.m_panelNavigation, wx.ID_ANY, _("Navigation speech to use when beginning to navigate an equation:") ), wx.VERTICAL )
 
 		# Translators: either "Speak" the expression or give a description (overview) of the expression
-		m_choiceNavigationSpeechChoices = [ _("Speak"), _("Describe/overview") ]
+		m_choiceNavigationSpeechChoices = [
+			# Translators: "Speak" the expression after moving to it
+			_("Speak"),
+			# Translators: "Describe" the expression after moving to it ("overview is a synonym")
+			_("Describe/overview")
+		]
 		self.m_choiceNavigationSpeech = wx.Choice( sbSizerNavigationSpeech.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceNavigationSpeechChoices, 0 )
 		self.m_choiceNavigationSpeech.SetSelection( 1 )
 		sbSizerNavigationSpeech.Add( self.m_choiceNavigationSpeech, 0, wx.ALL, 5 )
@@ -259,8 +290,15 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerSpeechAmountNavigation.Add( self.m_staticTextSpeechAmountNavigation, 0, wx.ALL, 5 )
 
-		# Translators: options for speech verbosity.
-		m_choiceSpeechAmountNavigationChoices = [ _("Terse"), _("Medium"), _("Verbose") ]
+		# Translators: options for navigation verbosity.
+		m_choiceSpeechAmountNavigationChoices = [
+			# Translators: options for navigation verbosity -- "terse" = use less words
+			_("Terse"),
+			# Translators: options for navigation verbosity -- "medium" = try to be nether too terse nor too verbose words
+			_("Medium"),
+			# Translators: options for navigation verbosity -- "verbose" = use more words
+			_("Verbose")
+		]
 		self.m_choiceSpeechAmountNavigation = wx.Choice( self.m_panelNavigation, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSpeechAmountNavigationChoices, 0 )
 		self.m_choiceSpeechAmountNavigation.SetSelection( 0 )
 		bSizerSpeechAmountNavigation.Add( self.m_choiceSpeechAmountNavigation, 0, wx.ALL, 5 )
@@ -288,7 +326,16 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		bSizerBrailleMathCode.Add( self.m_staticTextBrailleMathCode, 0, wx.ALL, 5 )
 
 		# Translators: names of various braille codes -- probably only translate if a different alphabet is used
-		m_choiceBrailleMathCodeChoices = [ _("Nemeth"), _("UEB"), _("CMU"), _("Vietnam") ]
+		m_choiceBrailleMathCodeChoices = [
+			# Translators: names of various braille codes -- probably only translate if a different alphabet is used
+			_("Nemeth"),
+			# Translators: names of various braille codes -- probably only translate if a different alphabet is used
+			_("UEB"),
+			# Translators: names of various braille codes -- probably only translate if a different alphabet is used
+			_("CMU"),
+			# Translators: names of various braille codes -- probably only translate if a different alphabet is used
+			_("Vietnam")
+		]
 		self.m_choiceBrailleMathCode = wx.Choice( self.m_panelBraille, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceBrailleMathCodeChoices, 0 )
 		self.m_choiceBrailleMathCode.SetSelection( 1 )
 		bSizerBrailleMathCode.Add( self.m_choiceBrailleMathCode, 0, wx.ALL, 5 )
@@ -304,12 +351,17 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerBrailleHighlights.Add( self.m_staticTextBrailleHighlights, 0, wx.ALL, 5 )
 
-		# Translators: options for using dots 7 and 8:
-		# Translators: "off" -- don't highlight
-		# Translators: "First character" -- only the first character of the current navigation node uses dots 7 & 8
-		# Translators: "Endpoints" -- only the first and last character of the current navigation node uses dots 7 & 8
-		# Translators: "All" -- all the characters for the current navigation node use dots 7 & 8
-		m_choiceBrailleHighlightsChoices = [ _("Off"), _("First character"), _("Endpoints"), _("All") ]
+		m_choiceBrailleHighlightsChoices = [
+			# Translators: options for using dots 7 and 8:
+			# Translators: "off" -- don't highlight
+			_("Off"),
+			# Translators: "First character" -- only the first character of the current navigation node uses dots 7 & 8
+			_("First character"),
+			# Translators: "Endpoints" -- only the first and last character of the current navigation node uses dots 7 & 8
+			_("Endpoints"),
+			# Translators: "All" -- all the characters for the current navigation node use dots 7 & 8
+			_("All")
+		]
 		self.m_choiceBrailleHighlights = wx.Choice( self.m_panelBraille, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceBrailleHighlightsChoices, 0 )
 		self.m_choiceBrailleHighlights.SetSelection( 1 )
 		bSizerBrailleHighlights.Add( self.m_choiceBrailleHighlights, 0, wx.ALL, 5 )
