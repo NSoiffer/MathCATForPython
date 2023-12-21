@@ -255,8 +255,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         #clear the language names in the dialog
         self.m_choiceLanguage.Clear()
         # Translators: menu item -- use the language of the voice chosen in the NVDA speech settings dialog
-        # "Auto" == "Automatic" -- this is done separately because other items in menu are "English (en)", etc., so this matches that style
-        self.m_choiceLanguage.Append(_("Use Voice's Language") + _(" (Auto)"))
+        # "Auto" == "Automatic" -- other items in menu are "English (en)", etc., so this matches that style
+        self.m_choiceLanguage.Append(_("Use Voice's Language (Auto)"))
         #populate the available language names in the dialog
         #the implemented languages are in folders named using the relevant ISO 639-1 code https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
         for language in os.listdir(UserInterface.path_to_languages_folder()):
