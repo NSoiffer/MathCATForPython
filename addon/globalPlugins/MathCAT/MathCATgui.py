@@ -193,6 +193,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerSpeechForChemical.Add( self.m_staticTextSpeechForChemical, 0, wx.ALL, 5 )
 
+		# Translators: values for chemistry options with example speech in parenthesis
 		m_choiceSpeechForChemicalChoices = [ _("Spell it out (H 2 O)"), _("Off (H sub 2 O)") ]
 		self.m_choiceSpeechForChemical = wx.Choice( self.m_panelSpeech, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSpeechForChemicalChoices, 0 )
 		self.m_choiceSpeechForChemical.SetSelection( 0 )
@@ -205,30 +206,38 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		self.m_panelSpeech.SetSizer( bSizerSpeech )
 		self.m_panelSpeech.Layout()
 		bSizerSpeech.Fit( self.m_panelSpeech )
-		self.m_simplebookPanelsCategories.AddPage( self.m_panelSpeech, _("a page"), False )
+		self.m_simplebookPanelsCategories.AddPage( self.m_panelSpeech, "a page", False )
 		self.m_panelNavigation = wx.Panel( self.m_simplebookPanelsCategories, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.BORDER_SIMPLE|wx.TAB_TRAVERSAL )
 		bSizerNavigation = wx.BoxSizer( wx.VERTICAL )
 
+		# Translators: label for pull down to specify one of three modes use to navigate math expressions
 		sbSizerNavigationMode = wx.StaticBoxSizer( wx.StaticBox( self.m_panelNavigation, wx.ID_ANY, _("Navigation mode to use when beginning to navigate an equation:") ), wx.VERTICAL )
 
+		# Translators: names of different modes of navigation. "Enhanced" mode understands math structure
+		# Translators: "Simple" walks by character expect for things like fractions, roots, and scripts
+		# Translators: "Chracter" moves around by character, automatically moving into fractions, etc
 		m_choiceNavigationModeChoices = [ _("Enhanced"), _("Simple"), _("Character") ]
 		self.m_choiceNavigationMode = wx.Choice( sbSizerNavigationMode.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceNavigationModeChoices, 0 )
 		self.m_choiceNavigationMode.SetSelection( 1 )
 		sbSizerNavigationMode.Add( self.m_choiceNavigationMode, 0, wx.ALL, 5 )
 
+		# Translators: label for checkbox that controls whether any changes to the navigation mode should be preserved
 		self.m_checkBoxResetNavigationMode = wx.CheckBox( sbSizerNavigationMode.GetStaticBox(), wx.ID_ANY, _("Reset navigation mode on entry to an expression"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		sbSizerNavigationMode.Add( self.m_checkBoxResetNavigationMode, 0, wx.ALL, 5 )
 
 
 		bSizerNavigation.Add( sbSizerNavigationMode, 1, wx.EXPAND, 5 )
 
+		# Translators: label for pull down to specify whether the expression is spoken or described (an overview)
 		sbSizerNavigationSpeech = wx.StaticBoxSizer( wx.StaticBox( self.m_panelNavigation, wx.ID_ANY, _("Navigation speech to use when beginning to navigate an equation:") ), wx.VERTICAL )
 
+		# Translators: either "Speak" the expression or give a description (overview) of the expression
 		m_choiceNavigationSpeechChoices = [ _("Speak"), _("Describe/overview") ]
 		self.m_choiceNavigationSpeech = wx.Choice( sbSizerNavigationSpeech.GetStaticBox(), wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceNavigationSpeechChoices, 0 )
 		self.m_choiceNavigationSpeech.SetSelection( 1 )
 		sbSizerNavigationSpeech.Add( self.m_choiceNavigationSpeech, 0, wx.ALL, 5 )
 
+		# Translators: label for checkbox that controls whether any changes to the speak vs overview reading should be preserved
 		self.m_checkBoxResetNavigationSpeech = wx.CheckBox( sbSizerNavigationSpeech.GetStaticBox(), wx.ID_ANY, _("Reset navigation speech on entry to an expression"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_checkBoxResetNavigationSpeech.SetValue(True)
 		sbSizerNavigationSpeech.Add( self.m_checkBoxResetNavigationSpeech, 0, wx.ALL, 5 )
@@ -238,16 +247,19 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerNavigationZoom = wx.BoxSizer( wx.VERTICAL )
 
+		# Translators: label for checkbox that controls whether arrow keys move out of fractions, etc., or whether you have to manually back out of the fraction, etc.
 		self.m_checkBoxAutomaticZoom = wx.CheckBox( self.m_panelNavigation, wx.ID_ANY, _("Automatic zoom out of 2D notations"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerNavigationZoom.Add( self.m_checkBoxAutomaticZoom, 0, wx.ALL, 5 )
 
 		bSizerSpeechAmountNavigation = wx.BoxSizer( wx.HORIZONTAL )
 
+		# Translators: label for pull down to specify whether you want a terse or verbose reading of navigation commands
 		self.m_staticTextSpeechAmountNavigation = wx.StaticText( self.m_panelNavigation, wx.ID_ANY, _("Speech amount for navigation:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextSpeechAmountNavigation.Wrap( -1 )
 
 		bSizerSpeechAmountNavigation.Add( self.m_staticTextSpeechAmountNavigation, 0, wx.ALL, 5 )
 
+		# Translators: options for speech verbosity.
 		m_choiceSpeechAmountNavigationChoices = [ _("Terse"), _("Medium"), _("Verbose") ]
 		self.m_choiceSpeechAmountNavigation = wx.Choice( self.m_panelNavigation, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceSpeechAmountNavigationChoices, 0 )
 		self.m_choiceSpeechAmountNavigation.SetSelection( 0 )
@@ -263,17 +275,19 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		self.m_panelNavigation.SetSizer( bSizerNavigation )
 		self.m_panelNavigation.Layout()
 		bSizerNavigation.Fit( self.m_panelNavigation )
-		self.m_simplebookPanelsCategories.AddPage( self.m_panelNavigation, _("a page"), False )
+		self.m_simplebookPanelsCategories.AddPage( self.m_panelNavigation, "a page", False )
 		self.m_panelBraille = wx.Panel( self.m_simplebookPanelsCategories, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.BORDER_SIMPLE|wx.TAB_TRAVERSAL )
 		bSizerBraille = wx.BoxSizer( wx.VERTICAL )
 
 		bSizerBrailleMathCode = wx.BoxSizer( wx.HORIZONTAL )
 
+		# Translators: label for pull down to specify which braille code to use
 		self.m_staticTextBrailleMathCode = wx.StaticText( self.m_panelBraille, wx.ID_ANY, _("Braille math code for refreshable displays:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextBrailleMathCode.Wrap( -1 )
 
 		bSizerBrailleMathCode.Add( self.m_staticTextBrailleMathCode, 0, wx.ALL, 5 )
 
+		# Translators: names of various braille codes -- probably only translate if a different alphabet is used
 		m_choiceBrailleMathCodeChoices = [ _("Nemeth"), _("UEB"), _("CMU"), _("Vietnam") ]
 		self.m_choiceBrailleMathCode = wx.Choice( self.m_panelBraille, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceBrailleMathCodeChoices, 0 )
 		self.m_choiceBrailleMathCode.SetSelection( 1 )
@@ -284,11 +298,17 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerBrailleHighlights = wx.BoxSizer( wx.HORIZONTAL )
 
+		# Translators: label for pull down to specify how braille dots should be modify when navigating/selecting subexpressions
 		self.m_staticTextBrailleHighlights = wx.StaticText( self.m_panelBraille, wx.ID_ANY, _("Highlight with dots 7 && 8 the current nav node:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticTextBrailleHighlights.Wrap( -1 )
 
 		bSizerBrailleHighlights.Add( self.m_staticTextBrailleHighlights, 0, wx.ALL, 5 )
 
+		# Translators: options for using dots 7 and 8:
+		# Translators: "off" -- don't highlight
+		# Translators: "First character" -- only the first character of the current navigation node uses dots 7 & 8
+		# Translators: "Endpoints" -- only the first and last character of the current navigation node uses dots 7 & 8
+		# Translators: "All" -- all the characters for the current navigation node use dots 7 & 8
 		m_choiceBrailleHighlightsChoices = [ _("Off"), _("First character"), _("Endpoints"), _("All") ]
 		self.m_choiceBrailleHighlights = wx.Choice( self.m_panelBraille, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choiceBrailleHighlightsChoices, 0 )
 		self.m_choiceBrailleHighlights.SetSelection( 1 )
@@ -316,7 +336,7 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 		self.m_panelBraille.SetSizer( bSizerBraille )
 		self.m_panelBraille.Layout()
 		bSizerBraille.Fit( self.m_panelBraille )
-		self.m_simplebookPanelsCategories.AddPage( self.m_panelBraille, _("a page"), False )
+		self.m_simplebookPanelsCategories.AddPage( self.m_panelBraille, "a page", False )
 
 		gbSizerMathCATPreferences.Add( self.m_simplebookPanelsCategories, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.EXPAND |wx.ALL, 10 )
 
@@ -329,18 +349,23 @@ class MathCATPreferencesDialog ( wx.Dialog ):
 
 		bSizerButtons.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 
+		# Translators: dialog "ok" button
 		self.m_buttonOK = wx.Button( self.m_panelButtons, wx.ID_ANY, _("OK"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerButtons.Add( self.m_buttonOK, 0, wx.ALL, 5 )
 
+		# Translators: dialog "cancel" button
 		self.m_buttonCancel = wx.Button( self.m_panelButtons, wx.ID_ANY, _("Cancel"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerButtons.Add( self.m_buttonCancel, 0, wx.ALL, 5 )
 
+		# Translators: dialog "apply" button
 		self.m_buttonApply = wx.Button( self.m_panelButtons, wx.ID_ANY, _("Apply"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerButtons.Add( self.m_buttonApply, 0, wx.ALL, 5 )
 
+		# Translators: button to reset all the preferences to their default values
 		self.m_buttonReset = wx.Button( self.m_panelButtons, wx.ID_ANY, _("Reset to defaults"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerButtons.Add( self.m_buttonReset, 0, wx.ALL, 5 )
 
+		# Translators: button to bring up a help page
 		self.m_buttonHelp = wx.Button( self.m_panelButtons, wx.ID_ANY, _("Help"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizerButtons.Add( self.m_buttonHelp, 0, wx.ALL, 5 )
 
