@@ -78,9 +78,9 @@ Other fixes:
 * Several improvements for cleaning up poor MathML code
 
 ### Version 0.3.9
-* Added Traditional Chinese translation
+* Added Traditional Chinese translation (thanks to Hon-Jang Yang)
+* Fixed bug with navigating into the base of a scripted expression that has parenthesis
 * Significantly changed the way whitespace is handled. This mainly affects braille output (spaces and "omission" detection).
 * Improved recognition of chemistry
 * UEB braille fixes that came up from adding chemistry examples
 * UEB fixes for adding auxillary parenthesis in some cases
-* Fixed bug with navigating into the base of a scripted expression that has parenthesis
