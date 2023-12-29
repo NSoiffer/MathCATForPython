@@ -27,4 +27,4 @@ jobs:
     - name: Install dependencies (flake8)
       run: pip install -r code/.github/workflows/requirements.txt
     - name: Lint
-      run: flake8 code/addon --max-line-length=130 --extend-exclude=addon/globalPlugins/MathCAT/yaml/*
+      run: flake8 code/addon --max-line-length=130 --extend-exclude=code/addon/globalPlugins/MathCAT/yaml/*
