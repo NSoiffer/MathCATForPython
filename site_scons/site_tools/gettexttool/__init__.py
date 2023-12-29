@@ -1,13 +1,11 @@
-""" This tool allows generation of gettext .mo compiled files,
-pot files from source code files
+""" This tool allows generation of gettext .mo compiled files, pot files from source code files
 and pot files for merging.
 
 Three new builders are added into the constructed environment:
 
 - gettextMoFile: generates .mo file from .pot file using msgfmt.
 - gettextPotFile: Generates .pot file from source code files.
-- gettextMergePotFile: Creates a .pot file appropriate for merging
-into existing .po files.
+- gettextMergePotFile: Creates a .pot file appropriate for merging into existing .po files.
 
 To properly configure get text, define the following variables:
 
@@ -39,8 +37,7 @@ def generate(env):
     env.SetDefault(gettext_package_version="")
 
     env["BUILDERS"]["gettextMoFile"] = env.Builder(
-        action=Action("msgfmt -o $TARGET $SOURCE",
-                      "Compiling translation $SOURCE"),
+        action=Action("msgfmt -o $TARGET $SOURCE", "Compiling translation $SOURCE"),
         suffix=".mo",
         src_suffix=".po",
     )
@@ -54,8 +51,7 @@ def generate(env):
 
     env["BUILDERS"]["gettextMergePotFile"] = env.Builder(
         action=Action(
-            "xgettext " + "--omit-header --no-location "
-            + XGETTEXT_COMMON_ARGS,
+            "xgettext " + "--omit-header --no-location " + XGETTEXT_COMMON_ARGS,
             "Generating pot file $TARGET",
         ),
         suffix=".pot",

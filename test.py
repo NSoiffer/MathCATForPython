@@ -2,6 +2,10 @@
 
 import os as _os
 import sys as _sys
+from _ctypes import CFuncPtr as _CFuncPtr
+from _ctypes import __version__ as _ctypes_version
+from _ctypes import RTLD_LOCAL, RTLD_GLOBAL
+from struct import calcsize as _calcsize
 
 from _ctypes import (
     FUNCFLAG_CDECL as _FUNCFLAG_CDECL,
@@ -9,17 +13,14 @@ from _ctypes import (
     FUNCFLAG_USE_ERRNO as _FUNCFLAG_USE_ERRNO,
     FUNCFLAG_USE_LASTERROR as _FUNCFLAG_USE_LASTERROR,
 )
-from _ctypes import CFuncPtr as _CFuncPtr
-from _ctypes import __version__ as _ctypes_version
-from _ctypes import RTLD_LOCAL, RTLD_GLOBAL
+
 from _ctypes import sizeof
 from _ctypes import _SimpleCData
 from _ctypes import POINTER, _pointer_type_cache
 from _ctypes import _memmove_addr, _memset_addr, _string_at_addr, _cast_addr
 
-from struct import calcsize as _calcsize
-
 __version__ = "1.1.0"
+
 if __version__ != _ctypes_version:
     raise Exception("Version number mismatch", __version__, _ctypes_version)
 
@@ -72,8 +73,7 @@ def create_string_buffer(init, size=None):
 def c_buffer(init, size=None):
     #    "deprecated, use create_string_buffer instead"
     #    import warnings
-    #    warnings.warn("c_buffer is deprecated,
-    #                 use create_string_buffer instead",
+    #    warnings.warn("c_buffer is deprecated, use create_string_buffer instead",
     #                  DeprecationWarning, stacklevel=2)
     return create_string_buffer(init, size)
 
@@ -92,14 +92,10 @@ def CFUNCTYPE(restype, *argtypes, **kw):
     callable object:
 
     prototype(integer address) -> foreign function
-    prototype(callable) -> create and return a C callable
-    function from callable
-    prototype(integer index, method name[, paramflags])
-                -> foreign function calling a COM method
-    prototype((ordinal number, dll object)[, paramflags])
-                -> foreign function exported by ordinal
-    prototype((function name, dll object)[, paramflags])
-                -> foreign function exported by name
+    prototype(callable) -> create and return a C callable function from callable
+    prototype(integer index, method name[, paramflags]) -> foreign function calling a COM method
+    prototype((ordinal number, dll object)[, paramflags]) -> foreign function exported by ordinal
+    prototype((function name, dll object)[, paramflags]) -> foreign function exported by name
     """
     flags = _FUNCFLAG_CDECL
     if kw.pop("use_errno", False):
@@ -111,10 +107,12 @@ def CFUNCTYPE(restype, *argtypes, **kw):
     try:
         return _c_functype_cache[(restype, argtypes, flags)]
     except KeyError:
+
         class CFunctionType(_CFuncPtr):
             _argtypes_ = argtypes
             _restype_ = restype
             _flags_ = flags
+
         _c_functype_cache[(restype, argtypes, flags)] = CFunctionType
         return CFunctionType
 
@@ -137,15 +135,17 @@ if _os.name == "nt":
         try:
             return _win_functype_cache[(restype, argtypes, flags)]
         except KeyError:
+
             class WinFunctionType(_CFuncPtr):
                 _argtypes_ = argtypes
                 _restype_ = restype
                 _flags_ = flags
+
             _win_functype_cache[(restype, argtypes, flags)] = WinFunctionType
             return WinFunctionType
+
     if WINFUNCTYPE.__doc__:
-        WINFUNCTYPE.__doc__ = CFUNCTYPE.__doc__.replace("CFUNCTYPE",
-                                                        "WINFUNCTYPE")
+        WINFUNCTYPE.__doc__ = CFUNCTYPE.__doc__.replace("CFUNCTYPE", "WINFUNCTYPE")
 
 elif _os.name == "posix":
     from _ctypes import dlopen as _dlopen
@@ -245,8 +245,7 @@ if sizeof(c_longdouble) == sizeof(c_double):
     c_longdouble = c_double
 
 if _calcsize("l") == _calcsize("q"):
-    # if long and long long have the same size, make c_longlong
-    # an alias for c_long
+    # if long and long long have the same size, make c_longlong an alias for c_long
     c_longlong = c_long
     c_ulonglong = c_ulong
 else:
@@ -295,8 +294,7 @@ class c_char_p(_SimpleCData):
     _type_ = "z"
 
     def __repr__(self):
-        return "%s(%s)" \
-            % (self.__class__.__name__, c_void_p.from_buffer(self).value)
+        return "%s(%s)" % (self.__class__.__name__, c_void_p.from_buffer(self).value)
 
 
 _check_size(c_char_p, "P")
@@ -318,8 +316,7 @@ class c_wchar_p(_SimpleCData):
     _type_ = "Z"
 
     def __repr__(self):
-        return "%s(%s)" \
-            % (self.__class__.__name__, c_void_p.from_buffer(self).value)
+        return "%s(%s)" % (self.__class__.__name__, c_void_p.from_buffer(self).value)
 
 
 class c_wchar(_SimpleCData):
@@ -453,13 +450,13 @@ class CDLL(object):
         else:
             self._handle = handle
 
-    def __repr__(self):
-        return "<%s '%s', handle %x at %#x>" % (
-            self.__class__.__name__,
-            self._name,
-            (self._handle & (_sys.maxsize * 2 + 1)),
-            id(self) & (_sys.maxsize * 2 + 1),
-        )
+        def __repr__(self):
+            return "<%s '%s', handle %x at %#x>" % (
+                self.__class__.__name__,
+                self._name,
+                (self._handle & (_sys.maxsize * 2 + 1)),
+                id(self) & (_sys.maxsize * 2 + 1),
+            )
 
     def __getattr__(self, name):
         if name.startswith("__") and name.endswith("__"):
@@ -670,12 +667,10 @@ _reset_cache()
 
 print("type of SetClipboardData: %s" % str(windll.user32.SetClipboardData))
 print(
-    "type of RegisterClipboardFormat: %s" %
-    str(windll.user32.RegisterClipboardFormatA)
+    "type of RegisterClipboardFormat: %s" % str(windll.user32.RegisterClipboardFormatA)
 )
 CF_MathML = windll.user32.RegisterClipboardFormatW("MathML")
-CF_MathML_Presentation = windll.user32.RegisterClipboardFormatW("MathML \
-                                                                 Presentation")
+CF_MathML_Presentation = windll.user32.RegisterClipboardFormatW("MathML Presentation")
 print(
     "MathCAT registering data formats: CF_MathML %x, CF_MathML_Presentation %x"
     % (CF_MathML, CF_MathML_Presentation)

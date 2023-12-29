@@ -9,6 +9,7 @@ import os
 import os.path
 import zipfile
 import sys
+import markdown
 
 # While names imported below are available by default in every SConscript
 # Linters aren't aware about them.
@@ -16,15 +17,13 @@ import sys
 # When using other  Scons functions please add them to the line below.
 from SCons.Script import BoolVariable, Builder, Copy, Environment, Variables
 
-sys.dont_write_bytecode = True
-
-# Bytecode should not be written for build vars module to keep the repository
-# root folder clean.
+# Bytecode should not be written for build vars module to keep the repository root folder clean.
 import buildVars  # NOQA: E402
+
+sys.dont_write_bytecode = True
 
 
 def md2html(source, dest):
-    import markdown
 
     # Use extensions if defined.
     mdExtensions = buildVars.markdownExtensions
@@ -32,15 +31,13 @@ def md2html(source, dest):
     localeLang = os.path.basename(os.path.dirname(source))
     try:
         _ = gettext.translation(
-            "nvda", localedir=os.path.join("addon", "locale"),
-            languages=[localeLang]
+            "nvda", localedir=os.path.join("addon", "locale"), languages=[localeLang]
         ).gettext
         summary = _(buildVars.addon_info["addon_summary"])
     except Exception:
         summary = buildVars.addon_info["addon_summary"]
     title = "{addonSummary} {addonVersion}".format(
-        addonSummary=summary,
-        addonVersion=buildVars.addon_info["addon_version"]
+        addonSummary=summary, addonVersion=buildVars.addon_info["addon_version"]
     )
     headerDic = {
         '[[!meta title="': "# ",
@@ -51,18 +48,15 @@ def md2html(source, dest):
         for k, v in headerDic.items():
             mdText = mdText.replace(k, v, 1)
         htmlText = markdown.markdown(mdText, extensions=mdExtensions)
-    # Optimization: build resulting HTML text in one go
-    # instead of writing parts separately.
+    # Optimization: build resulting HTML text in one go instead of writing parts separately.
     docText = "\n".join(
         [
             "<!DOCTYPE html>",
             '<html lang="%s">' % lang,
             "<head>",
             '<meta charset="UTF-8">'
-            '<meta name="viewport" content="width=device-width,\
-                initial-scale=1.0">',
-            '<link rel="stylesheet" type="text/css" href="../style.css"\
-                media="screen">',
+            '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
+            '<link rel="stylesheet" type="text/css" href="../style.css" media="screen">',
             "<title>%s</title>" % title,
             "</head>\n<body>",
             htmlText,
@@ -87,47 +81,40 @@ def mdTool(env):
 
 
 def validateVersionNumber(key, val, env):
-    # Used to make sure version major.minor.patch are integers to comply with
-    # NV Access add-on store.
-    # Ignore all this if version number is not specified, in which case json
-    # generator will validate this info.
+    # Used to make sure version major.minor.patch are integers to comply with NV Access add-on store.
+    # Ignore all this if version number is not specified, in which case json generator will validate this info.
     if val == "0.0.0":
         return
     versionNumber = val.split(".")
     if len(versionNumber) < 3:
-        raise ValueError("versionNumber must have three parts\
-                         (major.minor.patch)")
+        raise ValueError("versionNumber must have three parts (major.minor.patch)")
     if not all([part.isnumeric() for part in versionNumber]):
         raise ValueError("versionNumber (major.minor.patch) must be integers")
 
 
 vars = Variables()
-vars.Add("version", "The version of this build",
-         buildVars.addon_info["addon_version"])
+vars.Add("version", "The version of this build", buildVars.addon_info["addon_version"])
 vars.Add(
     "versionNumber",
     "Version number of the form major.minor.patch",
     "0.0.0",
     validateVersionNumber,
 )
-vars.Add(BoolVariable("dev",
-                      "Whether this is a daily development version", False))
+vars.Add(BoolVariable("dev", "Whether this is a daily development version", False))
 vars.Add(
     "channel",
     "Update channel for this build",
     buildVars.addon_info["addon_updateChannel"],
 )
 
-env = Environment(variables=vars, ENV=os.environ,
-                  tools=["gettexttool", mdTool])
+env = Environment(variables=vars, ENV=os.environ, tools=["gettexttool", mdTool])
 env.Append(**buildVars.addon_info)
 
 if env["dev"]:
     import datetime
 
     buildDate = datetime.datetime.now()
-    year, month = str(buildDate.year), str(buildDate.month)
-    day = str(buildDate.day)
+    year, month, day = str(buildDate.year), str(buildDate.month), str(buildDate.day)
     versionTimestamp = "".join([year, month.zfill(2), day.zfill(2)])
     env["addon_version"] = f"{versionTimestamp}-dev"
     env["versionNumber"] = f"{versionTimestamp}.0.0"
@@ -173,8 +160,7 @@ def translatedManifestGenerator(target, source, env, for_signature):
             source[1].abspath, lang, target[0].abspath
         )
         and None,
-        lambda target, source, env: "Generating translated manifest %s" %
-        target[0],
+        lambda target, source, env: "Generating translated manifest %s" % target[0],
     )
     return action
 
@@ -190,23 +176,19 @@ def createAddonHelp(dir):
     docsDir = os.path.join(dir, "doc")
     if os.path.isfile("style.css"):
         cssPath = os.path.join(docsDir, "style.css")
-        cssTarget = env.Command(cssPath, "style.css", Copy("$TARGET",
-                                                           "$SOURCE"))
+        cssTarget = env.Command(cssPath, "style.css", Copy("$TARGET", "$SOURCE"))
         env.Depends(addon, cssTarget)
     if os.path.isfile("readme.md"):
         readmePath = os.path.join(docsDir, buildVars.baseLanguage, "readme.md")
-        readmeTarget = env.Command(readmePath, "readme.md", Copy("$TARGET",
-                                                                 "$SOURCE"))
+        readmeTarget = env.Command(readmePath, "readme.md", Copy("$TARGET", "$SOURCE"))
         env.Depends(addon, readmeTarget)
 
 
 def createAddonBundleFromPath(path, dest):
-    """Creates a bundle from a directory
-    that contains an addon manifest file."""
+    """Creates a bundle from a directory that contains an addon manifest file."""
     basedir = os.path.abspath(path)
     with zipfile.ZipFile(dest, "w", zipfile.ZIP_DEFLATED) as z:
-        # FIXME: the include/exclude feature may or may not be useful.
-        # Also python files can be pre-compiled.
+        # FIXME: the include/exclude feature may or may not be useful. Also python files can be pre-compiled.
         for dir, dirnames, filenames in os.walk(basedir):
             relativePath = os.path.relpath(dir, basedir)
             for filename in filenames:
@@ -219,13 +201,11 @@ def createAddonBundleFromPath(path, dest):
 
 
 def createAddonStoreJson(bundle):
-    """Creates add-on store JSON file from an add-on
-    package and manifest data."""
+    """Creates add-on store JSON file from an add-on package and manifest data."""
     import json
     import hashlib
 
-    # Set different json file names and version number properties
-    # based on version number parsing results.
+    # Set different json file names and version number properties based on version number parsing results.
     if env["versionNumber"] == "0.0.0":
         env["versionNumber"] = buildVars.addon_info["addon_version"]
     versionNumberParsed = env["versionNumber"].split(".")
@@ -249,8 +229,7 @@ def createAddonStoreJson(bundle):
             sha256.update(byte_block)
     hashValue = sha256.hexdigest()
     try:
-        minimumNVDAVersion = buildVars.addon_info["addon_minimumNVDAVersion"]\
-            .split(".")
+        minimumNVDAVersion = buildVars.addon_info["addon_minimumNVDAVersion"].split(".")
     except AttributeError:
         minimumNVDAVersion = [0, 0, 0]
     minMajor, minMinor = minimumNVDAVersion[:2]
@@ -328,15 +307,13 @@ addon = env.NVDAAddon(addonFile, env.Dir("addon"))
 
 langDirs = [f for f in env.Glob(os.path.join("addon", "locale", "*"))]
 
-# Allow all NVDA's gettext po files to be compiled in source/locale,
-# and manifest files to be generated
+# Allow all NVDA's gettext po files to be compiled in source/locale, and manifest files to be generated
 for dir in langDirs:
     poFile = dir.File(os.path.join("LC_MESSAGES", "nvda.po"))
     moFile = env.gettextMoFile(poFile)
     env.Depends(moFile, poFile)
     translatedManifest = env.NVDATranslatedManifest(
-        dir.File("manifest.ini"), [moFile,
-                                   os.path.join("manifest-translated.ini.tpl")]
+        dir.File("manifest.ini"), [moFile, os.path.join("manifest-translated.ini.tpl")]
     )
     env.Depends(translatedManifest, ["buildVars.py"])
     env.Depends(addon, [translatedManifest, moFile])
@@ -346,8 +323,7 @@ for file in pythonFiles:
     env.Depends(addon, file)
 
 # Convert markdown files to html
-# We need at least doc in English and should enable the Help
-    # button for the add-on in Add-ons Manager
+# We need at least doc in English and should enable the Help button for the add-on in Add-ons Manager
 createAddonHelp("addon")
 for mdFile in env.Glob(os.path.join("addon", "doc", "*", "*.md")):
     htmlFile = env.markdown(mdFile)
@@ -365,8 +341,7 @@ gettextvars = {
 pot = env.gettextPotFile("${addon_name}.pot", i18nFiles, **gettextvars)
 env.Alias("pot", pot)
 env.Depends(pot, i18nFiles)
-mergePot = env.gettextMergePotFile("${addon_name}-merge.pot", i18nFiles,
-                                   **gettextvars)
+mergePot = env.gettextMergePotFile("${addon_name}-merge.pot", i18nFiles, **gettextvars)
 env.Alias("mergePot", mergePot)
 env.Depends(mergePot, i18nFiles)
 
@@ -379,5 +354,4 @@ env.Depends(manifest, "buildVars.py")
 
 env.Depends(addon, manifest)
 env.Default(addon)
-env.Clean(addon, [".sconsign.dblite", "addon/doc/" + buildVars.baseLanguage
-                  + "/"])
+env.Clean(addon, [".sconsign.dblite", "addon/doc/" + buildVars.baseLanguage + "/"])
