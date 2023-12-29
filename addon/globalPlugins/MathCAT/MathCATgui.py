@@ -22,11 +22,11 @@ addonHandler.initTranslation()
 
 class MathCATPreferencesDialog(wx.Dialog):
     def __init__(self, parent):
-        # Translators: title for MathCAT preferences dialog
         wx.Dialog.__init__(
             self,
             parent,
             id=wx.ID_ANY,
+            # Translators: title for MathCAT preferences dialog
             title=_("MathCAT Preferences"),
             pos=wx.DefaultPosition,
             size=wx.Size(-1, -1),
@@ -44,10 +44,10 @@ class MathCATPreferencesDialog(wx.Dialog):
         )
         bSizerCategories = wx.BoxSizer(wx.VERTICAL)
 
-        # Translators: A heading that labels three navigation pane tab names in the MathCAT dialog
         self.m_staticTextCategories = wx.StaticText(
             self.m_panelCategories,
             wx.ID_ANY,
+            # Translators: A heading that labels three navigation pane tab names in the MathCAT dialog
             _("Categories:"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -112,10 +112,10 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerImpairment = wx.BoxSizer(wx.HORIZONTAL)
 
-        # Translators: this is the text label for whom to target the speech for (options are below)
         self.m_staticTextImpairment = wx.StaticText(
             self.m_panelSpeech,
             wx.ID_ANY,
+            # Translators: this is the text label for whom to target the speech for (options are below)
             _("Generate speech for:"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -149,10 +149,10 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerLanguage = wx.BoxSizer(wx.HORIZONTAL)
 
-        # Translators: label for pull down allowing users to choose the speech language for math
         self.m_staticTextLanguage = wx.StaticText(
             self.m_panelSpeech,
             wx.ID_ANY,
+            # Translators: label for pull down allowing users to choose the speech language for math
             _("Language:"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -178,10 +178,10 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerSpeechStyle = wx.BoxSizer(wx.HORIZONTAL)
 
-        # Translators: label for pull down allowing users to choose the "style" (version, rules) of speech for math
         self.m_staticTextSpeechStyle = wx.StaticText(
             self.m_panelSpeech,
             wx.ID_ANY,
+            # Translators: label for pull down allowing users to choose the "style" (version, rules) of speech for math
             _("Speech style:"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -207,10 +207,10 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizer71 = wx.BoxSizer(wx.HORIZONTAL)
 
-        # Translators: label for pull down to specify how verbose/terse the speech should be
         self.m_staticTextSpeechAmount = wx.StaticText(
             self.m_panelSpeech,
             wx.ID_ANY,
+            # Translators: label for pull down to specify how verbose/terse the speech should be
             _("Speech verbosity:"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -244,10 +244,10 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerRelativeSpeed = wx.BoxSizer(wx.HORIZONTAL)
 
-        # Translators: label for slider that specifies a percentage of the normal speech rate that should be used for math
         self.m_staticTextRelativeSpeed = wx.StaticText(
             self.m_panelSpeech,
             wx.ID_ANY,
+            # Translators: label for slider that specifies a percentage of the normal speech rate that should be used for math
             _("Relative speech rate:"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -274,10 +274,10 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerPauseFactor = wx.BoxSizer(wx.HORIZONTAL)
 
-        # Translators: label for slider that specifies relative factor to increase or decrease pauses in the math speech
         self.m_staticPauseFactor = wx.StaticText(
             self.m_panelSpeech,
             wx.ID_ANY,
+            # Translators: label for slider that specifies relative factor to increase or decrease pauses in the math speech
             _("Pause factor:"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -303,10 +303,10 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerSpeechSound = wx.BoxSizer(wx.HORIZONTAL)
 
-        # Translators: label for check box controling a beep sound
         self.m_checkBoxSpeechSound = wx.CheckBox(
             self.m_panelSpeech,
             wx.ID_ANY,
+            # Translators: label for check box controling a beep sound
             _("Make a sound when starting/ending math speech"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -318,10 +318,10 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerSubjectArea = wx.BoxSizer(wx.HORIZONTAL)
 
-        # Translators: label for pull down to specify a subject area (Geometry, Calculus, ...) to use speech for that subject area
         self.m_staticTextSubjectArea = wx.StaticText(
             self.m_panelSpeech,
             wx.ID_ANY,
+            # Translators: label for pull down to specify a subject area (Geometry, Calculus, ...)
             _("Subject area to be used when it cannot be determined automatically:"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -348,10 +348,10 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerSpeechForChemical = wx.BoxSizer(wx.HORIZONTAL)
 
-        # Translators: label for pull down to specify how verbose/terse the speech should be
         self.m_staticTextSpeechForChemical = wx.StaticText(
             self.m_panelSpeech,
             wx.ID_ANY,
+            # Translators: label for pull down to specify how verbose/terse the speech should be
             _("Speech for chemical formulas:"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -393,11 +393,11 @@ class MathCATPreferencesDialog(wx.Dialog):
         )
         bSizerNavigation = wx.BoxSizer(wx.VERTICAL)
 
-        # Translators: label for pull down to specify one of three modes use to navigate math expressions
         sbSizerNavigationMode = wx.StaticBoxSizer(
             wx.StaticBox(
                 self.m_panelNavigation,
                 wx.ID_ANY,
+                # Translators: label for pull down to specify one of three modes use to navigate math expressions
                 _("Navigation mode to use when beginning to navigate an equation:"),
             ),
             wx.VERTICAL,
@@ -422,10 +422,10 @@ class MathCATPreferencesDialog(wx.Dialog):
         self.m_choiceNavigationMode.SetSelection(1)
         sbSizerNavigationMode.Add(self.m_choiceNavigationMode, 0, wx.ALL, 5)
 
-        # Translators: label for checkbox that controls whether any changes to the navigation mode should be preserved
         self.m_checkBoxResetNavigationMode = wx.CheckBox(
             sbSizerNavigationMode.GetStaticBox(),
             wx.ID_ANY,
+            # Translators: label for checkbox that controls whether any changes to the navigation mode should be preserved
             _("Reset navigation mode on entry to an expression"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -435,11 +435,11 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerNavigation.Add(sbSizerNavigationMode, 1, wx.EXPAND, 5)
 
-        # Translators: label for pull down to specify whether the expression is spoken or described (an overview)
         sbSizerNavigationSpeech = wx.StaticBoxSizer(
             wx.StaticBox(
                 self.m_panelNavigation,
                 wx.ID_ANY,
+                # Translators: label for pull down to specify whether the expression is spoken or described (an overview)
                 _("Navigation speech to use when beginning to navigate an equation:"),
             ),
             wx.VERTICAL,
@@ -463,10 +463,10 @@ class MathCATPreferencesDialog(wx.Dialog):
         self.m_choiceNavigationSpeech.SetSelection(1)
         sbSizerNavigationSpeech.Add(self.m_choiceNavigationSpeech, 0, wx.ALL, 5)
 
-        # Translators: label for checkbox that controls whether any changes to the speak vs overview reading should be preserved
         self.m_checkBoxResetNavigationSpeech = wx.CheckBox(
             sbSizerNavigationSpeech.GetStaticBox(),
             wx.ID_ANY,
+            # Translators: label for checkbox that controls whether any changes to the speak vs overview reading should be ignored
             _("Reset navigation speech on entry to an expression"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -479,11 +479,11 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerNavigationZoom = wx.BoxSizer(wx.VERTICAL)
 
-        # Translators: label for checkbox that controls whether arrow keys move out of fractions,
-        # etc., or whether you have to manually back out of the fraction, etc.
         self.m_checkBoxAutomaticZoom = wx.CheckBox(
             self.m_panelNavigation,
             wx.ID_ANY,
+            # Translators: label for checkbox that controls whether arrow keys move out of fractions, etc.,
+            # or whether you have to manually back out of the fraction, etc.
             _("Automatic zoom out of 2D notations"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -493,10 +493,10 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerSpeechAmountNavigation = wx.BoxSizer(wx.HORIZONTAL)
 
-        # Translators: label for pull down to specify whether you want a terse or verbose reading of navigation commands
         self.m_staticTextSpeechAmountNavigation = wx.StaticText(
             self.m_panelNavigation,
             wx.ID_ANY,
+            # Translators: label for pull down to specify whether you want a terse or verbose reading of navigation commands
             _("Speech amount for navigation:"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -547,10 +547,10 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerBrailleMathCode = wx.BoxSizer(wx.HORIZONTAL)
 
-        # Translators: label for pull down to specify which braille code to use
         self.m_staticTextBrailleMathCode = wx.StaticText(
             self.m_panelBraille,
             wx.ID_ANY,
+            # Translators: label for pull down to specify which braille code to use
             _("Braille math code for refreshable displays:"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -586,10 +586,10 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerBrailleHighlights = wx.BoxSizer(wx.HORIZONTAL)
 
-        # Translators: label for pull down to specify how braille dots should be modify when navigating/selecting subexpressions
         self.m_staticTextBrailleHighlights = wx.StaticText(
             self.m_panelBraille,
             wx.ID_ANY,
+            # Translators: label for pull down to specify how braille dots should be modified when navigating/selecting subexprs
             _("Highlight with dots 7 && 8 the current nav node:"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -660,10 +660,10 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerButtons.Add((0, 0), 1, wx.EXPAND, 5)
 
-        # Translators: dialog "ok" button
         self.m_buttonOK = wx.Button(
             self.m_panelButtons,
             wx.ID_ANY,
+            # Translators: dialog "ok" button
             _("OK"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -671,10 +671,10 @@ class MathCATPreferencesDialog(wx.Dialog):
         )
         bSizerButtons.Add(self.m_buttonOK, 0, wx.ALL, 5)
 
-        # Translators: dialog "cancel" button
         self.m_buttonCancel = wx.Button(
             self.m_panelButtons,
             wx.ID_ANY,
+            # Translators: dialog "cancel" button
             _("Cancel"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -682,10 +682,10 @@ class MathCATPreferencesDialog(wx.Dialog):
         )
         bSizerButtons.Add(self.m_buttonCancel, 0, wx.ALL, 5)
 
-        # Translators: dialog "apply" button
         self.m_buttonApply = wx.Button(
             self.m_panelButtons,
             wx.ID_ANY,
+            # Translators: dialog "apply" button
             _("Apply"),
             wx.DefaultPosition,
             wx.DefaultSize,
@@ -704,10 +704,10 @@ class MathCATPreferencesDialog(wx.Dialog):
         )
         bSizerButtons.Add(self.m_buttonReset, 0, wx.ALL, 5)
 
-        # Translators: button to bring up a help page
         self.m_buttonHelp = wx.Button(
             self.m_panelButtons,
             wx.ID_ANY,
+            # Translators: button to bring up a help page
             _("Help"),
             wx.DefaultPosition,
             wx.DefaultSize,

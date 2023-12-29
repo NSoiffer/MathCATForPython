@@ -289,9 +289,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         except Exception as e:
             log.error(e)
             # Translators: this message directs users to look in the log file
-            speech.speakMessage(
-                _("Error in navigating math: see NVDA error log for details")
-            )
+            speech.speakMessage(_("Error in navigating math: see NVDA error log for details"))
 
     _startsWithMath = re.compile("\\s*?<math")
 
@@ -317,9 +315,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         except Exception as e:
             log.error(e)
             # Translators: this message directs users to look in the log file
-            speech.speakMessage(
-                _("unable to copy math: see NVDA error log for details")
-            )
+            speech.speakMessage(_("unable to copy math: see NVDA error log for details"))
 
     # not a perfect match sequence, but should capture normal MathML
     # not a perfect match sequence, but should capture normal MathML

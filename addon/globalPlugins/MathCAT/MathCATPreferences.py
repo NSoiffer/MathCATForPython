@@ -564,9 +564,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         rate = self.m_sliderRelativeSpeed.GetValue()
         pf_slider = self.m_sliderPauseFactor.GetValue()
         pause_factor = 0 if pf_slider == 0 else round(PAUSE_FACTOR_SCALE * math.pow(PAUSE_FACTOR_LOG_BASE, pf_slider))
-        # Translators: this is a test string that is spoken. Only translate "the fraction with numerator"
-        # and other parts NOT inside '<.../>',
         text = _(
+            # Translators: this is a test string that is spoken. Only translate "the fraction with numerator"
+            # and other parts NOT inside '<.../>',
             "<prosody rate='{rate}%'>the fraction with numerator <break time='{pause_factor_300}ms'/>\
                 <mark name='M63i335o-4'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-5'/>\
                 <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme>\
