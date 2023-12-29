@@ -693,10 +693,10 @@ class MathCATPreferencesDialog(wx.Dialog):
         )
         bSizerButtons.Add(self.m_buttonApply, 0, wx.ALL, 5)
 
-        # Translators: button to reset all the preferences to their default values
         self.m_buttonReset = wx.Button(
             self.m_panelButtons,
             wx.ID_ANY,
+            # Translators: button to reset all the preferences to their default values
             _("Reset to defaults"),
             wx.DefaultPosition,
             wx.DefaultSize,
