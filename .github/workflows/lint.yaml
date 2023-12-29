@@ -11,5 +11,22 @@ on:
 jobs:
 
   lint:
-    uses: nvdaes/nvdaAddonWorkflows/.github/workflows/lint.yaml@main
-    
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout reusable workflows
+      uses: actions/checkout@v3
+      with:
+        repository: nvdaes/nvdaAddonWorkflows
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        path: code
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+    - name: Lint
+      run: flake8 code/addon --max-line-length=130
