@@ -1,29 +1,34 @@
 # -*- coding: UTF-8 -*-
 
-# MathCAT add-on: generates speech, braille, and allows exploration of expressions written in MathML
-# The goal of this add-on is to replicate/improve upon the functionality of MathPlayer which has been discontinued.
+# MathCAT add-on: generates speech, braille, and allows exploration of
+#   expressions written in MathML
+# The goal of this add-on is to replicate/improve upon the functionality of
+#   MathPlayer which has been discontinued.
 # Author: Neil Soiffer
 # Copyright: this file is copyright GPL2
-#   The code additionally makes use of the MathCAT library (written in Rust) which is covered by the MIT license
+#   The code additionally makes use of the MathCAT library (written in Rust)
+#   which is covered by the MIT license
 #   and also (obviously) requires external speech engines and braille drivers.
 #   The plugin also requires the use of a small python dll: python3.dll
-#   python3.dll has "Copyright © 2001-2022 Python Software Foundation; All Rights Reserved"
+#   python3.dll has "Copyright © 2001-2022 Python Software Foundation;
+#   All Rights Reserved"
 
 
-import globalPluginHandler                  # we are a global plugin
+import globalPluginHandler  # we are a global plugin
 import globalVars
-from logHandler import log                  # logging
-import mathPres                             # math plugin stuff
-from gui import mainFrame
+import mathPres  # math plugin stuff
 import wx
-
 import addonHandler
-addonHandler.initTranslation() 
 
+from gui import mainFrame
 from .MathCAT import MathCAT
 from .MathCATPreferences import UserInterface
+# Import the _ function for translation
+_ = wx.GetTranslation
+addonHandler.initTranslation()
+mathPres.registerProvider(MathCAT(), speech=True, braille=True,
+                          interaction=True)
 
-mathPres.registerProvider(MathCAT(), speech=True, braille=True, interaction=True)
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
     def __init__(self, *args, **kwargs):
@@ -34,9 +39,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
     def add_MathCAT_menu(self):
         if not globalVars.appArgs.secure:
             self.preferencesMenu = mainFrame.sysTrayIcon.preferencesMenu
-            # Translators: this show up in the NVDA preferences dialog. It opens the MathCAT preferences dialog
-            self.settings = self.preferencesMenu.Append(wx.ID_ANY, _("&MathCAT Settings..."))
-            mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.on_settings, self.settings)
+            # Translators: this show up in the NVDA preferences dialog.
+            #   It opens the MathCAT preferences dialog
+            self.settings = self.preferencesMenu.Append(
+                wx.ID_ANY, _("&MathCAT Settings...")
+            )
+            mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.on_settings,
+                                       self.settings)
 
     def on_settings(self, evt):
         mainFrame.popupSettingsDialog(UserInterface)
@@ -47,4 +56,3 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
                 self.preferencesMenu.Remove(self.settings)
         except (AttributeError, RuntimeError):
             pass
-
