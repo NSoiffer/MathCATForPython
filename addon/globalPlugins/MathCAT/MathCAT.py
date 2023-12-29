@@ -95,9 +95,7 @@ def getLanguageToUse(mathMl: str) -> str:
         return mathCATLanguageSetting
 
     languageMatch = RE_MATH_LANG.search(mathMl)
-    language = (
-        languageMatch.group(2) if languageMatch else getCurrentLanguage()
-    )  # seems to be current voice's language
+    language = (languageMatch.group(2) if languageMatch else getCurrentLanguage())  # seems to be current voice's language
     language = language.lower().replace("_", "-")
     return language
 
@@ -133,9 +131,7 @@ def ConvertSSMLTextForNVDA(text: str, language: str = "") -> list:
     # use_volume = VolumeCommand in supported_commands
     use_phoneme = PhonemeCommand in supported_commands
     # as of 7/23, oneCore voices do not implement the CharacterModeCommand despite it being in supported_commands
-    use_character = (
-        CharacterModeCommand in supported_commands and synth.name != "oneCore"
-    )
+    use_character = (CharacterModeCommand in supported_commands and synth.name != "oneCore")
     out = []
     if mathCATLanguageSetting != language:
         try:
@@ -154,17 +150,9 @@ def ConvertSSMLTextForNVDA(text: str, language: str = "") -> list:
         elif m.lastgroup == "char":
             ch = m.group("char")
             if use_character:
-                out.extend(
-                    (CharacterModeCommand(True), ch, CharacterModeCommand(False))
-                )
+                out.extend((CharacterModeCommand(True), ch, CharacterModeCommand(False)))
             else:
-                out.extend(
-                    (
-                        " ",
-                        "eigh" if ch == "a" and language.startswith("en") else ch,
-                        " ",
-                    )
-                )
+                out.extend((" ", "eigh" if ch == "a" and language.startswith("en") else ch, " "))
         elif m.lastgroup == "beep":
             out.append(BeepCommand(2000, 50))
         elif m.lastgroup == "pitch":
@@ -223,11 +211,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         except Exception as e:
             log.error(e)
             # Translators: this message directs users to look in the log file
-            speech.speakMessage(
-                _(
-                    "Error in starting navigation of math: see NVDA error log for details"
-                )
-            )
+            speech.speakMessage(_("Error in starting navigation of math: see NVDA error log for details"))
 
     def getBrailleRegions(self, review: bool = False):
         # log.info("***MathCAT start getBrailleRegions")
@@ -240,9 +224,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         except Exception as e:
             log.error(e)
             # Translators: this message directs users to look in the log file
-            speech.speakMessage(
-                _("Error in brailling math: see NVDA error log for details")
-            )
+            speech.speakMessage(_("Error in brailling math: see NVDA error log for details"))
             region.rawText = ""
 
         # log.info("***MathCAT end getBrailleRegions ***")
@@ -251,11 +233,9 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
     def getScript(self, gesture: KeyboardInputGesture):
         # Pass most keys to MathCAT. Pretty ugly.
         if (
-            isinstance(gesture, KeyboardInputGesture)
-            and "NVDA" not in gesture.modifierNames
-            and (
-                gesture.mainKeyName
-                in {
+            isinstance(gesture, KeyboardInputGesture) and
+            "NVDA" not in gesture.modifierNames and
+                gesture.mainKeyName in {
                     "leftArrow",
                     "rightArrow",
                     "upArrow",
@@ -277,17 +257,15 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
                     "9",
                 }
                 # or len(gesture.mainKeyName) == 1
-            )
         ):
             return self.script_navigate
-        return super().getScript(gesture)
+        else:
+            return super().getScript(gesture)
 
     def script_navigate(self, gesture: KeyboardInputGesture):
         # log.info("***MathCAT script_navigate")
         try:
-            if (
-                gesture is not None
-            ):  # == None when initial focus -- handled in reportFocus()
+            if (gesture is not None):  # == None when initial focus -- handled in reportFocus()
                 modNames = gesture.modifierNames
                 text = libmathcat.DoNavigateKeyPress(
                     gesture.vkCode,
@@ -374,9 +352,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
                 winUser.emptyClipboard()
                 text = self._wrapMathMLForClipBoard(text)
                 self._setClipboardData(self.CF_MathML, '<?xml version="1.0"?>' + text)
-                self._setClipboardData(
-                    self.CF_MathML_Presentation, '<?xml version="1.0"?>' + text
-                )
+                self._setClipboardData(self.CF_MathML_Presentation, '<?xml version="1.0"?>' + text)
                 self._setClipboardData(winUser.CF_UNICODETEXT, text)
             got = getClipData()
         except OSError:
@@ -419,17 +395,13 @@ class MathCAT(mathPres.MathPresentationProvider):
         try:
             # IMPORTANT -- SetRulesDir must be the first call to libmathcat besides GetVersion()
             rules_dir = path.join(path.dirname(path.abspath(__file__)), "Rules")
-            log.info(
-                f"MathCAT {libmathcat.GetVersion()} installed. Using rules dir: {rules_dir}"
-            )
+            log.info(f"MathCAT {libmathcat.GetVersion()} installed. Using rules dir: {rules_dir}")
             libmathcat.SetRulesDir(rules_dir)
             libmathcat.SetPreference("TTS", "SSML")
         except Exception as e:
             log.error(e)
             # Translators: this message directs users to look in the log file
-            speech.speakMessage(
-                _("MathCAT initialization failed: see NVDA error log for details")
-            )
+            speech.speakMessage(_("MathCAT initialization failed: see NVDA error log for details"))
         self._language = ""
 
     def getSpeechForMathMl(self, mathml: str):
@@ -440,9 +412,7 @@ class MathCAT(mathPres.MathPresentationProvider):
             log.error(e)
             log.error(f"MathML is {mathml}")
             # Translators: this message directs users to look in the log file
-            speech.speakMessage(
-                _("Illegal MathML found: see NVDA error log for details")
-            )
+            speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
             libmathcat.SetMathML("<math></math>")  # set it to something
         try:
             synth = getSynth()
@@ -458,9 +428,7 @@ class MathCAT(mathPres.MathPresentationProvider):
                 "true" if synthConfig["sayCapForCapitals"] else "false",
             )
             if PitchCommand in supported_commands:
-                libmathcat.SetPreference(
-                    "CapitalLetters_Pitch", str(synthConfig["capPitchChange"])
-                )
+                libmathcat.SetPreference("CapitalLetters_Pitch", str(synthConfig["capPitchChange"]))
             if self._add_sounds():
                 return (
                     [BeepCommand(800, 25)]
@@ -468,16 +436,12 @@ class MathCAT(mathPres.MathPresentationProvider):
                     + [BeepCommand(600, 15)]
                 )
             else:
-                return ConvertSSMLTextForNVDA(
-                    libmathcat.GetSpokenText(), self._language
-                )
+                return ConvertSSMLTextForNVDA(libmathcat.GetSpokenText(), self._language)
 
         except Exception as e:
             log.error(e)
             # Translators: this message directs users to look in the log file
-            speech.speakMessage(
-                _("Error in speaking math: see NVDA error log for details")
-            )
+            speech.speakMessage(_("Error in speaking math: see NVDA error log for details"))
             return [""]
 
     def _add_sounds(self):
@@ -495,18 +459,14 @@ class MathCAT(mathPres.MathPresentationProvider):
             log.error(e)
             log.error(f"MathML is {mathml}")
             # Translators: this message directs users to look in the log file
-            speech.speakMessage(
-                _("Illegal MathML found: see NVDA error log for details")
-            )
+            speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
             libmathcat.SetMathML("<math></math>")  # set it to something
         try:
             return libmathcat.GetBraille("")
         except Exception as e:
             log.error(e)
             # Translators: this message directs users to look in the log file
-            speech.speakMessage(
-                _("Error in brailling math: see NVDA error log for details")
-            )
+            speech.speakMessage(_("Error in brailling math: see NVDA error log for details"))
             return ""
 
     def interactWithMathMl(self, mathml: str):
@@ -541,9 +501,7 @@ def patched_speak(self, speechSequence: SpeechSequence):  # noqa: C901
         elif isinstance(item, IndexCommand):
             textList.append('<mark name="%d" />' % item.index)
         elif isinstance(item, CharacterModeCommand):
-            textList.append(
-                '<say-as interpret-as="characters">' if item.state else "</say-as>"
-            )
+            textList.append('<say-as interpret-as="characters">' if item.state else "</say-as>")
         elif isinstance(item, LangChangeCommand):
             langChangeXML = self._handleLangChangeCommand(item, langChanged)
             textList.append(langChangeXML)
@@ -553,9 +511,7 @@ def patched_speak(self, speechSequence: SpeechSequence):  # noqa: C901
         elif type(item) in self.PROSODY_ATTRS:
             if prosody:
                 # Close previous prosody tag.
-                textList.append(
-                    '<break time="1ms" />'
-                )  # hack added for cutoff speech (github.com/NSoiffer/MathCATForPython/issues/55)
+                textList.append('<break time="1ms" />')  # hack added for cutoff speech (issue #55)
                 textList.append("</prosody>")
             attr = self.PROSODY_ATTRS[type(item)]
             if item.multiplier == 1:

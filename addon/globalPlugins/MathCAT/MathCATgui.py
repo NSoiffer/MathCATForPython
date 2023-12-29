@@ -504,9 +504,7 @@ class MathCATPreferencesDialog(wx.Dialog):
         )
         self.m_staticTextSpeechAmountNavigation.Wrap(-1)
 
-        bSizerSpeechAmountNavigation.Add(
-            self.m_staticTextSpeechAmountNavigation, 0, wx.ALL, 5
-        )
+        bSizerSpeechAmountNavigation.Add(self.m_staticTextSpeechAmountNavigation, 0, wx.ALL, 5)
 
         # Translators: options for navigation verbosity.
         m_choiceSpeechAmountNavigationChoices = [
@@ -526,9 +524,7 @@ class MathCATPreferencesDialog(wx.Dialog):
             0,
         )
         self.m_choiceSpeechAmountNavigation.SetSelection(0)
-        bSizerSpeechAmountNavigation.Add(
-            self.m_choiceSpeechAmountNavigation, 0, wx.ALL, 5
-        )
+        bSizerSpeechAmountNavigation.Add(self.m_choiceSpeechAmountNavigation, 0, wx.ALL, 5)
 
         bSizerNavigationZoom.Add(bSizerSpeechAmountNavigation, 1, wx.EXPAND, 5)
 
@@ -650,9 +646,7 @@ class MathCATPreferencesDialog(wx.Dialog):
             10,
         )
 
-        self.m_staticlineAboveButtons = wx.StaticLine(
-            self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL
-        )
+        self.m_staticlineAboveButtons = wx.StaticLine(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL)
         gbSizerMathCATPreferences.Add(
             self.m_staticlineAboveButtons,
             wx.GBPosition(1, 0),
@@ -661,9 +655,7 @@ class MathCATPreferencesDialog(wx.Dialog):
             5,
         )
 
-        self.m_panelButtons = wx.Panel(
-            self, wx.ID_ANY, wx.Point(-1, -1), wx.DefaultSize, 0
-        )
+        self.m_panelButtons = wx.Panel(self, wx.ID_ANY, wx.Point(-1, -1), wx.DefaultSize, 0)
         bSizerButtons = wx.BoxSizer(wx.HORIZONTAL)
 
         bSizerButtons.Add((0, 0), 1, wx.EXPAND, 5)
