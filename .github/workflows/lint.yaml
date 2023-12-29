@@ -22,6 +22,8 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: 3.11
+    - name: debugging
+      run: ls
     - name: Install dependencies (flake8)
       run: pip install -r requirements.txt
     - name: Lint
