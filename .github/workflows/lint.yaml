@@ -25,6 +25,6 @@ jobs:
     - name: debugging
       run: dir -l code
     - name: Install dependencies (flake8)
-      run: pip install -r requirements.txt
+      run: pip install -r code/requirements.txt
     - name: Lint
       run: flake8 code/addon --max-line-length=130 --extend-exclude=addon/globalPlugins/MathCAT/yaml/*
