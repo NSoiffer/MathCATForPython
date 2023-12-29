@@ -236,4 +236,9 @@
         "--max-line-length=130",
     ], 
     "git.ignoreLimitWarning": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.diagnosticMode": "workspace",
+    "python.analysis.exclude": [
+        "addon/globalPlugins/MathCAT/yaml"
+    ],
 }
