@@ -23,7 +23,7 @@ jobs:
       with:
         python-version: 3.11
     - name: debugging
-      run: ls -l code/*
+      run: ls -l *
     - name: Install dependencies (flake8)
       run: pip install -r requirements.txt
     - name: Lint
