@@ -31,34 +31,21 @@ MathCAT's rules for speech are not yet as extensive as MathPlayer's rules -- tha
 
 ## MathCAT Update Log
 
-### Version 0.2
-* Lots of bug fixes
-* Improvements to speech
-* A preference setting to control the duration of pausing (works with changes to relative speech rate for math)
-* Support to recognize chemistry notation and speak it appropriately
-* Translations to Indonesian and Vietnamese
+### Version 0.3.10
+* Upgraded to python 3.11 and verified working with NVDA 2024.1
+* Fix bugs in Vietnamese braille and also in Speech, mostly for chemistry.
+* Fix whitespace bug in HTML inside of tokens
+* Improve roman numeral detection
 
 
-### Version 0.2.5
-* More improvements chemistry
-* Fixes for Nemeth:
-* * Added "omission" rules
-* * Added some rules for English Language Indicators
-* * Added more cases where the Mulitpurpose indicator is needed
-* * Fixes related to Nemeth and punctuation
+### Version 0.3.9
+* Added Traditional Chinese translation (thanks to Hon-Jang Yang)
+* Fixed bug with navigating into the base of a scripted expression that has parenthesis
+* Significantly changed the way whitespace is handled. This mainly affects braille output (spaces and "omission" detection).
+* Improved recognition of chemistry
+* UEB braille fixes that came up from adding chemistry examples
+* UEB fixes for adding auxillary parenthesis in some cases
 
-
-### Version 0.3.3
-This release has a number of bug fixes in it. The major new features and bug fixes are:
-* Added Spanish Translation (thanks to Noelia Ruiz and  María Allo Roldán)
-* Modified navigation so that it starts zoomed in one level
-* Added cntrl+alt+arrow as a way to navigate tabular structures. These keys should be more memorable because they are used for table navigation in NVDA.
-* Worked around NVDA bug for eSpeak voices that caused them to slow down when the relative MathRate was set to be slower than the text speech rate.
-* Worked around a OneCore voice problem so that they will speak the long 'a' sound.
-
-There are lots of small tweaks to the speech and some bug fixes for both Nemeth and UEB.
-
-Note: there is now an option to get Vietnam's braille standard as braille output. This is still a work in progress and is too buggy to be used other than for testing. I expect the next MathCAT release will contain a reliable implementation.
 
 ### Version 0.3.8
 Braille:
@@ -77,10 +64,30 @@ Other fixes:
 * Added an "Use Voice's Language" option so that out of the box, MathCAT will speak in the right language (if there is a translation)
 * Several improvements for cleaning up poor MathML code
 
-### Version 0.3.9
-* Added Traditional Chinese translation (thanks to Hon-Jang Yang)
-* Fixed bug with navigating into the base of a scripted expression that has parenthesis
-* Significantly changed the way whitespace is handled. This mainly affects braille output (spaces and "omission" detection).
-* Improved recognition of chemistry
-* UEB braille fixes that came up from adding chemistry examples
-* UEB fixes for adding auxillary parenthesis in some cases
+### Version 0.3.3
+This release has a number of bug fixes in it. The major new features and bug fixes are:
+* Added Spanish Translation (thanks to Noelia Ruiz and  María Allo Roldán)
+* Modified navigation so that it starts zoomed in one level
+* Added cntrl+alt+arrow as a way to navigate tabular structures. These keys should be more memorable because they are used for table navigation in NVDA.
+* Worked around NVDA bug for eSpeak voices that caused them to slow down when the relative MathRate was set to be slower than the text speech rate.
+* Worked around a OneCore voice problem so that they will speak the long 'a' sound.
+
+There are lots of small tweaks to the speech and some bug fixes for both Nemeth and UEB.
+
+Note: there is now an option to get Vietnam's braille standard as braille output. This is still a work in progress and is too buggy to be used other than for testing. I expect the next MathCAT release will contain a reliable implementation.
+
+### Version 0.2.5
+* More improvements chemistry
+* Fixes for Nemeth:
+* * Added "omission" rules
+* * Added some rules for English Language Indicators
+* * Added more cases where the Mulitpurpose indicator is needed
+* * Fixes related to Nemeth and punctuation
+
+### Version 0.2
+* Lots of bug fixes
+* Improvements to speech
+* A preference setting to control the duration of pausing (works with changes to relative speech rate for math)
+* Support to recognize chemistry notation and speak it appropriately
+* Translations to Indonesian and Vietnamese
+
