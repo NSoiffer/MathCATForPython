@@ -58,7 +58,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 
         if "MathCATPreferencesLastCategory" in user_preferences:
             # set the categories selection to what we used on last run
-            self.m_listBoxPreferencesTopic.SetSelectionuser_preferences(["MathCATPreferencesLastCategory"])
+            self.m_listBoxPreferencesTopic.SetSelection(user_preferences["MathCATPreferencesLastCategory"])
             # show the appropriate dialogue page
             self.m_simplebookPanelsCategories.SetSelection(self.m_listBoxPreferencesTopic.GetSelection())
         else:
@@ -309,9 +309,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         self.m_choiceSpeechStyle.Clear()
         # get the currently selected language code
         this_language_code = UserInterface.GetLanguageCode(self)
-        log.info(
-            f"\nthis lang={this_language_code}, getCurrentLanguage = {getCurrentLanguage()}"
-        )
+        # log.info(f"\nthis lang={this_language_code}, getCurrentLanguage = {getCurrentLanguage()}")
 
         if this_language_code == "Auto":
             # list the speech styles for the current voice rather than have none listed
