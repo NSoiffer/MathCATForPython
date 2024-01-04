@@ -9,7 +9,7 @@ import glob
 import webbrowser
 import gettext
 import addonHandler
-from logHandler import log  # logging
+# from logHandler import log  # logging
 from typing import Dict, Union
 from .MathCAT import ConvertSSMLTextForNVDA
 from speech import speak

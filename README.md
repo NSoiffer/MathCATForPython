@@ -31,9 +31,10 @@ MathCAT's rules for speech are not yet as extensive as MathPlayer's rules -- tha
 
 ## MathCAT Update Log
 
-### Version 0.3.10
+### Version 0.3.11
 * Upgraded to python 3.11 and verified working with NVDA 2024.1
 * Fix bugs in Vietnamese braille and also in Speech, mostly for chemistry.
+* Fix broken braille when braille code and dependent language don't match (specifically Vietnam braille and Vietnamese speech)
 * Fix whitespace bug in HTML inside of tokens
 * Improve roman numeral detection
 
