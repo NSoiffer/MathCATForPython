@@ -31,7 +31,7 @@ jobs:
     - name: type check
       uses: jakebailey/pyright-action@v1
       with:
-        working-directory: addon/globalPlugins/MathCAT
+        working-directory: code/addon/globalPlugins/MathCAT
         ignore-external: true
         python-version: 3.11
         pylance-version: latest-release
