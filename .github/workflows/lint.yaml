@@ -28,3 +28,10 @@ jobs:
       run: pip install -r code/.github/workflows/requirements.txt
     - name: Lint
       run: flake8 code/addon --max-line-length=130 --extend-exclude=code/addon/globalPlugins/MathCAT/yaml/*
+    - name: type check
+    - uses: jakebailey/pyright-action@v1
+      with:
+        working-directory: addon/globalPlugins/MathCAT
+        ignore-external: true
+        python-version: 3.11
+        pylance-version: latest-release
