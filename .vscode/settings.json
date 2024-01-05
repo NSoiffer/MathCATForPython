@@ -239,6 +239,12 @@
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.diagnosticMode": "workspace",
     "python.analysis.exclude": [
-        "addon/globalPlugins/MathCAT/yaml"
+        "addon/globalPlugins/MathCAT/yaml",
     ],
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingImports": "none"
+    },
+    "triggerTaskOnSave.tasks": {
+        "flake8-whole-project": ["**/*.*py"]
+    }
 }
