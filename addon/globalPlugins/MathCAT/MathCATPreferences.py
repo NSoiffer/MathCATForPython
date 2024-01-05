@@ -2,7 +2,7 @@
 
 import math
 import wx
-from . import MathCATgui
+from MathCATgui import MathCATPreferencesDialog
 from . import yaml
 import os
 import glob
@@ -39,10 +39,10 @@ Braille_BrailleNavHighlight = ("Off", "FirstChar", "EndPoints", "All")
 Braille_BrailleCode = ("Nemeth", "UEB", "CMU", "Vietnam")
 
 
-class UserInterface(MathCATgui.MathCATPreferencesDialog):
+class UserInterface(MathCATPreferencesDialog):
     def __init__(self, parent):
         # initialize parent class
-        MathCATgui.MathCATPreferencesDialog.__init__(self, parent)
+        MathCATPreferencesDialog.__init__(self, parent)
 
         # load the logo into the dialog
         full_path_to_logo = (
@@ -344,11 +344,11 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             try:
                 lang_pref = user_preferences["Speech"]["Language"]
                 i = 0
-                while "(" + lang_pref + ")" not in self.m_choiceLanguage.GetString(i):
+                while f"({lang_pref})" not in self.m_choiceLanguage.GetString(i):
                     i = i + 1
                     if i == self.m_choiceLanguage.GetCount():
                         break
-                if "(" + lang_pref + ")" in self.m_choiceLanguage.GetString(i):
+                if f"({lang_pref})" in self.m_choiceLanguage.GetString(i):
                     self.m_choiceLanguage.SetSelection(i)
                 else:
                     self.m_choiceLanguage.SetSelection(0)
@@ -359,7 +359,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 self.m_choiceLanguage.SetSelection(0)
             try:
                 # now get the available SpeechStyles from the folder structure and set to the preference setting is possible
-                self.GetSpeechStyles(user_preferences["Speech"]["SpeechStyle"])
+                self.GetSpeechStyles(str(user_preferences["Speech"]["SpeechStyle"]))
             except Exception as e:
                 print(f"An exception occurred: {e}")
                 self.m_choiceSpeechStyle.Append(
@@ -370,10 +370,10 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             self.m_sliderRelativeSpeed.SetValue(user_preferences["Speech"]["MathRate"])
             pause_factor = (
                 0
-                if user_preferences["Speech"]["PauseFactor"] <= 1
+                if int(user_preferences["Speech"]["PauseFactor"]) <= 1
                 else round(
                     math.log(
-                        user_preferences["Speech"]["PauseFactor"] / PAUSE_FACTOR_SCALE,
+                        int(user_preferences["Speech"]["PauseFactor"]) / PAUSE_FACTOR_SCALE,
                         PAUSE_FACTOR_LOG_BASE,
                     )
                 )
@@ -461,7 +461,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             with open(
                 UserInterface.path_to_default_preferences(), encoding="utf-8"
             ) as f:
-                user_preferences = yaml.load(f, Loader=yaml.FullLoader)
+                user_preferences = yaml.load(f, Loader=yaml.FullLoader)  # type: ignore
 
     @staticmethod
     def load_user_preferences():
@@ -470,10 +470,10 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         if os.path.exists(UserInterface.path_to_user_preferences()):
             with open(UserInterface.path_to_user_preferences(), encoding="utf-8") as f:
                 # merge with the default preferences, overwriting with the user's values
-                user_preferences.update(yaml.load(f, Loader=yaml.FullLoader))
+                user_preferences.update(yaml.load(f, Loader=yaml.FullLoader))  # type: ignore
 
     @staticmethod
-    def validate(key1: str, key2: str, valid_values: list, default_value: Union[str, int, bool]):
+    def validate(key1: str, key2: str, valid_values: list | None, default_value: Union[str, int, bool]):
         global user_preferences
         try:
             if valid_values is None:
@@ -542,9 +542,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
     @staticmethod
     def write_user_preferences():
         # Language is special because it is set elsewhere by SetPreference which overrides the user_prefs -- so set it here
-        from . import libmathcat
+        from libmathcat import SetPreference
 
-        libmathcat.SetPreference("Language", user_preferences["Speech"]["Language"])
+        SetPreference("Language", user_preferences["Speech"]["Language"])
         if not os.path.exists(UserInterface.path_to_user_preferences_folder()):
             # create a folder for the user preferences
             os.mkdir(UserInterface.path_to_user_preferences_folder())
@@ -645,7 +645,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 # jump out so the tab key is not processed
                 return
             if event.GetModifiers() == wx.MOD_NONE and (
-                MathCATgui.MathCATPreferencesDialog.FindFocus() == self.m_listBoxPreferencesTopic
+                MathCATPreferencesDialog.FindFocus() == self.m_listBoxPreferencesTopic
             ):
                 if self.m_listBoxPreferencesTopic.GetSelection() == 0:
                     self.m_choiceImpairment.SetFocus()
@@ -655,7 +655,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                     self.m_choiceBrailleMathCode.SetFocus()
                 return
             if (event.GetModifiers() == wx.MOD_SHIFT) and (
-                MathCATgui.MathCATPreferencesDialog.FindFocus() == self.m_buttonOK
+                MathCATPreferencesDialog.FindFocus() == self.m_buttonOK
             ):
                 if self.m_listBoxPreferencesTopic.GetSelection() == 0:
                     self.m_choiceSpeechForChemical.SetFocus()
