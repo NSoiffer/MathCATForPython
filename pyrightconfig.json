@@ -5,7 +5,5 @@
     "exclude": [
         "**/__pycache__",
         "addon/globalPlugins/MathCAT/yaml"
-    ],
-
-    "reportMissingImports": "error"
+    ]
 }
