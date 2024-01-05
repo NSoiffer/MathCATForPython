@@ -1,9 +1,11 @@
 {
+    "typeCheckingMode": "basic",
+    "reportMissingImports" : true,
     "include": [
-        "python_boilerplate"
+        "addon/globalPlugins/MathCAT"
     ],
     "exclude": [
         "**/__pycache__",
         "addon/globalPlugins/MathCAT/yaml"
-    ]
+    ],
 }
