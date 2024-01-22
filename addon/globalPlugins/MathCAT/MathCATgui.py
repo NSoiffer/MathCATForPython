@@ -569,6 +569,10 @@ class MathCATPreferencesDialog(wx.Dialog):
             # Translators: names of various braille codes -- probably only translate if a different alphabet is used
             _("CMU"),
             # Translators: names of various braille codes -- probably only translate if a different alphabet is used
+            _("suomi"),
+            # Translators: names of various braille codes -- probably only translate if a different alphabet is used
+            _("Swedish"),
+            # Translators: names of various braille codes -- probably only translate if a different alphabet is used
             _("Vietnam"),
         ]
         self.m_choiceBrailleMathCode = wx.Choice(

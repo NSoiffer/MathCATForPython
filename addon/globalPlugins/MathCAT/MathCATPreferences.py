@@ -2,7 +2,7 @@
 
 import math
 import wx
-from MathCATgui import MathCATPreferencesDialog
+from . import MathCATgui
 from . import yaml
 import os
 import glob
@@ -36,13 +36,13 @@ Navigation_NavMode = ("Enhanced", "Simple", "Character")
 Navigation_NavVerbosity = ("Terse", "Medium", "Verbose")
 # Navigation_AutoZoomOut is boolean
 Braille_BrailleNavHighlight = ("Off", "FirstChar", "EndPoints", "All")
-Braille_BrailleCode = ("Nemeth", "UEB", "CMU", "Vietnam")
+Braille_BrailleCode = ("Nemeth", "UEB", "CMU", "suomi", "Swedish", "Vietnam")
 
 
-class UserInterface(MathCATPreferencesDialog):
+class UserInterface(MathCATgui.MathCATPreferencesDialog):
     def __init__(self, parent):
         # initialize parent class
-        MathCATPreferencesDialog.__init__(self, parent)
+        MathCATgui.MathCATPreferencesDialog.__init__(self, parent)
 
         # load the logo into the dialog
         full_path_to_logo = (
@@ -473,14 +473,14 @@ class UserInterface(MathCATPreferencesDialog):
                 user_preferences.update(yaml.load(f, Loader=yaml.FullLoader))  # type: ignore
 
     @staticmethod
-    def validate(key1: str, key2: str, valid_values: list | None, default_value: Union[str, int, bool]):
+    def validate(key1: str, key2: str, valid_values: Union[None, list], default_value: Union[str, int, bool]):
         global user_preferences
         try:
             if valid_values is None:
                 # any value is valid
                 if user_preferences[key1][key2] != "":
                     return
-            if (isinstance(valid_values[0]) == int) and (isinstance(valid_values[1]) == int):
+            elif isinstance(valid_values[0], int) and isinstance(valid_values[1], int):
                 # any value between lower and upper bounds is valid
                 if user_preferences[key1][key2] >= valid_values[0] and user_preferences[key1][key2] <= valid_values[1]:
                     return
@@ -491,7 +491,6 @@ class UserInterface(MathCATPreferencesDialog):
         except Exception as e:
             print(f"An exception occurred: {e}")
             # the preferences entry does not exist
-            pass
         if key1 not in user_preferences:
             user_preferences[key1] = {key2: default_value}
         else:
@@ -537,14 +536,14 @@ class UserInterface(MathCATPreferencesDialog):
         # Highlight with dots 7 & 8 the current nav node -- values are Off, FirstChar, EndPoints, All
         UserInterface.validate("Braille", "BrailleNavHighlight", ["Off", "FirstChar", "EndPoints", "All"], "EndPoints")
         #  BrailleCode: "Nemeth"                # Any supported braille code (currently Nemeth, UEB, CMU, Vietnam)
-        UserInterface.validate("Braille", "BrailleCode", ["Nemeth", "UEB", "CMU", "Vietnam"], "Nemeth")
+        UserInterface.validate("Braille", "BrailleCode", ["Nemeth", "UEB", "CMU", "suomi", "Swedish", "Vietnam"], "Nemeth")
 
     @staticmethod
     def write_user_preferences():
         # Language is special because it is set elsewhere by SetPreference which overrides the user_prefs -- so set it here
-        from libmathcat import SetPreference
+        from . import libmathcat
 
-        SetPreference("Language", user_preferences["Speech"]["Language"])
+        libmathcat.SetPreference("Language", user_preferences["Speech"]["Language"])
         if not os.path.exists(UserInterface.path_to_user_preferences_folder()):
             # create a folder for the user preferences
             os.mkdir(UserInterface.path_to_user_preferences_folder())
@@ -645,7 +644,7 @@ class UserInterface(MathCATPreferencesDialog):
                 # jump out so the tab key is not processed
                 return
             if event.GetModifiers() == wx.MOD_NONE and (
-                MathCATPreferencesDialog.FindFocus() == self.m_listBoxPreferencesTopic
+                MathCATgui.MathCATPreferencesDialog.FindFocus() == self.m_listBoxPreferencesTopic
             ):
                 if self.m_listBoxPreferencesTopic.GetSelection() == 0:
                     self.m_choiceImpairment.SetFocus()
@@ -655,7 +654,7 @@ class UserInterface(MathCATPreferencesDialog):
                     self.m_choiceBrailleMathCode.SetFocus()
                 return
             if (event.GetModifiers() == wx.MOD_SHIFT) and (
-                MathCATPreferencesDialog.FindFocus() == self.m_buttonOK
+                MathCATgui.MathCATPreferencesDialog.FindFocus() == self.m_buttonOK
             ):
                 if self.m_listBoxPreferencesTopic.GetSelection() == 0:
                     self.m_choiceSpeechForChemical.SetFocus()

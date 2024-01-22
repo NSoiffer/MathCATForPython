@@ -23,9 +23,7 @@ import addonHandler
 import winKernel
 import gui
 
-from libmathcat import GetPreference, SetPreference, DoNavigateCommand, GetBraille, SetMathML, \
-      DoNavigateKeyPress, GetNavigationMathMLId, GetNavigationMathML, GetVersion, SetRulesDir, \
-      GetSpokenText
+from . import libmathcat
 from typing import List, Dict
 from keyboardHandler import KeyboardInputGesture  # navigation key strokes
 from logHandler import log  # logging
@@ -89,7 +87,7 @@ def getLanguageToUse(mathMl: str) -> str:
     mathCATLanguageSetting = "Auto"
     try:
         # ignore regional differences if the MathCAT language setting doesn't have it.
-        mathCATLanguageSetting = GetPreference("Language")
+        mathCATLanguageSetting = libmathcat.GetPreference("Language")
     except Exception as e:
         log.error(e)
 
@@ -109,10 +107,10 @@ def ConvertSSMLTextForNVDA(text: str, language: str = "") -> list:
     if language == "":  # shouldn't happen
         language = "en"  # fallback to what was being used
     mathCATLanguageSetting = (
-        "en"  # fallback in case GetPreference fails for unknown reasons
+        "en"  # fallback in case libmathcat.GetPreference fails for unknown reasons
     )
     try:
-        mathCATLanguageSetting = GetPreference("Language")
+        mathCATLanguageSetting = libmathcat.GetPreference("Language")
     except Exception as e:
         log.error(e)
 
@@ -138,7 +136,7 @@ def ConvertSSMLTextForNVDA(text: str, language: str = "") -> list:
     if mathCATLanguageSetting != language:
         try:
             # log.info(f"Setting language to {language}")
-            SetPreference("Language", language)
+            libmathcat.SetPreference("Language", language)
             out.append(LangChangeCommand(language))
         except Exception as e:
             log.error(e)
@@ -181,7 +179,7 @@ def ConvertSSMLTextForNVDA(text: str, language: str = "") -> list:
             out.extend((" ", m.group(0), " "))
     if mathCATLanguageSetting != language:
         try:
-            SetPreference("Language", mathCATLanguageSetting)
+            libmathcat.SetPreference("Language", mathCATLanguageSetting)
             out.append(LangChangeCommand(None))
         except Exception as e:
             log.error(e)
@@ -226,7 +224,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         region.focusToHardLeft = True
         # libmathcat.SetBrailleWidth(braille.handler.displaySize)
         try:
-            region.rawText = GetBraille("")
+            region.rawText = libmathcat.GetBraille("")
         except Exception as e:
             log.error(e)
             # Translators: this message directs users to look in the log file
@@ -273,7 +271,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         try:
             if (gesture is not None):  # == None when initial focus -- handled in reportFocus()
                 modNames = gesture.modifierNames
-                text = DoNavigateKeyPress(
+                text = libmathcat.DoNavigateKeyPress(
                     gesture.vkCode,
                     "shift" in modNames,
                     "control" in modNames,
@@ -283,9 +281,9 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
                 speech.speak(ConvertSSMLTextForNVDA(text, self._language))
 
             # update the braille to reflect the nav position (might be excess code, but it works)
-            nav_node = GetNavigationMathMLId()
+            nav_node = libmathcat.GetNavigationMathMLId()
             region = braille.Region()
-            region.rawText = GetBraille(nav_node[0])
+            region.rawText = libmathcat.GetBraille(nav_node[0])
             region.focusToHardLeft = True
             region.update()
             braille.handler.buffer.regions.append(region)
@@ -308,7 +306,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
     )
     def script_rawdataToClip(self, gesture: KeyboardInputGesture):
         try:
-            mathml = GetNavigationMathML()[0]
+            mathml = libmathcat.GetNavigationMathML()[0]
             if not re.match(self._startsWithMath, mathml):
                 mathml = (
                     "<math>\n" + mathml + "</math>"
@@ -397,9 +395,9 @@ class MathCAT(mathPres.MathPresentationProvider):
         try:
             # IMPORTANT -- SetRulesDir must be the first call to libmathcat besides GetVersion()
             rules_dir = path.join(path.dirname(path.abspath(__file__)), "Rules")
-            log.info(f"MathCAT {GetVersion()} installed. Using rules dir: {rules_dir}")
-            SetRulesDir(rules_dir)
-            SetPreference("TTS", "SSML")
+            log.info(f"MathCAT {libmathcat.GetVersion()} installed. Using rules dir: {rules_dir}")
+            libmathcat.SetRulesDir(rules_dir)
+            libmathcat.SetPreference("TTS", "SSML")
         except Exception as e:
             log.error(e)
             # Translators: this message directs users to look in the log file
@@ -409,36 +407,37 @@ class MathCAT(mathPres.MathPresentationProvider):
     def getSpeechForMathMl(self, mathml: str):
         try:
             self._language = getLanguageToUse(mathml)
-            SetMathML(mathml)
+            libmathcat.SetMathML(mathml)
         except Exception as e:
             log.error(e)
             log.error(f"MathML is {mathml}")
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
-            SetMathML("<math></math>")  # set it to something
+            libmathcat.SetMathML("<math></math>")  # set it to something
         try:
             synth = getSynth()
             synthConfig = config.conf["speech"][synth.name]
             supported_commands = synth.supportedCommands
             # Set preferences for capital letters
-            SetPreference(
+            libmathcat.SetPreference(
                 "CapitalLetters_Beep",
                 "true" if synthConfig["beepForCapitals"] else "false",
             )
-            SetPreference(
+            libmathcat.SetPreference(
                 "CapitalLetters_UseWord",
                 "true" if synthConfig["sayCapForCapitals"] else "false",
             )
+            log.info(f"Speech text: {libmathcat.GetSpokenText()}")
             if PitchCommand in supported_commands:
-                SetPreference("CapitalLetters_Pitch", str(synthConfig["capPitchChange"]))
+                libmathcat.SetPreference("CapitalLetters_Pitch", str(synthConfig["capPitchChange"]))
             if self._add_sounds():
                 return (
                     [BeepCommand(800, 25)]
-                    + ConvertSSMLTextForNVDA(GetSpokenText(), self._language)
+                    + ConvertSSMLTextForNVDA(libmathcat.GetSpokenText(), self._language)
                     + [BeepCommand(600, 15)]
                 )
             else:
-                return ConvertSSMLTextForNVDA(GetSpokenText(), self._language)
+                return ConvertSSMLTextForNVDA(libmathcat.GetSpokenText(), self._language)
 
         except Exception as e:
             log.error(e)
@@ -448,7 +447,7 @@ class MathCAT(mathPres.MathPresentationProvider):
 
     def _add_sounds(self):
         try:
-            return GetPreference("SpeechSound") != "None"
+            return libmathcat.GetPreference("SpeechSound") != "None"
         except Exception as e:
             print(f"An exception occurred: {e}")
             return False
@@ -456,15 +455,15 @@ class MathCAT(mathPres.MathPresentationProvider):
     def getBrailleForMathMl(self, mathml: str):
         # log.info("***MathCAT getBrailleForMathMl")
         try:
-            SetMathML(mathml)
+            libmathcat.SetMathML(mathml)
         except Exception as e:
             log.error(e)
             log.error(f"MathML is {mathml}")
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
-            SetMathML("<math></math>")  # set it to something
+            libmathcat.SetMathML("<math></math>")  # set it to something
         try:
-            return GetBraille("")
+            return libmathcat.GetBraille("")
         except Exception as e:
             log.error(e)
             # Translators: this message directs users to look in the log file
