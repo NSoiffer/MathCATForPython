@@ -7,7 +7,7 @@ use std::path::PathBuf;
 use zip::ZipArchive;
 
 fn main() {
-    let archive = libmathcat::ZIPPED_RULE_FILES;
+    let archive = libmathcat::shim_filesystem::ZIPPED_RULE_FILES;
     let archive = std::io::Cursor::new(archive);
     let location = PathBuf::from("addon/globalPlugins/MathCAT");
 
