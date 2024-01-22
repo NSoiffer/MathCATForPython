@@ -23,7 +23,7 @@ import addonHandler
 import winKernel
 import gui
 
-from . import libmathcat
+from . import libmathcat        # # pylint: disable=reportGeneralTypeIssues
 from typing import List, Dict
 from keyboardHandler import KeyboardInputGesture  # navigation key strokes
 from logHandler import log  # logging
