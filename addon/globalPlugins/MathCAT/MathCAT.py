@@ -210,7 +210,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
     def reportFocus(self):
         super(MathCATInteraction, self).reportFocus()
         try:
-            text = DoNavigateCommand("ZoomIn")
+            text = libmathcat.DoNavigateCommand("ZoomIn")
             speech.speak(ConvertSSMLTextForNVDA(text, self._language))
         except Exception as e:
             log.error(e)
