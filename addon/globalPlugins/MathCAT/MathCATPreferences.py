@@ -473,21 +473,32 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 user_preferences.update(yaml.load(f, Loader=yaml.FullLoader))  # type: ignore
 
     @staticmethod
-    def validate(key1: str, key2: str, valid_values: Union[None, list], default_value: Union[str, int, bool]):
+    def validate(key1: str, key2: str, valid_values: Union[None, list[str | bool]], default_value: Union[str, bool]):
         global user_preferences
         try:
             if valid_values is None:
                 # any value is valid
                 if user_preferences[key1][key2] != "":
                     return
-            elif isinstance(valid_values[0], int) and isinstance(valid_values[1], int):
-                # any value between lower and upper bounds is valid
-                if user_preferences[key1][key2] >= valid_values[0] and user_preferences[key1][key2] <= valid_values[1]:
-                    return
             else:
                 # any value in the list is valid
                 if user_preferences[key1][key2] in valid_values:
                     return
+        except Exception as e:
+            print(f"An exception occurred: {e}")
+            # the preferences entry does not exist
+        if key1 not in user_preferences:
+            user_preferences[key1] = {key2: default_value}
+        else:
+            user_preferences[key1][key2] = default_value
+
+    @staticmethod
+    def validate_int(key1: str, key2: str, valid_values: list[int], default_value: int):
+        global user_preferences
+        try:
+            # any value between lower and upper bounds is valid
+            if int(user_preferences[key1][key2]) >= valid_values[0] and int(user_preferences[key1][key2]) <= valid_values[1]:
+                return
         except Exception as e:
             print(f"An exception occurred: {e}")
             # the preferences entry does not exist
@@ -507,9 +518,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         #    Verbosity: Medium           # Terse, Medium, Verbose
         UserInterface.validate("Speech", "Verbosity", ["Terse", "Medium", "Verbose"], "Medium")
         #    MathRate: 100               # Change from text speech rate (%)
-        UserInterface.validate("Speech", "MathRate", [0, 200], 100)
+        UserInterface.validate_int("Speech", "MathRate", [0, 200], 100)
         #    PauseFactor: 100            # TBC
-        UserInterface.validate("Speech", "PauseFactor", [0, 1000], 100)
+        UserInterface.validate_int("Speech", "PauseFactor", [0, 1000], 100)
         #  SpeechSound: None           # make a sound when starting/ending math speech -- None, Beep
         UserInterface.validate("Speech", "SpeechSound", ["None", "Beep"], "None")
         #    SpeechStyle: ClearSpeak     # Any known speech style (falls back to ClearSpeak)
