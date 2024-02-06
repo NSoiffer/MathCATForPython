@@ -10,7 +10,7 @@ import webbrowser
 import gettext
 import addonHandler
 # from logHandler import log  # logging
-from typing import Dict, Union
+from typing import List, Dict, Union
 from .MathCAT import ConvertSSMLTextForNVDA
 from speech import speak
 
@@ -56,15 +56,15 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         UserInterface.load_user_preferences()
         UserInterface.validate_user_preferences()
 
-        if "MathCATPreferencesLastCategory" in user_preferences:
+        if "NVDAAddOn" in user_preferences:
             # set the categories selection to what we used on last run
-            self.m_listBoxPreferencesTopic.SetSelection(user_preferences["MathCATPreferencesLastCategory"])
+            self.m_listBoxPreferencesTopic.SetSelection(user_preferences["NVDAAddOn"]["LastCategory"])
             # show the appropriate dialogue page
             self.m_simplebookPanelsCategories.SetSelection(self.m_listBoxPreferencesTopic.GetSelection())
         else:
             # set the categories selection to the first item
             self.m_listBoxPreferencesTopic.SetSelection(0)
-            user_preferences["MathCATPreferencesLastCategory"] = "0"
+            user_preferences["NVDAAddOn"] = {"LastCategory": "0"}
         # populate the languages
         UserInterface.GetLanguages(self)
         # set the ui items to match the preferences
@@ -433,7 +433,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             Braille_BrailleNavHighlight[self.m_choiceBrailleHighlights.GetSelection()]
         )
         user_preferences["Braille"]["BrailleCode"] = Braille_BrailleCode[self.m_choiceBrailleMathCode.GetSelection()]
-        user_preferences["MathCATPreferencesLastCategory"] = self.m_listBoxPreferencesTopic.GetSelection()
+        user_preferences["NVDAAddOn"]["LastCategory"] = self.m_listBoxPreferencesTopic.GetSelection()
 
     @staticmethod
     def path_to_default_preferences():
@@ -473,10 +473,10 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 user_preferences.update(yaml.load(f, Loader=yaml.FullLoader))  # type: ignore
 
     @staticmethod
-    def validate(key1: str, key2: str, valid_values: Union[None, list[str | bool]], default_value: Union[str, bool]):
+    def validate(key1: str, key2: str, valid_values: List[Union[str, bool]], default_value: Union[str, bool]):
         global user_preferences
         try:
-            if valid_values is None:
+            if valid_values is []:
                 # any value is valid
                 if user_preferences[key1][key2] != "":
                     return
@@ -493,7 +493,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             user_preferences[key1][key2] = default_value
 
     @staticmethod
-    def validate_int(key1: str, key2: str, valid_values: list[int], default_value: int):
+    def validate_int(key1: str, key2: str, valid_values: List[int], default_value: int):
         global user_preferences
         try:
             # any value between lower and upper bounds is valid
@@ -514,7 +514,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         # Impairment: Blindness       # LearningDisability, LowVision, Blindness
         UserInterface.validate("Speech", "Impairment", ["LearningDisability", "LowVision", "Blindness"], "Blindness")
         #   Language: en                # any known language code and sub-code -- could be en-uk, etc
-        UserInterface.validate("Speech", "Language", None, "en")
+        UserInterface.validate("Speech", "Language", [], "en")
         #    Verbosity: Medium           # Terse, Medium, Verbose
         UserInterface.validate("Speech", "Verbosity", ["Terse", "Medium", "Verbose"], "Medium")
         #    MathRate: 100               # Change from text speech rate (%)
@@ -524,9 +524,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         #  SpeechSound: None           # make a sound when starting/ending math speech -- None, Beep
         UserInterface.validate("Speech", "SpeechSound", ["None", "Beep"], "None")
         #    SpeechStyle: ClearSpeak     # Any known speech style (falls back to ClearSpeak)
-        UserInterface.validate("Speech", "SpeechStyle", None, "ClearSpeak")
+        UserInterface.validate("Speech", "SpeechStyle", [], "ClearSpeak")
         #    SubjectArea: General        # FIX: still working on this
-        UserInterface.validate("Speech", "SubjectArea", None, "General")
+        UserInterface.validate("Speech", "SubjectArea", [], "General")
         #    Chemistry: SpellOut         # SpellOut (H 2 0), AsCompound (Water), Off (H sub 2 O)
         UserInterface.validate("Speech", "Chemistry", ["SpellOut", "Off"], "SpellOut")
         # Navigation:
