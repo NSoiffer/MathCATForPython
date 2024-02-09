@@ -36,7 +36,6 @@ Navigation_NavMode = ("Enhanced", "Simple", "Character")
 Navigation_NavVerbosity = ("Terse", "Medium", "Verbose")
 # Navigation_AutoZoomOut is boolean
 Braille_BrailleNavHighlight = ("Off", "FirstChar", "EndPoints", "All")
-Braille_BrailleCode = ("Nemeth", "UEB", "CMU", "suomi", "Swedish", "Vietnam")
 
 
 class UserInterface(MathCATgui.MathCATPreferencesDialog):
@@ -65,8 +64,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             # set the categories selection to the first item
             self.m_listBoxPreferencesTopic.SetSelection(0)
             user_preferences["NVDAAddOn"] = {"LastCategory": "0"}
-        # populate the languages
+        # populate the languages and braille codes
         UserInterface.GetLanguages(self)
+        UserInterface.GetBrailleCodes(self)
         # set the ui items to match the preferences
         UserInterface.set_ui_values(self)
 
@@ -74,6 +74,11 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
     def path_to_languages_folder():
         # the user preferences file is stored at: MathCAT\Rules\Languages
         return os.path.expanduser("~") + "\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Languages"
+
+    @staticmethod
+    def path_to_braille_folder():
+        # the user preferences file is stored at: MathCAT\Rules\Languages
+        return os.path.expanduser("~") + "\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Braille"
 
     @staticmethod
     def LanguagesDict():
@@ -335,6 +340,19 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             # that didn't work, choose the first in the list
             self.m_choiceSpeechStyle.SetSelection(0)
 
+    def GetBrailleCodes(self):
+        # initialise the braille code list
+        self.m_choiceBrailleMathCode.Clear()
+        # populate the available braille codes in the dialog
+        for braille_code in os.listdir(UserInterface.path_to_braille_folder()):
+            if os.path.isdir(os.path.join(UserInterface.path_to_braille_folder(), braille_code)):
+                path_to_braille_folder = os.path.join(UserInterface.path_to_braille_folder(), braille_code)
+                # only add this language if there is a xxx_Rules.yaml file
+                for file in glob.glob(os.path.join(path_to_braille_folder, "*_Rules.yaml")):
+                    name = file.split('\\')[-1]           # get the last component in the path
+                    name = name.split("_Rules.yaml")[0]   # get the part before "_Rules.yaml"
+                    self.m_choiceBrailleMathCode.Append(name)
+
     def set_ui_values(self):
         # set the UI elements to the ones read from the preference file(s)
         try:
@@ -353,7 +371,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 else:
                     self.m_choiceLanguage.SetSelection(0)
             except Exception as e:
-                print(f"An exception occurred: {e}")
+                print(f"An exception occurred while trying to set the Language: {e}")
                 # the language in the settings file is not in the folder structure, something went wrong,
                 # set to the first in the list
                 self.m_choiceLanguage.SetSelection(0)
@@ -395,9 +413,22 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             self.m_choiceBrailleHighlights.SetSelection(
                 Braille_BrailleNavHighlight.index(user_preferences["Braille"]["BrailleNavHighlight"])
             )
-            self.m_choiceBrailleMathCode.SetSelection(
-                Braille_BrailleCode.index(user_preferences["Braille"]["BrailleCode"])
-            )
+            try:
+                braille_pref = user_preferences["Braille"]["BrailleCode"]
+                i = 0
+                while braille_pref != self.m_choiceBrailleMathCode.GetString(i):
+                    i = i + 1
+                    if i == self.m_choiceBrailleMathCode.GetCount():
+                        break
+                if braille_pref == self.m_choiceBrailleMathCode.GetString(i):
+                    self.m_choiceBrailleMathCode.SetSelection(i)
+                else:
+                    self.m_choiceBrailleMathCode.SetSelection(0)
+            except Exception as e:
+                print(f"An exception occurred while trying to set the Braille code: {e}")
+                # the braille code in the settings file is not in the folder structure, something went wrong,
+                # set to the first in the list
+                self.m_choiceBrailleMathCode.SetSelection(0)
         except KeyError as err:
             print("Key not found", err)
 
@@ -432,7 +463,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         user_preferences["Braille"]["BrailleNavHighlight"] = (
             Braille_BrailleNavHighlight[self.m_choiceBrailleHighlights.GetSelection()]
         )
-        user_preferences["Braille"]["BrailleCode"] = Braille_BrailleCode[self.m_choiceBrailleMathCode.GetSelection()]
+        user_preferences["Braille"]["BrailleCode"] = self.m_choiceBrailleMathCode.GetStringSelection()
         user_preferences["NVDAAddOn"]["LastCategory"] = self.m_listBoxPreferencesTopic.GetSelection()
 
     @staticmethod
@@ -476,10 +507,11 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
     def validate(key1: str, key2: str, valid_values: List[Union[str, bool]], default_value: Union[str, bool]):
         global user_preferences
         try:
-            if valid_values is []:
+            if valid_values == []:
                 # any value is valid
                 if user_preferences[key1][key2] != "":
                     return
+
             else:
                 # any value in the list is valid
                 if user_preferences[key1][key2] in valid_values:
@@ -547,7 +579,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         # Highlight with dots 7 & 8 the current nav node -- values are Off, FirstChar, EndPoints, All
         UserInterface.validate("Braille", "BrailleNavHighlight", ["Off", "FirstChar", "EndPoints", "All"], "EndPoints")
         #  BrailleCode: "Nemeth"                # Any supported braille code (currently Nemeth, UEB, CMU, Vietnam)
-        UserInterface.validate("Braille", "BrailleCode", ["Nemeth", "UEB", "CMU", "suomi", "Swedish", "Vietnam"], "Nemeth")
+        UserInterface.validate("Braille", "BrailleCode", [], "Nemeth")
 
     @staticmethod
     def write_user_preferences():
@@ -619,7 +651,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 
     def OnLanguage(self, event):
         # the language changed, get the SpeechStyles for the new language
-        UserInterface.GetSpeechStyles(self, self.m_choiceSpeechStyle.GetSelection())
+        UserInterface.GetSpeechStyles(self, self.m_choiceSpeechStyle.GetStringSelection())
 
     def MathCATPreferencesDialogOnCharHook(self, event: wx.KeyEvent):
         # designed choice is that Enter is the same as clicking OK, and Escape is the same as clicking Cancel

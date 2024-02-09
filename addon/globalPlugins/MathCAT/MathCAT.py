@@ -427,7 +427,7 @@ class MathCAT(mathPres.MathPresentationProvider):
                 "CapitalLetters_UseWord",
                 "true" if synthConfig["sayCapForCapitals"] else "false",
             )
-            log.info(f"Speech text: {libmathcat.GetSpokenText()}")
+            # log.info(f"Speech text: {libmathcat.GetSpokenText()}")
             if PitchCommand in supported_commands:
                 libmathcat.SetPreference("CapitalLetters_Pitch", str(synthConfig["capPitchChange"]))
             if self._add_sounds():

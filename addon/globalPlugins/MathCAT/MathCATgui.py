@@ -559,22 +559,7 @@ class MathCATPreferencesDialog(wx.Dialog):
         self.m_staticTextBrailleMathCode.Wrap(-1)
 
         bSizerBrailleMathCode.Add(self.m_staticTextBrailleMathCode, 0, wx.ALL, 5)
-
-        # Translators: names of various braille codes -- probably only translate if a different alphabet is used
-        m_choiceBrailleMathCodeChoices = [
-            # Translators: names of various braille codes -- probably only translate if a different alphabet is used
-            _("Nemeth"),
-            # Translators: names of various braille codes -- probably only translate if a different alphabet is used
-            _("UEB"),
-            # Translators: names of various braille codes -- probably only translate if a different alphabet is used
-            _("CMU"),
-            # Translators: names of various braille codes -- probably only translate if a different alphabet is used
-            _("suomi"),
-            # Translators: names of various braille codes -- probably only translate if a different alphabet is used
-            _("Swedish"),
-            # Translators: names of various braille codes -- probably only translate if a different alphabet is used
-            _("Vietnam"),
-        ]
+        m_choiceBrailleMathCodeChoices = ["xxxxxxxxxxx"]
         self.m_choiceBrailleMathCode = wx.Choice(
             self.m_panelBraille,
             wx.ID_ANY,
