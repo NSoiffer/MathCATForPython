@@ -29,9 +29,7 @@ def SetMathCATPreferences():
         libmathcat.SetPreference("Language", "en")  # Also "id" and "vi"
         libmathcat.SetPreference("SpeechStyle", "SimpleSpeak")  # Also "ClearSpeak"
         libmathcat.SetPreference("Verbosity", "Verbose")  # also terse "Terse"/"Medium"
-        libmathcat.SetPreference(
-            "CapitalLetters_UseWord", "true"
-        )  # if "true", X => "cap x"
+        libmathcat.SetPreference("CapitalLetters_UseWord", "true")  # if "true", X => "cap x"
     except Exception as e:
         print("problem with setting a preference", e)
 
