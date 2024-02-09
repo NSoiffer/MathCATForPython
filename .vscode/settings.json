@@ -246,5 +246,6 @@
     },
     "triggerTaskOnSave.tasks": {
         "flake8-whole-project": ["**/*.*py"]
-    }
+    },
+    "cmake.configureOnOpen": false
 }
