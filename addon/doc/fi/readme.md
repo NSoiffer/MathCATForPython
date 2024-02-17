@@ -80,8 +80,7 @@ päättelemiseen, eikä niitä ole vielä täysin ratkaistu.
 Tähän versioon on tehty useita bugikorjauksia. Merkittävimpiä uusia
 ominaisuuksia ja bugikorjauksia ovat:
 
-* Lisätty espanjankielinen käännös (kiitos Noelia Ruizille ja María Allo
-  Roldánille)
+* Added Spanish Translation (thanks to Noelia Ruiz and María Allo Roldán)
 * Muutettu navigointia siten, että se alkaa zoomattuna yhden tason lähemmäs
 * Lisätty Ctrl+Alt+Nuolinäppäimet taulukkomaisissa rakenteissa
   navigoimiseen. Näiden näppäinyhdistelmien pitäisi olla helpommin

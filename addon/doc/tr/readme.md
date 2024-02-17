@@ -80,7 +80,7 @@ tam olarak çözülmediğinden, çok fazla kural eklemeyi erteledim.
 Bu sürümde bir dizi hata düzeltmesi var. Başlıca yeni özellikler ve hata
 düzeltmeleri şunlardır:
 
-* İspanyolca Çeviri eklendi (Noelia Ruiz ve María Allo Roldán'a teşekkürler)
+* İspanyolca Çeviri eklendi (Noelia Ruiz ve Maria Allo Roldan'a teşekkürler)
 * Gezinme bir seviye yakınlaştırılmış olarak başlayacak şekilde değiştirildi
 * Tablo yapılarında gezinmenin bir yolu olarak ctrl+alt+ok eklendi. Bu
   tuşlar, NVDA'da tablolarda gezinmek için kullanıldıkları için daha akılda

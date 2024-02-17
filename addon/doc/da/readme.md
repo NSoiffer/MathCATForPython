@@ -79,7 +79,7 @@ forfatterens hensigt, og disse er ikke helt afklarede endnu.
 Denne udgivelse indeholder en række fejlrettelser. De vigtigste nye
 funktioner og fejlrettelser er:
 
-* Tilføjet spansk oversættelse (tak til Noelia Ruiz og María Allo Roldán)
+* Added Spanish Translation (thanks to Noelia Ruiz and María Allo Roldán)
 * Ændret navigation, så den begynder at zoome i ét niveau
 * Tilføjet cntrl+alt+pil som en måde at navigere i tabelstrukturer på. Disse
   taster burde være mere mindeværdige, fordi de bruges til tabelnavigation i

@@ -87,8 +87,7 @@ geklärt sind.
 Diese Version enthält eine Reihe von Fehlerkorrekturen. Die wichtigsten
 neuen Funktionen und Fehlerkorrekturen sind:
 
-* Spanisch Übersetzung hinzugefügt (Dank an Noelia Ruiz und María Allo
-  Roldán)
+* Added Spanish Translation (thanks to Noelia Ruiz and María Allo Roldán)
 * Die Navigation wurde so geändert, dass sie um eine Ebene vergrößert
   startet.
 * Strg+Alt+Pfeiltasten als Möglichkeit zur Navigation in tabellarischen
