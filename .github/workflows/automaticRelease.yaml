@@ -39,10 +39,6 @@ jobs:
       with:
         python-version: 3.11
         architecture: 'x86'
-    - name: Install dependencies
-      run: |
-        pip install scons markdown
-        pip install python-gettext
     - uses: actions/checkout@v3
     - name: Set up Rust 
       run:  cargo build --target i686-pc-windows-msvc --release
@@ -51,7 +47,10 @@ jobs:
         cp target/i686-pc-windows-msvc/release/libmathcat_py.dll addon/globalPlugins/MathCAT/libmathcat.pyd
         sed 's/^import wx\.xrc/# import wx.xrc/' --in-place "addon/globalPlugins/MathCAT/MathCATgui.py"
     - name: Build with scons
-      run: scons
+      run: |
+        pip install scons markdown
+        pip install python-gettext
+        scons
     - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
       with:
