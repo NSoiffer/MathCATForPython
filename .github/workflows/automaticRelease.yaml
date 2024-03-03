@@ -12,7 +12,7 @@ jobs:
   l10n:
     name: l10n
     continue-on-error: true
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -30,7 +30,7 @@ jobs:
   rust:  
     name: build pyd file
     needs: l10n
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -69,7 +69,7 @@ jobs:
   pre-release:  
     name: Pre Release
     needs: scons
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
     - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
