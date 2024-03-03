@@ -70,7 +70,7 @@ jobs:
           name: MathCAT_addons
     - shell: bash
       run: |
-        cp -r addons addon/globalPlugins/MathCAT
+        cp -r MathCATForPython/* addon/globalPlugins/MathCAT
     - name: Install scons dependencies
       run: |
         pip install scons markdown
