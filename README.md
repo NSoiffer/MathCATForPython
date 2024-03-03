@@ -31,6 +31,15 @@ MathCAT's rules for speech are not yet as extensive as MathPlayer's rules -- tha
 
 ## MathCAT Update Log
 
+### Version 0.4.2
+* Fixed language switching when voice changes and MathCAT language is "Auto"
+* Added more checks for $Impairments to improve reading when it is not set for those who are blind
+* Nemeth: fix for "~" when it isn't part of an mrow
+* UEB: character additions, "~" spacing fix if prefix, xor fix, 
+* MathML cleanup for accented vowels (mainly for Vietnamese)
+* Major rewrite of preference reading/updating code with big speedup -- added `CheckRuleFiles` pref to control which files are checked for updates
+* Added two new interface calls -- enables setting the navigaton location from the braille cursor (not part of MathCAT addon yet)
+
 ### Version 0.3.11
 * Upgraded to python 3.11 and verified working with NVDA 2024.1
 * Fix bugs in Vietnamese braille and also in Speech, mostly for chemistry.
