@@ -27,28 +27,9 @@ jobs:
         git pull
         git push
   
-  scons:
-    name: Build with scons
-    continue-on-error: false
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.11
-    - name: Install dependencies
-      run: |
-        pip install scons markdown
-        sudo apt update
-        sudo apt install gettext
-    - name: Build
-      run: scons  
-
-  pre-release:  
-    name: Pre Release
-    needs: [l10n, scons]
+  rust:  
+    name: build pyd file
+    needs: l10n
     runs-on: windows-latest
     steps:
     - name: Checkout code
@@ -64,6 +45,32 @@ jobs:
       run: |
         cp target/i686-pc-windows-msvc/release/libmathcat_py.dll addon/globalPlugins/MathCAT/libmathcat.pyd
         sed 's/^import wx\.xrc/# import wx.xrc/' --in-place "addon/globalPlugins/MathCAT/MathCATgui.py"
+    
+  scons:
+    name: Build with scons
+    continue-on-error: false
+    needs: rust
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+    - name: Install dependencies
+      run: |
+        pip install scons markdown
+        sudo apt update
+        sudo apt install gettext
+    - name: Run scons
+      run: scons  
+
+  pre-release:  
+    name: Pre Release
+    needs: scons
+    runs-on: windows-latest
+    steps:
     - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
       with:
