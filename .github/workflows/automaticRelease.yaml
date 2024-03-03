@@ -70,8 +70,6 @@ jobs:
           name: MathCAT_addons
     - shell: bash
       run: |
-        pwd
-        ls
         cp -r MathCAT addon/globalPlugins
     - name: Install scons dependencies
       run: |
