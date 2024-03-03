@@ -26,10 +26,29 @@ jobs:
         git commit -m "Update translations"
         git pull
         git push
+  
+  scons:
+    name: Build with scons
+    continue-on-error: false
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+    - name: Install dependencies
+      run: |
+        pip install scons markdown
+        sudo apt update
+        sudo apt install gettext
+    - name: Build
+      run: scons  
 
   pre-release:  
     name: Pre Release
-    needs: l10n
+    needs: [l10n, scons]
     runs-on: windows-latest
     steps:
     - name: Checkout code
@@ -39,14 +58,6 @@ jobs:
       with:
         python-version: 3.11
         architecture: 'x86'
-    - name: Build with scons
-      run: |
-        dir
-        $env:Path += "bin"
-        python -m pip install --upgrade pip
-        pip install scons markdown
-        pip install python-gettext
-        scons
     - name: Set up Rust 
       run:  cargo build --target i686-pc-windows-msvc --release
     - name: Copy MathCAT.pyd file and fix wx file
