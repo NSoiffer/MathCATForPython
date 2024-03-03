@@ -41,11 +41,15 @@ jobs:
         architecture: 'x86'
     - name: Set up Rust 
       run:  cargo build --target i686-pc-windows-msvc --release
-    - name: Upload dll to use with scons
+    - name: Set up addons dir
+      run: |
+        cp libmathcat_py.dll addon/globalPlugins/MathCAT/libmathcat.pyd
+        sed 's/^import wx\.xrc/# import wx.xrc/' --in-place "addon/globalPlugins/MathCAT/MathCATgui.py"  # fix wx file
+    - name: Upload addons dir to use with scons
       uses: actions/upload-artifact@v4
       with:
-        name: MathCAT_dll
-        path: target/i686-pc-windows-msvc/release/libmathcat_py.dll
+        name: MathCAT_addons
+        path: addon/globalPlugins/MathCAT
         retention-days: 1
     
   pre-release:  
@@ -60,14 +64,13 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: 3.11
-    - name: Download MathCAT dll
+    - name: Download MathCAT addons dir
       uses: actions/download-artifact@v4
       with:
-          name: MathCAT_dll
+          name: MathCAT_addons
     - shell: bash
       run: |
-        cp libmathcat_py.dll addon/globalPlugins/MathCAT/libmathcat.pyd
-        sed 's/^import wx\.xrc/# import wx.xrc/' --in-place "addon/globalPlugins/MathCAT/MathCATgui.py"  # fix wx file
+        cp -r addons addon/globalPlugins/MathCAT
     - name: Install scons dependencies
       run: |
         pip install scons markdown
