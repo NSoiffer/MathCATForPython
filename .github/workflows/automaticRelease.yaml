@@ -44,7 +44,7 @@ jobs:
     - name: Upload dll to use with scons
       uses: actions/upload-artifact@v4
       with:
-        name: MathCAT dll
+        name: MathCAT_dll
         path: target/i686-pc-windows-msvc/release/libmathcat_py.dll
         retention-days: 1
     
