@@ -41,9 +41,9 @@ jobs:
         architecture: 'x86'
     - name: Build with scons
       run: |
+        python -m pip install --upgrade pip
         pip install scons markdown
         pip install python-gettext
-        pip install poeditor
         scons
     - name: Set up Rust 
       run:  cargo build --target i686-pc-windows-msvc --release
