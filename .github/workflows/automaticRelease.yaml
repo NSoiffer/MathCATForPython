@@ -48,8 +48,8 @@ jobs:
         path: target/i686-pc-windows-msvc/release/libmathcat_py.dll
         retention-days: 1
     
-  scons:
-    name: Build with scons
+  pre-release:  
+    name: Pre Release
     continue-on-error: false
     needs: rust
     runs-on: ubuntu-latest
@@ -74,13 +74,8 @@ jobs:
         sudo apt update
         sudo apt install gettext
     - name: Run scons to build addon
-      run: scons  
-
-  pre-release:  
-    name: Pre Release
-    needs: scons
-    runs-on: ubuntu-latest
-    steps:
+      run: |
+        scons
     - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
       with:
