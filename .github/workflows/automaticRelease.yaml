@@ -42,7 +42,7 @@ jobs:
     - name: Build with scons
       run: |
         dir
-        $env:Path += "."
+        $env:Path += "bin"
         python -m pip install --upgrade pip
         pip install scons markdown
         pip install python-gettext
