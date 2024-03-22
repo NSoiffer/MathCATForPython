@@ -31,6 +31,11 @@ MathCAT's rules for speech are not yet as extensive as MathPlayer's rules -- tha
 
 ## MathCAT Update Log
 
+### Version 0.5.0
+* Added German LaTeX braille code. Unlike other braille codes, this generates ASCII chars and uses the current braille output table to translate the characters to braille.
+* Added (expermental) ASCIIMath braille code. Like the LaTeX braille code, this generates ASCII chars and uses the current braille output table to translate the characters to braille.
+* Added "CopyAs" preference that supports copying as MathML, LaTeX, or ASCIIMath using cntl+C when focused on MathML (as before). The currently focused node is copied. Note: this is only listed in the prefs.yaml file and is not exposed (yet) in the MathCAT Preferences dialog.
+
 ### Version 0.4.2
 * Fixed language switching when voice changes and MathCAT language is "Auto"
 * Added more checks for $Impairments to improve reading when it is not set for those who are blind
