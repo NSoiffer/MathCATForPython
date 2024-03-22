@@ -95,13 +95,21 @@ pub fn GetPreference(_py: Python, name: String) -> PyResult<String> {
 }
 
 #[pyfunction]
-#[allow(unused_variables)]
 /// Get the braille associated with the MathML node with a given id (MathML set by `SetMathML`]).
 /// An empty string can be used to return the braille associated with the entire expression.
 /// 
 /// The braille returned depends upon the preference for braille output.
 pub fn GetBraille(_py: Python, nav_node_id: String) -> PyResult<String> {
     return convert_error( get_braille(nav_node_id) );
+}
+
+#[pyfunction]
+/// Get the braille associated with the MathML node with a given id (MathML set by `SetMathML`]).
+/// An empty string can be used to return the braille associated with the entire expression.
+/// 
+/// The braille returned depends upon the preference for braille output.
+pub fn GetNavigationBraille(_py: Python) -> PyResult<String> {
+    return convert_error( get_navigation_braille() );
 }
 
 #[pyfunction]
@@ -156,6 +164,7 @@ fn libmathcat(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(SetPreference, m)?)?;
     m.add_function(wrap_pyfunction!(GetPreference, m)?)?;
     m.add_function(wrap_pyfunction!(GetBraille, m)?)?;
+    m.add_function(wrap_pyfunction!(GetNavigationBraille, m)?)?;
     m.add_function(wrap_pyfunction!(DoNavigateKeyPress, m)?)?;
     m.add_function(wrap_pyfunction!(DoNavigateCommand, m)?)?;
     m.add_function(wrap_pyfunction!(GetNavigationMathMLId, m)?)?;

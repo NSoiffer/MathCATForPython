@@ -313,7 +313,24 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
                 )  # copy will fix up name spacing
             elif self.init_mathml != "":
                 mathml = self.init_mathml
-            self._copyToClipAsMathML(mathml)
+            copy_as = "mathml"
+            try:
+                copy_as = libmathcat.GetPreference("CopyAs").lower()
+                match copy_as:
+                    case "mathml" | "latex" | "asciimath":
+                        pass
+                    case _:
+                        copy_as = "mathml"
+            except Exception as e:
+                log.error(f"Not able to get 'CopyAs' preference: {e}")
+
+            mathml = self._wrapMathMLForClipBoard(mathml)
+            if copy_as != "mathml":
+                saved_braille_code: str = libmathcat.GetPreference("BrailleCode")
+                libmathcat.SetPreference("BrailleCode", "LaTeX" if copy_as == "latex" else "ASCIIMath")
+                mathml = libmathcat.GetNavigationBraille()
+                libmathcat.SetPreference("BrailleCode", saved_braille_code)
+            self._copyToClipAsMathML(mathml, copy_as == "mathml")
             # Translators: copy to clipboard
             ui.message(_("copy"))
         except Exception as e:
@@ -337,7 +354,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             )
         return mathml_with_ns
 
-    def _copyToClipAsMathML(self, text: str, notify: Optional[bool] = False) -> bool:
+    def _copyToClipAsMathML(self, text: str, is_mathml: bool, notify: Optional[bool] = False) -> bool:
         """Copies the given text to the windows clipboard.
         @returns: True if it succeeds, False otherwise.
         @param text: the text which will be copied to the clipboard
@@ -350,9 +367,9 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         try:
             with winUser.openClipboard(gui.mainFrame.Handle):
                 winUser.emptyClipboard()
-                text = self._wrapMathMLForClipBoard(text)
-                self._setClipboardData(self.CF_MathML, '<?xml version="1.0"?>' + text)
-                self._setClipboardData(self.CF_MathML_Presentation, '<?xml version="1.0"?>' + text)
+                if is_mathml:
+                    self._setClipboardData(self.CF_MathML, '<?xml version="1.0"?>' + text)
+                    self._setClipboardData(self.CF_MathML_Presentation, '<?xml version="1.0"?>' + text)
                 self._setClipboardData(winUser.CF_UNICODETEXT, text)
             got = getClipData()
         except OSError:
@@ -449,7 +466,7 @@ class MathCAT(mathPres.MathPresentationProvider):
         try:
             return libmathcat.GetPreference("SpeechSound") != "None"
         except Exception as e:
-            print(f"An exception occurred: {e}")
+            log.error(f"An exception occurred: {e}")
             return False
 
     def getBrailleForMathMl(self, mathml: str):
