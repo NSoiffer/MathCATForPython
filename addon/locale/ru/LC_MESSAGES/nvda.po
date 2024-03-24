@@ -1,0 +1,288 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the MathCAT package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: MathCAT 0.3.3\n"
+"Report-Msgid-Bugs-To: nvda-translations@groups.io\n"
+"POT-Creation-Date: 2023-08-14 03:25+0000\n"
+"PO-Revision-Date: 2024-03-23 11:03+0300\n"
+"Last-Translator: Danil Kostenkov <danilkostenkov38@gmail.com>\n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.2\n"
+
+msgid "Error in starting navigation of math: see NVDA error log for details"
+msgstr ""
+"Ошибка при запуске навигации по математическому выражению: подробности "
+"смотрите в журнале ошибок NVDA"
+
+msgid "Error in brailling math: see NVDA error log for details"
+msgstr ""
+"Ошибка в отображении математического выражения по  брайлю: подробности "
+"смотрите в журнале ошибок NVDA"
+
+msgid "Error in navigating math: see NVDA error log for details"
+msgstr ""
+"Ошибка при навигации по математическому выражению: подробности смотрите в "
+"журнале ошибок NVDA"
+
+#. For translators: Message to be announced during Keyboard Help
+msgid "Copy navigation focus to clipboard"
+msgstr "Скопировать элемент в фокусе в буфер обмена"
+
+#. For translators: Name of the section in "Input gestures" dialog.
+msgid "Clipboard"
+msgstr "Буфер обмена"
+
+msgid "copy"
+msgstr "копировать"
+
+msgid "unable to copy math: see NVDA error log for details"
+msgstr ""
+"не удалось скопировать математическое выражение: подробности смотрите в "
+"журнале ошибок NVDA"
+
+msgid "MathCAT initialization failed: see NVDA error log for details"
+msgstr ""
+"Ошибка инициализации MathCat: подробности смотрите в журнале ошибок NVDA"
+
+msgid "Illegal MathML found: see NVDA error log for details"
+msgstr ""
+"Обнаружен недопустимый элемент MathML: подробности смотрите в журнале ошибок "
+"NVDA"
+
+msgid "Error in speaking math: see NVDA error log for details"
+msgstr ""
+"Ошибка при произнесении математического выражения: подробности смотрите в "
+"журнале ошибок NVDA"
+
+msgid ""
+"<prosody rate='XXX%'>the square root of x squared plus y squared</prosody>"
+msgstr ""
+"<prosody rate='XXX%'>квадратный корень из x в квадрате плюс y в квадрате</"
+"prosody>"
+
+#, python-brace-format
+msgid ""
+"<prosody rate='{rate}%'>the fraction with numerator <break "
+"time='{pause_factor_300}ms'/> <mark name='M63i335o-4'/> <say-as interpret-"
+"as='characters'>x</say-as> to the <mark name='M63i335o-5'/> <say-as "
+"interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph=''>-th</"
+"phoneme> power <break time='{pause_factor_128}ms'/> <mark name='M63i335o-6'/"
+"> plus  <mark name='M63i335o-7'/> 1 <break time='{pause_factor_300}ms'/> and "
+"denominator <mark name='M63i335o-10'/> <say-as interpret-as='characters'>x</"
+"say-as> to the <mark name='M63i335o-11'/> <say-as interpret-"
+"as='characters'>n</say-as> <phoneme alphabet='ipa' ph=''>-th</phoneme> power "
+"<break time='{pause_factor_128}ms'/> <mark name='M63i335o-12'/> minus  <mark "
+"name='M63i335o-13'/> 1 <break time='{pause_factor_600}ms'/>end fraction "
+"<break time='{pause_factor_150}ms'/>"
+msgstr ""
+"<prosody rate='{rate}%'>дробь с числителем <break time='{pause_factor_300}"
+"ms'/> <mark name='M63i335o-4'/> <say-as interpret-as='characters'>x</say-as> "
+"to the <mark name='M63i335o-5'/> <say-as interpret-as='characters'>n</say-"
+"as> <phoneme alphabet='ipa' ph=''>-th</phoneme> степень <break "
+"time='{pause_factor_128}ms'/> <mark name='M63i335o-6'/> plus  <mark "
+"name='M63i335o-7'/> 1 <break time='{pause_factor_300}ms'/> и знаменателем "
+"<mark name='M63i335o-10'/> <say-as interpret-as='characters'>x</say-as> to "
+"the <mark name='M63i335o-11'/> <say-as interpret-as='characters'>n</say-as> "
+"<phoneme alphabet='ipa' ph=''>-th</phoneme> степень <break "
+"time='{pause_factor_128}ms'/> <mark name='M63i335o-12'/> минус  <mark "
+"name='M63i335o-13'/> 1 <break time='{pause_factor_600}ms'/>конец дроби "
+"<break time='{pause_factor_150}ms'/>"
+
+msgid "MathCAT Preferences"
+msgstr "Настройки MathCat"
+
+msgid "Categories:"
+msgstr "Категории:"
+
+msgid "Speech"
+msgstr "Речь"
+
+msgid "Navigation"
+msgstr "Навигация"
+
+msgid "Braille"
+msgstr "Брайль"
+
+msgid "Generate speech for:"
+msgstr ""
+"Выберете тип речевых сообщений, соответствующий ограничениям здоровья "
+"пользователя:"
+
+msgid "Learning disabilities"
+msgstr "Нарушения обучаемости"
+
+msgid "Blindness"
+msgstr "Слепота"
+
+msgid "Low vision"
+msgstr "Остаточное зрение"
+
+msgid "Language:"
+msgstr "Язык:"
+
+msgid "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+msgstr "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+msgid "Speech style:"
+msgstr "Стиль речи:"
+
+msgid "xxxxxxxxxxxxxxxx"
+msgstr "xxxxxxxxxxxxxxxx"
+
+msgid "Speech amount:"
+msgstr "Объём речи:"
+
+msgid "Terse"
+msgstr "Краткий"
+
+msgid "Medium"
+msgstr "Средний"
+
+msgid "Verbose"
+msgstr "Подробный"
+
+msgid "Relative speech rate:"
+msgstr "Относительная скорость речи:"
+
+msgid "Pause factor:"
+msgstr "Коэффициент паузы:"
+
+msgid "Make a sound when starting/ending math speech"
+msgstr ""
+"Воспроизводить звук при начале/завершении проговаривания математического "
+"выражения"
+
+msgid "Subject area to be used when it cannot be determined automatically:"
+msgstr ""
+"Предметная область, используемая в тех случаях, когда она не может быть "
+"определена автоматически:"
+
+msgid "General"
+msgstr "Общее"
+
+msgid "Speech for chemical formulas:"
+msgstr "Проговаривание химических формул:"
+
+msgid "Spell it out (H 2 O)"
+msgstr "Произносить по буквам (H 2 O)"
+
+msgid "Off (H sub 2 O)"
+msgstr "Выключено (H sub 2 O)"
+
+msgid "a page"
+msgstr "страница"
+
+msgid "Navigation mode to use when beginning to navigate an equation:"
+msgstr "Режим навигации, используемый при начале навигации по уравнению:"
+
+msgid "Enhanced"
+msgstr "Улучшенный"
+
+msgid "Simple"
+msgstr "Простой"
+
+msgid "Character"
+msgstr "Символ"
+
+msgid "Reset navigation mode on entry to an expression"
+msgstr "Сбрасывать режим навигации при переходе к  выражению"
+
+msgid "Navigation speech to use when beginning to navigate an equation:"
+msgstr "Режим речи, используемый при начале навигации по уравнению:"
+
+msgid "Speak"
+msgstr "Проговаривание"
+
+msgid "Describe/overview"
+msgstr "Описание/обзор"
+
+msgid "Reset navigation speech on entry to an expression"
+msgstr "Сброс настроек режима речи при переходе к выражению"
+
+msgid "Automatic zoom out of 2D notations"
+msgstr "Автоматическое уменьшение масштаба Двумерных обозначений"
+
+msgid "Speech amount for navigation:"
+msgstr "Объём речи при навигации:"
+
+msgid "Braille math code for refreshable displays:"
+msgstr "Математический код Брайля для обновляемых дисплеев:"
+
+msgid "Nemeth"
+msgstr "Код Немета"
+
+msgid "UEB"
+msgstr "UEB"
+
+msgid "Vietnam"
+msgstr "Вьетнамский"
+
+msgid "Highlight with dots 7 && 8 the current nav node:"
+msgstr "Выделять текущий навигационный узел точками 7 && 8:"
+
+msgid "Off"
+msgstr "Выключено"
+
+msgid "First character"
+msgstr "Первый символ"
+
+msgid "Endpoints"
+msgstr "Конечные точки"
+
+msgid "All"
+msgstr "Всё"
+
+msgid "OK"
+msgstr "ОК"
+
+msgid "Cancel"
+msgstr "Отменить"
+
+msgid "Apply"
+msgstr "Применить"
+
+msgid "Reset to defaults"
+msgstr "Сбросить к настройкам по умолчанию"
+
+msgid "Help"
+msgstr "Справка"
+
+msgid "&MathCAT Settings..."
+msgstr "Настройки &MathCat..."
+
+#. Add-on summary, usually the user visible name of the addon.
+#. Translators: Summary for this add-on
+#. to be shown on installation and add-on information found in Add-ons Manager.
+msgid "MathCAT: speech and braille from MathML"
+msgstr "MathCat: речь и Брайль для MathML"
+
+#. Add-on description
+#. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
+msgid ""
+"MathCAT is a replacement for MathPlayer which has been discontinued.\n"
+"\t\tIt provides speech and braille support, and also supports MathPlayer's "
+"three modes of navigation.\n"
+"\t\tThe speech quality is not quite as good as MathPlayer's speech yet,\n"
+"\t\tbut the braille support is much better and includes both Nemeth and UEB "
+"Technical. It also includes support for CMU (Spanish/Portuguese) and "
+"Vietnamese braille standards.\n"
+"\t\tTranslations to Indonesian, Spanish, and Vietnamese exist and other "
+"translations are in progress."
+msgstr ""
+"MathCAT - это замена MathPlayer, который был снят с производства.\n"
+"\t\tЭто дополнение обеспечивает поддержку речи и шрифта Брайля, а также "
+"поддерживает три режима навигации MathPlayer.\n"
+"\t\tКачество речи пока не такое хорошее, как у MathPlayer,\n"
+"\t\tно поддержка шрифта Брайля намного лучше и включает в себя Nemeth и UEB "
+"Technical. Также поддерживаются стандарты Брайля CMU (испанский/"
+"португальский) и вьетнамский.\n"
+"\t\tСуществуют переводы на индонезийский, испанский и вьетнамский языки, "
+"другие переводы находятся в процессе разработки."
