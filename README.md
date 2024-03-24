@@ -17,14 +17,13 @@ Note: MathCAT is a general library for generating speech and braille from MathML
 Who should use MathCAT:
 
 * Those who need high quality Nemeth braille (MathPlayer's Nemeth is based on liblouis' Nemeth generation which has a number of significant bugs that are technically difficult to fix).
-* Those who need UEB technical braille
+* Those who need UEB technical braille, CMU (Spanish/Portuguese), German LaTeX, ASCIIMath, or Vietnamese braille
 * Those who want to try out the latest technology and are willing to help by reporting bugs
 * Those who use Eloquence as a voice
 
 Who should NOT use MathCAT:
 
-* Anyone who uses MathPlayer with a non-English language (translations exist for Indonesian and Vietnamese; translations will be coming in the future)
-* Anyone who uses MathPlayer with a non-Nemeth/non-UEB braille output (contact me if you want to help out with a braille translation)
+* Anyone who uses MathPlayer with a language that is not yet supported by MathCAT (translations exist for Chinese (Traditional), Spanish, Indonesian and Vietnamese; translations will be coming in the future) and are not comfortable with speech in one of the supported languages.
 * Anyone who prefers Access8Math to MathPlayer (for speech or other features)
 
 MathCAT's rules for speech are not yet as extensive as MathPlayer's rules -- that may be another reason to stick with MathPlayer. MathCAT is being used as a testbed for ideas for MathML 4 that allow authors to express their intent so that ambiguous notations can be spoken correctly and not guessed at. I have held off on adding too many rules since the architecture of MathCAT is centered around using and inferring author intent and these are not fully settled yet.
