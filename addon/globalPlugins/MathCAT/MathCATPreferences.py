@@ -150,6 +150,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             "ik": "Iñupiak",
             "io": "Ido",
             "is": "Íslenska",
+            "it": "Italiano",
             "iu": "ᐃᓄᒃᑎᑐᑦ",
             "ja": "日本語",
             "jv": "Basa Jawa",
