@@ -1,12 +1,3 @@
-# -*- coding: utf-8 -*-
-
-###########################################################################
-# Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
-# http://www.wxformbuilder.org/
-#
-# PLEASE DO *NOT* EDIT THIS FILE!
-###########################################################################
-
 import wx
 # import wx.xrc
 import gettext
@@ -18,7 +9,6 @@ addonHandler.initTranslation()
 ###########################################################################
 # Class MathCATPreferencesDialog
 ###########################################################################
-
 
 class MathCATPreferencesDialog(wx.Dialog):
     def __init__(self, parent):
@@ -205,7 +195,7 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerSpeech.Add(bSizerSpeechStyle, 1, wx.EXPAND, 5)
 
-        bSizer71 = wx.BoxSizer(wx.HORIZONTAL)
+        bSizerSpeechAmount = wx.BoxSizer(wx.HORIZONTAL)
 
         self.m_staticTextSpeechAmount = wx.StaticText(
             self.m_panelSpeech,
@@ -218,7 +208,7 @@ class MathCATPreferencesDialog(wx.Dialog):
         )
         self.m_staticTextSpeechAmount.Wrap(-1)
 
-        bSizer71.Add(self.m_staticTextSpeechAmount, 0, wx.ALL, 5)
+        bSizerSpeechAmount.Add(self.m_staticTextSpeechAmount, 0, wx.ALL, 5)
 
         # Translators: options for speech verbosity.
         m_choiceSpeechAmountChoices = [
@@ -238,9 +228,9 @@ class MathCATPreferencesDialog(wx.Dialog):
             0,
         )
         self.m_choiceSpeechAmount.SetSelection(0)
-        bSizer71.Add(self.m_choiceSpeechAmount, 0, wx.ALL, 5)
+        bSizerSpeechAmount.Add(self.m_choiceSpeechAmount, 0, wx.ALL, 5)
 
-        bSizerSpeech.Add(bSizer71, 1, wx.EXPAND, 5)
+        bSizerSpeech.Add(bSizerSpeechAmount, 1, wx.EXPAND, 5)
 
         bSizerRelativeSpeed = wx.BoxSizer(wx.HORIZONTAL)
 
