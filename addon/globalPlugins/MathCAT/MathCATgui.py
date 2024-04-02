@@ -1,12 +1,3 @@
-# -*- coding: utf-8 -*-
-
-###########################################################################
-# Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
-# http://www.wxformbuilder.org/
-#
-# PLEASE DO *NOT* EDIT THIS FILE!
-###########################################################################
-
 import wx
 # import wx.xrc
 import gettext
@@ -205,7 +196,7 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerSpeech.Add(bSizerSpeechStyle, 1, wx.EXPAND, 5)
 
-        bSizer71 = wx.BoxSizer(wx.HORIZONTAL)
+        bSizerSpeechAmount = wx.BoxSizer(wx.HORIZONTAL)
 
         self.m_staticTextSpeechAmount = wx.StaticText(
             self.m_panelSpeech,
@@ -218,7 +209,7 @@ class MathCATPreferencesDialog(wx.Dialog):
         )
         self.m_staticTextSpeechAmount.Wrap(-1)
 
-        bSizer71.Add(self.m_staticTextSpeechAmount, 0, wx.ALL, 5)
+        bSizerSpeechAmount.Add(self.m_staticTextSpeechAmount, 0, wx.ALL, 5)
 
         # Translators: options for speech verbosity.
         m_choiceSpeechAmountChoices = [
@@ -238,9 +229,9 @@ class MathCATPreferencesDialog(wx.Dialog):
             0,
         )
         self.m_choiceSpeechAmount.SetSelection(0)
-        bSizer71.Add(self.m_choiceSpeechAmount, 0, wx.ALL, 5)
+        bSizerSpeechAmount.Add(self.m_choiceSpeechAmount, 0, wx.ALL, 5)
 
-        bSizerSpeech.Add(bSizer71, 1, wx.EXPAND, 5)
+        bSizerSpeech.Add(bSizerSpeechAmount, 1, wx.EXPAND, 5)
 
         bSizerRelativeSpeed = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -529,6 +520,43 @@ class MathCATPreferencesDialog(wx.Dialog):
         bSizerNavigationZoom.Add(bSizerSpeechAmountNavigation, 1, wx.EXPAND, 5)
 
         bSizerNavigation.Add(bSizerNavigationZoom, 1, wx.EXPAND, 5)
+
+        bSizerCopyMathAs = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.m_staticTextCopyMathAs = wx.StaticText(
+            self.m_panelNavigation,
+            wx.ID_ANY,
+            # Translators: label for pull down to specify how math will be copied to the clipboard
+            _("Copy math as:"),
+            wx.DefaultPosition,
+            wx.DefaultSize,
+            0,
+        )
+        self.m_staticTextCopyMathAs.Wrap(-1)
+
+        bSizerCopyMathAs.Add(self.m_staticTextCopyMathAs, 0, wx.ALL, 5)
+
+        # Translators: options for copy math as.
+        m_choiceCopyMathAsChoices = [
+            # Translators: options for Copy expression to clipboard as -- "MathML"
+            _("MathML"),
+            # Translators: options for Copy expression to clipboard as -- "LaTeX"
+            _("LaTeX"),
+            # Translators: options for Copy expression to clipboard as -- "ASCIIMath"
+            _("ASCIIMath"),
+        ]
+        self.m_choiceCopyMathAs = wx.Choice(
+            self.m_panelNavigation,
+            wx.ID_ANY,
+            wx.DefaultPosition,
+            wx.DefaultSize,
+            m_choiceCopyMathAsChoices,
+            0,
+        )
+        self.m_choiceCopyMathAs.SetSelection(0)
+        bSizerCopyMathAs.Add(self.m_choiceCopyMathAs, 0, wx.ALL, 5)
+
+        bSizerNavigation.Add(bSizerCopyMathAs, 1, wx.EXPAND, 5)
 
         self.m_panelNavigation.SetSizer(bSizerNavigation)
         self.m_panelNavigation.Layout()

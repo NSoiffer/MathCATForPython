@@ -35,6 +35,7 @@ Navigation_NavMode = ("Enhanced", "Simple", "Character")
 # Navigation_OverView is boolean
 Navigation_NavVerbosity = ("Terse", "Medium", "Verbose")
 # Navigation_AutoZoomOut is boolean
+Navigation_CopyMathAs = ("MathML", "LaTeX", "ASCIIMath")
 Braille_BrailleNavHighlight = ("Off", "FirstChar", "EndPoints", "All")
 
 
@@ -400,6 +401,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             self.m_sliderPauseFactor.SetValue(pause_factor)
             self.m_checkBoxSpeechSound.SetValue(user_preferences["Speech"]["SpeechSound"] == "Beep")
             self.m_choiceSpeechForChemical.SetSelection(Speech_Chemistry.index(user_preferences["Speech"]["Chemistry"]))
+
             self.m_choiceNavigationMode.SetSelection(Navigation_NavMode.index(user_preferences["Navigation"]["NavMode"]))
             self.m_checkBoxResetNavigationMode.SetValue(user_preferences["Navigation"]["ResetNavMode"])
             self.m_choiceSpeechAmountNavigation.SetSelection(
@@ -411,6 +413,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 self.m_choiceNavigationSpeech.SetSelection(0)
             self.m_checkBoxResetNavigationSpeech.SetValue(user_preferences["Navigation"]["ResetOverview"])
             self.m_checkBoxAutomaticZoom.SetValue(user_preferences["Navigation"]["AutoZoomOut"])
+            self.m_choiceCopyMathAs.SetSelection(Navigation_CopyMathAs.index(user_preferences["Navigation"]["CopyMathAs"]))
+
             self.m_choiceBrailleHighlights.SetSelection(
                 Braille_BrailleNavHighlight.index(user_preferences["Braille"]["BrailleNavHighlight"])
             )
@@ -461,6 +465,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         user_preferences["Navigation"]["Overview"] = self.m_choiceNavigationSpeech.GetSelection() != 0
         user_preferences["Navigation"]["ResetOverview"] = self.m_checkBoxResetNavigationSpeech.GetValue()
         user_preferences["Navigation"]["AutoZoomOut"] = self.m_checkBoxAutomaticZoom.GetValue()
+        user_preferences["Navigation"]["CopyMathAs"] = Navigation_CopyMathAs[self.m_choiceCopyMathAs.GetSelection()]
+
         user_preferences["Braille"]["BrailleNavHighlight"] = (
             Braille_BrailleNavHighlight[self.m_choiceBrailleHighlights.GetSelection()]
         )
@@ -575,6 +581,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         UserInterface.validate("Navigation", "NavVerbosity", ["Terse", "Medium", "Full"], "Medium")
         #  AutoZoomOut: true           # Auto zoom out of 2D exprs (use shift-arrow to force zoom out if unchecked)
         UserInterface.validate("Navigation", "AutoZoomOut", [False, True], True)
+        #  NavCopyMathAs: MathML        # MathML, LaTeX, ASCIIMath
+        UserInterface.validate("Navigation", "CopyMathAs", ["MathML", "LaTeX", "ASCIIMath"], "MathML")
         # Braille:
         #  BrailleNavHighlight: EndPoints
         # Highlight with dots 7 & 8 the current nav node -- values are Off, FirstChar, EndPoints, All
