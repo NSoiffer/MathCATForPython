@@ -10,6 +10,7 @@ addonHandler.initTranslation()
 # Class MathCATPreferencesDialog
 ###########################################################################
 
+
 class MathCATPreferencesDialog(wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__(
