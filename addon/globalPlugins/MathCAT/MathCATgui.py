@@ -545,7 +545,7 @@ class MathCATPreferencesDialog(wx.Dialog):
             # Translators: options for Copy expression to clipboard as -- "ASCIIMath"
             _("ASCIIMath"),
         ]
-        self.m_choiceCopyMathAs = wx.Choice(
+        self.m_choiceCopyAs = wx.Choice(
             self.m_panelNavigation,
             wx.ID_ANY,
             wx.DefaultPosition,
@@ -553,8 +553,8 @@ class MathCATPreferencesDialog(wx.Dialog):
             m_choiceCopyMathAsChoices,
             0,
         )
-        self.m_choiceCopyMathAs.SetSelection(0)
-        bSizerCopyMathAs.Add(self.m_choiceCopyMathAs, 0, wx.ALL, 5)
+        self.m_choiceCopyAs.SetSelection(0)
+        bSizerCopyMathAs.Add(self.m_choiceCopyAs, 0, wx.ALL, 5)
 
         bSizerNavigation.Add(bSizerCopyMathAs, 1, wx.EXPAND, 5)
 

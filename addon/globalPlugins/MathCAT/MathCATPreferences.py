@@ -9,7 +9,7 @@ import glob
 import webbrowser
 import gettext
 import addonHandler
-# from logHandler import log  # logging
+from logHandler import log  # logging
 from typing import List, Dict, Union
 from .MathCAT import ConvertSSMLTextForNVDA
 from speech import speak
@@ -35,7 +35,7 @@ Navigation_NavMode = ("Enhanced", "Simple", "Character")
 # Navigation_OverView is boolean
 Navigation_NavVerbosity = ("Terse", "Medium", "Verbose")
 # Navigation_AutoZoomOut is boolean
-Navigation_CopyMathAs = ("MathML", "LaTeX", "ASCIIMath")
+Navigation_CopyAs = ("MathML", "LaTeX", "ASCIIMath")
 Braille_BrailleNavHighlight = ("Off", "FirstChar", "EndPoints", "All")
 
 
@@ -54,6 +54,10 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         # load in the system values followed by the user prefs (if any)
         UserInterface.load_default_preferences()
         UserInterface.load_user_preferences()
+
+        # hack for "CopyAs" because its location in the prefs is not yet fixed
+        if "CopyAs" not in user_preferences["Navigation"]:
+            user_preferences["Navigation"]["CopyAs"] = user_preferences["Other"]["CopyAs"] if "CopyAs" in user_preferences["Other"] else "MathML"
         UserInterface.validate_user_preferences()
 
         if "NVDAAddOn" in user_preferences:
@@ -338,7 +342,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             # set the SpeechStyle to the same as previous
             self.m_choiceSpeechStyle.SetStringSelection(this_SpeechStyle)
         except Exception as e:
-            print(f"An exception occurred: {e}")
+            log.error(f"MathCAT: An exception occurred in GetSpeechStyles evaluating set SetStringSelection: {e}")
             # that didn't work, choose the first in the list
             self.m_choiceSpeechStyle.SetSelection(0)
 
@@ -363,17 +367,15 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             )
             try:
                 lang_pref = user_preferences["Speech"]["Language"]
-                i = 0
-                while f"({lang_pref})" not in self.m_choiceLanguage.GetString(i):
-                    i = i + 1
-                    if i == self.m_choiceLanguage.GetCount():
+                self.m_choiceLanguage.SetSelection(0)
+                i = 1       # no need to test i == 0
+                while i < self.m_choiceLanguage.GetCount():
+                    if f"({lang_pref})" in self.m_choiceLanguage.GetString(i):
+                        self.m_choiceLanguage.SetSelection(i)
                         break
-                if f"({lang_pref})" in self.m_choiceLanguage.GetString(i):
-                    self.m_choiceLanguage.SetSelection(i)
-                else:
-                    self.m_choiceLanguage.SetSelection(0)
+                    i += 1
             except Exception as e:
-                print(f"An exception occurred while trying to set the Language: {e}")
+                log.error(f"MathCAT: An exception occurred in set_ui_values ('{user_preferences['Speech']['Language']}'): {e}")
                 # the language in the settings file is not in the folder structure, something went wrong,
                 # set to the first in the list
                 self.m_choiceLanguage.SetSelection(0)
@@ -381,7 +383,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 # now get the available SpeechStyles from the folder structure and set to the preference setting is possible
                 self.GetSpeechStyles(str(user_preferences["Speech"]["SpeechStyle"]))
             except Exception as e:
-                print(f"An exception occurred: {e}")
+                log.error(f"MathCAT: An exception occurred in set_ui_values (getting SpeechStyle): {e}")
                 self.m_choiceSpeechStyle.Append(
                     "Error when setting SpeechStyle for " + self.m_choiceLanguage.GetStringSelection()
                 )
@@ -413,7 +415,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 self.m_choiceNavigationSpeech.SetSelection(0)
             self.m_checkBoxResetNavigationSpeech.SetValue(user_preferences["Navigation"]["ResetOverview"])
             self.m_checkBoxAutomaticZoom.SetValue(user_preferences["Navigation"]["AutoZoomOut"])
-            self.m_choiceCopyMathAs.SetSelection(Navigation_CopyMathAs.index(user_preferences["Navigation"]["CopyMathAs"]))
+            self.m_choiceCopyAs.SetSelection(Navigation_CopyAs.index(user_preferences["Navigation"]["CopyAs"]))
 
             self.m_choiceBrailleHighlights.SetSelection(
                 Braille_BrailleNavHighlight.index(user_preferences["Braille"]["BrailleNavHighlight"])
@@ -430,7 +432,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 else:
                     self.m_choiceBrailleMathCode.SetSelection(0)
             except Exception as e:
-                print(f"An exception occurred while trying to set the Braille code: {e}")
+                log.error(f"MathCAT: An exception occurred while trying to set the Braille code: {e}")
                 # the braille code in the settings file is not in the folder structure, something went wrong,
                 # set to the first in the list
                 self.m_choiceBrailleMathCode.SetSelection(0)
@@ -465,7 +467,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         user_preferences["Navigation"]["Overview"] = self.m_choiceNavigationSpeech.GetSelection() != 0
         user_preferences["Navigation"]["ResetOverview"] = self.m_checkBoxResetNavigationSpeech.GetValue()
         user_preferences["Navigation"]["AutoZoomOut"] = self.m_checkBoxAutomaticZoom.GetValue()
-        user_preferences["Navigation"]["CopyMathAs"] = Navigation_CopyMathAs[self.m_choiceCopyMathAs.GetSelection()]
+        user_preferences["Navigation"]["CopyAs"] = Navigation_CopyAs[self.m_choiceCopyAs.GetSelection()]
 
         user_preferences["Braille"]["BrailleNavHighlight"] = (
             Braille_BrailleNavHighlight[self.m_choiceBrailleHighlights.GetSelection()]
@@ -524,7 +526,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 if user_preferences[key1][key2] in valid_values:
                     return
         except Exception as e:
-            print(f"An exception occurred: {e}")
+            log.error(f"MathCAT: An exception occurred in validate: {e}")
             # the preferences entry does not exist
         if key1 not in user_preferences:
             user_preferences[key1] = {key2: default_value}
@@ -539,7 +541,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             if int(user_preferences[key1][key2]) >= valid_values[0] and int(user_preferences[key1][key2]) <= valid_values[1]:
                 return
         except Exception as e:
-            print(f"An exception occurred: {e}")
+            log.error(f"MathCAT: An exception occurred in validate_int: {e}")
             # the preferences entry does not exist
         if key1 not in user_preferences:
             user_preferences[key1] = {key2: default_value}
@@ -581,8 +583,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         UserInterface.validate("Navigation", "NavVerbosity", ["Terse", "Medium", "Full"], "Medium")
         #  AutoZoomOut: true           # Auto zoom out of 2D exprs (use shift-arrow to force zoom out if unchecked)
         UserInterface.validate("Navigation", "AutoZoomOut", [False, True], True)
-        #  NavCopyMathAs: MathML        # MathML, LaTeX, ASCIIMath
-        UserInterface.validate("Navigation", "CopyMathAs", ["MathML", "LaTeX", "ASCIIMath"], "MathML")
+        #  CopyAs: MathML        # MathML, LaTeX, ASCIIMath
+        UserInterface.validate("Navigation", "CopyAs", ["MathML", "LaTeX", "ASCIIMath"], "MathML")
         # Braille:
         #  BrailleNavHighlight: EndPoints
         # Highlight with dots 7 & 8 the current nav node -- values are Off, FirstChar, EndPoints, All
@@ -594,8 +596,10 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
     def write_user_preferences():
         # Language is special because it is set elsewhere by SetPreference which overrides the user_prefs -- so set it here
         from . import libmathcat         # type: ignore
-
-        libmathcat.SetPreference("Language", user_preferences["Speech"]["Language"])
+        try:
+            libmathcat.SetPreference("Language", user_preferences["Speech"]["Language"])
+        except Exception as e:
+            log.error(f'Error in trying to set MathCAT "Language" preference to "{user_preferences["Speech"]["Language"]}": {e}')
         if not os.path.exists(UserInterface.path_to_user_preferences_folder()):
             # create a folder for the user preferences
             os.mkdir(UserInterface.path_to_user_preferences_folder())

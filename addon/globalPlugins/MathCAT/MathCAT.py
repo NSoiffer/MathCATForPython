@@ -466,7 +466,7 @@ class MathCAT(mathPres.MathPresentationProvider):
         try:
             return libmathcat.GetPreference("SpeechSound") != "None"
         except Exception as e:
-            log.error(f"An exception occurred: {e}")
+            log.error(f"MathCAT: An exception occurred in _add_sounds: {e}")
             return False
 
     def getBrailleForMathMl(self, mathml: str):
