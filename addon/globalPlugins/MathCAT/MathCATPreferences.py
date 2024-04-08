@@ -57,7 +57,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 
         # hack for "CopyAs" because its location in the prefs is not yet fixed
         if "CopyAs" not in user_preferences["Navigation"]:
-            user_preferences["Navigation"]["CopyAs"] = user_preferences["Other"]["CopyAs"] if "CopyAs" in user_preferences["Other"] else "MathML"
+            user_preferences["Navigation"]["CopyAs"] = (
+                user_preferences["Other"]["CopyAs"] if "CopyAs" in user_preferences["Other"] else "MathML"
+            )
         UserInterface.validate_user_preferences()
 
         if "NVDAAddOn" in user_preferences:
