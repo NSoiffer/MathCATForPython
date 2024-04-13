@@ -30,6 +30,13 @@ MathCAT's rules for speech are not yet as extensive as MathPlayer's rules -- tha
 
 ## MathCAT Update Log
 
+### Version 0.5.3
+* Added Copy As... to the MathCAT dialog (in the "Navagation" pane).
+* Fixed a bug where the language reverted to English when changing speech styles.
+* Fixed some Asciimath spacing problems.
+* Fix a crash when non-ASCII digits (e.g., bold digits) are used in numbers
+* Don't use italic indicators in braille codes when the math alphanumeric italic chars are used
+
 ### Version 0.5.0
 * Added German LaTeX braille code. Unlike other braille codes, this generates ASCII chars and uses the current braille output table to translate the characters to braille.
 * Added (expermental) ASCIIMath braille code. Like the LaTeX braille code, this generates ASCII chars and uses the current braille output table to translate the characters to braille.
