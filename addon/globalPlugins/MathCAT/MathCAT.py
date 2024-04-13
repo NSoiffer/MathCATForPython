@@ -91,6 +91,7 @@ def getLanguageToUse(mathMl: str) -> str:
     except Exception as e:
         log.error(e)
 
+    # log.info(f"getLanguageToUse: {mathCATLanguageSetting}")
     if mathCATLanguageSetting != "Auto":
         return mathCATLanguageSetting
 

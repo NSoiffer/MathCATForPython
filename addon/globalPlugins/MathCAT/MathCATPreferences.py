@@ -322,7 +322,6 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         self.m_choiceSpeechStyle.Clear()
         # get the currently selected language code
         this_language_code = UserInterface.GetLanguageCode(self)
-        # log.info(f"\nthis lang={this_language_code}, getCurrentLanguage = {getCurrentLanguage()}")
 
         if this_language_code == "Auto":
             # list the speech styles for the current voice rather than have none listed
