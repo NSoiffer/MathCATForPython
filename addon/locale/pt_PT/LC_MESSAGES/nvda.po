@@ -17,65 +17,83 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.1\n"
 
+#. Translators: this message directs users to look in the log file
 msgid "Error in starting navigation of math: see NVDA error log for details"
 msgstr ""
 "Erro ao iniciar a navegação de matemática: ver registo de erros NVDA para "
 "mais detalhes"
 
+#. Translators: this message directs users to look in the log file
 msgid "Error in brailling math: see NVDA error log for details"
 msgstr ""
 "Erro de braile na matemática: ver registo de erros do NVDA para mais detalhes"
 
+#. Translators: this message directs users to look in the log file
 msgid "Error in navigating math: see NVDA error log for details"
 msgstr ""
 "Erro na navegação matemática: ver registo de erros do NVDA para mais detalhes"
 
-#. For translators: Message to be announced during Keyboard Help
+#. Translators: Message to be announced during Keyboard Help
 msgid "Copy navigation focus to clipboard"
 msgstr "Copiar o foco de navegação para a área de transferência"
 
-#. For translators: Name of the section in "Input gestures" dialog.
+#. Translators: Name of the section in "Input gestures" dialog.
 msgid "Clipboard"
 msgstr "Área de transferência"
 
+#. Translators: copy to clipboard
 msgid "copy"
 msgstr "copiar"
 
+#. Translators: this message directs users to look in the log file
 msgid "unable to copy math: see NVDA error log for details"
 msgstr "unable to copy math: ver registo de erros NVDA para mais detalhes"
 
+#. Translators: this message directs users to look in the log file
 msgid "MathCAT initialization failed: see NVDA error log for details"
 msgstr ""
 "Falha na inicialização do MathCAT: ver registo de erros do NVDA para mais "
 "detalhes"
 
+#. Translators: this message directs users to look in the log file
 msgid "Illegal MathML found: see NVDA error log for details"
 msgstr "MathML ilegal encontrado: ver registo de erros NVDA para mais detalhes"
 
+#. Translators: this message directs users to look in the log file
 msgid "Error in speaking math: see NVDA error log for details"
 msgstr ""
 "Erro ao falar matemática: ver registo de erros do NVDA para mais detalhes"
 
+#. Translators: menu item -- use the language of the voice chosen in the NVDA speech settings dialog
+#. "Auto" == "Automatic" -- other items in menu are "English (en)", etc., so this matches that style
+msgid "Use Voice's Language (Auto)"
+msgstr ""
+
+#. Translators: this is a test string that is spoken. Only translate "the square root of x squared plus y squared"
 msgid ""
 "<prosody rate='XXX%'>the square root of x squared plus y squared</prosody>"
 msgstr ""
 "<prosody rate='XXX%'>a raiz quadrada de x ao quadrado mais y ao quadrado</"
 "prosody>"
 
-#, python-brace-format
+#. Translators: this is a test string that is spoken. Only translate "the fraction with numerator"
+#. and other parts NOT inside '<.../>',
+#, fuzzy, python-brace-format
 msgid ""
 "<prosody rate='{rate}%'>the fraction with numerator <break "
-"time='{pause_factor_300}ms'/> <mark name='M63i335o-4'/> <say-as interpret-"
-"as='characters'>x</say-as> to the <mark name='M63i335o-5'/> <say-as "
-"interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph=''>-th</"
-"phoneme> power <break time='{pause_factor_128}ms'/> <mark name='M63i335o-6'/"
-"> plus  <mark name='M63i335o-7'/> 1 <break time='{pause_factor_300}ms'/> and "
-"denominator <mark name='M63i335o-10'/> <say-as interpret-as='characters'>x</"
-"say-as> to the <mark name='M63i335o-11'/> <say-as interpret-"
-"as='characters'>n</say-as> <phoneme alphabet='ipa' ph=''>-th</phoneme> power "
-"<break time='{pause_factor_128}ms'/> <mark name='M63i335o-12'/> minus  <mark "
-"name='M63i335o-13'/> 1 <break time='{pause_factor_600}ms'/>end fraction "
-"<break time='{pause_factor_150}ms'/>"
+"time='{pause_factor_300}ms'/>                <mark name='M63i335o-4'/> <say-"
+"as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-5'/"
+">                <say-as interpret-as='characters'>n</say-as> <phoneme "
+"alphabet='ipa' ph=''>-th</phoneme>                power <break "
+"time='{pause_factor_128}ms'/> <mark name='M63i335o-6'/> plus  <mark "
+"name='M63i335o-7'/>1                <break time='{pause_factor_300}ms'/> and "
+"denominator <mark name='M63i335o-10'/>                <say-as interpret-"
+"as='characters'>x</say-as> to the <mark name='M63i335o-11'/>                "
+"<say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph=''>-"
+"th</phoneme>power                <break time='{pause_factor_128}ms'/> <mark "
+"name='M63i335o-12'/> minus  <mark name='M63i335o-13'/>1                "
+"<break time='{pause_factor_600}ms'/>end fraction <break "
+"time='{pause_factor_150}ms'/>"
 msgstr ""
 "<prosody rate='{rate}%'>a fração com numerador <break "
 "time='{pause_factor_300}ms'/> <mark name='M63i335o-4'/> <say-as interpret-"
@@ -89,161 +107,196 @@ msgstr ""
 "name='M63i335o-13'/> 1 <break time='{pause_factor_600}ms'/>fim fração <break "
 "time='{pause_factor_150}ms'/>"
 
+#. Translators: title for MathCAT preferences dialog
 msgid "MathCAT Preferences"
 msgstr "Configurações do MathCAT"
 
+#. Translators: A heading that labels three navigation pane tab names in the MathCAT dialog
 msgid "Categories:"
 msgstr "Categorias:"
 
+#. Translators: these are navigation pane headings for the MathCAT preferences dialog under the title "Categories"
 msgid "Speech"
 msgstr "Discurso"
 
+#. Translators: these are navigation pane headings for the MathCAT preferences dialog under the title "Categories"
 msgid "Navigation"
 msgstr "Navegação"
 
+#. Translators: these are navigation pane headings for the MathCAT preferences dialog under the title "Categories"
 msgid "Braille"
 msgstr "Braille"
 
+#. Translators: this is the text label for whom to target the speech for (options are below)
 msgid "Generate speech for:"
 msgstr "Gerar discurso para:"
 
+#. Translators: these are the categories of impairments that MathCAT supports
+#. Translators: Learning disabilities includes dyslexia and ADHD
 msgid "Learning disabilities"
 msgstr "Dificuldades de aprendizagem"
 
+#. Translators: target people who are blind
 msgid "Blindness"
 msgstr "Cegueira"
 
+#. Translators: target people who have low vision
 msgid "Low vision"
 msgstr "Baixa visão"
 
+#. Translators: label for pull down allowing users to choose the speech language for math
 msgid "Language:"
 msgstr "Idioma:"
 
-msgid "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-msgstr "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-
+#. Translators: label for pull down allowing users to choose the "style" (version, rules) of speech for math
 msgid "Speech style:"
 msgstr "Estilo de discurso:"
 
-msgid "xxxxxxxxxxxxxxxx"
-msgstr "xxxxxxxxxxxxxxxxxxxx"
+#. Translators: label for pull down to specify how verbose/terse the speech should be
+#, fuzzy
+msgid "Speech verbosity:"
+msgstr "Estilo de discurso:"
 
-msgid "Speech amount:"
-msgstr "Quantidade de discurso:"
-
+#. Translators: options for speech verbosity -- "terse" = use less words
+#. Translators: options for navigation verbosity -- "terse" = use less words
 msgid "Terse"
 msgstr "Seco"
 
+#. Translators: options for speech verbosity -- "medium" = try to be nether too terse nor too verbose words
+#. Translators: options for navigation verbosity -- "medium" = try to be nether too terse nor too verbose words
 msgid "Medium"
 msgstr "Média"
 
+#. Translators: options for speech verbosity -- "verbose" = use more words
+#. Translators: options for navigation verbosity -- "verbose" = use more words
 msgid "Verbose"
 msgstr "Verbosidade"
 
+#. Translators: label for slider that specifies a percentage of the normal speech rate that should be used for math
 msgid "Relative speech rate:"
 msgstr "Velocidade relativa do discurso:"
 
+#. Translators: label for slider that specifies relative factor to increase or decrease pauses in the math speech
 msgid "Pause factor:"
 msgstr "Fator de pausa:"
 
+#. Translators: label for check box controling a beep sound
 msgid "Make a sound when starting/ending math speech"
 msgstr "Fazer um som ao iniciar/terminar o discurso matemático"
 
+#. Translators: label for pull down to specify a subject area (Geometry, Calculus, ...)
 msgid "Subject area to be used when it cannot be determined automatically:"
 msgstr ""
 "Área temática a utilizar quando não puder ser determinada automaticamente:"
 
+#. Translators: a generic (non-specific) math subject area
 msgid "General"
 msgstr "Geral"
 
+#. Translators: label for pull down to specify how verbose/terse the speech should be
 msgid "Speech for chemical formulas:"
 msgstr "Discurso para fórmulas químicas:"
 
+#. Translators: values for chemistry options with example speech in parenthesis
 msgid "Spell it out (H 2 O)"
 msgstr "Soletra (H 2 O)"
 
+#. Translators: values for chemistry options with example speech in parenthesis (never interpret as chemistry)
 msgid "Off (H sub 2 O)"
 msgstr "Desligado (H sub 2 O)"
 
-msgid "a page"
-msgstr "uma página"
-
+#. Translators: label for pull down to specify one of three modes use to navigate math expressions
 msgid "Navigation mode to use when beginning to navigate an equation:"
 msgstr "Modo de navegação a utilizar quando se começa a navegar numa equação:"
 
+#. Translators: names of different modes of navigation. "Enhanced" mode understands math structure
 msgid "Enhanced"
 msgstr "Melhorado"
 
+#. Translators: "Simple" walks by character expect for things like fractions, roots, and scripts
 msgid "Simple"
 msgstr "Simples"
 
+#. Translators: "Character" moves around by character, automatically moving into fractions, etc
 msgid "Character"
 msgstr "Carater"
 
+#. Translators: label for checkbox that controls whether any changes to the navigation mode should be preserved
 msgid "Reset navigation mode on entry to an expression"
 msgstr "Repor o modo de navegação à entrada de uma expressão"
 
+#. Translators: label for pull down to specify whether the expression is spoken or described (an overview)
 msgid "Navigation speech to use when beginning to navigate an equation:"
 msgstr ""
 "Discurso de navegação a utilizar quando se começa a navegar numa equação:"
 
+#. Translators: "Speak" the expression after moving to it
 msgid "Speak"
 msgstr "Falar"
 
+#. Translators: "Describe" the expression after moving to it ("overview is a synonym")
 msgid "Describe/overview"
 msgstr "Descrição/visão geral"
 
+#. Translators: label for checkbox that controls whether any changes to the speak vs overview reading should be ignored
 msgid "Reset navigation speech on entry to an expression"
 msgstr "Repor o discurso de navegação à entrada de uma expressão"
 
+#. Translators: label for checkbox that controls whether arrow keys move out of fractions, etc.,
+#. or whether you have to manually back out of the fraction, etc.
 msgid "Automatic zoom out of 2D notations"
 msgstr "Redução automática do zoom das notações 2D"
 
+#. Translators: label for pull down to specify whether you want a terse or verbose reading of navigation commands
 msgid "Speech amount for navigation:"
 msgstr "Quantidade de voz para navegação:"
 
+#. Translators: label for pull down to specify which braille code to use
 msgid "Braille math code for refreshable displays:"
 msgstr "Código matemático Braille para ecrãs actualizáveis:"
 
-msgid "Nemeth"
-msgstr "Nemeth"
-
-msgid "UEB"
-msgstr "UEB"
-
-msgid "Vietnam"
-msgstr "Vietname"
-
+#. Translators: label for pull down to specify how braille dots should be modified when navigating/selecting subexprs
 msgid "Highlight with dots 7 && 8 the current nav node:"
 msgstr "Realce com os pontos 7 && 8 o nó de navegação atual:"
 
+#. Translators: options for using dots 7 and 8:
+#. Translators: "off" -- don't highlight
 msgid "Off"
 msgstr "Desligado"
 
+#. Translators: "First character" -- only the first character of the current navigation node uses dots 7 & 8
 msgid "First character"
 msgstr "Primeiro carácter"
 
+#. Translators: "Endpoints" -- only the first and last character of the current navigation node uses dots 7 & 8
 msgid "Endpoints"
 msgstr "Pontos finais"
 
+#. Translators: "All" -- all the characters for the current navigation node use dots 7 & 8
 msgid "All"
 msgstr "Todos"
 
+#. Translators: dialog "ok" button
 msgid "OK"
 msgstr "OK"
 
+#. Translators: dialog "cancel" button
 msgid "Cancel"
 msgstr "Cancelar"
 
+#. Translators: dialog "apply" button
 msgid "Apply"
 msgstr "Aplicar"
 
+#. Translators: button to reset all the preferences to their default values
 msgid "Reset to defaults"
 msgstr "Restaurar para valores por padrão"
 
+#. Translators: button to bring up a help page
 msgid "Help"
 msgstr "Ajuda"
 
+#. Translators: this show up in the NVDA preferences dialog. It opens the MathCAT preferences dialog
 msgid "&MathCAT Settings..."
 msgstr "Configurações do &MathCAT..."
 
@@ -253,19 +306,18 @@ msgstr "Configurações do &MathCAT..."
 msgid "MathCAT: speech and braille from MathML"
 msgstr "MathCAT: fala e braille a partir de MathML"
 
-#. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 #, fuzzy
 msgid ""
 "MathCAT is a replacement for MathPlayer which has been discontinued.\n"
-"\t\tIt provides speech and braille support, and also supports MathPlayer's "
-"three modes of navigation.\n"
-"\t\tThe speech quality is not quite as good as MathPlayer's speech yet,\n"
-"\t\tbut the braille support is much better and includes both Nemeth and UEB "
-"Technical. It also includes support for CMU (Spanish/Portuguese) and "
-"Vietnamese braille standards.\n"
-"\t\tTranslations to Indonesian, Spanish, and Vietnamese exist and other "
-"translations are in progress."
+"        It provides speech and braille support, and also supports "
+"MathPlayer's three modes of navigation.\n"
+"        The speech quality is not quite as good as MathPlayer's speech yet,\n"
+"        but the braille support is much better and includes support for "
+"Nemeth, UEB Technical, CMU (Spanish/Portuguese),\n"
+"        and Vietnamese braille code standards. Translations to Chinese "
+"(Traditional), Indonesian, Spanish, and Vietnamese exist\n"
+"        and other translations are in progress."
 msgstr ""
 "O MathCAT é um substituto do MathPlayer que foi descontinuado.\n"
 "\t\tFornece suporte de voz e braille, e também suporta os três modos de "
@@ -275,3 +327,24 @@ msgstr ""
 "Technical.\n"
 "\t\tExistem traduções para indonésio, espanhol e vietnamita e outras "
 "traduções estão em curso."
+
+#~ msgid "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+#~ msgstr "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+#~ msgid "xxxxxxxxxxxxxxxx"
+#~ msgstr "xxxxxxxxxxxxxxxxxxxx"
+
+#~ msgid "Speech amount:"
+#~ msgstr "Quantidade de discurso:"
+
+#~ msgid "a page"
+#~ msgstr "uma página"
+
+#~ msgid "Nemeth"
+#~ msgstr "Nemeth"
+
+#~ msgid "UEB"
+#~ msgstr "UEB"
+
+#~ msgid "Vietnam"
+#~ msgstr "Vietname"

@@ -57,24 +57,80 @@ tam olarak çözülmediğinden, çok fazla kural eklemeyi erteledim.
 
 ## MathCAT Güncelleme Günlüğü
 
-### Sürüm 0.2
-* Çok sayıda hata düzeltmesi
-* Konuşma iyileştirmeleri
-* Duraklatma süresini kontrol etmek için bir tercih ayarı (matematik için
-  göreli konuşma hızındaki değişikliklerle çalışır)
-* Kimya gösterimini tanıma ve uygun şekilde konuşma desteği
-* Endonezce ve Vietnamca çeviriler
+### Sürüm 0.5.0
+* Almanca LaTeX braille kodu eklendi. Diğer braille kodlarından farklı
+  olarak bu, ASCII karakterleri oluşturur ve karakterleri braille'e çevirmek
+  için mevcut braille çıktı tablosunu kullanır.
+* ASCIIMath braille kodu eklendi.  (Deneysel) LaTeX braille kodu gibi, bu da
+  ASCII karakterleri oluşturur ve karakterleri braille'e çevirmek için
+  mevcut braille çıktı tablosunu kullanır.
+* MathML'ye odaklanıldığında (daha önce olduğu gibi) CTRL+C kullanılarak
+  MathML, LaTeX veya ASCIIMath olarak kopyalamayı destekleyen "Farklı
+  Kopyala" tercihi eklendi. O anda odaklanılan düğüm kopyalanır. Not: Bu
+  yalnızca prefs.yaml dosyasında listelenir ve MathCAT Tercihleri ​​iletişim
+  kutusunda (henüz) gösterilmez.
 
+### Sürüm 0.4.2
+* Ses değiştiğinde ve MathCAT dili "Otomatik" olduğunda dil değişimi
+  düzeltildi
+* Görme engelliler için ayarlanmadığında okumayı iyileştirmek amacıyla
+  $Impairments için daha fazla kontrol eklendi
+* Nemeth: Bir mrowun parçası olmadığında "~" için düzeltme
+* UEB: karakter eklemeleri, önek ise "~" boşluk düzeltmesi, xor düzeltmesi,
+* Aksanlı ünlüler için MathML temizliği (özellikle Vietnamca için)
+* Tercih okuma/güncelleme kodunun büyük bir hızla yeniden yazılması - hangi
+  dosyaların güncellemeler için kontrol edildiğini denetlemek için
+  "CheckRuleFiles" tercihi eklendi
+* İki yeni arayüz çağrısı eklendi - gezinme konumunun braille imlecinden
+  ayarlanmasını sağlar (henüz MathCAT eklentisinin bir parçası değil)
 
-### Sürüm 0.2.5
-* Kimya alanında daha fazla iyileştirme
-* Nemeth için Düzeltmeler:
+### Sürüm 0.3.11
+* Python 3.11'e yükseltildi ve NVDA 2024.1 ile çalıştığı doğrulandı
+* Vietnamca braille alfabesindeki ve ayrıca Konuşmadaki, çoğunlukla kimyaya
+  yönelik hatalar düzeltildi.
+* Braille kodu ve bağımlı dil eşleşmediğinde bozuk braille düzeltildi
+  (özellikle Vietnam braille ve Vietnamca konuşma)
+* Belirteçlerin içindeki HTML'de bulunan boşluk hatası düzeltildi
+* Roma rakamı algılaması geliştirildi
 
-	* "İhmal" kuralları eklendi
-	* İngilizce Dil Göstergeleri için bazı kurallar eklendi
-	* Çok amaçlı göstergenin gerekli olduğu daha fazla durum eklendi
-	* Nemeth ve noktalama işaretleriyle ilgili düzeltmeler
+### Sürüm 0.3.9
+* Geleneksel Çince çevirisi eklendi (Hon-Jang Yang sayesinde)
+* Parantez içeren kodlanmış bir ifadenin tabanına gitmeyle ilgili hata
+  düzeltildi
+* Boşlukların işlenme şekli önemli ölçüde değiştirildi. Bu esas olarak
+  braille çıktısını etkiler (boşluklar ve "ihmal" tespiti).
+* Kimyanın daha iyi tanınması
+* Kimya örneklerinin eklenmesiyle ortaya çıkan UEB braille düzeltmeleri
+* Bazı durumlarda yardımcı parantez eklemeye yönelik UEB düzeltmeleri
 
+### Sürüm 0.3.8
+Braille:
+
+* Diyalog birçok dilde uluslararası hale getirildi (çevirmenlere çok
+  teşekkürler!)
+* CMU'nun ilk uygulaması - İspanyolca ve Portekizce konuşulan ülkelerde
+  kullanılan braille kodu
+* Bazı UEB hataları düzeltildi ve UEB için bazı karakterler eklendi
+* Vietnamca braille alfabesinde önemli iyileştirmeler
+
+Diğer düzeltmeler:
+
+* Göreli hız iletişim kutusunun kaydırıcısı maksimum %100 değerine sahip
+  olacak şekilde değiştirildi (artık yalnızca daha yavaş hızların
+  ayarlanmasına izin veriyor). Ayrıca, hızı önemli ölçüde artırmak/düşürmek
+  daha kolay olacak şekilde adım boyutları eklendi.
+* Göreceli hız değiştirildiğinde bazen konuşmayı kesen eSpeak hatası
+  düzeltildi
+* Vietnamca konuşmada iyileştirmeler
+* OneCore seslerinin "a" demesiyle ilgili hata düzeltildi
+* 'Otomatik Yakınlaştırma' Yanlış olduğunda (varsayılan değil) bazı gezinme
+  hataları düzeltildi
+* Dil değişiklikleri ve diğer bazı iletişim kutusu değişiklikleriyle ilgili
+  güncellemeler düzeltildi; böylece bunların "Uygula" veya "Tamam"
+  tıklandığında hemen etkili olması sağlandı.
+* MathCAT'in kutudan çıkar çıkmaz doğru dilde konuşması için "Sesin Dilini
+  Kullan" seçeneği eklendi (bir çeviri varsa)
+* Zayıf MathML kodunu temizlemeye yönelik çeşitli iyileştirmeler
 
 ### Sürüm 0.3.3
 Bu sürümde bir dizi hata düzeltmesi var. Başlıca yeni özellikler ve hata
@@ -99,28 +155,22 @@ seçeneği var. Bu hala devam eden bir çalışma ve test dışında
 kullanılamayacak kadar hatalı. Bir sonraki MathCAT sürümünün güvenilir bir
 uygulama içermesini bekliyorum.
 
-### Sürüm 0.3.8
-Braille:
+### Sürüm 0.2.5
+* Kimya alanında daha fazla iyileştirme
+* Nemeth için Düzeltmeler:
 
-* Diyalog uluslararası hale getirildi (çevirmenlere çok teşekkürler!)
-* CMU'nun ilk uygulaması - İspanya'da ve Portekizce konuşulan birkaç ülkede
-  kullanılan braille kodu
-* Vietnamca braille alfabesinde önemli iyileştirmeler
-* Göreli hız iletişim kutusunun kaydırıcısı maksimum %100 değerine sahip
-  olacak şekilde değiştirildi (artık yalnızca daha yavaş hızların
-  ayarlanmasına izin veriyor). Ayrıca, hızı önemli ölçüde artırmak/düşürmek
-  daha kolay olacak şekilde adım boyutları eklendi.
-* Bazı UEB hataları düzeltildi ve UEB için bazı karakterler eklendi
+	* * "İhmal" kuralları eklendi
+	* * İngilizce Dil Göstergeleri için bazı kurallar eklendi
+	* * Çok amaçlı göstergenin gerekli olduğu daha fazla durum eklendi
+	* * Nemeth ve noktalama işaretleriyle ilgili düzeltmeler
 
-Diğer düzeltmeler:
-
-* Vietnamca konuşmada iyileştirmeler
-* OneCore seslerinin "a" demesiyle ilgili hata düzeltildi
-* 'Otomatik Yakınlaştırma' Yanlış olduğunda (varsayılan değil) bazı gezinme
-  hataları düzeltildi
-* Dil değişiklikleri ve diğer bazı iletişim kutusu değişiklikleriyle ilgili
-  güncellemeler düzeltildi; böylece bunların "Uygula" veya "Tamam"
-  tıklandığında hemen etkili olması sağlandı.
+### Sürüm 0.2
+* Çok sayıda hata düzeltmesi
+* Konuşma iyileştirmeleri
+* Duraklatma süresini kontrol etmek için bir tercih ayarı (matematik için
+  göreli konuşma hızındaki değişikliklerle çalışır)
+* Kimya gösterimini tanıma ve uygun şekilde konuşma desteği
+* Endonezce ve Vietnamca çeviriler
 
 [[!tag dev stable]]
 

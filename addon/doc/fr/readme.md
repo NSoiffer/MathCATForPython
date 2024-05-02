@@ -62,25 +62,89 @@ pas encore complètement établi.
 
 ## Mise à jour du Journal de MathCAT
 
-### Version 0.2
-* Beaucoup de correctifs de bogues
-* Améliorations de la parole
-* Un paramètre de préférence pour contrôler la durée de la pause (fonctionne
-  avec le changement du débit relatif de la parole pour les mathématiques)
-* Prise en charge de la reconnaissance de la notation chimique et à la
-  verbaliser de manière appropriée
-* Traductions vers indonésien et vietnamien
+### Version 0.5.0
+* Ajout du code braille LaTeX allemand. Contrairement à d'autres codes
+  braille, celui-ci génère des caractères ASCII et utilise la table de
+  sortie braille actuelle pour traduire les caractères en braille.
+* Ajout du code braille ASCIIMath (expérimental). Comme le code braille
+  LaTeX, celui-ci génère des caractères ASCII et utilise la table de sortie
+  braille actuelle pour traduire les caractères en braille.
+* Ajout de la préférence "CopyAs" qui prend en charge la copie au format
+  MathML, LaTeX ou ASCIIMath en utilisant contrôle+C lorsque le focus sur du
+  MathML (comme auparavant). Le nœud ayant le focus est copié. Remarque :
+  cette option n'est listée que dans le fichier prefs.yaml et n'est pas
+  (encore) exposé dans la boîte de dialogue Préférences MathCAT.
 
+### Version 0.4.2
+* Correctif pour le changement de langue lorsque la voix change et que la
+  langue MathCAT est "Auto"
+* Ajout de plus de contrôles de $Impairments afin d'améliorer la lecture
+  lorsqu'elle n'est pas définie pour les personnes aveugles
+* Nemeth : correction de "~" lorsqu'il ne fait pas partie d'un mrow
+* UEB : ajouts de caractères, correction de l'espacement de "~" avec un
+  préfixe, correction de xor,
+* Nettoyage MathML pour les voyelles accentuées (principalement pour le
+  vietnamien)
+* Réécriture majeure du code de lecture/mise à jour des préférences avec une
+  grande accélération -- ajout de la préférence `CheckRuleFiles` pour
+  contrôler quels fichiers sont vérifiés pour les mises à jour
+* Ajout de deux nouveaux appels d'interface -- permet de définir
+  l'emplacement de navigation à partir du curseur braille (ne fait pas
+  encore partie de l'extension MathCAT)
 
-### Version 0.2.5
-* Plus d'améliorations chimique
-* Correction pour Nemeth :
+### Version 0.3.11
+* Mise à niveau vers python 3.11 et vérification du fonctionnement avec NVDA
+  2024.1
+* Correction de bugs dans le braille vietnamien et également dans la parole,
+  principalement pour la chimie.
+* Correction du dysfonctionnement du braille lorsque le code braille et la
+  langue dépendante ne correspondent pas (en particulier le braille
+  vietnamien et la parole vietnamienne)
+* Correction d'un bug d'espacement en HTML à l'intérieur des élements
+* Amélioration de la détection des chiffres romains
 
-	* Règles "omission" ajoutées
-	* Ajout de quelques règles pour les indicateurs de langue Anglaise
-	* Ajout de plus de cas où l'indicateur polyvalent est nécessaire
-	* Correction liée à Nemeth et à la ponctuation
+### Version 0.3.9
+* Ajout de la traduction en chinois traditionnel (remerciements à Hon-Jang
+  Yang)
+* Correction d'un bug lors de la navigation dans la base d'une expression
+  scriptée comportant des parenthèses
+* Modification significative de la façon dont les espaces sont gérés. Cela
+  affecte principalement la sortie braille (détection des espaces et des
+  "omissions").
+* Reconnaissance améliorée de la chimie
+* Corrections du braille UEB résultant de l'ajout d'exemples de chimie
+* Corrections UEB pour l'ajout de parenthèses auxiliaires dans certains cas
 
+### Version 0.3.8
+Braille :
+
+* Les dialogues ont été internationalisé pour plusieurs langues (un grand
+  merci aux traducteurs !)
+* Implémentation initiale du CMU -- le code braille utilisé dans les pays
+  hispanophones et lusophones
+* Correction de quelques bugs de l'UEB et ajout de quelques caractères pour
+  l'UEB
+* Améliorations significatives du braille Vietnamien
+
+Autres correctifs :
+
+* Modifiez le curseur de la boîte de dialogue de débit relatif pour avoir
+  une valeur maximale de 100 % (permet désormais uniquement de définir des
+  débits  plus lents). En outre, des tailles de pas ont été ajoutées pour
+  qu'il soit plus facile d'augmenter/diminuer le débit de manière
+  significative.
+* Correction d'un bug d'eSpeak qui coupait parfois la parole lorsque le
+  débit relatif était modifié
+* Améliorations de la parole en Vietnamien
+* Correction d'un bug avec les voix OneCore disant "a"
+* Correction de quelques bugs de navigation lorsque `AutoZoomOut` est False
+  (pas la valeur par défaut)
+* Correction de la mise à jour autour des changements de langue et de
+  certains autres changements de boîte de dialogue afin qu'ils prennent
+  effet immédiatement après avoir cliqué sur "Appliquer" ou "OK".
+* Ajout d'une option "Utiliser la langue de la voix" afin que MathCAT parle
+  immédiatement dans la bonne langue (s'il existe une traduction)
+* Plusieurs améliorations de nettoyage de mauvais code MathML
 
 ### Version 0.3.3
 Cette version contient un certain nombre de corrections de bogues. Les
@@ -107,30 +171,23 @@ il y a trop de bogues pour être utilisé autrement que pour les tests. Je
 m'attends à ce que la prochaine version de MathCAT contienne une
 implémentation fiable.
 
-### Version 0.3.8
-Braille :
+### Version 0.2.5
+* Plus d'améliorations chimique
+* Correction pour Nemeth :
 
-* Le dialogue s'est internationalisé (un grand merci aux traducteurs !)
-* Mise en œuvre initiale de la CMU - code braille utilisé en Espagne et dans
-  plusieurs pays Lusophones
-* Améliorations significatives du braille Vietnamien
-* Modifiez le curseur de la boîte de dialogue de débit relatif pour avoir
-  une valeur maximale de 100 % (permet désormais uniquement de définir des
-  débits  plus lents). En outre, des tailles de pas ont été ajoutées pour
-  qu'il soit plus facile d'augmenter/diminuer le débit de manière
-  significative.
-* Correction de quelques bugs de l'UEB et ajout de quelques caractères pour
-  l'UEB
+	* Ajout de règles "omission"
+	* Ajout quelques règles pour les indicateurs de langue anglaise
+	* Ajout de plus de cas où l'indicateur polyvalent est nécessaire
+	* Correctifs liés à Nemeth et à la ponctuation
 
-Autres correctifs :
-
-* Améliorations de la parole en Vietnamien
-* Correction d'un bug avec les voix OneCore disant "a"
-* Correction de quelques bugs de navigation lorsque `AutoZoomOut` est False
-  (pas la valeur par défaut)
-* Correction de la mise à jour autour des changements de langue et de
-  certains autres changements de boîte de dialogue afin qu'ils prennent
-  effet immédiatement après avoir cliqué sur "Appliquer" ou "OK".
+### Version 0.2
+* Beaucoup de correctifs de bogues
+* Améliorations de la parole
+* Un paramètre de préférence pour contrôler la durée de la pause (fonctionne
+  avec le changement du débit relatif de la parole pour les mathématiques)
+* Prise en charge de la reconnaissance de la notation chimique et à la
+  verbaliser de manière appropriée
+* Traductions vers indonésien et vietnamien
 
 [[!tag dev stable]]
 

@@ -56,25 +56,81 @@ päättelemiseen, eikä niitä ole vielä täysin ratkaistu.
 
 ## MathCATin päivitysloki
 
-### Versio 0.2
-* Paljon bugikorjauksia
-* Parannuksia puheeseen
-* Asetus tauon keston säätämiseen (toimii matematiikkapuheen suhteellisen
-  nopeuden muutosten kanssa)
-* Tuki kemiallisten merkintöjen tunnistamiselle ja niiden asianmukaiselle
-  puhumiselle
-* Käännökset indonesiaksi ja vietnamiksi
+### Versio 0.5.0
+* Lisätty saksalainen LaTeX-pistekirjoitusmerkistö. Toisin kuin muut
+  pistekirjoitusmerkistöt, tämä muodostaa ASCII-merkkejä ja käyttää
+  senhetkistä pistetulostustaulukkoa merkkien kääntämiseen
+  pistekirjoitukseksi.
+* Lisätty kokeellinen ASCIIMath-pistekirjoitusmerkistö. Kuten
+  LaTeX-merkistö, tämä muodostaa ASCII-merkkejä ja  käyttää senhetkistä
+  pistetulostustaulukkoa merkkien kääntämiseen pistekirjoitukseksi.
+* Lisätty "CopyAs"-asetus, joka tukee kopiointia MathML-, LaTeX- tai
+  ASCIIMath-muodossa Ctrl+C-näppäinkomentoa käyttäen kohdistuksen ollessa
+  MathML:ssä (kuten aiemmin). Aktiivisena oleva solmu kopioidaan. Huom:
+  Asetus on toistaiseksi muutettavissa vain prefs.yaml-tiedostossa eikä sitä
+  vielä näytetä MathCATin asetusvalintaikkunassa.
 
+### Versio 0.4.2
+* Korjattu kielen vaihtaminen kun puheääni vaihtuu ja MathCATin kielenä on
+  "Automaattinen"
+* Lisätty tarkistuksia $Impairments-muuttujalle lukemisen parantamiseksi
+  silloin, kun se on määritetty muita kuin sokeita varten.
+* Nemeth: Korjaus "~":lle, kun se ei ole osa mrow:ta.
+* UEB: Merkkejä lisätty, "~":n välilyönnin korjaus jos etuliitteenä,
+  xor-korjaus.
+* MathML:n siistiminen korostetuille vokaaleille (pääasiassa
+  vietnamilaisille).
+* Huomattava uudelleenkirjoitus asetusten lukemis- ja päivityskoodille
+  suurella nopeutuksella – lisätty ``CheckRuleFiles``-asetus säätelemään,
+  mitkä tiedostot tarkistetaan päivitysten varalta.
+* Added two new interface calls -- enables setting the navigaton location
+  from the braille cursor (not part of MathCAT addon yet)
 
-### Versio 0.2.5
-* Lisää parannuksia kemiallisiin merkintöihin
-* Korjauksia Nemeth-merkintöihin:
+### Versio 0.3.11
+* Upgraded to python 3.11 and verified working with NVDA 2024.1
+* Fix bugs in Vietnamese braille and also in Speech, mostly for chemistry.
+* Fix broken braille when braille code and dependent language don't match
+  (specifically Vietnam braille and Vietnamese speech)
+* Fix whitespace bug in HTML inside of tokens
+* Improve roman numeral detection
 
-	* Lisätty "jättösääntöjä"
-	* Lisätty sääntöjä englannin kielen ilmaisimille
-	* Lisätty enemmän tapauksia, joissa monitoimi-ilmaisinta tarvitaan
-	* Nemeth-merkintöihin ja välimerkkeihin liittyviä korjauksia
+### Versio 0.3.9
+* Added Traditional Chinese translation (thanks to Hon-Jang Yang)
+* Fixed bug with navigating into the base of a scripted expression that has
+  parenthesis
+* Significantly changed the way whitespace is handled. This mainly affects
+  braille output (spaces and "omission" detection).
+* Kemiallisten merkintöjen tunnistusta paranneltu
+* UEB braille fixes that came up from adding chemistry examples
+* UEB fixes for adding auxillary parenthesis in some cases
 
+### Versio 0.3.8
+Pistekirjoitus:
+
+* Valintaikkuna on käännetty useille kielille (kiitokset kääntäjille!)
+* Alustava toteutus Espanjassa ja useissa portugalinkielisissä maissa
+  käytettävälle CMU-pistekirjoitusmerkistölle
+* Korjattu UEB:n bugeja ja lisätty merkkejä
+* Merkittäviä parannuksia vietnamilaiseen pistekirjoitukseen
+
+Muita korjauksia:
+
+* Muutettu suhteellisen nopeuden liukusäädintä siten, että sen enimmäisarvo
+  on 100 % (sallii nyt vain hitaampien nopeuksien asettamisen). Lisätty myös
+  askelkokoja, jotta nopeuden merkittävä nostaminen/laskeminen olisi
+  helpompaa.
+* Fix eSpeak bug that sometimes cut off speech when the relative rate was
+  changed
+* Parannuksia vietnaminkieliseen puheeseen
+* Korjattu OneCore-äänien bugi, joka sai ne sanomaan "a"
+* Korjattu navigoinnin bugeja, joita esiintyi kun automaattinen
+  loitontaminen ei ole käytössä (ei oletuksena)
+* Korjattu kielen vaihtamisen ja muutaman muun valintaikkunan muutosten
+  päivittämistä siten, että muutokset tulevat voimaan heti Käytä- tai
+  OK-painiketta painettaessa.
+* Added an "Use Voice's Language" option so that out of the box, MathCAT
+  will speak in the right language (if there is a translation)
+* Several improvements for cleaning up poor MathML code
 
 ### Versio 0.3.3
 Tähän versioon on tehty useita bugikorjauksia. Merkittävimpiä uusia
@@ -109,28 +165,23 @@ keskeneräinen ja liian virhealtis käytettäväksi muuhun kuin
 testaamiseen. Seuraavassa MathCATin versiossa pitäisi jo olla luotettava
 toteutus.
 
-### Versio 0.3.8
-Pistekirjoitus:
+### Versio 0.2.5
+* Lisää parannuksia kemiallisiin merkintöihin
+* Korjauksia Nemeth-merkintöihin:
 
-* Valintaikkuna on käännetty useille kielille (kiitokset kääntäjille!)
-* Alustava toteutus Espanjassa ja useissa portugalinkielisissä maissa
-  käytettävälle CMU-pistekirjoitusmerkistölle
-* Merkittäviä parannuksia vietnamilaiseen pistekirjoitukseen
-* Muutettu suhteellisen nopeuden liukusäädintä siten, että sen enimmäisarvo
-  on 100 % (sallii nyt vain hitaampien nopeuksien asettamisen). Lisätty myös
-  askelkokoja, jotta nopeuden merkittävä nostaminen/laskeminen olisi
-  helpompaa.
-* Korjattu UEB:n bugeja ja lisätty merkkejä
+	* Lisätty "jättösääntöjä"
+	* Lisätty sääntöjä englannin kielen ilmaisimille
+	* Lisätty enemmän tapauksia, joissa monitoimi-ilmaisinta tarvitaan
+	* Nemeth-merkintöihin ja välimerkkeihin liittyviä korjauksia
 
-Muita korjauksia:
-
-* Parannuksia vietnaminkieliseen puheeseen
-* Korjattu OneCore-äänien bugi, joka sai ne sanomaan "a"
-* Korjattu navigoinnin bugeja, joita esiintyi kun automaattinen
-  loitontaminen ei ole käytössä (ei oletuksena)
-* Korjattu kielen vaihtamisen ja muutaman muun valintaikkunan muutosten
-  päivittämistä siten, että muutokset tulevat voimaan heti Käytä- tai
-  OK-painiketta painettaessa.
+### Versio 0.2
+* Paljon bugikorjauksia
+* Parannuksia puheeseen
+* Asetus tauon keston säätämiseen (toimii matematiikkapuheen suhteellisen
+  nopeuden muutosten kanssa)
+* Tuki kemiallisten merkintöjen tunnistamiselle ja niiden asianmukaiselle
+  puhumiselle
+* Käännökset indonesiaksi ja vietnamiksi
 
 [[!tag dev stable]]
 

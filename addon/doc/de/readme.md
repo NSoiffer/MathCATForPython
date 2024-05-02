@@ -63,25 +63,73 @@ geklärt sind.
 
 ## Änderungsprotokoll für MathCAT
 
-### Version 0.2
-* Viele Fehlerkorrekturen
-* Verbesserungen für die Sprachausgabe
-* Eine Einstellung zur Steuerung der Dauer von Pausen (funktioniert mit
-  Änderungen der relativen Sprechgeschwindigkeit für Mathematik)
-* Unterstützung bei der Erkennung der chemischen Notation und deren
-  korrekten Aussprache
-* Übersetzungen ins Indonesische und Vietnamesische
+### Version 0.5.0
+* Added German LaTeX braille code. Unlike other braille codes, this
+  generates ASCII chars and uses the current braille output table to
+  translate the characters to braille.
+* Added (expermental) ASCIIMath braille code. Like the LaTeX braille code,
+  this generates ASCII chars and uses the current braille output table to
+  translate the characters to braille.
+* Added "CopyAs" preference that supports copying as MathML, LaTeX, or
+  ASCIIMath using cntl+C when focused on MathML (as before). The currently
+  focused node is copied. Note: this is only listed in the prefs.yaml file
+  and is not exposed (yet) in the MathCAT Preferences dialog.
 
+### Version 0.4.2
+* Fixed language switching when voice changes and MathCAT language is "Auto"
+* Added more checks for $Impairments to improve reading when it is not set
+  for those who are blind
+* Nemeth: fix for "~" when it isn't part of an mrow
+* UEB: character additions, "~" spacing fix if prefix, xor fix,
+* MathML cleanup for accented vowels (mainly for Vietnamese)
+* Major rewrite of preference reading/updating code with big speedup --
+  added `CheckRuleFiles` pref to control which files are checked for updates
+* Added two new interface calls -- enables setting the navigaton location
+  from the braille cursor (not part of MathCAT addon yet)
 
-### Version 0.2.5
-* Weitere Verbesserungen in Chemie
-* Korrekturen für Nemeth:
+### Version 0.3.11
+* Upgraded to python 3.11 and verified working with NVDA 2024.1
+* Fix bugs in Vietnamese braille and also in Speech, mostly for chemistry.
+* Fix broken braille when braille code and dependent language don't match
+  (specifically Vietnam braille and Vietnamese speech)
+* Fix whitespace bug in HTML inside of tokens
+* Improve roman numeral detection
 
-	* Added "omission" rules
-	* Added some rules for English Language Indicators
-	* Added more cases where the Mulitpurpose indicator is needed
-	* Fixes related to Nemeth and punctuation
+### Version 0.3.9
+* Added Traditional Chinese translation (thanks to Hon-Jang Yang)
+* Fixed bug with navigating into the base of a scripted expression that has
+  parenthesis
+* Significantly changed the way whitespace is handled. This mainly affects
+  braille output (spaces and "omission" detection).
+* Improved recognition of chemistry
+* UEB braille fixes that came up from adding chemistry examples
+* UEB fixes for adding auxillary parenthesis in some cases
 
+### Version 0.3.8
+Braille:
+
+* Dialog has been internationalized for several languages (many thanks to
+  the translators!)
+* Initial implementation of CMU -- the braille code used in Spanish and
+  Portuguese speaking countries
+* Fix some UEB bugs and added some characters for UEB
+* Significant improvements to Vietnamese braille
+
+Other fixes:
+
+* Change relative rate dialog slider to have a maximum value of 100% (now
+  only allows setting slower rates). Also, added step sizes so it is easier
+  to raise/lower the rate significantly.
+* Fix eSpeak bug that sometimes cut off speech when the relative rate was
+  changed
+* Improvements to Vietnamese speech
+* Fixed bug with OneCore voices saying "a"
+* Fixed some navigation bugs when `AutoZoomOut` is False (not the default)
+* Fix updating around language changes and some other dialog changes so they
+  take effect immediately upon clicking "Apply" or "OK".
+* Added an "Use Voice's Language" option so that out of the box, MathCAT
+  will speak in the right language (if there is a translation)
+* Several improvements for cleaning up poor MathML code
 
 ### Version 0.3.3
 Diese Version enthält eine Reihe von Fehlerkorrekturen. Die wichtigsten
@@ -107,25 +155,23 @@ als Braille-Ausgabe zu erhalten. Diese ist noch in Arbeit und
 fehleranfällig, um außer zum Testen verwendet zu werden. Die nächste
 MathCAT-Version wird eine zuverlässige Implementierung enthalten.
 
-### Version 0.3.8
-Braille:
+### Version 0.2.5
+* Weitere Verbesserungen in Chemie
+* Korrekturen für Nemeth:
 
-* Dialog has been internationalized (many thanks to the translators!)
-* Initial implementation of CMU -- braille code used in Spain and several
-  Portuguese speaking countries
-* Significant improvements to Vietnamese braille
-* Change relative rate dialog slider to have a maximum value of 100% (now
-  only allows setting slower rates). Also, added step sizes so it is easier
-  to raise/lower the rate significantly.
-* Fix some UEB bugs and added some characters for UEB
+	* Added "omission" rules
+	* Added some rules for English Language Indicators
+	* Added more cases where the Mulitpurpose indicator is needed
+	* Fixes related to Nemeth and punctuation
 
-Other fixes:
-
-* Improvements to Vietnamese speech
-* Fixed bug with OneCore voices saying "a"
-* Fixed some navigation bugs when `AutoZoomOut` is False (not the default)
-* Fix updating around language changes and some other dialog changes so they
-  take effect immediately upon clicking "Apply" or "OK".
+### Version 0.2
+* Viele Fehlerkorrekturen
+* Verbesserungen für die Sprachausgabe
+* Eine Einstellung zur Steuerung der Dauer von Pausen (funktioniert mit
+  Änderungen der relativen Sprechgeschwindigkeit für Mathematik)
+* Unterstützung bei der Erkennung der chemischen Notation und deren
+  korrekten Aussprache
+* Übersetzungen ins Indonesische und Vietnamesische
 
 [[!tag dev stable]]
 
