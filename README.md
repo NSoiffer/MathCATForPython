@@ -30,12 +30,15 @@ MathCAT's rules for speech are not yet as extensive as MathPlayer's rules -- tha
 
 ## MathCAT Update Log
 
-### Version 0.5.3
+### Version 0.5.4
 * Added Copy As... to the MathCAT dialog (in the "Navagation" pane).
 * Fixed a bug where the language reverted to English when changing speech styles.
 * Fixed some Asciimath spacing problems.
+* Improved chemistry recognition
+* Updated MathCAT to new BANA Nemeth chemistry spec (still only single line and special case style/font changes not handled)
 * Fix a crash when non-ASCII digits (e.g., bold digits) are used in numbers
 * Don't use italic indicators in braille codes when the math alphanumeric italic chars are used
+* Some other smaller bug fixes that weren't reported by users
 
 ### Version 0.5.0
 * Added German LaTeX braille code. Unlike other braille codes, this generates ASCII chars and uses the current braille output table to translate the characters to braille.
