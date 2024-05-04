@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: MathCAT 0.3.3\n"
 "Report-Msgid-Bugs-To: nvda-translations@groups.io\n"
 "POT-Creation-Date: 2023-08-14 03:25+0000\n"
-"PO-Revision-Date: 2023-11-03 19:54+0100\n"
+"PO-Revision-Date: 2024-05-01 13:46+0200\n"
 "Last-Translator: José Manuel Delicado <jm.delicado@nvda.es>\n"
 "Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #. Translators: this message directs users to look in the log file
 msgid "Error in starting navigation of math: see NVDA error log for details"
@@ -74,7 +74,7 @@ msgstr ""
 #. Translators: menu item -- use the language of the voice chosen in the NVDA speech settings dialog
 #. "Auto" == "Automatic" -- other items in menu are "English (en)", etc., so this matches that style
 msgid "Use Voice's Language (Auto)"
-msgstr ""
+msgstr "Utilizar idioma de la voz (automático)"
 
 #. Translators: this is a test string that is spoken. Only translate "the square root of x squared plus y squared"
 msgid ""
@@ -85,7 +85,7 @@ msgstr ""
 
 #. Translators: this is a test string that is spoken. Only translate "the fraction with numerator"
 #. and other parts NOT inside '<.../>',
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "<prosody rate='{rate}%'>the fraction with numerator <break "
 "time='{pause_factor_300}ms'/>                <mark name='M63i335o-4'/> <say-"
@@ -102,18 +102,20 @@ msgid ""
 "<break time='{pause_factor_600}ms'/>end fraction <break "
 "time='{pause_factor_150}ms'/>"
 msgstr ""
-"<prosody rate='{rate}%'>la fracción con numerador<break "
-"time='{pause_factor_300}ms'/> <mark name='M63i335o-4'/> <say-as interpret-"
-"as='characters'>x</say-as> a la <mark name='M63i335o-5'/> <say-as interpret-"
-"as='characters'>n</say-as> <phoneme alphabet='ipa' ph=''>--ésima</phoneme> "
-"potencia <break time='{pause_factor_128}ms'/> <mark name='M63i335o-6'/> más  "
-"<mark name='M63i335o-7'/> 1 <break time='{pause_factor_300}ms'/> y "
-"denominador <mark name='M63i335o-10'/> <say-as interpret-as='characters'>x</"
-"say-as> a la <mark name='M63i335o-11'/> <say-as interpret-as='characters'>n</"
-"say-as> <phoneme alphabet='ipa' ph=''>-ésima</phoneme> potencia <break "
-"time='{pause_factor_128}ms'/> <mark name='M63i335o-12'/> menos  <mark "
-"name='M63i335o-13'/> 1 <break time='{pause_factor_600}ms'/>fin de fracción "
-"<break time='{pause_factor_150}ms'/>"
+"<prosody rate='{rate}%'>la fracción con numerador <break "
+"time='{pause_factor_300}ms'/>                <mark name='M63i335o-4'/> <say-"
+"as interpret-as='characters'>x</say-as> a la <mark name='M63i335o-5'/"
+">                <say-as interpret-as='characters'>n</say-as> <phoneme "
+"alphabet='ipa' ph=''>-ésima</phoneme>                potencia <break "
+"time='{pause_factor_128}ms'/> <mark name='M63i335o-6'/> más  <mark "
+"name='M63i335o-7'/>1                <break time='{pause_factor_300}ms'/> y "
+"denominador <mark name='M63i335o-10'/>                <say-as interpret-"
+"as='characters'>x</say-as> a la <mark name='M63i335o-11'/>                "
+"<say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph=''>-"
+"ésima</phoneme>potencia                <break time='{pause_factor_128}ms'/> "
+"<mark name='M63i335o-12'/> menos  <mark name='M63i335o-13'/>1                "
+"<break time='{pause_factor_600}ms'/>fin de fracción <break "
+"time='{pause_factor_150}ms'/>"
 
 #. Translators: title for MathCAT preferences dialog
 msgid "MathCAT Preferences"
@@ -161,9 +163,8 @@ msgid "Speech style:"
 msgstr "Estilo del habla:"
 
 #. Translators: label for pull down to specify how verbose/terse the speech should be
-#, fuzzy
 msgid "Speech verbosity:"
-msgstr "Estilo del habla:"
+msgstr "Verbosidad del habla:"
 
 #. Translators: options for speech verbosity -- "terse" = use less words
 #. Translators: options for navigation verbosity -- "terse" = use less words
@@ -316,7 +317,6 @@ msgid "MathCAT: speech and braille from MathML"
 msgstr "MathCat: voz y braille a partir de MathML"
 
 #. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
-#, fuzzy
 msgid ""
 "MathCAT is a replacement for MathPlayer which has been discontinued.\n"
 "        It provides speech and braille support, and also supports "
@@ -329,32 +329,11 @@ msgid ""
 "        and other translations are in progress."
 msgstr ""
 "MathCAT es un sustituto de MathPlayer, que ha sido descontinuado.\n"
-"\t\tProporciona soporte de voz y braille, y también soporta los tres modos "
-"de navegación de MathPlayer.\n"
-"\t\tLa calidad de la voz aún no es tan buena como la de MathPlayer,\n"
-"\t\tpero el soporte braille es mucho mejor e incluye tanto Nemeth como UEB "
-"Technical. También incluye soporte para los estándares CMU (español / "
-"portugués) y braille vietnamita\n"
-"\t\tExisten traducciones al indonesio, español y vietnamita, y hay otras "
-"traducciones en progreso."
-
-#~ msgid "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-#~ msgstr "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-
-#~ msgid "xxxxxxxxxxxxxxxx"
-#~ msgstr "xxxxxxxxxxxxxxxx"
-
-#~ msgid "Speech amount:"
-#~ msgstr "Cantidad de habla:"
-
-#~ msgid "a page"
-#~ msgstr "una página"
-
-#~ msgid "Nemeth"
-#~ msgstr "Nemeth"
-
-#~ msgid "UEB"
-#~ msgstr "UEB"
-
-#~ msgid "Vietnam"
-#~ msgstr "Vietnam"
+"        Proporciona soporte de voz y braille, y también soporta los tres "
+"modos de navegación de MathPlayer.\n"
+"        La calidad de la voz aún no es tan buena como la de MathPlayer,\n"
+"        pero el soporte braille es mucho mejor e incluye Nemeth, UEB "
+"Técnico, CMU (español / portugués)\n"
+"        y braille vietnamita. Existen traducciones al chino (tradicional), "
+"indonesio, español y vietnamita,\n"
+"        y hay otras traducciones en progreso."
