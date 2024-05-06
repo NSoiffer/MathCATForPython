@@ -521,7 +521,7 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerNavigation.Add(bSizerNavigationZoom, 1, wx.EXPAND, 5)
 
-        bSizerCopyMathAs = wx.BoxSizer(wx.HORIZONTAL)
+        bSizerCopyAs = wx.BoxSizer(wx.HORIZONTAL)
 
         self.m_staticTextCopyMathAs = wx.StaticText(
             self.m_panelNavigation,
@@ -534,10 +534,10 @@ class MathCATPreferencesDialog(wx.Dialog):
         )
         self.m_staticTextCopyMathAs.Wrap(-1)
 
-        bSizerCopyMathAs.Add(self.m_staticTextCopyMathAs, 0, wx.ALL, 5)
+        bSizerCopyAs.Add(self.m_staticTextCopyMathAs, 0, wx.ALL, 5)
 
         # Translators: options for copy math as.
-        m_choiceCopyMathAsChoices = [
+        m_choiceCopyAsChoices = [
             # Translators: options for Copy expression to clipboard as -- "MathML"
             _("MathML"),
             # Translators: options for Copy expression to clipboard as -- "LaTeX"
@@ -550,13 +550,13 @@ class MathCATPreferencesDialog(wx.Dialog):
             wx.ID_ANY,
             wx.DefaultPosition,
             wx.DefaultSize,
-            m_choiceCopyMathAsChoices,
+            m_choiceCopyAsChoices,
             0,
         )
         self.m_choiceCopyAs.SetSelection(0)
-        bSizerCopyMathAs.Add(self.m_choiceCopyAs, 0, wx.ALL, 5)
+        bSizerCopyAs.Add(self.m_choiceCopyAs, 0, wx.ALL, 5)
 
-        bSizerNavigation.Add(bSizerCopyMathAs, 1, wx.EXPAND, 5)
+        bSizerNavigation.Add(bSizerCopyAs, 1, wx.EXPAND, 5)
 
         self.m_panelNavigation.SetSizer(bSizerNavigation)
         self.m_panelNavigation.Layout()
