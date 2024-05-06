@@ -30,9 +30,10 @@ MathCAT's rules for speech are not yet as extensive as MathPlayer's rules -- tha
 
 ## MathCAT Update Log
 
-### Version 0.5.4
+### Version 0.5.6
 * Added Copy As... to the MathCAT dialog (in the "Navagation" pane).
 * Fixed a bug where the language reverted to English when changing speech styles.
+* Fixed a bug with navigation and braille
 * Fixed some Asciimath spacing problems.
 * Improved chemistry recognition
 * Updated MathCAT to new BANA Nemeth chemistry spec (still only single line and special case style/font changes not handled)
