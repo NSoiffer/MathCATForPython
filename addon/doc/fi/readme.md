@@ -83,26 +83,30 @@ päättelemiseen, eikä niitä ole vielä täysin ratkaistu.
 * Huomattava uudelleenkirjoitus asetusten lukemis- ja päivityskoodille
   suurella nopeutuksella – lisätty ``CheckRuleFiles``-asetus säätelemään,
   mitkä tiedostot tarkistetaan päivitysten varalta.
-* Added two new interface calls -- enables setting the navigaton location
-  from the braille cursor (not part of MathCAT addon yet)
+* Lisätty kaksi uutta rajapintakutsua: mahdollistaa navigointisijainnin
+  asettamisen pistekohdistimesta (ei vielä osa MathCAT-lisäosaa)
 
 ### Versio 0.3.11
-* Upgraded to python 3.11 and verified working with NVDA 2024.1
-* Fix bugs in Vietnamese braille and also in Speech, mostly for chemistry.
-* Fix broken braille when braille code and dependent language don't match
-  (specifically Vietnam braille and Vietnamese speech)
-* Fix whitespace bug in HTML inside of tokens
-* Improve roman numeral detection
+* Päivitetty python versioksi 3.11 ja varmistettu toimivuus NVDA 2024.1:n
+  kanssa
+* Korjattu pääasiassa kemiaan liittyviä bugeja vietnaminkielisessä
+  pistekirjoituksessa ja puheessa.
+* Korjattu rikkoutuva pistekirjoitus, kun pistemerkistö ja siihen liittyvä
+  kieli eivät täsmää (erityisesti Vietnamilainen pistekirjoitus ja puhe)
+* Korjattu tyhjän tilan bugi HTML:n sisällä olevissa merkeissä
+* Paranneltu roomalaisten numeroiden tunnistusta
 
 ### Versio 0.3.9
-* Added Traditional Chinese translation (thanks to Hon-Jang Yang)
-* Fixed bug with navigating into the base of a scripted expression that has
-  parenthesis
-* Significantly changed the way whitespace is handled. This mainly affects
-  braille output (spaces and "omission" detection).
+* Lisätty perinteisen kiinan käännös (kiitos Hon-Jang Yangille)
+* Korjattu bugi navigoitaessa skriptatun lausekkeen sulkeita sisältävään
+  perusosaan
+* Muutettu merkittävästi tapaa, jolla tyhjätilaa käsitellään. Tämä vaikuttaa
+  pääasiassa pistekirjoitustulosteeseen (välilyönnit ja "jättämisen"
+  havaitseminen).
 * Kemiallisten merkintöjen tunnistusta paranneltu
-* UEB braille fixes that came up from adding chemistry examples
-* UEB fixes for adding auxillary parenthesis in some cases
+* Tehty UEB-pistekirjoituksen korjauksia, joiden tarve ilmeni kemiallisten
+  kaavojen esimerkkejä lisättäessä
+* Korjauksia UEB:lle apusulkeita lisättäessä joissakin tapauksissa
 
 ### Versio 0.3.8
 Pistekirjoitus:
@@ -119,8 +123,8 @@ Muita korjauksia:
   on 100 % (sallii nyt vain hitaampien nopeuksien asettamisen). Lisätty myös
   askelkokoja, jotta nopeuden merkittävä nostaminen/laskeminen olisi
   helpompaa.
-* Fix eSpeak bug that sometimes cut off speech when the relative rate was
-  changed
+* Korjattu eSpeakin bugi, joka katkaisi toisinaan puheen, kun suhteellista
+  nopeutta muutettiin
 * Parannuksia vietnaminkieliseen puheeseen
 * Korjattu OneCore-äänien bugi, joka sai ne sanomaan "a"
 * Korjattu navigoinnin bugeja, joita esiintyi kun automaattinen
@@ -128,9 +132,9 @@ Muita korjauksia:
 * Korjattu kielen vaihtamisen ja muutaman muun valintaikkunan muutosten
   päivittämistä siten, että muutokset tulevat voimaan heti Käytä- tai
   OK-painiketta painettaessa.
-* Added an "Use Voice's Language" option so that out of the box, MathCAT
-  will speak in the right language (if there is a translation)
-* Several improvements for cleaning up poor MathML code
+* Lisätty "Käytä äänen kieltä" -asetus, jotta MathCAT puhuu oletusarvoisesti
+  oikealla kielellä (jos käännös on saatavilla)
+* Useita parannuksia huonon MathML-koodin siistimiseksi
 
 ### Versio 0.3.3
 Tähän versioon on tehty useita bugikorjauksia. Merkittävimpiä uusia
