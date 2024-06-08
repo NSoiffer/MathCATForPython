@@ -30,10 +30,10 @@ Kenen tulisi käyttää MathCATia:
 * Käyttäjien, jotka tarvitsevat korkealaatuista Nemeth-pistekirjoitusta
   (MathPlayerin Nemeth perustuu liblouisin Nemeth-sukupolveen, jossa on
   useita merkittäviä bugeja, joita on teknisesti vaikea korjata).
-* Käyttäjien, jotka tarvitsevat teknistä UEB-pistekirjoitusta.
+* Käyttäjien, jotka tarvitsevat teknistä UEB-pistekirjoitusta
 * Käyttäjien, jotka haluavat kokeilla uusinta teknologiaa ja ovat valmiita
-  auttamaan ilmoittamalla bugeista.
-* Käyttäjien, jotka käyttävät puhesyntetisaattorina Eloquencea.
+  auttamaan ilmoittamalla bugeista
+* Käyttäjien, jotka käyttävät puhesyntetisaattorina Eloquencea
 
 Kenen EI tulisi käyttää MathCATia:
 
@@ -58,11 +58,11 @@ päättelemiseen, eikä niitä ole vielä täysin ratkaistu.
 
 ### Versio 0.5.0
 * Lisätty saksalainen LaTeX-pistekirjoitusmerkistö. Toisin kuin muut
-  pistekirjoitusmerkistöt, tämä muodostaa ASCII-merkkejä ja käyttää
+  pistekirjoitusmerkistöt, tämä tuottaa ASCII-merkkejä ja käyttää
   senhetkistä pistetulostustaulukkoa merkkien kääntämiseen
   pistekirjoitukseksi.
 * Lisätty kokeellinen ASCIIMath-pistekirjoitusmerkistö. Kuten
-  LaTeX-merkistö, tämä muodostaa ASCII-merkkejä ja  käyttää senhetkistä
+  LaTeX-merkistö, tämäkin tuottaa ASCII-merkkejä ja  käyttää senhetkistä
   pistetulostustaulukkoa merkkien kääntämiseen pistekirjoitukseksi.
 * Lisätty "CopyAs"-asetus, joka tukee kopiointia MathML-, LaTeX- tai
   ASCIIMath-muodossa Ctrl+C-näppäinkomentoa käyttäen kohdistuksen ollessa
@@ -75,14 +75,14 @@ päättelemiseen, eikä niitä ole vielä täysin ratkaistu.
   "Automaattinen"
 * Lisätty tarkistuksia $Impairments-muuttujalle lukemisen parantamiseksi
   silloin, kun se on määritetty muita kuin sokeita varten.
-* Nemeth: Korjaus "~":lle, kun se ei ole osa mrow:ta.
+* Nemeth: Korjaus "~":lle, kun se ei ole osa mrow:ta
 * UEB: Merkkejä lisätty, "~":n välilyönnin korjaus jos etuliitteenä,
-  xor-korjaus.
+  xor-korjaus
 * MathML:n siistiminen korostetuille vokaaleille (pääasiassa
   vietnamilaisille).
-* Huomattava uudelleenkirjoitus asetusten lukemis- ja päivityskoodille
-  suurella nopeutuksella – lisätty ``CheckRuleFiles``-asetus säätelemään,
-  mitkä tiedostot tarkistetaan päivitysten varalta.
+* Suuri osa asetusten luku- ja päivityskoodista kirjoitettu uudestaan, mikä
+  nopeutti koodia huomattavasti – lisätty ``CheckRuleFiles``-asetus
+  säätelemään, mitkä tiedostot tarkistetaan päivitysten varalta
 * Lisätty kaksi uutta rajapintakutsua: mahdollistaa navigointisijainnin
   asettamisen pistekohdistimesta (ei vielä osa MathCAT-lisäosaa)
 
