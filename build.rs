@@ -13,10 +13,4 @@ fn main() {
 
     let mut zip_archive = ZipArchive::new(archive).unwrap();
     zip_archive.extract(&location).expect("Zip extraction failed");
-
-    // the test dir 'zz' doesn't need to be part of the addon
-    let mut zz_dir = location.clone();
-    zz_dir.push("Rules/Languages/zz");
-    std::fs::remove_dir_all(&zz_dir)
-        .expect(&format!("Failed to remove directory {}", zz_dir.to_str().unwrap()));
 }
