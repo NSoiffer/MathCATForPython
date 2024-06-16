@@ -8,34 +8,34 @@ msgstr ""
 "Project-Id-Version: MathCAT 0.3.3\n"
 "Report-Msgid-Bugs-To: nvda-translations@groups.io\n"
 "POT-Creation-Date: 2023-08-14 03:25+0000\n"
-"PO-Revision-Date: 2024-04-30 23:23+0300\n"
-"Last-Translator: Jani Kinnunen <janikinnunen340@gmail.com>\n"
+"PO-Revision-Date: 2024-06-11 09:50+0300\n"
+"Last-Translator: Sami Määttä <saomaatta@gmail.com>\n"
 "Language-Team: fi_FI <janikinnunen340@gmail.com>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #. Translators: this message directs users to look in the log file
 msgid "Error in starting navigation of math: see NVDA error log for details"
 msgstr ""
-"Virhe matemaattisen yhtälön navigoinnin aloittamisessa. Katso tarkemmat "
-"tiedot NVDA:n virhelokista."
+"Virhe matemaattisen yhtälön navigoinnin aloittamisessa: Katso tarkemmat "
+"tiedot NVDA:n virhelokista"
 
 #. Translators: this message directs users to look in the log file
 msgid "Error in brailling math: see NVDA error log for details"
 msgstr ""
-"Virhe matemaattisen yhtälön näyttämisessä pistekirjoituksena. Katso "
-"tarkemmat tiedot NVDA:n virhelokista."
+"Virhe matemaattisen yhtälön näyttämisessä pistekirjoituksena: Katso "
+"tarkemmat tiedot NVDA:n virhelokista"
 
 #. Translators: this message directs users to look in the log file
 msgid "Error in navigating math: see NVDA error log for details"
 msgstr ""
-"Virhe matemaattisen yhtälön navigoinnissa. Katso tarkemmat tiedot NVDA:n "
-"virhelokista."
+"Virhe matemaattisen yhtälön navigoinnissa: Katso tarkemmat tiedot NVDA:n "
+"virhelokista"
 
 #. Translators: Message to be announced during Keyboard Help
 msgid "Copy navigation focus to clipboard"
@@ -52,25 +52,25 @@ msgstr "Kopioi"
 #. Translators: this message directs users to look in the log file
 msgid "unable to copy math: see NVDA error log for details"
 msgstr ""
-"Matemaattista yhtälöä ei voi kopioida. Katso tarkemmat tiedot NVDA:n "
-"virhelokista."
+"Matemaattista yhtälöä ei voi kopioida: Katso tarkemmat tiedot NVDA:n "
+"virhelokista"
 
 #. Translators: this message directs users to look in the log file
 msgid "MathCAT initialization failed: see NVDA error log for details"
 msgstr ""
-"MathCATin alustus epäonnistui. Katso tarkemmat tiedot NVDA:n virhelokista."
+"MathCATin alustus epäonnistui: Katso tarkemmat tiedot NVDA:n virhelokista"
 
 #. Translators: this message directs users to look in the log file
 msgid "Illegal MathML found: see NVDA error log for details"
 msgstr ""
-"Löytyi virheellinen MathML-merkintä. Katso tarkemmat tiedot NVDA:n "
-"virhelokista."
+"Löytyi virheellinen MathML-merkintä: Katso tarkemmat tiedot NVDA:n "
+"virhelokista"
 
 #. Translators: this message directs users to look in the log file
 msgid "Error in speaking math: see NVDA error log for details"
 msgstr ""
-"Virhe puhuttaessa matemaattista yhtälöä. Katso tarkemmat tiedot NVDA:n "
-"virhelokista."
+"Virhe puhuttaessa matemaattista yhtälöä: Katso tarkemmat tiedot NVDA:n "
+"virhelokista"
 
 #. Translators: menu item -- use the language of the voice chosen in the NVDA speech settings dialog
 #. "Auto" == "Automatic" -- other items in menu are "English (en)", etc., so this matches that style
@@ -80,7 +80,7 @@ msgstr "Käytä puheäänen kieltä (automaattinen)"
 #. Translators: this is a test string that is spoken. Only translate "the square root of x squared plus y squared"
 msgid ""
 "<prosody rate='XXX%'>the square root of x squared plus y squared</prosody>"
-msgstr "<prosody rate='XXX%'>neliöjuuri x:n neliöstä plus y:n neliö</prosody>"
+msgstr "<prosody rate='XXX%'>neliöjuuri x neliö plus y neliö</prosody>"
 
 #. Translators: this is a test string that is spoken. Only translate "the fraction with numerator"
 #. and other parts NOT inside '<.../>',
@@ -113,7 +113,7 @@ msgstr ""
 "interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph=''></"
 "phoneme>potenssiin                <break time='{pause_factor_128}ms'/> <mark "
 "name='M63i335o-12'/> miinus  <mark name='M63i335o-13'/>1                "
-"<break time='{pause_factor_600}ms'/>murtoluvun loppu <break "
+"<break time='{pause_factor_600}ms'/>loppu murtoluku <break "
 "time='{pause_factor_150}ms'/>"
 
 #. Translators: title for MathCAT preferences dialog
@@ -138,20 +138,20 @@ msgstr "Pistekirjoitus"
 
 #. Translators: this is the text label for whom to target the speech for (options are below)
 msgid "Generate speech for:"
-msgstr "Puhu:"
+msgstr "Vamma:"
 
 #. Translators: these are the categories of impairments that MathCAT supports
 #. Translators: Learning disabilities includes dyslexia and ADHD
 msgid "Learning disabilities"
-msgstr "Oppimisvaikeuksista kärsiville"
+msgstr "Oppimisvaikeus"
 
 #. Translators: target people who are blind
 msgid "Blindness"
-msgstr "Sokeille"
+msgstr "Sokeus"
 
 #. Translators: target people who have low vision
 msgid "Low vision"
-msgstr "Heikkonäköisille"
+msgstr "Heikkonäköisyys"
 
 #. Translators: label for pull down allowing users to choose the speech language for math
 msgid "Language:"
@@ -159,11 +159,11 @@ msgstr "Kieli:"
 
 #. Translators: label for pull down allowing users to choose the "style" (version, rules) of speech for math
 msgid "Speech style:"
-msgstr "Puheen tyyli:"
+msgstr "Puhetyyli:"
 
 #. Translators: label for pull down to specify how verbose/terse the speech should be
 msgid "Speech verbosity:"
-msgstr "Puheliaisuus:"
+msgstr "Puheen määrä:"
 
 #. Translators: options for speech verbosity -- "terse" = use less words
 #. Translators: options for navigation verbosity -- "terse" = use less words
@@ -178,11 +178,11 @@ msgstr "Keskitaso"
 #. Translators: options for speech verbosity -- "verbose" = use more words
 #. Translators: options for navigation verbosity -- "verbose" = use more words
 msgid "Verbose"
-msgstr "Yksityiskohtainen"
+msgstr "Runsas"
 
 #. Translators: label for slider that specifies a percentage of the normal speech rate that should be used for math
 msgid "Relative speech rate:"
-msgstr "Suhteellisen puheen nopeus:"
+msgstr "Puheen suhteellinen nopeus:"
 
 #. Translators: label for slider that specifies relative factor to increase or decrease pauses in the math speech
 msgid "Pause factor:"
@@ -190,7 +190,8 @@ msgstr "Taukokerroin:"
 
 #. Translators: label for check box controling a beep sound
 msgid "Make a sound when starting/ending math speech"
-msgstr "Toista ääni, kun matemaattisen yhtälön puhuminen aloitetaan/lopetetaan"
+msgstr ""
+"Toista äänimerkki, kun matemaattisen sisällön puhuminen aloitetaan/lopetetaan"
 
 #. Translators: label for pull down to specify a subject area (Geometry, Calculus, ...)
 msgid "Subject area to be used when it cannot be determined automatically:"
@@ -214,7 +215,7 @@ msgstr "Pois käytöstä (H ala 2 O)"
 
 #. Translators: label for pull down to specify one of three modes use to navigate math expressions
 msgid "Navigation mode to use when beginning to navigate an equation:"
-msgstr "Käytettävä navigointitila aloitettaessa yhtälössä navigointia:"
+msgstr "Navigointitila, kun siirryt matemaattisen sisältöön:"
 
 #. Translators: names of different modes of navigation. "Enhanced" mode understands math structure
 msgid "Enhanced"
@@ -234,7 +235,7 @@ msgstr "Nollaa navigointitila lausekkeeseen siirryttäessä"
 
 #. Translators: label for pull down to specify whether the expression is spoken or described (an overview)
 msgid "Navigation speech to use when beginning to navigate an equation:"
-msgstr "Käytettävä navigointipuhe aloitettaessa yhtälössä navigointia:"
+msgstr "Navigointipuheen tyyli, kun aloitat lausekkeessa navigoimisen:"
 
 #. Translators: "Speak" the expression after moving to it
 msgid "Speak"
@@ -246,12 +247,12 @@ msgstr "Kuvaile/anna yhteenveto"
 
 #. Translators: label for checkbox that controls whether any changes to the speak vs overview reading should be ignored
 msgid "Reset navigation speech on entry to an expression"
-msgstr "Nollaa navigointipuhe lausekkeeseen siirryttäessä"
+msgstr "Nollaa navigointipuhe, kun siirryt uuteen lausekkeeseen"
 
 #. Translators: label for checkbox that controls whether arrow keys move out of fractions, etc.,
 #. or whether you have to manually back out of the fraction, etc.
 msgid "Automatic zoom out of 2D notations"
-msgstr "2D-merkintöjen automaattinen loitontaminen"
+msgstr "Siirry automaattisesti uloimmalle tasolle 2D-merkintöjen jälkeen"
 
 #. Translators: label for pull down to specify whether you want a terse or verbose reading of navigation commands
 msgid "Speech amount for navigation:"
@@ -259,11 +260,11 @@ msgstr "Puheen määrä navigoitaessa:"
 
 #. Translators: label for pull down to specify which braille code to use
 msgid "Braille math code for refreshable displays:"
-msgstr "Pistekirjoituksen matematiikkakoodi:"
+msgstr "Matematiikan pistekirjoitusstandardi:"
 
 #. Translators: label for pull down to specify how braille dots should be modified when navigating/selecting subexprs
 msgid "Highlight with dots 7 && 8 the current nav node:"
-msgstr "Korosta nykyinen navigointisolmu pisteillä 7 ja 8:"
+msgstr "Korosta nykyinen navigointikohta pisteillä 7 ja 8:"
 
 #. Translators: options for using dots 7 and 8:
 #. Translators: "off" -- don't highlight
