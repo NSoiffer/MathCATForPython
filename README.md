@@ -30,7 +30,7 @@ MathCAT's rules for speech are not yet as extensive as MathPlayer's rules -- tha
 
 ## MathCAT Update Log
 
-### Version 0.6.2
+### Version 0.6.3
 * All the language and braille Rule files are zipped up per directory and unzipped on demand.
   * This currently saves ~5mb when Rules.zip is unzipped, and will save even more as more languages and braille codes are added.
   * This is in preparation for MathCAT being built into NVDA 2024.3
@@ -45,6 +45,7 @@ MathCAT's rules for speech are not yet as extensive as MathPlayer's rules -- tha
 * Fixed some bugs in the MathML cleanup for "," decimal separators.
 * Found a bug in braille highlighting when nothing is highlighted (maybe never happens which is why I didn't see it in practice?)
 * Fixed "Describe" mode so that it works -- it is still very minimal and probably not useful yet
+* Fixed minimum supported version
 
 ### Version 0.5.6
 * Added Copy As... to the MathCAT dialog (in the "Navagation" pane).
