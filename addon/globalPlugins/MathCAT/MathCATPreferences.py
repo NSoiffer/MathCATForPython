@@ -13,6 +13,7 @@ from logHandler import log  # logging
 from typing import List, Dict, Union
 from .MathCAT import ConvertSSMLTextForNVDA
 from speech import speak
+from zipfile import ZipFile
 
 addonHandler.initTranslation()
 _ = gettext.gettext
@@ -25,6 +26,7 @@ PAUSE_FACTOR_LOG_BASE = 1.4
 # initialize the user preferences tuples
 user_preferences: Dict[str, Dict[str, Union[int, str, bool]]] = {}
 # Speech_Language is derived from the folder structures
+Speech_DecimalSeparator = ("Auto", ".", ",", "Custom")
 Speech_Impairment = ("LearningDisability", "Blindness", "LowVision")
 # Speech_SpeechStyle is derived from the yaml files under the selected language
 Speech_Verbosity = ("Terse", "Medium", "Verbose")
@@ -329,13 +331,18 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             # FIX: when dialog is aware of regional dialects, remove this next line that removes the dialect part
             this_language_code = this_language_code.split("-")[0]  # grab the first part
 
-        this_path = (
+        this_language_path = (
             os.path.expanduser("~")
             + "\\AppData\\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\Rules\\Languages\\"
             + this_language_code
-            + "\\*_Rules.yaml"
         )
+        this_path = this_language_path + "\\*_Rules.yaml"
         # populate the m_choiceSpeechStyle choices
+        all_style_files = glob.glob(this_path)  # works for unzipped dirs
+        if len(all_style_files) == 0:
+            # look in the .zip file for the style files
+            zip_file = ZipFile(f"{this_language_path}\\{this_language_code}.zip", "r")
+            all_style_files = [name for name in zip_file.namelist() if name.endswith('.jpg')]
         for f in glob.glob(this_path):
             fname = os.path.basename(f)
             self.m_choiceSpeechStyle.Append((fname[: fname.find("_Rules.yaml")]))
@@ -389,6 +396,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                     "Error when setting SpeechStyle for " + self.m_choiceLanguage.GetStringSelection()
                 )
             # set the rest of the UI elements
+            self.m_choiceDecimalSeparator.SetSelection(Speech_DecimalSeparator.index(user_preferences["Other"]["DecimalSeparator"]))
             self.m_choiceSpeechAmount.SetSelection(Speech_Verbosity.index(user_preferences["Speech"]["Verbosity"]))
             self.m_sliderRelativeSpeed.SetValue(user_preferences["Speech"]["MathRate"])
             pause_factor = (
@@ -445,6 +453,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         # read the values from the UI and update the user preferences dictionary
         user_preferences["Speech"]["Impairment"] = Speech_Impairment[self.m_choiceImpairment.GetSelection()]
         user_preferences["Speech"]["Language"] = self.GetLanguageCode()
+        user_preferences["Other"]["DecimalSeparator"] = Speech_DecimalSeparator[self.m_choiceDecimalSeparator.GetSelection()]
         user_preferences["Speech"]["SpeechStyle"] = self.m_choiceSpeechStyle.GetStringSelection()
         user_preferences["Speech"]["Verbosity"] = Speech_Verbosity[self.m_choiceSpeechAmount.GetSelection()]
         user_preferences["Speech"]["MathRate"] = self.m_sliderRelativeSpeed.GetValue()

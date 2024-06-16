@@ -167,6 +167,46 @@ class MathCATPreferencesDialog(wx.Dialog):
 
         bSizerSpeech.Add(bSizerLanguage, 1, wx.EXPAND, 5)
 
+        bSizerDecimalSeparator = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.m_staticTextDecimalSeparator = wx.StaticText(
+            self.m_panelSpeech,
+            wx.ID_ANY,
+            # Translators: label for pull down to specify what character to use in numbers as the decimal separator
+            _("Decimal separator for numbers:"),
+            wx.DefaultPosition,
+            wx.DefaultSize,
+            0,
+        )
+        self.m_staticTextDecimalSeparator.Wrap(-1)
+
+        bSizerDecimalSeparator.Add(self.m_staticTextDecimalSeparator, 0, wx.ALL, 5)
+
+        # Translators: options for decimal separator.
+        m_choiceDecimalSeparatorChoices = [
+            # Translators: options for decimal separator -- "Auto" = automatically pick the choice based on the language
+            _("Auto"),
+            # options for decimal separator -- use "."  (and use ", " for block separators)
+            ("."),
+            # options for decimal separator -- use ","  (and use ". " for block separators)
+            (","),
+            # Translators: options for decimal separator -- "Custom" = user sets it
+            #   Currently there is no UI for how it is done yet, but eventually there will be a dialog that pops up to set it
+            _("Custom"),
+        ]
+        self.m_choiceDecimalSeparator = wx.Choice(
+            self.m_panelSpeech,
+            wx.ID_ANY,
+            wx.DefaultPosition,
+            wx.DefaultSize,
+            m_choiceDecimalSeparatorChoices,
+            0,
+        )
+        self.m_choiceDecimalSeparator.SetSelection(0)
+        bSizerDecimalSeparator.Add(self.m_choiceDecimalSeparator, 0, wx.ALL, 5)
+
+        bSizerSpeech.Add(bSizerDecimalSeparator, 1, wx.EXPAND, 5)
+
         bSizerSpeechStyle = wx.BoxSizer(wx.HORIZONTAL)
 
         self.m_staticTextSpeechStyle = wx.StaticText(
