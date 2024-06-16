@@ -396,7 +396,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                     "Error when setting SpeechStyle for " + self.m_choiceLanguage.GetStringSelection()
                 )
             # set the rest of the UI elements
-            self.m_choiceDecimalSeparator.SetSelection(Speech_DecimalSeparator.index(user_preferences["Other"]["DecimalSeparator"]))
+            self.m_choiceDecimalSeparator.SetSelection(
+                Speech_DecimalSeparator.index(user_preferences["Other"]["DecimalSeparator"])
+            )
             self.m_choiceSpeechAmount.SetSelection(Speech_Verbosity.index(user_preferences["Speech"]["Verbosity"]))
             self.m_sliderRelativeSpeed.SetValue(user_preferences["Speech"]["MathRate"])
             pause_factor = (
