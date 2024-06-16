@@ -279,6 +279,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
                     "alt" in modNames,
                     False,
                 )
+                # log.info(f"Navigate speech for {gesture.vkCode}/(s={'shift' in modNames}, c={'control' in modNames}): '{text}'")
                 speech.speak(ConvertSSMLTextForNVDA(text, self._language))
 
             # update the braille to reflect the nav position (might be excess code, but it works)
