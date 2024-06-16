@@ -23,7 +23,7 @@ crate-type = ["cdylib"]
 [dependencies.mathcat]
 version = "0.6.2"
 # for testing MathCAT without having to publish a new version (change two occurences)
-path = "../MathCAT/"
+# path = "../MathCAT/"
 # features = ["include-zip"]   # for building, we want the zip files so we can include them separately
 
 [dependencies.pyo3]
@@ -32,8 +32,8 @@ features = ["extension-module", "abi3"]
 
 [build-dependencies]
 zip = { version = "2.1", default-features = false, features = ["bzip2"] }
-# mathcat = { version = "0.6.2", features = ["include-zip"]}     # for building, we want the zip files so we can include them separately
-mathcat = { path = "../MathCAT/", features = ["include-zip"]}     # for building, we want the zip files so we can include them separately
+mathcat = { version = "0.6.2", features = ["include-zip"]}     # for building, we want the zip files so we can include them separately
+# mathcat = { path = "../MathCAT/", features = ["include-zip"]}     # for building, we want the zip files so we can include them separately
 # for testing MathCAT without having to publish a new version (change two occurences)
 
 
