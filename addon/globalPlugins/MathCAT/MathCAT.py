@@ -426,6 +426,13 @@ class MathCAT(mathPres.MathPresentationProvider):
     def getSpeechForMathMl(self, mathml: str):
         try:
             self._language = getLanguageToUse(mathml)
+            # MathCAT should probably be extended to accept "extlang" tagging, but it uses lang-region tagging at the moment
+            if self._language == "cmn":
+                self._language = "zh-cmn"
+            elif self._language == "yue":
+                self._language = "zh-yue"
+            # needs to be set before the MathML for DecimalSeparator canonicalization
+            libmathcat.SetPreference("Language", self._language)
             libmathcat.SetMathML(mathml)
         except Exception as e:
             log.error(e)
@@ -446,7 +453,7 @@ class MathCAT(mathPres.MathPresentationProvider):
                 "CapitalLetters_UseWord",
                 "true" if synthConfig["sayCapForCapitals"] else "false",
             )
-            # log.info(f"Speech text: {libmathcat.GetSpokenText()}")
+            # log.info(f"Speech text ({self._language}): {libmathcat.GetSpokenText()}")
             if PitchCommand in supported_commands:
                 libmathcat.SetPreference("CapitalLetters_Pitch", str(synthConfig["capPitchChange"]))
             if self._add_sounds():
