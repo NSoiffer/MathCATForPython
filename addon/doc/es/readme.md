@@ -5,12 +5,12 @@
   anteriores)
 * Descargar [versión estable][1]
 
-MathCat está diseñado para sustituir eventualmente a MathPlayer, ya que este
-último ya no está soportado. MathCat genera voz y braille desde MathML. La
-voz producida por MathCat para las matemáticas se mejora con entonación para
-que suene más natural. Se puede navegar por la voz con tres modos usando las
-mismas órdenes que en MathPlayer. Además, el nodo de navegación se indica en
-la pantalla Braille. Se soportan tanto Nemeth como UEB técnico.
+MathCAT is designed to eventually replace MathPlayer because MathPlayer is
+no longer supported. MathCAT generates speech and braille from MathML. The
+speech for math produced by MathCAT is enhanced with prosody so that it
+sounds more natural. The speech can be navigated in three modes using the
+same commands as MathPlayer. In addition, the navigation node is indicated
+on a braille display. Both Nemeth and UEB technical are supported.
 
 MathCat tiene varias opciones de configuración que controlan la voz, la
 navegación y el braille. Muchas de ellas pueden configurarse en el diálogo
@@ -32,18 +32,18 @@ Quién debería usar MathCat:
 * Quien necesite Braille Nemeth de alta calidad (el Nemeth de MathPlayer se
   basa en la generación Nemeth de Liblouis, que tiene una importante
   cantidad de fallos técnicamente complicados de corregir).
-* Quien necesite braille técnico UEB
+* Those who need UEB technical braille, CMU (Spanish/Portuguese), German
+  LaTeX, ASCIIMath, or Vietnamese braille
 * Quien quiera probar nuevas tecnologías y esté dispuesto a ayudar
   informando de fallos
 * Quien use Eloquence como voz
 
 Quién no debería usar MathCat:
 
-* Cualquiera que use Math Player en idiomas distintos al inglés (existen
-  traducciones a indonesio, vietnamita y español; las traducciones se irán
-  haciendo en el futuro).
-* Cualquiera que use MathPlayer con una salida braille sin Nemeth o UEB
-  (contacta conmigo si quieres ayudar con una traducción braille)
+* Anyone who uses MathPlayer with a language that is not yet supported by
+  MathCAT (translations exist for Chinese (Traditional), Spanish, Indonesian
+  and Vietnamese; translations will be coming in the future) and are not
+  comfortable with speech in one of the supported languages.
 * Cualquiera que prefiera Access8Math a MathPlayer (por la voz u otras
   funciones)
 
@@ -57,6 +57,37 @@ inferir la intención del autor, y esto aún no está completamente
 establecido.
 
 ## Registro de actualización de MathCat
+
+### Version 0.6.3
+* All the language and braille Rule files are zipped up per directory and unzipped on demand.
+  * This currently saves ~5mb when Rules.zip is unzipped, and will save even more as more languages and braille codes are added.
+  * This is in preparation for MathCAT being built into NVDA 2024.3
+* Added new preference `DecimalSeparator`.
+  * The default value is `Auto`, with other values being ".", ",", and "Custom". The first three values set `DecimalSeparators` and `BlockSeparators`.
+  * `Auto` sets those preferences based on the value of the `Language` pref. For some language such as Spanish, `,` is used in some countries and `.` is used in others. In this case, it is best to set the language to also include the country code (e.g, `es-es` or `es-mx`) to ensure the right value is used.
+* Added Swedish to supported languages.
+* Added more Unicode chars to include both all Unicode chars marked as "Sm" and those with a mathclass (except Alphabetic and Glyph classes) in the Unicode standard.
+* After changing how prefs work in a previous version, I forgot to change `MathRate` and `PauseFactor` to be numbers, not strings.
+* Fixed bug in the braille Rules (missed change from earlier) where a third argument should have been given to say to look in the _Braille_ `definitions.yaml` files and not the speech ones when looking up the value of a definition.
+* Cleaned up use of `definitions.yaml`.
+* Fixed some bugs in the MathML cleanup for "," decimal separators.
+* Found a bug in braille highlighting when nothing is highlighted (maybe never happens which is why I didn't see it in practice?)
+* Fixed "Describe" mode so that it works -- it is still very minimal and probably not useful yet
+* Fixed minimum supported version
+
+### Version 0.5.6
+* Added Copy As... to the MathCAT dialog (in the "Navagation" pane).
+* Fixed a bug where the language reverted to English when changing speech
+  styles.
+* Fixed a bug with navigation and braille
+* Fixed some Asciimath spacing problems.
+* Improved chemistry recognition
+* Updated MathCAT to new BANA Nemeth chemistry spec (still only single line
+  and special case style/font changes not handled)
+* Fix a crash when non-ASCII digits (e.g., bold digits) are used in numbers
+* Don't use italic indicators in braille codes when the math alphanumeric
+  italic chars are used
+* Some other smaller bug fixes that weren't reported by users
 
 ### Versión 0.5.0
 * Se añade código braille LaTeX en alemán. Al contrario que otros códigos
@@ -98,6 +129,7 @@ establecido.
   tokens
 * Se mejora la detección de números romanos
 
+
 ### Versión 0.3.9
 * Se añade traducción al chino tradicional (gracias a Hon-Jang Yang)
 * Se corrige un fallo con la navegación en la base de una expresión escrita
@@ -110,50 +142,36 @@ establecido.
   química
 * Correcciones en UEB al añadir paréntesis auxiliares en algunos casos
 
+
 ### Versión 0.3.8
-Braille:
+Braille: * Dialog has been internationalized for several languages (many
+thanks to the translators!)  * Initial implementation of CMU -- the braille
+code used in Spanish and Portuguese speaking countries * Fix some UEB bugs
+and added some characters for UEB * Significant improvements to Vietnamese
+braille
 
-* Se ha internacionalizado el diálogo en varios idiomas (¡Muchas gracias a
-  los traductores!)
-* Implementación inicial de CMU, código braille usado en los países de habla
-  hispana y portuguesa
-* Se corrigen algunos fallos de UEB y se añaden algunos caracteres para UEB
-* Mejoras importantes al braille vietnamita
-
-Otras correcciones:
-
-* Se cambia el deslizador del diálogo de velocidad relativa para que tenga
-  un valor máximo del 100% (ahora sólo permite configurar velocidades
-  menores). También se añaden pasos de tamaño para que sea más fácil
-  aumentar o disminuir la velocidad significativamente.
-* Se corrige un problema con Espeak que hacía que la voz se entrecortara al
-  cambiar su velocidad relativa
-* Mejoras en la voz vietnamita
-* Corregido un fallo con las voces OneCore, que decían "a"
-* Se corrigen algunos fallos de navegación cuando `AutoZoomOut` es falso (no
-  el que hay por defecto)
-* Se corrigen algunos cambios en los diálogos y en el idioma para que tengan
-  efecto inmediato cuando se pulse "Aplicar" o "Aceptar".
-* Se añade una opción "Usar idioma de la voz" para que MathCat hable en el
-  idioma correcto desde el principio (si hay traducción)
-* Varias mejoras al limpiar código MathML pobre
+Other fixes: * Change relative rate dialog slider to have a maximum value of
+100% (now only allows setting slower rates). Also, added step sizes so it is
+easier to raise/lower the rate significantly.  * Fix eSpeak bug that
+sometimes cut off speech when the relative rate was changed * Improvements
+to Vietnamese speech * Fixed bug with OneCore voices saying "a" * Fixed some
+navigation bugs when `AutoZoomOut` is False (not the default)  * Fix
+updating around language changes and some other dialog changes so they take
+effect immediately upon clicking "Apply" or "OK".  * Added an "Use Voice's
+Language" option so that out of the box, MathCAT will speak in the right
+language (if there is a translation)  * Several improvements for cleaning up
+poor MathML code
 
 ### Versión 0.3.3
-Esta versión contiene bastantes correcciones de fallos. Las principales
-funciones nuevas y correcciones son:
-
-* Se ha añadido traducción al español (gracias a Noelia Ruiz y María Allo
-  Roldán)
-* Se modifica la navegación, de tal forma que ahora comienza ampliada en un
-  nivel
-* Se añade control+alt+flechas como mecanismo para navegar por estructuras
-  tabulares. Estas teclas deberían ser más fáciles de memorizar, ya que se
-  usan para navegar por tablas en NVDA.
-* Corregido un fallo con las voces de Espeak que provocaba que se
-  ralentizaran cuando la velocidad relativa matemática se configuraba para
-  ser más lenta que la velocidad de verbalización del texto.
-* Solucionado un problema con las voces OneCore, que deberían poder
-  verbalizar el sonido de la 'a' larga.
+This release has a number of bug fixes in it. The major new features and bug
+fixes are: * Added Spanish Translation (thanks to Noelia Ruiz and María Allo
+Roldán)  * Modified navigation so that it starts zoomed in one level * Added
+cntrl+alt+arrow as a way to navigate tabular structures. These keys should
+be more memorable because they are used for table navigation in NVDA.  *
+Worked around NVDA bug for eSpeak voices that caused them to slow down when
+the relative MathRate was set to be slower than the text speech rate.  *
+Worked around a OneCore voice problem so that they will speak the long 'a'
+sound.
 
 Hay montones de pequeños retoques en la voz y algunos fallos corregidos en
 Nemeth y UEB.
@@ -166,11 +184,10 @@ próxima versión de MathCat contenga una implementación fiable.
 ### Versión 0.2.5
 * Más mejoras en química
 * Correcciones en Nemeth:
-
-	* Añadidas reglas de "omisión"
-	* Añadidas algunas reglas para los indicadores en inglés
-	* Añadidos más casos donde es necesario el indicador Multipropósito
-	* Correcciones relacionadas con Nemeth y la puntuación
+* * Added "omission" rules
+* * Added some rules for English Language Indicators
+* * Added more cases where the Mulitpurpose indicator is needed
+* * Fixes related to Nemeth and punctuation
 
 ### Versión 0.2
 * Muchos fallos corregidos
