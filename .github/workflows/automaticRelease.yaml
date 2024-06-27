@@ -82,9 +82,7 @@ jobs:
         scons
     - name: copy standalone library so it has a meaningful name
       run: |
-        ls
-        pwd
-        cp MathCAT/addon/globalPlugins/libmathcat.pyd libmathcat-32-3.11.pyd
+        cp addon/globalPlugins/MathCAT/libmathcat.pyd libmathcat-32-3.11.pyd
     - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
       with:
