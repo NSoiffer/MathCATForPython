@@ -89,3 +89,4 @@ jobs:
         title: Development Build
         files: |
           *.nvda-addon
+          addon/globalPlugins/MathCAT/libmathcat.pyd
