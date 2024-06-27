@@ -45,7 +45,6 @@ jobs:
     - name: Set up addons dir
       run: |
         cp target/i686-pc-windows-msvc/release/libmathcat_py.dll addon/globalPlugins/MathCAT/libmathcat.pyd
-        cp target/i686-pc-windows-msvc/release/libmathcat_py.dll libmathcat-32-3.11.pyd
         sed 's/^import wx\.xrc/# import wx.xrc/' --in-place "addon/globalPlugins/MathCAT/MathCATgui.py"  # fix wx file
     - name: Upload addons dir to use with scons
       uses: actions/upload-artifact@v4
@@ -73,6 +72,7 @@ jobs:
     - shell: bash
       run: |
         cp -r MathCAT addon/globalPlugins
+        cp MathCAT addon/globalPlugins/libmathcat.pyd libmathcat-32-3.11.pyd
     - name: Install scons dependencies
       run: |
         pip install scons markdown
