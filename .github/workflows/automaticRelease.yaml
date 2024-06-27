@@ -72,7 +72,6 @@ jobs:
     - shell: bash
       run: |
         cp -r MathCAT addon/globalPlugins
-        cp MathCAT addon/globalPlugins/libmathcat.pyd libmathcat-32-3.11.pyd
     - name: Install scons dependencies
       run: |
         pip install scons markdown
@@ -81,6 +80,9 @@ jobs:
     - name: Run scons to build addon
       run: |
         scons
+    - name: copy standalone library so it has a meaningful name
+      run: |
+        cp addon/globalPlugins/libmathcat.pyd libmathcat-32-3.11.pyd
     - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
       with:
