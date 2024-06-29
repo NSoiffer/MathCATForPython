@@ -58,21 +58,45 @@ tam olarak çözülmediğinden, çok fazla kural eklemeyi erteledim.
 ## MathCAT Güncelleme Günlüğü
 
 ### Sürüm 0.6.3
-* Tüm dil ve Braille Kuralı dosyaları dizin bazında sıkıştırılır ve talep üzerine açılır.
-  * Bu, şu anda Rules.zip dosyası açıldığında yaklaşık 5 MB tasarruf sağlar ve daha fazla dil ve braille kodu eklendikçe daha da fazla tasarruf sağlayacaktır.
-  * Bu, MathCAT'in NVDA 2024.3'e yerleştirilmesine hazırlık niteliğindedir
+
+* Tüm dil ve Braille Kural dosyaları dizin bazında sıkıştırılır ve talep
+  üzerine açılır.
+
+	* Bu, şu anda Rules.zip dosyası açıldığında yaklaşık 5 MB tasarruf
+	  sağlar. Daha fazla dil ve braille kodu eklendikçe daha da fazla tasarruf
+	  sağlayacaktır.
+	* Bu, MathCAT'in NVDA 2024.3'e dahili olarak eklenmesine hazırlık
+	  niteliğindedir
+
 * Yeni tercih 'Ondalık Ayırıcı' eklendi.
-  * Varsayılan değer "Otomatik" olup diğer değerler ".", "," ve "Özel"dir. İlk üç değer `DecimalSeparators` ve `BlockSeparators`ı ayarlar.
-  * 'Otomatik', bu tercihleri ​​'Dil' tercihinin değerine göre ayarlar. İspanyolca gibi bazı diller için bazı ülkelerde `,`, bazılarında ise `.` kullanılır. Bu durumda, doğru değerin kullanıldığından emin olmak için dili ülke kodunu da içerecek şekilde ayarlamak (ör. "es-es" veya "es-mx") en iyisidir.
+
+	* Varsayılan değer "Otomatik" olup diğer değerler ".", "," ve
+	  "Özel"dir. İlk üç değer `Ondalık Ayırıcılar` ve `Blok Ayırıcılar`ı
+	  ayarlar.
+	* 'Otomatik', bu tercihleri ​​'Dil' tercihinin değerine göre
+	  ayarlar. İspanyolca gibi bazı diller için bazı ülkelerde `,`, bazılarında
+	  ise `.` kullanılır. Bu durumda, doğru değerin kullanıldığından emin olmak
+	  için dili ülke kodunu da içerecek şekilde ayarlamak (ör. "es-es" veya
+	  "es-mx") en iyisidir.
+
 * Desteklenen dillere İsveççe eklendi.
-* Unicode standardına hem "Sm" olarak işaretlenen tüm Unicode karakterlerini hem de matematik sınıfına sahip olanları (Alfabetik ve Glif sınıfları hariç) dahil etmek için daha fazla Unicode karakteri eklendi.
-* Önceki bir sürümde tercihlerin çalışma şeklini değiştirdikten sonra, 'MathRate' ve 'PauseFactor'ı dize olarak değil sayı olarak değiştirmeyi unuttum.
-* Bir tanımın değerini ararken konuşma dosyalarına değil, _Braille_ `definitions.yaml` dosyalarına bakmak için üçüncü bir argümanın verilmesinin gerektiği Braille Kurallarında (önceki değişikliklerde kaçırılan) hata düzeltildi.
+* Unicode standardına hem "Sm" olarak işaretlenen tüm Unicode karakterlerini
+  hem de matematik sınıfına sahip olanları (Alfabetik ve Glif sınıfları
+  hariç) dahil etmek için daha fazla Unicode karakteri eklendi.
+* Önceki bir sürümde tercihlerin çalışma şeklini değiştirdikten sonra,
+  'MathRate' ve 'PauseFactor'ı dize olarak değil sayı olarak değiştirmeyi
+  unuttum.
+* Bir tanımın değerini ararken konuşma dosyalarına değil, _Braille_
+  `definitions.yaml` dosyalarına bakmak için üçüncü bir argümanın
+  verilmesinin gerektiği Braille Kurallarında (önceki değişikliklerde
+  kaçırılan) hata düzeltildi.
 * 'definitions.yaml' kullanımı temizlendi.
 * ``, ondalık ayırıcılar için MathML temizliğindeki bazı hatalar düzeltildi.
-* Hiçbir şey vurgulanmadığında braille vurgulamada bir hata buldum (belki de hiçbir zaman gerçekleşmez, bu yüzden bunu pratikte görmedim?)
-* "Açıklama" modu çalışacak şekilde düzeltildi; hala çok az düzeyde ve muhtemelen henüz kullanışlı değil
-* Sabit minimum desteklenen sürüm
+* Hiçbir şey vurgulanmadığında braille vurgulamada bir hata buldum (belki de
+  hiçbir zaman gerçekleşmez, bu yüzden bunu pratikte görmedim?)
+* "Açıklama" modu çalışacak şekilde düzeltildi; hala çok az düzeyde ve
+  muhtemelen henüz kullanışlı değil
+* Desteklenen minimum sürüm düzeltildi
 
 ### Sürüm 0.5.6
 * MathCAT iletişim kutusuna ("Gezinme" bölmesinde) Farklı
@@ -139,35 +163,49 @@ tam olarak çözülmediğinden, çok fazla kural eklemeyi erteledim.
 
 
 ### Sürüm 0.3.8
-Braille: * İletişim kutusu birçok dil için uluslararası hale getirildi
-(çevirmenlere çok teşekkürler!) * CMU'nun ilk uygulaması - İspanyolca ve
-Portekizce konuşulan ülkelerde kullanılan braille kodu * Bazı UEB hatalarını
-düzelttik ve UEB için bazı karakterler ekledik * Önemli iyileştirmeler
-Vietnamca braille
 
-Diğer düzeltmeler: * Göreli hız iletişim kutusu kaydırıcısını maksimum %100
-değere sahip olacak şekilde değiştirildi (artık yalnızca daha yavaş hızların
-ayarlanmasına izin veriyor). Ayrıca, hızı önemli ölçüde artırmak/düşürmek
-daha kolay olacak şekilde adım boyutları eklendi.  * Göreceli oran
-değiştiğinde bazen konuşmayı kesen eSpeak hatası düzeltildi * Vietnamca
-konuşmada iyileştirmeler * OneCore seslerinin "a" demesiyle ilgili hata
-düzeltildi * 'AutoZoomOut' Yanlış olduğunda bazı gezinme hataları düzeltildi
-(varsayılan değil) * Güncelleme düzeltildi dil değişiklikleri ve diğer bazı
-iletişim kutusu değişiklikleri, böylece "Uygula" veya "Tamam" tıklandığında
-hemen etkili olur.  * MathCAT'in kutudan çıktığı haliyle doğru dilde
-konuşabilmesi için "Ses Dilini Kullan" seçeneği eklendi (eğer bir çeviri
-varsa) * Zayıf MathML kodunu temizlemek için çeşitli iyileştirmeler
+Braille:
+
+* Diyalog birçok dilde uluslararası hale getirildi (çevirmenlere çok
+  teşekkürler!)
+* CMU'nun ilk uygulaması - İspanyolca ve Portekizce konuşulan ülkelerde
+  kullanılan braille kodu
+* Bazı UEB hataları düzeltildi ve UEB için bazı karakterler eklendi
+* Vietnamca braille alfabesinde önemli iyileştirmeler
+
+Diğer düzeltmeler:
+
+* Göreli hız iletişim kutusunun kaydırıcısı maksimum %100 değerine sahip
+  olacak şekilde değiştirildi (artık yalnızca daha yavaş hızların
+  ayarlanmasına izin veriyor). Ayrıca, hızı önemli ölçüde artırmak/düşürmek
+  daha kolay olacak şekilde adım boyutları eklendi.
+* Göreceli hız değiştirildiğinde bazen konuşmayı kesen eSpeak hatası
+  düzeltildi
+* Vietnamca konuşmada iyileştirmeler
+* OneCore seslerinin "a" demesiyle ilgili hata düzeltildi
+* 'Otomatik Yakınlaştırma' Yanlış olduğunda (varsayılan değil) bazı gezinme
+  hataları düzeltildi
+* Dil değişiklikleri ve diğer bazı iletişim kutusu değişiklikleriyle ilgili
+  güncellemeler düzeltildi; böylece bunların "Uygula" veya "Tamam"
+  tıklandığında hemen etkili olması sağlandı.
+* MathCAT'in kutudan çıkar çıkmaz doğru dilde konuşması için "Sesin Dilini
+  Kullan" seçeneği eklendi (bir çeviri varsa)
+* Zayıf MathML kodunu temizlemeye yönelik çeşitli iyileştirmeler
 
 ### Sürüm 0.3.3
 Bu sürümde bir dizi hata düzeltmesi var. Başlıca yeni özellikler ve hata
-düzeltmeleri şunlardır: * İspanyolca Çeviri eklendi (Noelia Ruiz ve María
-Allo Roldán sayesinde) * Bir düzeyde yakınlaştırmaya başlaması için
-değiştirilmiş gezinme * Tablo yapılarında gezinmenin bir yolu olarak
-ctrl+alt+ok eklendi. Bu tuşlar, NVDA'da tablolarda gezinmek için
-kullanıldıkları için daha akılda kalıcı olmalıdır. * İlgili MathRate metin
-konuşma hızından daha yavaş olarak ayarlandığında, eSpeak seslerinin
-yavaşlamasına neden olan NVDA hatası giderildi. * Uzun 'a' sesini
-konuşabilmeleri için OneCore ses sorunu çözüldü.
+düzeltmeleri şunlardır:
+
+* İspanyolca Çeviri eklendi (Noelia Ruiz ve Maria Allo Roldan'a teşekkürler)
+* Gezinme bir seviye yakınlaştırılmış olarak başlayacak şekilde değiştirildi
+* Tablo yapılarında gezinmenin bir yolu olarak ctrl+alt+ok eklendi. Bu
+  tuşlar, NVDA'da tablolarda gezinmek için kullanıldıkları için daha akılda
+  kalıcı olmalıdır.
+* Göreli Matematik Hızı metin konuşma hızından daha yavaş olarak
+  ayarlandığında, eSpeak seslerinin yavaşlamasına neden olan NVDA hatası
+  giderildi.
+* Uzun 'a' sesini konuşabilmeleri için OneCore ses problemi üzerinde
+  çalıştık.
 
 Hem Nemeth hem de UEB için konuşmada pek çok küçük ayar ve bazı hata
 düzeltmeleri var.
@@ -180,10 +218,11 @@ uygulama içermesini bekliyorum.
 ### Sürüm 0.2.5
 * Kimya alanında daha fazla iyileştirme
 * Nemeth için Düzeltmeler:
-* * "İhmal" kuralları eklendi
-* * İngilizce Dil Göstergeleri için bazı kurallar eklendi
-* * Çok amaçlı göstergenin gerekli olduğu daha fazla durum eklendi
-* * Nemeth ve noktalama işaretleriyle ilgili düzeltmeler
+
+	* "İhmal" kuralları eklendi
+	* İngilizce Dil Göstergeleri için bazı kurallar eklendi
+	* Çok amaçlı göstergenin gerekli olduğu daha fazla durum eklendi
+	* Nemeth ve noktalama işaretleriyle ilgili düzeltmeler
 
 ### Sürüm 0.2
 * Çok sayıda hata düzeltmesi

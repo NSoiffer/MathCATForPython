@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: MathCAT 0.3.3\n"
 "Report-Msgid-Bugs-To: nvda-translations@groups.io\n"
 "POT-Creation-Date: 2023-08-14 03:25+0000\n"
-"PO-Revision-Date: 2024-05-01 13:46+0200\n"
+"PO-Revision-Date: 2024-06-21 19:33+0200\n"
 "Last-Translator: José Manuel Delicado <jm.delicado@nvda.es>\n"
 "Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #. Translators: this message directs users to look in the log file
 msgid "Error in starting navigation of math: see NVDA error log for details"
@@ -44,9 +44,8 @@ msgid "Clipboard"
 msgstr "Portapapeles"
 
 #. Translators: copy to clipboard
-#, fuzzy
 msgid "copy as "
-msgstr "copiar"
+msgstr "copiar como "
 
 #. Translators: this message directs users to look in the log file
 msgid "unable to copy math: see NVDA error log for details"
@@ -161,16 +160,16 @@ msgstr "Idioma:"
 
 #. Translators: label for pull down to specify what character to use in numbers as the decimal separator
 msgid "Decimal separator for numbers:"
-msgstr ""
+msgstr "Separador decimal de números:"
 
 #. Translators: options for decimal separator -- "Auto" = automatically pick the choice based on the language
 msgid "Auto"
-msgstr ""
+msgstr "Automático"
 
 #. Translators: options for decimal separator -- "Custom" = user sets it
 #. Currently there is no UI for how it is done yet, but eventually there will be a dialog that pops up to set it
 msgid "Custom"
-msgstr ""
+msgstr "Personalizado"
 
 #. Translators: label for pull down allowing users to choose the "style" (version, rules) of speech for math
 msgid "Speech style:"
@@ -277,19 +276,19 @@ msgstr "Cantidad de habla durante la navegación:"
 
 #. Translators: label for pull down to specify how math will be copied to the clipboard
 msgid "Copy math as:"
-msgstr ""
+msgstr "Copiar matemáticas como:"
 
 #. Translators: options for Copy expression to clipboard as -- "MathML"
 msgid "MathML"
-msgstr ""
+msgstr "MathML"
 
 #. Translators: options for Copy expression to clipboard as -- "LaTeX"
 msgid "LaTeX"
-msgstr ""
+msgstr "LaTeX"
 
 #. Translators: options for Copy expression to clipboard as -- "ASCIIMath"
 msgid "ASCIIMath"
-msgstr ""
+msgstr "ASCIIMath"
 
 #. Translators: label for pull down to specify which braille code to use
 msgid "Braille math code for refreshable displays:"

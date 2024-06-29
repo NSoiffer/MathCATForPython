@@ -61,20 +61,41 @@ pas encore complètement établi.
 ## Mise à jour du Journal de MathCAT
 
 ### Version 0.6.3
-* All the language and braille Rule files are zipped up per directory and unzipped on demand.
-  * This currently saves ~5mb when Rules.zip is unzipped, and will save even more as more languages and braille codes are added.
-  * This is in preparation for MathCAT being built into NVDA 2024.3
+
+* All the language and braille Rule files are zipped up per directory and
+  unzipped on demand.
+
+	* This currently saves ~5mb when Rules.zip is unzipped, and will save even
+	  more as more languages and braille codes are added.
+	* This is in preparation for MathCAT being built into NVDA 2024.3
+
 * Added new preference `DecimalSeparator`.
-  * The default value is `Auto`, with other values being ".", ",", and "Custom". The first three values set `DecimalSeparators` and `BlockSeparators`.
-  * `Auto` sets those preferences based on the value of the `Language` pref. For some language such as Spanish, `,` is used in some countries and `.` is used in others. In this case, it is best to set the language to also include the country code (e.g, `es-es` or `es-mx`) to ensure the right value is used.
+
+	* The default value is `Auto`, with other values being ".", ",", and
+	  "Custom". The first three values set `DecimalSeparators` and
+	  `BlockSeparators`.
+	* `Auto` sets those preferences based on the value of the `Language`
+	  pref. For some language such as Spanish, `,` is used in some countries
+	  and `.` is used in others. In this case, it is best to set the language
+	  to also include the country code (e.g, `es-es` or `es-mx`) to ensure the
+	  right value is used.
+
 * Added Swedish to supported languages.
-* Added more Unicode chars to include both all Unicode chars marked as "Sm" and those with a mathclass (except Alphabetic and Glyph classes) in the Unicode standard.
-* After changing how prefs work in a previous version, I forgot to change `MathRate` and `PauseFactor` to be numbers, not strings.
-* Fixed bug in the braille Rules (missed change from earlier) where a third argument should have been given to say to look in the _Braille_ `definitions.yaml` files and not the speech ones when looking up the value of a definition.
+* Added more Unicode chars to include both all Unicode chars marked as "Sm"
+  and those with a mathclass (except Alphabetic and Glyph classes) in the
+  Unicode standard.
+* After changing how prefs work in a previous version, I forgot to change
+  `MathRate` and `PauseFactor` to be numbers, not strings.
+* Fixed bug in the braille Rules (missed change from earlier) where a third
+  argument should have been given to say to look in the _Braille_
+  `definitions.yaml` files and not the speech ones when looking up the value
+  of a definition.
 * Cleaned up use of `definitions.yaml`.
 * Fixed some bugs in the MathML cleanup for "," decimal separators.
-* Found a bug in braille highlighting when nothing is highlighted (maybe never happens which is why I didn't see it in practice?)
-* Fixed "Describe" mode so that it works -- it is still very minimal and probably not useful yet
+* Found a bug in braille highlighting when nothing is highlighted (maybe
+  never happens which is why I didn't see it in practice?)
+* Fixed "Describe" mode so that it works -- it is still very minimal and
+  probably not useful yet
 * Fixed minimum supported version
 
 ### Version 0.5.6
@@ -147,35 +168,52 @@ pas encore complètement établi.
 
 
 ### Version 0.3.8
-Braille: * Dialog has been internationalized for several languages (many
-thanks to the translators!)  * Initial implementation of CMU -- the braille
-code used in Spanish and Portuguese speaking countries * Fix some UEB bugs
-and added some characters for UEB * Significant improvements to Vietnamese
-braille
 
-Other fixes: * Change relative rate dialog slider to have a maximum value of
-100% (now only allows setting slower rates). Also, added step sizes so it is
-easier to raise/lower the rate significantly.  * Fix eSpeak bug that
-sometimes cut off speech when the relative rate was changed * Improvements
-to Vietnamese speech * Fixed bug with OneCore voices saying "a" * Fixed some
-navigation bugs when `AutoZoomOut` is False (not the default)  * Fix
-updating around language changes and some other dialog changes so they take
-effect immediately upon clicking "Apply" or "OK".  * Added an "Use Voice's
-Language" option so that out of the box, MathCAT will speak in the right
-language (if there is a translation)  * Several improvements for cleaning up
-poor MathML code
+Braille :
+
+* Les dialogues ont été internationalisé pour plusieurs langues (un grand
+  merci aux traducteurs !)
+* Implémentation initiale du CMU -- le code braille utilisé dans les pays
+  hispanophones et lusophones
+* Correction de quelques bugs de l'UEB et ajout de quelques caractères pour
+  l'UEB
+* Améliorations significatives du braille Vietnamien
+
+Autres correctifs :
+
+* Modifiez le curseur de la boîte de dialogue de débit relatif pour avoir
+  une valeur maximale de 100 % (permet désormais uniquement de définir des
+  débits  plus lents). En outre, des tailles de pas ont été ajoutées pour
+  qu'il soit plus facile d'augmenter/diminuer le débit de manière
+  significative.
+* Correction d'un bug d'eSpeak qui coupait parfois la parole lorsque le
+  débit relatif était modifié
+* Améliorations de la parole en Vietnamien
+* Correction d'un bug avec les voix OneCore disant "a"
+* Correction de quelques bugs de navigation lorsque `AutoZoomOut` est False
+  (pas la valeur par défaut)
+* Correction de la mise à jour autour des changements de langue et de
+  certains autres changements de boîte de dialogue afin qu'ils prennent
+  effet immédiatement après avoir cliqué sur "Appliquer" ou "OK".
+* Ajout d'une option "Utiliser la langue de la voix" afin que MathCAT parle
+  immédiatement dans la bonne langue (s'il existe une traduction)
+* Plusieurs améliorations de nettoyage de mauvais code MathML
 
 ### Version 0.3.3
 Cette version contient un certain nombre de corrections de bogues. Les
-nouvelles fonctionnalités et correctifs de bogues sont : * Ajout de la
-traduction en espagnol (grâce à Noelia Ruiz et María Allo Roldán) *
-Navigation modifiée afin qu'elle démarre le zoom sur un niveau * Ajout de
-ctrl+alt+flèche comme moyen de naviguer sur les structures tabulaires. Ces
-touches doivent être plus mémorables car elles sont utilisées pour la
-navigation de tableau dans NVDA. * Travaillé autour du bogue de NVDA pour
-les voix eSpeak qui les ont amenés à ralentir lorsque le relatif MathRate  a
-été mis plus lentement que le débit de la parole de texte. * Travaillé
-autour d'un problème de la voix OneCore afin qu'ils parlent le son long "a".
+nouvelles fonctionnalités et correctifs de bogues sont :
+
+* Ajout de la traduction en espagnol (grâce à Noelia Ruiz et María Allo
+  Roldán)
+* Navigation modifiée afin qu'elle démarre le zoom sur un niveau
+* Ajout de ctrl+alt+flèche comme moyen de naviguer sur les structures
+  tabulaires. Ces touches doivent être plus mémorables car elles sont
+  utilisées pour la navigation de tableau dans NVDA.
+* Travaillé autour du bogue de NVDA pour les voix eSpeak qui les ont amenés
+  à ralentir lorsque le relatif MathRate  a été mis plus lentement que le
+  débit de la parole de texte.
+* Travaillé autour d'un problème de la voix OneCore afin qu'ils parlent le
+  son long "a".
 
 Il y a beaucoup de petits ajustements dans la parole et quelques corrections
 de bogues pour Nemeth et UEB.
@@ -189,10 +227,11 @@ implémentation fiable.
 ### Version 0.2.5
 * Plus d'améliorations chimique
 * Correction pour Nemeth :
-* * Added "omission" rules
-* * Added some rules for English Language Indicators
-* * Added more cases where the Mulitpurpose indicator is needed
-* * Fixes related to Nemeth and punctuation
+
+	* Added "omission" rules
+	* Added some rules for English Language Indicators
+	* Added more cases where the Mulitpurpose indicator is needed
+	* Fixes related to Nemeth and punctuation
 
 ### Version 0.2
 * Beaucoup de correctifs de bogues
