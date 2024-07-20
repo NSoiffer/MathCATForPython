@@ -5,13 +5,13 @@
   Versionen)
 * [Stabile Version herunterladen][1]
 
-MathCAT wurde entwickelt, um MathPlayer zu ersetzen, da MathPlayer nicht
-mehr unterstützt wird. MathCAT generiert Sprache und Blindenschrift aus
-MathML. Die von MathCAT erzeugte Sprache für Mathematik wird mit Prosodie
-verbessert, damit sie natürlicher klingt. Die Sprache kann in drei Modi mit
-denselben Befehlen wie MathPlayer bedient werden. Zusätzlich wird der
-Navigationsbereich auf einer Braillezeile angezeigt. Sowohl Nemeth- als auch
-UEB-Technik werden unterstützt.
+MathCAT wurde entwickelt, um MathPlayer zu ersetzen, da der MathPlayer nicht
+mehr unterstützt wird. MathCAT generiert Ausgaben über die Sprachausgabe und
+in Braille aus MathML. Die von MathCAT erzeugte Sprache für Mathematik wird
+durch Prosodie verbessert, so dass sie natürlicher klingt. Die Sprache kann
+in drei Modi mit denselben Befehlen wie MathPlayer navigiert werden. Darüber
+hinaus wird der Navigationsknoten auf einer Braillezeile angezeigt. Sowohl
+Nemeth- als auch UEB-Technik werden unterstützt.
 
 MathCAT verfügt über eine Reihe von Konfigurationsoptionen, die die
 Sprachausgabe, Navigation und die Braille-Ausgabe steuern. Viele dieser
@@ -36,19 +36,20 @@ Wer sollte MathCAT benutzen:
   (die Nemeth-Schrift von MathPlayer basiert auf der Nemeth-Schrift von
   liblouis, die eine Reihe schwerwiegender Fehler aufweist, die technisch
   schwer zu beheben sind).
-* Diejenigen, die die technische Braille-Schrift UEB benötigen
+* Diejenigen, die technische Braille-Schrift UEB, CMU
+  (Spanisch/Portugiesisch), deutsches LaTeX, ASCIIMath oder vietnamesische
+  Braille-Schrift benötigen
 * Diejenigen, die die neueste Technologie ausprobieren wollen und bereit
   sind, durch die Meldung von Fehlern zu helfen
 * Diejenigen, die eine Eloquence-Stimme benutzen
 
 Wer sollte MathCAT NICHT benutzen:
 
-* Alle, die MathPlayer außer in englischer Sprache verwenden (Übersetzungen
-  für Indonesisch und Vietnamesisch sind vorhanden; weitere Übersetzungen
-  werden in Zukunft folgen)
-* Alle, die den MathPlayer mit einer Braille-Ausgabe außer Nemeth und UEB
-  benutzt (kontaktiert mich, wenn ihr mit einer Braille-Übersetzung
-  aushelfen wollt)
+* Alle, die den MathPlayer mit einer Sprache verwendet, die noch nicht von
+  MathCAT unterstützt wird (Übersetzungen gibt es für Chinesisch
+  (traditionell), Spanisch, Indonesisch und Vietnamesisch; Übersetzungen
+  werden in Zukunft folgen) und wer mit den unterstützten Sprachen (noch)
+  nicht vertraut ist.
 * Alle, die den Access8Math dem MathPlayer vorzieht (wegen der Sprache oder
   anderer Funktionen)
 
@@ -63,79 +64,159 @@ geklärt sind.
 
 ## Änderungsprotokoll für MathCAT
 
+### Version 0.6.3
+
+* Alle Sprach- und Braille-Regeldateien werden in ein Verzeichnis gepackt
+  und bei Bedarf entpackt.
+
+	* Dies spart derzeit ~5 MB, wenn Rules.zip entpackt wird, und wird noch
+	  mehr sparen, wenn mehr Sprachen und Braille-Codes hinzugefügt werden.
+	* Dies ist eine Vorbereitung für die Integration von MathCAT in NVDA 2024.3
+
+* Neue Einstellung `DecimalSeparator` hinzugefügt.
+
+	* Der Standardwert ist `Auto`, andere Werte sind ".", "," und "Custom". Die
+	  ersten drei Werte legen `DecimalSeparators` und `BlockSeparators` fest.
+	* Der Wert von `Auto` setzt diese Einstellungen auf der Grundlage des
+	  Wertes der Voreinstellung "Sprache". Für einige Sprachen, wie
+	  z.B. Spanisch, wird `,` in einigen Ländern und `.` in anderen
+	  verwendet. In diesem Fall ist es am besten, die Sprache so einzustellen,
+	  dass sie auch den Ländercode enthält (z. B. `es-es` oder `es-mx`), um
+	  sicherzustellen, dass der richtige Wert verwendet wird.
+
+* Schwedisch wurde zu den unterstützten Sprachen hinzugefügt.
+* Es wurden weitere Unicode-Zeichen hinzugefügt, um sowohl alle
+  Unicode-Zeichen, die als "Sm" gekennzeichnet sind, als auch diejenigen mit
+  einer mathematischen Klasse (mit Ausnahme der Klassen Alphabetic und
+  Glyph) in den Unicode-Standard aufzunehmen.
+* Nachdem ich die Funktionsweise der Voreinstellungen in einer früheren
+  Version geändert hatte, hatte ich vergessen, `MathRate` und `PauseFactor`
+  in Zahlen und nicht in Strings zu ändern.
+* Fehler in den Braille-Regeln behoben (verpasste Änderung von früher), wo
+  ein drittes Argument hätte angegeben werden müssen, um zu sagen, dass in
+  den _Braille_ `definitions.yaml`-Dateien und nicht in den Sprachdateien
+  nachgeschaut werden soll, wenn der Wert einer Definition gesucht wird.
+* Die Verwendung der Datei `definitions.yaml` wurde bereinigt.
+* Einige Fehler in der MathML-Bereinigung für "," Dezimaltrennzeichen wurden
+  behoben.
+* Ich habe einen Fehler in der Braille-Hervorhebung gefunden, wenn nichts
+  hervorgehoben ist (vielleicht passiert das nie, weshalb ich es in der
+  Praxis nicht gesehen habe?)
+* Der "Beschreibungs"-Modus wurde so korrigiert, dass er funktioniert - er
+  ist immer noch sehr minimal und wahrscheinlich noch nicht nützlich
+* Minimale unterstützte Version neu festgelegt
+
+### Version 0.5.6
+* Ein Dialogfeld für Kopieren als... zum MathCAT-Dialog hinzugefügt (im
+  Bereich "Navigation").
+* Ein Fehler wurde behoben, bei dem die Sprache beim Wechsel des Sprachstils
+  auf Englisch zurückgesetzt wurde.
+* Fehler bei der Navigation und in Braille behoben
+* Einige Probleme mit den ASCIIMath-Abständen wurden behoben.
+* Verbesserte Erkennung von chemischen Formeln
+* MathCAT wurde auf die neue BANA-Nemeth-Chemie-Spezifikation aktualisiert
+  (immer noch nur einzeilig und Änderungen der Schriftart/Schriftart für
+  Sonderfälle werden nicht berücksichtigt)
+* Behebung eines Absturzes, wenn Nicht-ASCII-Ziffern (z. B. fette Ziffern)
+  in Zahlen verwendet werden
+* Keine kursiven Indikatoren in Braille-Codes verwenden, wenn die
+  mathematischen alphanumerischen kursiven Zeichen verwendet werden.
+* Einige andere kleinere Fehlerbehebungen, die nicht von Benutzern gemeldet
+  wurden
+
 ### Version 0.5.0
-* Added German LaTeX braille code. Unlike other braille codes, this
-  generates ASCII chars and uses the current braille output table to
-  translate the characters to braille.
-* Added (expermental) ASCIIMath braille code. Like the LaTeX braille code,
-  this generates ASCII chars and uses the current braille output table to
-  translate the characters to braille.
-* Added "CopyAs" preference that supports copying as MathML, LaTeX, or
-  ASCIIMath using cntl+C when focused on MathML (as before). The currently
-  focused node is copied. Note: this is only listed in the prefs.yaml file
-  and is not exposed (yet) in the MathCAT Preferences dialog.
+* Deutscher LaTeX-Braille-Code hinzugefügt. Im Gegensatz zu anderen
+  Braille-Codes erzeugt dieser ASCII-Zeichen und verwendet die aktuelle
+  Braille-Ausgabetabelle, um die Zeichen in Braille zu übersetzen.
+* Ein (experimenteller) ASCIIMath-Braille-Code wurde hinzugefügt. Wie der
+  LaTeX-Braille-Code erzeugt dieser ASCII-Zeichen und verwendet die aktuelle
+  Braille-Ausgabetabelle, um die Zeichen in Braille zu übersetzen.
+* Neue Einstellung "Kopieren als", die das Kopieren als MathML, LaTeX oder
+  ASCIIMath mit cntl+C unterstützt, wenn der Fokus auf MathML liegt (wie
+  zuvor). Der aktuell fokussierte Knoten wird kopiert. Hinweis: Diese
+  Einstellung wird nur in der prefs.yaml-Datei aufgeführt und ist (noch)
+  nicht im Dialogfeld für die MathCAT-Einstellungen sichtbar.
 
 ### Version 0.4.2
-* Fixed language switching when voice changes and MathCAT language is "Auto"
-* Added more checks for $Impairments to improve reading when it is not set
-  for those who are blind
-* Nemeth: fix for "~" when it isn't part of an mrow
-* UEB: character additions, "~" spacing fix if prefix, xor fix,
-* MathML cleanup for accented vowels (mainly for Vietnamese)
-* Major rewrite of preference reading/updating code with big speedup --
-  added `CheckRuleFiles` pref to control which files are checked for updates
-* Added two new interface calls -- enables setting the navigaton location
-  from the braille cursor (not part of MathCAT addon yet)
+* Sprachumschaltung behoben, wenn die Stimme wechselt und die
+  MathCAT-Sprache auf "Auto" eingestellt ist
+* Weitere Überprüfungen für $Impairments hinzugefügt, um das Lesen zu
+  verbessern, wenn es für Blinde nicht gesetzt ist
+* Nemeth: Korrektur für "~", wenn es nicht Teil eines Mrows ist
+* UEB: Zeichen hinzugefügt, "~"-Abstand korrigiert, wenn Präfix, xor
+  korrigiert,
+* MathML-Bereinigung für akzentuierte Vokale (hauptsächlich für
+  Vietnamesisch)
+* Umfassende Überarbeitung des Codes zum Lesen und Aktualisieren von
+  Präferenzen mit großer Geschwindigkeitssteigerung -- Hinzufügen der
+  Präferenz `CheckRuleFiles`, um zu kontrollieren, welche Dateien auf
+  Aktualisierungen geprüft werden
+* Zwei neue Interface-Aufrufe hinzugefügt -- ermöglicht das Setzen der
+  Navigationsposition des Braille-Cursors (noch nicht Teil von MathCAT)
 
 ### Version 0.3.11
-* Upgraded to python 3.11 and verified working with NVDA 2024.1
-* Fix bugs in Vietnamese braille and also in Speech, mostly for chemistry.
-* Fix broken braille when braille code and dependent language don't match
-  (specifically Vietnam braille and Vietnamese speech)
-* Fix whitespace bug in HTML inside of tokens
-* Improve roman numeral detection
+* Aktualisiert auf Python 3.11 und Überprüfung, ob es mit NVDA 2024.1
+  kompatibel ist
+* Behebung von Fehlern in Braille in Vietnamesisch und auch in der
+  Sprachausgabe, vor allem für Chemie.
+* Fehlerhafte Braille-Ausgaben korrigiert, wenn Braille-Code und abhängige
+  Sprache nicht übereinstimmen (insbesondere vietnamesische Braille-Schrift
+  und vietnamesische Sprache)
+* Whitespace-Fehler in HTML innerhalb von Token behoben
+* Verbesserung der Erkennung römischer Ziffern
+
 
 ### Version 0.3.9
-* Added Traditional Chinese translation (thanks to Hon-Jang Yang)
-* Fixed bug with navigating into the base of a scripted expression that has
-  parenthesis
-* Significantly changed the way whitespace is handled. This mainly affects
-  braille output (spaces and "omission" detection).
-* Improved recognition of chemistry
-* UEB braille fixes that came up from adding chemistry examples
-* UEB fixes for adding auxillary parenthesis in some cases
+* Übersetzung für traditionelles Chinesisch hinzugefügt (Dank an Hon-Jang
+  Yang)
+* Fehler beim Navigieren in die Basis eines geskripteten Ausdrucks mit
+  Klammern behoben
+* Die Art und Weise, wie Leerzeichen behandelt werden, wurde erheblich
+  geändert. Dies betrifft vor allem die Braille-Ausgabe (Leerzeichen und
+  Erkennung von "Auslassungen").
+* Verbesserte Erkennung von chemischen Formeln
+* UEB-Braille-Korrekturen, die sich aus dem Hinzufügen von Chemie-Beispielen
+  ergeben haben
+* UEB-Korrekturen für das Hinzufügen von Hilfsklammern in einigen Fällen
+
 
 ### Version 0.3.8
+
 Braille:
 
-* Dialog has been internationalized for several languages (many thanks to
-  the translators!)
-* Initial implementation of CMU -- the braille code used in Spanish and
-  Portuguese speaking countries
-* Fix some UEB bugs and added some characters for UEB
-* Significant improvements to Vietnamese braille
+* Das Dialogfeld wurde für mehrere Sprachen internationalisiert (vielen Dank
+  an die Übersetzer!)
+* Erstmalige Einführung von CMU - dem Braille-Code, der in spanisch- und
+  portugiesischsprachigen Ländern verwendet wird
+* Behebung einiger UEB-Fehler und Hinzufügen einiger UEB-Zeichen
+* Signifikante Verbesserungen in Braille für Vietnamesisch
 
-Other fixes:
+Weitere Korrekturen:
 
-* Change relative rate dialog slider to have a maximum value of 100% (now
-  only allows setting slower rates). Also, added step sizes so it is easier
-  to raise/lower the rate significantly.
-* Fix eSpeak bug that sometimes cut off speech when the relative rate was
-  changed
-* Improvements to Vietnamese speech
-* Fixed bug with OneCore voices saying "a"
-* Fixed some navigation bugs when `AutoZoomOut` is False (not the default)
-* Fix updating around language changes and some other dialog changes so they
-  take effect immediately upon clicking "Apply" or "OK".
-* Added an "Use Voice's Language" option so that out of the box, MathCAT
-  will speak in the right language (if there is a translation)
-* Several improvements for cleaning up poor MathML code
+* Der Schieberegler des Dialogs "Relative Rate" hat nun einen Maximalwert
+  von 100 % (jetzt können nur noch langsamere Raten eingestellt
+  werden). Außerdem wurden Schrittgrößen hinzugefügt, damit es einfacher
+  ist, die Rate deutlich zu erhöhen/verringern.
+* Fehler mit der eSpeak behoben, der manchmal die Sprache abschnitt, wenn
+  die relative Rate geändert wurde
+* Verbesserungen der vietnamesischen Sprache
+* Fehler bei den OneCore-Stimmen behoben, die "a" sagen
+* Einige Navigationsfehler behoben, wenn "AutoZoomOut" auf "False" gesetzt
+  ist (nicht der Standard)
+* Die Aktualisierung von Änderungen bei den Sprachen und einigen anderen
+  Änderungen bei Dialogfeldern wurde korrigiert, so dass sie sofort wirksam
+  werden, wenn Sie auf "Übernehmen" oder "OK" klicken.
+* Die Option "Sprache der Stimme verwenden" wurde hinzugefügt, so dass
+  MathCAT von Anfang an in der richtigen Sprache spricht (wenn es eine
+  Übersetzung gibt)
+* Mehrere Verbesserungen zur Bereinigung von schlechtem MathML-Code
 
 ### Version 0.3.3
 Diese Version enthält eine Reihe von Fehlerkorrekturen. Die wichtigsten
 neuen Funktionen und Fehlerkorrekturen sind:
 
-* Added Spanish Translation (thanks to Noelia Ruiz and María Allo Roldán)
+* Spanische Übersetzung hinzugefügt (Dank an Noelia Ruiz und María Allo
+  Roldán)
 * Die Navigation wurde so geändert, dass sie um eine Ebene vergrößert
   startet.
 * Strg+Alt+Pfeiltasten als Möglichkeit zur Navigation in tabellarischen
@@ -159,10 +240,11 @@ MathCAT-Version wird eine zuverlässige Implementierung enthalten.
 * Weitere Verbesserungen in Chemie
 * Korrekturen für Nemeth:
 
-	* Added "omission" rules
-	* Added some rules for English Language Indicators
-	* Added more cases where the Mulitpurpose indicator is needed
-	* Fixes related to Nemeth and punctuation
+	* Regeln für "Auslassungen" hinzugefügt
+	* Einige Regeln für englische Sprachindikatoren hinzugefügt
+	* Weitere Fälle, in denen der Mehrzweck-Indikator benötigt wird, wurden
+	  hinzugefügt
+	* Korrekturen im Zusammenhang mit Nemeth und Zeichensetzung
 
 ### Version 0.2
 * Viele Fehlerkorrekturen
