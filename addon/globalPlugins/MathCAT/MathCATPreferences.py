@@ -334,7 +334,6 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             this_language_code = getCurrentLanguage().lower().replace("_", "-")
             # FIX: when dialog is aware of regional dialects, remove this next line that removes the dialect part
             this_language_code = this_language_code.split("-")[0]  # grab the first part
-            log.info(f"Language==Auto, voice is '{this_language_code}'")
 
         this_language_path = (
             os.path.expanduser("~")
@@ -345,14 +344,11 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         # populate the m_choiceSpeechStyle choices
         # start with listing unzipped dirs
         all_style_files = [os.path.basename(name) for name in glob.glob(this_path)]
-        log.info(f'\nGetSpeechStyles: lang={this_language_code}, non-zipped sytle files found: {all_style_files}')
         if len(all_style_files) == 0:
             # look in the .zip file for the style files
             zip_file = ZipFile(f"{this_language_path}\\{this_language_code}.zip", "r")
             all_style_files = [name for name in zip_file.namelist() if name.endswith('_Rules.yaml')]
-            log.info(f'...: non-zipped style files found: {all_style_files}')
         for name in all_style_files:
-            log.info(f'...in loop, appending name="{name[: name.find("_Rules.yaml")]}"')
             self.m_choiceSpeechStyle.Append((name[: name.find("_Rules.yaml")]))
         try:
             # set the SpeechStyle to the same as previous
