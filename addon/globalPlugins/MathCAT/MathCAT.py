@@ -178,6 +178,8 @@ def ConvertSSMLTextForNVDA(text: str, language: str = "") -> list:
             # MathCAT puts out spaces between words, the speak command seems to want to glom the strings together at times,
             #  so we need to add individual " "s to the output
             out.extend((" ", m.group(0), " "))
+    # there is a bug in MS Word that concats the math and the next character outside of math, so we add a space
+    out.append(" ")
     if mathCATLanguageSetting != language:
         try:
             libmathcat.SetPreference("Language", mathCATLanguageSetting)
