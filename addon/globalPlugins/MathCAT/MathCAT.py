@@ -82,7 +82,7 @@ PROSODY_COMMANDS = {
 RE_MATH_LANG = re.compile(r"""<math .*(xml:)?lang=["']([^'"]+)["'].*>""")
 
 
-def getLanguageToUse(mathMl: str) -> str:
+def getLanguageToUse(mathMl: str = "") -> str:
     """Get the language specified in a math tag if the language pref is Auto, else the language preference."""
     mathCATLanguageSetting = "Auto"
     try:
@@ -98,22 +98,30 @@ def getLanguageToUse(mathMl: str) -> str:
     languageMatch = RE_MATH_LANG.search(mathMl)
     language = (languageMatch.group(2) if languageMatch else getCurrentLanguage())  # seems to be current voice's language
     language = language.lower().replace("_", "-")
+    if language == "cmn":
+        language = "zh-cmn"
+    elif language == "yue":
+        language = "zh-yue"
     return language
 
 
-def ConvertSSMLTextForNVDA(text: str, language: str = "") -> list:
+def ConvertSSMLTextForNVDA(text: str) -> list:
+    """Change the SSML in the text into NVDA's command structure.
+       The environment is examined to determine whether a language switch is needed"""
     # MathCAT's default rate is 180 wpm.
     # Assume that 0% is 80 wpm and 100% is 450 wpm and scale accordingly.
     # log.info(f"\nSpeech str: '{text}'")
-    if language == "":  # shouldn't happen
-        language = "en"  # fallback to what was being used
-    mathCATLanguageSetting = (
-        "en"  # fallback in case libmathcat.GetPreference fails for unknown reasons
-    )
+
+    # find MathCAT's language setting and store it away (could be "Auto")
+    # if MathCAT's setting doesn't match NVDA's language setting, change the language that is used
+    mathCATLanguageSetting = "en"    # set in case GetPreference fails
     try:
         mathCATLanguageSetting = libmathcat.GetPreference("Language")
     except Exception as e:
         log.error(e)
+    language = getLanguageToUse()
+    nvdaLanguage = getCurrentLanguage().replace("_", "-")
+    log.info(f"\nConvertSSMLTextForNVDA: mathCATLanguageSetting={mathCATLanguageSetting}, Language to use={language}, NVDA={nvdaLanguage}")
 
     synth = getSynth()
     _monkeyPatchESpeak()
@@ -135,13 +143,14 @@ def ConvertSSMLTextForNVDA(text: str, language: str = "") -> list:
     use_character = (CharacterModeCommand in supported_commands and synth.name != "oneCore")
     out = []
     if mathCATLanguageSetting != language:
+        # log.info(f"Setting language to {language}")
         try:
-            # log.info(f"Setting language to {language}")
             libmathcat.SetPreference("Language", language)
-            out.append(LangChangeCommand(language))
         except Exception as e:
             log.error(e)
-            language = mathCATLanguageSetting  # didn't do the 'append'
+            language = mathCATLanguageSetting  # didn't set the language
+    if language != nvdaLanguage:
+        out.append(LangChangeCommand(language))
 
     resetProsody = []
     for m in RE_MATHML_SPEECH.finditer(text):
@@ -180,12 +189,15 @@ def ConvertSSMLTextForNVDA(text: str, language: str = "") -> list:
             out.extend((" ", m.group(0), " "))
     # there is a bug in MS Word that concats the math and the next character outside of math, so we add a space
     out.append(" ")
+
     if mathCATLanguageSetting != language:
+        # restore the old value (probably "Auto")
         try:
             libmathcat.SetPreference("Language", mathCATLanguageSetting)
-            out.append(LangChangeCommand(None))
         except Exception as e:
             log.error(e)
+    if language != nvdaLanguage:
+        out.append(LangChangeCommand(None))
     # log.info(f"Speech commands: '{out}'")
     return out
 
@@ -204,17 +216,15 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
     def __init__(self, provider=None, mathMl: Optional[str] = None):
         super(MathCATInteraction, self).__init__(provider=provider, mathMl=mathMl)
         if mathMl is None:
-            self._language = "en"
             self.init_mathml = "<math></math>"
         else:
-            self._language = getLanguageToUse(mathMl)
             self.init_mathml = mathMl
 
     def reportFocus(self):
         super(MathCATInteraction, self).reportFocus()
         try:
             text = libmathcat.DoNavigateCommand("ZoomIn")
-            speech.speak(ConvertSSMLTextForNVDA(text, self._language))
+            speech.speak(ConvertSSMLTextForNVDA(text))
         except Exception as e:
             log.error(e)
             # Translators: this message directs users to look in the log file
@@ -282,7 +292,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
                     False,
                 )
                 # log.info(f"Navigate speech for {gesture.vkCode}/(s={'shift' in modNames}, c={'control' in modNames}): '{text}'")
-                speech.speak(ConvertSSMLTextForNVDA(text, self._language))
+                speech.speak(ConvertSSMLTextForNVDA(text))
 
             # update the braille to reflect the nav position (might be excess code, but it works)
             nav_node = libmathcat.GetNavigationMathMLId()
@@ -416,25 +426,20 @@ class MathCAT(mathPres.MathPresentationProvider):
         try:
             # IMPORTANT -- SetRulesDir must be the first call to libmathcat besides GetVersion()
             rules_dir = path.join(path.dirname(path.abspath(__file__)), "Rules")
-            log.info(f"MathCAT {libmathcat.GetVersion()} installed. Using rules dir: {rules_dir}")
+            # log.info(f"MathCAT {libmathcat.GetVersion()} installed. Using rules dir: {rules_dir}")
             libmathcat.SetRulesDir(rules_dir)
             libmathcat.SetPreference("TTS", "SSML")
         except Exception as e:
             log.error(e)
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("MathCAT initialization failed: see NVDA error log for details"))
-        self._language = ""
 
     def getSpeechForMathMl(self, mathml: str):
         try:
-            self._language = getLanguageToUse(mathml)
+            # need to set Language before the MathML for DecimalSeparator canonicalization
+            language = getLanguageToUse(mathml)
             # MathCAT should probably be extended to accept "extlang" tagging, but it uses lang-region tagging at the moment
-            if self._language == "cmn":
-                self._language = "zh-cmn"
-            elif self._language == "yue":
-                self._language = "zh-yue"
-            # needs to be set before the MathML for DecimalSeparator canonicalization
-            libmathcat.SetPreference("Language", self._language)
+            libmathcat.SetPreference("Language", language)
             libmathcat.SetMathML(mathml)
         except Exception as e:
             log.error(e)
@@ -455,17 +460,17 @@ class MathCAT(mathPres.MathPresentationProvider):
                 "CapitalLetters_UseWord",
                 "true" if synthConfig["sayCapForCapitals"] else "false",
             )
-            # log.info(f"Speech text ({self._language}): {libmathcat.GetSpokenText()}")
+            # log.info(f"Speech text: {libmathcat.GetSpokenText()}")
             if PitchCommand in supported_commands:
                 libmathcat.SetPreference("CapitalLetters_Pitch", str(synthConfig["capPitchChange"]))
             if self._add_sounds():
                 return (
                     [BeepCommand(800, 25)]
-                    + ConvertSSMLTextForNVDA(libmathcat.GetSpokenText(), self._language)
+                    + ConvertSSMLTextForNVDA(libmathcat.GetSpokenText())
                     + [BeepCommand(600, 15)]
                 )
             else:
-                return ConvertSSMLTextForNVDA(libmathcat.GetSpokenText(), self._language)
+                return ConvertSSMLTextForNVDA(libmathcat.GetSpokenText())
 
         except Exception as e:
             log.error(e)
