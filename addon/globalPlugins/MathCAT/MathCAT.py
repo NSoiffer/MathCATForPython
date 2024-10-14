@@ -121,7 +121,7 @@ def ConvertSSMLTextForNVDA(text: str) -> list:
         log.error(e)
     language = getLanguageToUse()
     nvdaLanguage = getCurrentLanguage().replace("_", "-")
-    log.info(f"\mathCATLanguageSetting={mathCATLanguageSetting}, lang={language}, NVDA={nvdaLanguage}")
+    log.info(f"mathCATLanguageSetting={mathCATLanguageSetting}, lang={language}, NVDA={nvdaLanguage}")
 
     synth = getSynth()
     _monkeyPatchESpeak()
