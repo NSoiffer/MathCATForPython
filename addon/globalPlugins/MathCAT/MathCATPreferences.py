@@ -90,7 +90,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         return os.path.expanduser("~") + "\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Braille"
 
     @staticmethod
-    def LanguagesDict():
+    def LanguagesDict() -> Dict[str, str]:
         languages = {
             "aa": "Afar",
             "ab": "Аҧсуа",
@@ -268,8 +268,30 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         return languages
 
     def GetLanguages(self):
+
+        def addRegionalLanguages(subDir: str, language: str) -> bool:
+            # the language variants are in folders named using ISO 3166-1 alpha-2
+            # codes https://en.wikipedia.org/wiki/ISO_3166-2
+            # check if there are language variants in the language folder
+            if subDir != "SharedRules":
+                languagesDict = UserInterface.LanguagesDict()
+                # add to the listbox the text for this language variant together with the code
+                if languagesDict.get(language + "-" + subDir.upper(), "missing") != "missing":
+                    self.m_choiceLanguage.Append(
+                        languagesDict[language + "-" + subDir.upper()] + " (" + language + "-" + subDir + ")"
+                    )
+                elif languagesDict.get(language, "missing") != "missing":
+                    self.m_choiceLanguage.Append(
+                        languagesDict[language] + " (" + language + "-" + subDir + ")"
+                    )
+                else:
+                    self.m_choiceLanguage.Append(
+                        language + " (" + language + "-" + subDir + ")"
+                    )
+            return subDir != "SharedRules"
+
         # initialise the language list
-        languages_dict = UserInterface.LanguagesDict()
+        languagesDict = UserInterface.LanguagesDict()
         # clear the language names in the dialog
         self.m_choiceLanguage.Clear()
         # Translators: menu item -- use the language of the voice chosen in the NVDA speech settings dialog
@@ -279,40 +301,31 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         # the implemented languages are in folders named using the relevant ISO 639-1
         #   code https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
         for language in os.listdir(UserInterface.path_to_languages_folder()):
-            if os.path.isdir(os.path.join(UserInterface.path_to_languages_folder(), language)):
-                path_to_language_folder = os.path.join(UserInterface.path_to_languages_folder(), language)
+            pathToLanguageDir = os.path.join(UserInterface.path_to_languages_folder(), language)
+            if os.path.isdir(pathToLanguageDir):
                 # only add this language if there is a xxx_Rules.yaml file
-                files = glob.glob(os.path.join(path_to_language_folder, "*_Rules.yaml"))
-                if len(files) == 0:
-                    # look in the .zip file for the style files -- it might not have been unzipped
-                    zip_file = ZipFile(f"{path_to_language_folder}\\{language}.zip", "r")
-                    files = [name for name in zip_file.namelist() if name.endswith('_Rules.yaml')]
-                if files:
+                ruleFilesWereFound = len(glob.glob(os.path.join(pathToLanguageDir, "*_Rules.yaml"))) > 0
+                for dir in os.listdir(pathToLanguageDir):
+                    if os.path.isdir(os.path.join(pathToLanguageDir, dir)):
+                        ruleFilesWereFound |= addRegionalLanguages(dir, language)
+
+                if not ruleFilesWereFound:
+                    # look in the .zip file for the style files, including regional subdirs -- it might not have been unzipped
+                    try:
+                        zip_file = ZipFile(f"{pathToLanguageDir}\\{language}.zip", "r")
+                        for file in zip_file.namelist():
+                            if file.endswith('_Rules.yaml'):
+                                ruleFilesWereFound = True
+                            elif zip_file.getinfo(file).is_dir():
+                                ruleFilesWereFound |= addRegionalLanguages(dir, language)
+                    except Exception as e:
+                        log.debugWarning(f"MathCAT Dialog: didn't find zip file {zip_file}. Error: {e}")
+                if ruleFilesWereFound:
                     # add to the listbox the text for this language together with the code
-                    if languages_dict.get(language, "missing") != "missing":
-                        self.m_choiceLanguage.Append(languages_dict[language] + " (" + language + ")")
+                    if languagesDict.get(language, "missing") != "missing":
+                        self.m_choiceLanguage.Append(languagesDict[language] + " (" + language + ")")
                     else:
                         self.m_choiceLanguage.Append(language + " (" + language + ")")
-                # the language variants are in folders named using ISO 3166-1 alpha-2
-                # codes https://en.wikipedia.org/wiki/ISO_3166-2
-                # check if there are language variants in the language folder
-                for variant in os.listdir(path_to_language_folder):
-                    if os.path.isdir(os.path.join(path_to_language_folder, variant)):
-                        if variant != "SharedRules":
-                            # add to the listbox the text for this language variant together with the code
-                            if languages_dict.get(language + "-" + variant.upper(), "missing") != "missing":
-                                self.m_choiceLanguage.Append(
-                                    languages_dict[language + "-" + variant.upper()] + " (" + language + "-" + variant + ")"
-                                )
-                            else:
-                                if languages_dict.get(language, "missing") != "missing":
-                                    self.m_choiceLanguage.Append(
-                                        languages_dict[language] + " (" + language + "-" + variant + ")"
-                                    )
-                                else:
-                                    self.m_choiceLanguage.Append(
-                                        language + " (" + language + "-" + variant + ")"
-                                    )
 
     def GetLanguageCode(self):
         lang_selection = self.m_choiceLanguage.GetStringSelection()
@@ -322,37 +335,60 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         return lang_code
 
     def GetSpeechStyles(self, this_SpeechStyle: str):
+        """Get all the speech styles for the current language.
+           This sets the SpeechStyles dialog entry"""
         from speech import getCurrentLanguage
+
+        def getSpeechStyleFromDirectory(dir: str, lang: str) -> list[str]:
+            r"""Get the speech styles from any regional dialog, from the main language, dir and if there isn't from the zip file.
+               The 'lang', if it has a region dialect, is of the form 'en\uk'
+               The returned list is sorted alphabetically"""
+            # start with the regional dialect, then add on any (unique) styles in the main dir
+            main_lang = lang.split("\\")[0]        # does the right thing even if there is no regional directory
+            all_style_files = []
+            if lang.find("\\") >= 0:
+                all_style_files = [os.path.basename(name) for name in glob.glob(dir + lang + "\\*_Rules.yaml")]
+            all_style_files.extend(
+                [os.path.basename(name) for name in glob.glob(dir + main_lang + "\\*_Rules.yaml")]
+            )
+            all_style_files = list(set(all_style_files))   # make them unique
+            if len(all_style_files) == 0:
+                # look in the .zip file for the style files -- this will have regional variants, but also have that dir
+                try:
+                    zip_file = dir + main_lang + "\\" + main_lang + ".zip"
+                    zip_file = ZipFile(zip_file, "r")  # file might not exist
+                    all_style_files = [name.split("/")[-1] for name in zip_file.namelist() if name.endswith('_Rules.yaml')]
+                except Exception as e:
+                    log.debugWarning(f"MathCAT Dialog: didn't find zip file {zip_file}. Error: {e}")
+            all_style_files.sort()
+            return all_style_files
 
         # clear the SpeechStyle choices
         self.m_choiceSpeechStyle.Clear()
         # get the currently selected language code
-        this_language_code = UserInterface.GetLanguageCode(self)
+        languageCode = UserInterface.GetLanguageCode(self)
 
-        if this_language_code == "Auto":
+        if languageCode == "Auto":
             # list the speech styles for the current voice rather than have none listed
-            this_language_code = getCurrentLanguage().lower().replace("_", "-")
-            # FIX: when dialog is aware of regional dialects, remove this next line that removes the dialect part
-            this_language_code = this_language_code.split("-")[0]  # grab the first part
+            languageCode = getCurrentLanguage().lower().replace("_", "-")
+        languageCode = languageCode.replace("-", "\\")
 
-        this_language_path = (
+        languagePath = (
             os.path.expanduser("~")
             + "\\AppData\\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\Rules\\Languages\\"
-            + this_language_code
         )
-        this_path = this_language_path + "\\*_Rules.yaml"
         # populate the m_choiceSpeechStyle choices
-        # start with listing unzipped dirs
-        all_style_files = [os.path.basename(name) for name in glob.glob(this_path)]
-        if len(all_style_files) == 0:
-            # look in the .zip file for the style files
-            zip_file = ZipFile(f"{this_language_path}\\{this_language_code}.zip", "r")
-            all_style_files = [name for name in zip_file.namelist() if name.endswith('_Rules.yaml')]
+        all_style_files = [
+            # remove "_Rules.yaml" from the list
+            name[: name.find("_Rules.yaml")] for name in getSpeechStyleFromDirectory(languagePath, languageCode)
+        ]
         for name in all_style_files:
-            self.m_choiceSpeechStyle.Append((name[: name.find("_Rules.yaml")]))
+            self.m_choiceSpeechStyle.Append((name))
         try:
             # set the SpeechStyle to the same as previous
-            self.m_choiceSpeechStyle.SetStringSelection(this_SpeechStyle)
+            self.m_choiceSpeechStyle.SetStringSelection(
+                this_SpeechStyle if this_SpeechStyle in all_style_files else all_style_files[0]
+            )
         except Exception as e:
             log.error(f"MathCAT: An exception occurred in GetSpeechStyles evaluating set SetStringSelection: {e}")
             # that didn't work, choose the first in the list
