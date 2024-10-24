@@ -48,7 +48,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 
         # load the logo into the dialog
         full_path_to_logo = (
-            os.path.expanduser("~") + "\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\logo.png"
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
         )
         if os.path.exists(full_path_to_logo):
             self.m_bitmapLogo.SetBitmap(wx.Bitmap(full_path_to_logo))
@@ -82,12 +82,12 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
     @staticmethod
     def path_to_languages_folder():
         # the user preferences file is stored at: MathCAT\Rules\Languages
-        return os.path.expanduser("~") + "\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Languages"
+        return os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "Languages")
 
     @staticmethod
     def path_to_braille_folder():
         # the user preferences file is stored at: MathCAT\Rules\Languages
-        return os.path.expanduser("~") + "\\AppData\\Roaming\\nvda\\addons\\mathCAT\\globalPlugins\\MathCAT\\Rules\\Braille"
+        return os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "Braille")
 
     @staticmethod
     def LanguagesDict() -> Dict[str, str]:
@@ -373,10 +373,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             languageCode = getCurrentLanguage().lower().replace("_", "-")
         languageCode = languageCode.replace("-", "\\")
 
-        languagePath = (
-            os.path.expanduser("~")
-            + "\\AppData\\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\Rules\\Languages\\"
-        )
+        languagePath = UserInterface.path_to_languages_folder() + "\\"
+        log.info(f"languagePath={languagePath}")
         # populate the m_choiceSpeechStyle choices
         all_style_files = [
             # remove "_Rules.yaml" from the list
@@ -529,10 +527,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 
     @staticmethod
     def path_to_default_preferences():
-        # the default preferences file is:
-        #   C:\Users\<user-name>AppData\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\Rules\\prefs.yaml
         return (
-            os.path.expanduser("~") + "\\AppData\\Roaming\\nvda\\addons\\MathCAT\\globalPlugins\\MathCAT\\Rules\\prefs.yaml"
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "prefs.yaml")
         )
 
     @staticmethod
