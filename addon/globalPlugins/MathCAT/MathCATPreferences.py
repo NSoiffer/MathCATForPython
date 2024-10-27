@@ -10,7 +10,7 @@ import webbrowser
 import gettext
 import addonHandler
 from logHandler import log  # logging
-from typing import List, Dict, Union
+from typing import List, Dict, Union, Callable
 from .MathCAT import ConvertSSMLTextForNVDA
 from speech import speak
 from zipfile import ZipFile
@@ -85,7 +85,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         return os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "Languages")
 
     @staticmethod
-    def path_to_braille_folder():
+    def pathToBrailleFolder():
         # the user preferences file is stored at: MathCAT\Rules\Languages
         return os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "Braille")
 
@@ -267,28 +267,46 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         }
         return languages
 
+    def get_rules_files(self, pathToDir: str, processSubDirs: Callable[[str, str], List[str]] | None) -> List[str]:
+        language = os.path.basename(pathToDir)
+        ruleFiles = [os.path.basename(file) for file in glob.glob(os.path.join(pathToDir, "*_Rules.yaml"))]
+        for dir in os.listdir(pathToDir):
+            if os.path.isdir(os.path.join(pathToDir, dir)):
+                if processSubDirs:
+                    ruleFiles.extend(processSubDirs(dir, language))
+
+        if len(ruleFiles) == 0:
+            # look in the .zip file for the style files, including regional subdirs -- it might not have been unzipped
+            try:
+                zip_file = ZipFile(f"{pathToDir}\\{language}.zip", "r")
+                for file in zip_file.namelist():
+                    if file.endswith('_Rules.yaml'):
+                        ruleFiles.append(file)
+                    elif zip_file.getinfo(file).is_dir() and processSubDirs:
+                        ruleFiles.extend(processSubDirs(dir, language))
+            except Exception as e:
+                log.debugWarning(f"MathCAT Dialog: didn't find zip file {zip_file}. Error: {e}")
+
+        return ruleFiles
+
     def GetLanguages(self):
 
-        def addRegionalLanguages(subDir: str, language: str) -> bool:
+        def addRegionalLanguages(subDir: str, language: str) -> List[str]:
             # the language variants are in folders named using ISO 3166-1 alpha-2
             # codes https://en.wikipedia.org/wiki/ISO_3166-2
             # check if there are language variants in the language folder
             if subDir != "SharedRules":
                 languagesDict = UserInterface.LanguagesDict()
                 # add to the listbox the text for this language variant together with the code
-                if languagesDict.get(language + "-" + subDir.upper(), "missing") != "missing":
-                    self.m_choiceLanguage.Append(
-                        languagesDict[language + "-" + subDir.upper()] + " (" + language + "-" + subDir + ")"
-                    )
+                regionalCode = language + "-" + subDir.upper()
+                if languagesDict.get(regionalCode, "missing") != "missing":
+                    self.m_choiceLanguage.Append(f"{languagesDict[regionalCode]} ({language}-{subDir})")
                 elif languagesDict.get(language, "missing") != "missing":
-                    self.m_choiceLanguage.Append(
-                        languagesDict[language] + " (" + language + "-" + subDir + ")"
-                    )
+                    self.m_choiceLanguage.Append(f"{languagesDict[language]} ({regionalCode})")
                 else:
-                    self.m_choiceLanguage.Append(
-                        language + " (" + language + "-" + subDir + ")"
-                    )
-            return subDir != "SharedRules"
+                    self.m_choiceLanguage.Append(f"{language} ({regionalCode})")
+                return [os.path.basename(file) for file in glob.glob(os.path.join(subDir, "*_Rules.yaml"))]
+            return []
 
         # initialise the language list
         languagesDict = UserInterface.LanguagesDict()
@@ -300,27 +318,12 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         # populate the available language names in the dialog
         # the implemented languages are in folders named using the relevant ISO 639-1
         #   code https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-        for language in os.listdir(UserInterface.path_to_languages_folder()):
+        languageDir = UserInterface.path_to_languages_folder()
+        for language in os.listdir(languageDir):
             pathToLanguageDir = os.path.join(UserInterface.path_to_languages_folder(), language)
             if os.path.isdir(pathToLanguageDir):
                 # only add this language if there is a xxx_Rules.yaml file
-                ruleFilesWereFound = len(glob.glob(os.path.join(pathToLanguageDir, "*_Rules.yaml"))) > 0
-                for dir in os.listdir(pathToLanguageDir):
-                    if os.path.isdir(os.path.join(pathToLanguageDir, dir)):
-                        ruleFilesWereFound |= addRegionalLanguages(dir, language)
-
-                if not ruleFilesWereFound:
-                    # look in the .zip file for the style files, including regional subdirs -- it might not have been unzipped
-                    try:
-                        zip_file = ZipFile(f"{pathToLanguageDir}\\{language}.zip", "r")
-                        for file in zip_file.namelist():
-                            if file.endswith('_Rules.yaml'):
-                                ruleFilesWereFound = True
-                            elif zip_file.getinfo(file).is_dir():
-                                ruleFilesWereFound |= addRegionalLanguages(dir, language)
-                    except Exception as e:
-                        log.debugWarning(f"MathCAT Dialog: didn't find zip file {zip_file}. Error: {e}")
-                if ruleFilesWereFound:
+                if len(self.get_rules_files(pathToLanguageDir, addRegionalLanguages)) > 0:
                     # add to the listbox the text for this language together with the code
                     if languagesDict.get(language, "missing") != "missing":
                         self.m_choiceLanguage.Append(languagesDict[language] + " (" + language + ")")
@@ -374,7 +377,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         languageCode = languageCode.replace("-", "\\")
 
         languagePath = UserInterface.path_to_languages_folder() + "\\"
-        log.info(f"languagePath={languagePath}")
+        # log.info(f"languagePath={languagePath}")
         # populate the m_choiceSpeechStyle choices
         all_style_files = [
             # remove "_Rules.yaml" from the list
@@ -396,14 +399,13 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         # initialise the braille code list
         self.m_choiceBrailleMathCode.Clear()
         # populate the available braille codes in the dialog
-        for braille_code in os.listdir(UserInterface.path_to_braille_folder()):
-            if os.path.isdir(os.path.join(UserInterface.path_to_braille_folder(), braille_code)):
-                path_to_braille_folder = os.path.join(UserInterface.path_to_braille_folder(), braille_code)
-                # only add this language if there is a xxx_Rules.yaml file
-                for file in glob.glob(os.path.join(path_to_braille_folder, "*_Rules.yaml")):
-                    name = file.split('\\')[-1]           # get the last component in the path
-                    name = name.split("_Rules.yaml")[0]   # get the part before "_Rules.yaml"
-                    self.m_choiceBrailleMathCode.Append(name)
+        # the dir names are used, not the rule file names because the dir names have to be unique
+        pathToBrailleFolder = UserInterface.pathToBrailleFolder()
+        for braille_code in os.listdir(pathToBrailleFolder):
+            pathToBrailleCode = os.path.join(pathToBrailleFolder, braille_code)
+            if os.path.isdir(pathToBrailleCode):
+                if len(self.get_rules_files(pathToBrailleCode, None)) > 0:
+                    self.m_choiceBrailleMathCode.Append(braille_code)
 
     def set_ui_values(self):
         # set the UI elements to the ones read from the preference file(s)
