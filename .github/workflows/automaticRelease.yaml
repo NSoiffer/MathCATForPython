@@ -49,7 +49,7 @@ jobs:
       # build the test after zipping up "Rules" because the test will unzip the files needed for the test
       - name: test build
         run: |
-          cp target/x86_64-pc-windows-msvc/release/libmathcat_py.dll Examples/libmathcat_py.pyd
+          cp target/x86_64-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
           cd Example
           python test
       - name: Upload addons dir 
