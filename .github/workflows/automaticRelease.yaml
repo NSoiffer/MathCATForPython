@@ -40,7 +40,9 @@ jobs:
           python-version: 3.11
           architecture: 'x64'
       - name: Build Rust Library 
-        run:  cargo build --target x86_64-pc-windows-msvc --release
+        run: |
+          rustup target add x86_64-pc-windows-msvc
+          cargo build --target x86_64-pc-windows-msvc --release
       - name: Setup Example dir
         run: |
           cp target/x86_64-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
