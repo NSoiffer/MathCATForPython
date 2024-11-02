@@ -645,7 +645,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
     @staticmethod
     def write_user_preferences():
         # Language is special because it is set elsewhere by SetPreference which overrides the user_prefs -- so set it here
-        from . import libmathcat         # type: ignore
+        from . import libmathcat_py as libmathcat      # type: ignore
         try:
             libmathcat.SetPreference("Language", user_preferences["Speech"]["Language"])
         except Exception as e:

@@ -23,7 +23,7 @@ import addonHandler
 import winKernel
 import gui
 
-from . import libmathcat        # type: ignore
+from . import libmathcat_py as libmathcat      # type: ignore
 from typing import List, Dict
 from keyboardHandler import KeyboardInputGesture  # navigation key strokes
 from logHandler import log  # logging
