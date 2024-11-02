@@ -30,7 +30,7 @@ jobs:
   
   rust-64:  
     name: Build 64 bit version and test it (don't both repeating for 32 bit version)
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # needs to run on windows because of bzip2
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
