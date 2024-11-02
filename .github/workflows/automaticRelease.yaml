@@ -51,11 +51,11 @@ jobs:
         run: |
           cp target/x86_64-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
           cd Example
-          python test
+          python test.py
       - name: Upload addons dir 
         uses: actions/upload-artifact@v4
         with:
-          name: upload 64 bit pyd
+          name: pyd_64
           path: Example
           retention-days: 1
       
@@ -114,6 +114,13 @@ jobs:
     - name: copy standalone library so it has a meaningful name
       run: |
         cp addon/globalPlugins/MathCAT/libmathcat_py.pyd libmathcat_py-32-3.11.pyd
+    - name: Download 64 bit build
+      uses: actions/download-artifact@v4
+      with:
+          name: pyd_64
+    - shell: bash
+      run: |
+        ls
         cp Example/libmathcat_py.pyd libmathcat_py-64-3.11.pyd
     - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
