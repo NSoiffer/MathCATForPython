@@ -8,7 +8,7 @@
 
 import os
 import sys
-import libmathcat_py as libmathcat      # type: ignore
+import test_name as libmathcat      # type: ignore
 
 # import shutil
 # if os.path.exists("libmathcat_py.pyd"):
@@ -31,7 +31,7 @@ def setMathCATPreferences():
         libmathcat.SetPreference("SpeechStyle", "SimpleSpeak")  # Also "ClearSpeak"
         libmathcat.SetPreference("Verbosity", "Verbose")  # also terse "Terse"/"Medium"
         libmathcat.SetPreference("CapitalLetters_UseWord", "true")  # if "true", X => "cap x"
-        libmathcat.SetPreference("BrailleCode", "Nemeth");
+        libmathcat.SetPreference("BrailleCode", "Nemeth")
     except Exception as e:
         sys.exit(f"problem with setting a preference: {e}")
 
@@ -82,13 +82,11 @@ def test():
     if speech != 'x cubed':
         sys.exit(f"MathML: {mathml}\nSpeech: '{speech}'")
 
-
     mathml = "<math><msup intent='transpose:postfix($x)'> <mi arg='x'>x</mi> <mi>T</mi> </msup> </math>"
     setMathMLForMathCAT(mathml)
     speech = getSpeech()
     if speech != ', x transpose':
         sys.exit(f"MathML: {mathml}\nSpeech: '{speech}'")
-
 
     mathml = "<math><mrow intent='_(x, $op)'><mo arg='op'>!</mo></mrow></math>"
     setMathMLForMathCAT(mathml)
