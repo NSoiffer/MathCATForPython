@@ -536,12 +536,12 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
     @staticmethod
     def path_to_user_preferences_folder():
         # the user preferences file is stored at: C:\Users\<user-name>AppData\Roaming\MathCAT\prefs.yaml
-        return os.path.expanduser("~") + "\\AppData\\Roaming\\MathCAT"
+        return os.path.join(os.path.expandvars('%APPDATA%'), "MathCAT")
 
     @staticmethod
     def path_to_user_preferences():
         # the user preferences file is stored at: C:\Users\<user-name>AppData\Roaming\MathCAT\prefs.yaml
-        return UserInterface.path_to_user_preferences_folder() + "\\prefs.yaml"
+        return os.path.join(UserInterface.path_to_user_preferences_folder(), "prefs.yaml")
 
     @staticmethod
     def load_default_preferences():
