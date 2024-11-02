@@ -293,11 +293,18 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
                 )
                 # log.info(f"Navigate speech for {gesture.vkCode}/(s={'shift' in modNames}, c={'control' in modNames}): '{text}'")
                 speech.speak(ConvertSSMLTextForNVDA(text))
-
+        except Exception as e:
+            log.error(e)
+            # Translators: this message directs users to look in the log file
+            speech.speakMessage(_("Error in navigating math: see NVDA error log for details"))
+        
+        try:
             # update the braille to reflect the nav position (might be excess code, but it works)
             nav_node = libmathcat.GetNavigationMathMLId()
+            braille_chars = libmathcat.GetBraille(nav_node[0])
+            log.info(f'braille display = {config.conf["braille"]["display"]}, braille_chars: {braille_chars}')
             region = braille.Region()
-            region.rawText = libmathcat.GetBraille(nav_node[0])
+            region.rawText = braille_chars
             region.focusToHardLeft = True
             region.update()
             braille.handler.buffer.regions.append(region)
@@ -307,7 +314,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         except Exception as e:
             log.error(e)
             # Translators: this message directs users to look in the log file
-            speech.speakMessage(_("Error in navigating math: see NVDA error log for details"))
+            speech.speakMessage(_("Error in brailling math: see NVDA error log for details"))
 
     _startsWithMath = re.compile("\\s*?<math")
 
@@ -426,7 +433,7 @@ class MathCAT(mathPres.MathPresentationProvider):
         try:
             # IMPORTANT -- SetRulesDir must be the first call to libmathcat besides GetVersion()
             rules_dir = path.join(path.dirname(path.abspath(__file__)), "Rules")
-            # log.info(f"MathCAT {libmathcat.GetVersion()} installed. Using rules dir: {rules_dir}")
+            log.info(f"MathCAT {libmathcat.GetVersion()} installed. Using rules dir: {rules_dir}")
             libmathcat.SetRulesDir(rules_dir)
             libmathcat.SetPreference("TTS", "SSML")
         except Exception as e:
