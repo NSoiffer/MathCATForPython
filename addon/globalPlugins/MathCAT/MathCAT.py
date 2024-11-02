@@ -297,7 +297,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             log.error(e)
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("Error in navigating math: see NVDA error log for details"))
-        
+
         try:
             # update the braille to reflect the nav position (might be excess code, but it works)
             nav_node = libmathcat.GetNavigationMathMLId()
