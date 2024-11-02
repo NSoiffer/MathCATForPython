@@ -28,23 +28,52 @@ jobs:
         git push
         exit(0) # exiting with '1' for some reason, so force proper exit
   
-  rust:  
-    name: build pyd file
+  rust-64:  
+    name: Build 64 bit version and test it (don't both repeating for 32 bit version)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+          architecture: 'x86'
+      - name: Build Rust Library 
+        run:  cargo build --target x86_64-pc-windows-msvc --release
+      - name: Setup Example dir
+        run: |
+          cp target/x86_64-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
+      # build the test after zipping up "Rules" because the test will unzip the files needed for the test
+      - name: test build
+        run: |
+          cp target/x86_64-pc-windows-msvc/release/libmathcat_py.dll Examples/libmathcat_py.pyd
+          cd Example
+          python test
+      - name: Upload addons dir 
+        uses: actions/upload-artifact@v4
+        with:
+          name: upload 64 bit pyd
+          path: Example
+          retention-days: 1
+      
+  rust-32:  
+    name: build 64-bit pyd file
     needs: l10n
     runs-on: windows-latest  # needs to run on windows because no 32-bit python on linux
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: 3.11
         architecture: 'x86'
-    - name: Set up Rust 
+    - name: Build Rust Library 
       run:  cargo build --target i686-pc-windows-msvc --release
     - name: Set up addons dir
       run: |
-        cp target/i686-pc-windows-msvc/release/libmathcat_py.dll addon/globalPlugins/MathCAT/libmathcat.pyd
+        cp target/i686-pc-windows-msvc/release/libmathcat_py.dll addon/globalPlugins/MathCAT/libmathcat_py.pyd
         sed 's/^import wx\.xrc/# import wx.xrc/' --in-place "addon/globalPlugins/MathCAT/MathCATgui.py"  # fix wx file
     - name: Upload addons dir to use with scons
       uses: actions/upload-artifact@v4
@@ -56,7 +85,7 @@ jobs:
   pre-release:  
     name: Pre Release
     continue-on-error: false
-    needs: rust
+    needs: [rust-64, rust-32]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -82,7 +111,8 @@ jobs:
         scons
     - name: copy standalone library so it has a meaningful name
       run: |
-        cp addon/globalPlugins/MathCAT/libmathcat.pyd libmathcat-32-3.11.pyd
+        cp addon/globalPlugins/MathCAT/libmathcat_py.pyd libmathcat_py-32-3.11.pyd
+        cp Example/libmathcat_py.pyd libmathcat_py-64-3.11.pyd
     - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
       with:
@@ -92,4 +122,5 @@ jobs:
         title: Development Build
         files: |
           *.nvda-addon
-          libmathcat-32-3.11.pyd
+          libmathcat_py-32-3.11.pyd
+          libmathcat_py-64-3.11.pyd
