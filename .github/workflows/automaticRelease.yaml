@@ -57,7 +57,9 @@ jobs:
         # build the test after zipping up "Rules" because the test will unzip the files needed for the test
       - name: test build
         run: |
+          ls -l
           cd Example
+          ls -l
           python test.py
       - name: Upload addons dir 
         uses: actions/upload-artifact@v4
