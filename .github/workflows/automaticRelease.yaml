@@ -177,11 +177,11 @@ jobs:
     - name: Download 64 bit build
       uses: actions/download-artifact@v4
       with:
-          name: libmathcat_py-64-3.11-win.zip
+        name: libmathcat_py-64-3.11-win.zip
     - name: Download Rules.zip
       uses: actions/download-artifact@v4
       with:
-          name: Rules.zip
+        name: Rules.zip
     - name: Download MathCAT addons dir
       uses: actions/download-artifact@v4
       with:
@@ -195,7 +195,11 @@ jobs:
         filename: '../../../libmathcat_py-32-3.11-win.zip'
         directory: 'addon/globalPlugins/MathCAT'
         path: 'libmathcat_py.pyd'
-
+    - name: Download 64 bit linux build
+      uses: actions/download-artifact@v4
+      with:
+        name: libmathcat_py-64-3.11-linux.zip
+  
     # finally, put the files into the release
     - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
