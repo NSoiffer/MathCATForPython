@@ -82,7 +82,6 @@ jobs:
       
   rust-32:  
     name: build addon (and 32-bit windows pyd file)
-    needs: l10n
     runs-on: windows-latest  # needs to run on windows because no 32-bit python on linux
     steps:
     - name: Checkout code
@@ -129,10 +128,7 @@ jobs:
           cargo build --target x86_64-unknown-linux-gnu --release
       - name: Setup Example dir
         run: |
-          ls -l target
-          ls -l target/x86_64-unknown-linux-gnu
-          ls -l target/x86_64-unknown-linux-gnu/release
-          cp target/x86_64-unknown-linux-gnu/release/libmathcat_py.dll Example/libmathcat_py.pyd
+          cp target/x86_64-unknown-linux-gnu/release/liblibmathcat_py.so Example
           cp -r addon/globalPlugins/MathCAT/Rules Example
       - name: test build
         run: |
@@ -144,7 +140,7 @@ jobs:
           type: 'zip'
           filename: '../libmathcat_py-64-3.11-linux.zip'
           directory: 'Example'
-          path: 'libmathcat_py.pyd'
+          path: 'liblibmathcat_py.so'
         # build the test after zipping up "Rules" because the test will unzip the files needed for the test
       # 
       # - name: test build
@@ -163,7 +159,7 @@ jobs:
   pre-release:  
     name: Pre Release
     continue-on-error: false
-    needs: [rust-64, rust-32]
+    needs: [l10n, rust-64, rust-32]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
