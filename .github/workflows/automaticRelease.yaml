@@ -60,11 +60,13 @@ jobs:
       #   run: |
       #     cd Example
       #     python test.py
+      - name rename pyd file
+        run: mv Example/libmathcat_py.pyd Example/libmathcat_py-64-3.11.pyd
       - name: Upload 64 bit pyd file 
         uses: actions/upload-artifact@v4
         with:
           name: libmathcat_py-64-3.11.pyd
-          path: Example/libmathcat_py.pyd
+          path: Example/libmathcat_py-64-3.11.pyd
           compression-level: 0
           retention-days: 1
       - name: Upload Rules.zip 
@@ -115,7 +117,7 @@ jobs:
     - name: Download MathCAT addons dir
       uses: actions/download-artifact@v4
       with:
-          name: MathCAT_addons
+          name: libmathcat_py-64-3.11.pyd
     - shell: bash
       run: |
         cp -r MathCAT addon/globalPlugins
@@ -132,8 +134,9 @@ jobs:
         cp addon/globalPlugins/MathCAT/libmathcat_py.pyd libmathcat_py-32-3.11.pyd
     - name: Download 64 bit build
       uses: actions/download-artifact@v4
-      # using the defaults (all artfacts are download) is the desired behavior
-    - name: Automatic release
+      with:
+        name: MathCAT_addons
+  - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
