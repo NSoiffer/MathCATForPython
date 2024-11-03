@@ -60,13 +60,7 @@ jobs:
       #   run: |
       #     cd Example
       #     python test.py
-      - name: Upload addons dir 
-        uses: actions/upload-artifact@v4
-        with:
-          name: libmathcat_py-64-3.11.pyd
-          path: Example/libmathcat_py.pyd
-          retention-days: 1
-      - name: Upload pyd file 
+      - name: Upload 64 bit pyd file 
         uses: actions/upload-artifact@v4
         with:
           name: libmathcat_py-64-3.11.pyd
