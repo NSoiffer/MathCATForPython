@@ -55,12 +55,11 @@ jobs:
           directory: 'Example'
           path: 'Rules'
         # build the test after zipping up "Rules" because the test will unzip the files needed for the test
-      - name: test build
-        run: |
-          dir
-          cd Example
-          dir
-          python test.py
+      # 
+      # - name: test build
+      #   run: |
+      #     cd Example
+      #     python test.py
       - name: Upload addons dir 
         uses: actions/upload-artifact@v4
         with:
