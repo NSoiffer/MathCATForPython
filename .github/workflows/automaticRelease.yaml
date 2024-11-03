@@ -46,7 +46,14 @@ jobs:
       - name: Setup Example dir
         run: |
           cp target/x86_64-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
-      # build the test after zipping up "Rules" because the test will unzip the files needed for the test
+      - name: create rules.zip
+        uses: thedoctor0/zip-release@0.7.5
+        with:
+          type: 'zip'
+          filename: '../Rules.zip'
+          directory: 'Example'
+          path: 'Rules'
+        # build the test after zipping up "Rules" because the test will unzip the files needed for the test
       - name: test build
         run: |
           cp target/x86_64-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
@@ -55,8 +62,8 @@ jobs:
       - name: Upload addons dir 
         uses: actions/upload-artifact@v4
         with:
-          name: pyd_64
-          path: Example
+          name: libmathcat_py-64-3.11.pyd
+          path: Example/libmathcat_py.pyd
           retention-days: 1
       
   rust-32:  
@@ -116,12 +123,7 @@ jobs:
         cp addon/globalPlugins/MathCAT/libmathcat_py.pyd libmathcat_py-32-3.11.pyd
     - name: Download 64 bit build
       uses: actions/download-artifact@v4
-      with:
-          name: pyd_64
-    - shell: bash
-      run: |
-        ls
-        cp Example/libmathcat_py.pyd libmathcat_py-64-3.11.pyd
+      # using the defaults (all artfacts are download) is the desired behavior
     - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
       with:
@@ -133,3 +135,4 @@ jobs:
           *.nvda-addon
           libmathcat_py-32-3.11.pyd
           libmathcat_py-64-3.11.pyd
+          Rules.zip
