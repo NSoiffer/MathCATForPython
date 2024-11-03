@@ -156,7 +156,7 @@ pub fn GetNavigationMathML(_py: Python) -> PyResult<(String, usize)> {
 }
 
 #[pymodule]
-fn libmathcat(_py: Python, m: &PyModule) -> PyResult<()> {
+fn libmathcat_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(SetRulesDir, m)?)?;
     m.add_function(wrap_pyfunction!(SetMathML, m)?)?;
     m.add_function(wrap_pyfunction!(GetVersion, m)?)?;
