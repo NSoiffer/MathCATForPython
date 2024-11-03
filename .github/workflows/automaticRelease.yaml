@@ -60,8 +60,7 @@ jobs:
           filename: '../libmathcat_py-64-3.11-win.zip'
           directory: 'Example'
           path: 'libmathcat_py.pyd'
-        # build the test after zipping up "Rules" because the test will unzip the files needed for the test
-      
+      # build the test after zipping up "Rules" because the test will unzip the files needed for the test
       - name: test build
         run: |
           cd Example
@@ -95,6 +94,14 @@ jobs:
         architecture: 'x86'
     - name: Build Rust Library 
       run:  cargo build --target i686-pc-windows-msvc --release
+    - name: Setup Example dir
+      run: |
+        cp target/i686-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
+        cp -r addon/globalPlugins/MathCAT/Rules Example
+    - name: test build
+      run: |
+        cd Example
+        python test.py
     - name: Set up addons dir
       run: |
         cp target/i686-pc-windows-msvc/release/libmathcat_py.dll addon/globalPlugins/MathCAT/libmathcat_py.pyd
@@ -123,8 +130,8 @@ jobs:
       - name: Setup Example dir
         run: |
           ls -l target
-          ls -l target/target/x86_64-unknown-linux-gnu
-          ls -l target/target/x86_64-unknown-linux-gnu/release
+          ls -l target/x86_64-unknown-linux-gnu
+          ls -l target/x86_64-unknown-linux-gnu/release
           cp target/x86_64-unknown-linux-gnu/release/libmathcat_py.dll Example/libmathcat_py.pyd
           cp -r addon/globalPlugins/MathCAT/Rules Example
       - name: test build
