@@ -60,7 +60,7 @@ jobs:
       #   run: |
       #     cd Example
       #     python test.py
-      - name rename pyd file
+      - name: rename pyd file
         run: mv Example/libmathcat_py.pyd Example/libmathcat_py-64-3.11.pyd
       - name: Upload 64 bit pyd file 
         uses: actions/upload-artifact@v4
