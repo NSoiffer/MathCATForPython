@@ -5,9 +5,6 @@
 #   The code additionally makes use of the MathCAT library (written in Rust) which is covered by the MIT license
 #   and also (obviously) requires external speech engines and braille drivers.
 
-import platform 
-print(f'architecture={platform.architecture()}') 
-
 
 import os
 import sys
