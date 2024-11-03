@@ -41,7 +41,6 @@ jobs:
           architecture: 'x64'
       - name: Build Rust Library 
         run: |
-          rustup target add x86_64-pc-windows-msvc
           cargo build --target x86_64-pc-windows-msvc --release
       - name: Setup Example dir
         run: |
@@ -54,19 +53,24 @@ jobs:
           filename: '../Rules.zip'
           directory: 'Example'
           path: 'Rules'
+      - name: create zip file for pyd file -- this allows the name to indicate arch, python version etc but unzipped it is correctly named
+        uses: thedoctor0/zip-release@0.7.5
+        with:
+          type: 'zip'
+          filename: '../libmathcat_py-64-3.11-win.zip'
+          directory: 'Example'
+          path: 'libmathcat_py.pyd'
         # build the test after zipping up "Rules" because the test will unzip the files needed for the test
       # 
       # - name: test build
       #   run: |
       #     cd Example
       #     python test.py
-      - name: rename pyd file
-        run: mv Example/libmathcat_py.pyd Example/libmathcat_py-64-3.11.pyd
       - name: Upload 64 bit pyd file 
         uses: actions/upload-artifact@v4
         with:
-          name: libmathcat_py-64-3.11.pyd
-          path: Example/libmathcat_py-64-3.11.pyd
+          name: libmathcat_py-64-3.11-win.zip
+          path: libmathcat_py-64-3.11-win.zip
           compression-level: 0
           retention-days: 1
       - name: Upload Rules.zip 
@@ -113,29 +117,41 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.11
-    - name: Download MathCAT addons dir
-      uses: actions/download-artifact@v4
-      with:
-          name: libmathcat_py-64-3.11.pyd
-    - shell: bash
-      run: |
-        cp -r MathCAT addon/globalPlugins
+        python-version: 3.11   # needed for scons
+  
     - name: Install scons dependencies
       run: |
         pip install scons markdown
         sudo apt update
         sudo apt install gettext
-    - name: Run scons to build addon
+    - name: Run scons to build .addon file
       run: |
-        scons
-    - name: copy standalone library so it has a meaningful name
-      run: |
-        cp addon/globalPlugins/MathCAT/libmathcat_py.pyd libmathcat_py-32-3.11.pyd
+         scons
+  
+    # download the previous build artifacts and put them in their proper places
     - name: Download 64 bit build
       uses: actions/download-artifact@v4
       with:
+          name: libmathcat_py-64-3.11-win.zip
+    - name: Download Rules.zip
+      uses: actions/download-artifact@v4
+      with:
+          name: Rules.zip
+    - name: Download MathCAT addons dir
+      uses: actions/download-artifact@v4
+      with:
         name: MathCAT_addons
+    - shell: bash
+      run: cp -r MathCAT addon/globalPlugins
+    - name: create zip file for standalone pyd file -- this allows the name to indicate arch, python version etc but unzipped it is correctly named
+      uses: thedoctor0/zip-release@0.7.5
+      with:
+        type: 'zip'
+        filename: '../../../libmathcat_py-32-3.11-win.zip'
+        directory: 'addon/globalPlugins/MathCAT'
+        path: 'libmathcat_py.pyd'
+
+    # finally, put the files into the release
     - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
       with:
@@ -145,6 +161,6 @@ jobs:
         title: Development Build
         files: |
           *.nvda-addon
-          libmathcat_py-32-3.11.pyd
-          libmathcat_py-64-3.11.pyd
+          libmathcat_py-32-3.11-win.zip
+          libmathcat_py-64-3.11-win.zip
           Rules.zip
