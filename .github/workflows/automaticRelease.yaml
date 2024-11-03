@@ -53,7 +53,7 @@ jobs:
           filename: '../Rules.zip'
           directory: 'Example'
           path: 'Rules'
-      - name: create zip file for pyd file -- this allows the name to indicate arch, python version etc but unzipped it is correctly named
+      - name: create zip file for pyd file -- this allows the name to indicate arch, python version, etc., but unzipped it is correctly named
         uses: thedoctor0/zip-release@0.7.5
         with:
           type: 'zip'
@@ -135,19 +135,13 @@ jobs:
         run: |
           cd Example
           python test.py
-      - name: create zip file for pyd file -- this allows the name to indicate arch, python version etc but unzipped it is correctly named
+      - name: create zip file for pyd file -- this allows the name to indicate arch, python version, etc., but unzipped it is correctly named
         uses: thedoctor0/zip-release@0.7.5
         with:
           type: 'zip'
           filename: '../libmathcat_py-64-3.11-linux.zip'
           directory: 'Example'
-          path: 'liblibmathcat_py.so'
-        # build the test after zipping up "Rules" because the test will unzip the files needed for the test
-      # 
-      # - name: test build
-      #   run: |
-      #     cd Example
-      #     python test.py
+          path: 'libmathcat_py.so'
       - name: Upload 64 bit pyd file 
         uses: actions/upload-artifact@v4
         with:
@@ -160,7 +154,7 @@ jobs:
   pre-release:  
     name: Pre Release
     continue-on-error: false
-    needs: [l10n, rust-64, rust-32]
+    needs: [l10n, rust-64, rust-32, linux-64]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -194,7 +188,7 @@ jobs:
         name: MathCAT_addons
     - shell: bash
       run: cp -r MathCAT addon/globalPlugins
-    - name: create zip file for standalone pyd file -- this allows the name to indicate arch, python version etc but unzipped it is correctly named
+    - name: create zip file for standalone pyd file -- this allows the name to indicate arch, python version, etc., but unzipped it is correctly named
       uses: thedoctor0/zip-release@0.7.5
       with:
         type: 'zip'
@@ -214,4 +208,5 @@ jobs:
           *.nvda-addon
           libmathcat_py-32-3.11-win.zip
           libmathcat_py-64-3.11-win.zip
+          libmathcat_py-64-3.11-linux.zip
           Rules.zip
