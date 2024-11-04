@@ -1,12 +1,11 @@
 name: automatic-release
-
 on:
   push:
     branches:
       - main
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '0 0 * * 6'
+  # schedule:
+  #   # * is a special character in YAML so you have to quote this string
+  #   - cron:  '0 0 * * 6'
 
 jobs:
   l10n:
@@ -28,6 +27,64 @@ jobs:
         git push
         exit(0) # exiting with '1' for some reason, so force proper exit
   
+  zip-rules:  
+    name: zip up the rules director
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: create rules.zip
+        uses: thedoctor0/zip-release@0.7.5
+        with:
+          type: 'zip'
+          filename: 'Rules.zip'
+          directory: 'addon/globalPlugins/MathCAT'
+          path: 'Rules'
+      - name: Upload Rules.zip 
+        uses: actions/upload-artifact@v4
+        with:
+          name: Rules.zip
+          path: Rules.zip
+          compression-level: 0
+          retention-days: 1
+
+  rust-32:  
+    name: Build 32 bit windows pyd file
+    runs-on: windows-latest  # needs to run on windows because of bzip2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+          architecture: '86'
+      - name: Build Rust Library 
+        run: |
+          cargo build --target x86_32-pc-windows-msvc --release
+      - name: Setup Example dir
+        run: |
+          cp target/x86_32-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
+          mv addon/globalPlugins/MathCAT/Rules Example
+      - name: test the build
+        run: |
+          cd Example
+          python test.py
+      - name: create zip file for pyd file -- this allows the name to indicate arch, python version, etc., but unzipped it is correctly named
+        uses: thedoctor0/zip-release@0.7.5
+        with:
+          type: 'zip'
+          filename: '../libmathcat_py-32-3.11-win.zip'
+          directory: 'Example'
+          path: 'libmathcat_py.pyd'
+      - name: Upload 32 bit pyd file 
+        uses: actions/upload-artifact@v4
+        with:
+          name: libmathcat_py-32-3.11-win.zip
+          path: libmathcat_py-32-3.11-win.zip
+          compression-level: 0
+          retention-days: 1
+  
   rust-64:  
     name: Build 64 bit windows pyd file
     runs-on: windows-latest  # needs to run on windows because of bzip2
@@ -45,14 +102,7 @@ jobs:
       - name: Setup Example dir
         run: |
           cp target/x86_64-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
-          cp -r addon/globalPlugins/MathCAT/Rules Example
-      - name: create rules.zip
-        uses: thedoctor0/zip-release@0.7.5
-        with:
-          type: 'zip'
-          filename: '../Rules.zip'
-          directory: 'Example'
-          path: 'Rules'
+          mv addon/globalPlugins/MathCAT/Rules Example
       - name: create zip file for pyd file -- this allows the name to indicate arch, python version, etc., but unzipped it is correctly named
         uses: thedoctor0/zip-release@0.7.5
         with:
@@ -60,8 +110,7 @@ jobs:
           filename: '../libmathcat_py-64-3.11-win.zip'
           directory: 'Example'
           path: 'libmathcat_py.pyd'
-      # build the test after zipping up "Rules" because the test will unzip the files needed for the test
-      - name: test build
+      - name: test the build
         run: |
           cd Example
           python test.py
@@ -72,46 +121,7 @@ jobs:
           path: libmathcat_py-64-3.11-win.zip
           compression-level: 0
           retention-days: 1
-      - name: Upload Rules.zip 
-        uses: actions/upload-artifact@v4
-        with:
-          name: Rules.zip
-          path: Rules.zip
-          compression-level: 0
-          retention-days: 1
-      
-  rust-32:  
-    name: build addon (and 32-bit windows pyd file)
-    runs-on: windows-latest  # needs to run on windows because no 32-bit python on linux
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.11
-        architecture: 'x86'
-    - name: Build Rust Library 
-      run:  cargo build --target i686-pc-windows-msvc --release
-    - name: Setup Example dir
-      run: |
-        cp target/i686-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
-        cp -r addon/globalPlugins/MathCAT/Rules Example
-    - name: test build
-      run: |
-        cd Example
-        python test.py
-    - name: Set up addons dir
-      run: |
-        cp target/i686-pc-windows-msvc/release/libmathcat_py.dll addon/globalPlugins/MathCAT/libmathcat_py.pyd
-        sed 's/^import wx\.xrc/# import wx.xrc/' --in-place "addon/globalPlugins/MathCAT/MathCATgui.py"  # fix wx file
-    - name: Upload addons dir to use with scons
-      uses: actions/upload-artifact@v4
-      with:
-        name: MathCAT_addons
-        path: addon/globalPlugins
-        retention-days: 1
- 
+       
   linux-64:  
     name: Build linux pyd file (64-bit intel)
     runs-on: ubuntu-latest
@@ -150,8 +160,7 @@ jobs:
           compression-level: 0
           retention-days: 1
  
-
-  pre-release:  
+  build-addon:
     name: Pre Release
     continue-on-error: false
     needs: [l10n, rust-64, rust-32, linux-64]
@@ -159,11 +168,22 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+    # download the 32 build
+    - name: Download 32 bit build
+      uses: actions/download-artifact@v4
+      with:
+        name: libmathcat_py-32-3.11-win.zip
+    # put things where they belong
+    - name: Set up addons dir
+      run: |
+        unzip libmathcat_py-32-3.11-win.zip
+        mv libmathcat_py.pyd addon/globalPlugins/MathCAT
+        sed 's/^import wx\.xrc/# import wx.xrc/' --in-place "addon/globalPlugins/MathCAT/MathCATgui.py"  # fix wx file
+    # build the addon
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: 3.11   # needed for scons
-  
     - name: Install scons dependencies
       run: |
         pip install scons markdown
@@ -171,36 +191,46 @@ jobs:
         sudo apt install gettext
     - name: Run scons to build .addon file
       run: |
-         scons
-  
-    # download the previous build artifacts and put them in their proper places
-    - name: Download 64 bit build
-      uses: actions/download-artifact@v4
+          scons
+    - name: Upload the addon 
+      uses: actions/upload-artifact@v4
       with:
-        name: libmathcat_py-64-3.11-win.zip
+        name: addon
+        path: *.addon
+        compression-level: 0
+        retention-days: 1
+
+  pre-release:  
+    name: Pre Release
+    continue-on-error: false
+    needs: [rust-32, rust-64, linux-64, build-addon]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # download the previous build artifacts and put them in their proper places
     - name: Download Rules.zip
       uses: actions/download-artifact@v4
       with:
         name: Rules.zip
-    - name: Download MathCAT addons dir
+    - name: Download 32 bit build
       uses: actions/download-artifact@v4
       with:
-        name: MathCAT_addons
-    - shell: bash
-      run: cp -r MathCAT addon/globalPlugins
-    - name: create zip file for standalone pyd file -- this allows the name to indicate arch, python version, etc., but unzipped it is correctly named
-      uses: thedoctor0/zip-release@0.7.5
+        name: libmathcat_py-32-3.11-win.zip
+    - name: Download 64 bit build
+      uses: actions/download-artifact@v4
       with:
-        type: 'zip'
-        filename: '../../../libmathcat_py-32-3.11-win.zip'
-        directory: 'addon/globalPlugins/MathCAT'
-        path: 'libmathcat_py.pyd'
+        name: libmathcat_py-64-3.11-win.zip
     - name: Download 64 bit linux build
       uses: actions/download-artifact@v4
       with:
         name: libmathcat_py-64-3.11-linux.zip
-  
-    # finally, put the files into the release
+    - name: download the addon
+      uses: actions/download-artifact@v4
+      with:
+        name: addon
+    # put the files into the release
     - name: Automatic release
       uses: marvinpinto/action-automatic-releases@latest
       with:
