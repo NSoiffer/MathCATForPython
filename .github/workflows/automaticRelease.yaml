@@ -34,7 +34,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Build Rust Library 
-        run: dir 'addon/globalPlugins/MathCAT'
+        run: |
+          cargo build --target x86_64-pc-windows-msvc   # doesn't need a release build since all that we want is the Rules dir
       - name: create rules.zip
         uses: thedoctor0/zip-release@0.7.5
         with:
@@ -63,10 +64,10 @@ jobs:
           architecture: 'x86'
       - name: Build Rust Library 
         run: |
-          cargo build --target x86_32-pc-windows-msvc --release
+          cargo build --target i686-pc-windows-msvc --release
       - name: Setup Example dir
         run: |
-          cp target/x86_32-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
+          cp target/i686-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
           mv addon/globalPlugins/MathCAT/Rules Example
       - name: test the build
         run: |
