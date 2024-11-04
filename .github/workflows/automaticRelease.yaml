@@ -28,7 +28,7 @@ jobs:
         exit(0) # exiting with '1' for some reason, so force proper exit
   
   zip-rules:  
-    name: zip up the rules director
+    name: zip up the rules directory
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -206,7 +206,7 @@ jobs:
   pre-release:  
     name: Pre Release
     continue-on-error: false
-    needs: [rust-32, rust-64, linux-64, build-addon]
+    needs: [zip-rules, rust-32, rust-64, linux-64, build-addon]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
