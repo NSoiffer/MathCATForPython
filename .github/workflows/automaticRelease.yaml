@@ -187,7 +187,7 @@ jobs:
         unzip libmathcat_py-32-3.11-win.zip
         mv libmathcat_py.pyd Rules.zip addon/globalPlugins/MathCAT
         cd addon/globalPlugins/MathCAT
-        sed 's/^import wx\.xrc/# import wx.xrc/' --in-place MathCATgui.py"  # fix wx file
+        sed 's/^import wx\.xrc/# import wx.xrc/' --in-place MathCATgui.py  # fix wx file
         unzip Rules.zip
         rm Rules.zip
     # build the addon
