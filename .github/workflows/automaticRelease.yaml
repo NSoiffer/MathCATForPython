@@ -195,6 +195,13 @@ jobs:
     - name: Run scons to build .addon file
       run: |
           scons
+    - name: list dirs
+      run: |
+        echo "toplevel dir?"
+        ls
+        echo "...MathCAT dir?"
+        ls addon/globalPlugins/MathCAT
+
     - name: Upload the addon 
       uses: actions/upload-artifact@v4
       with:
