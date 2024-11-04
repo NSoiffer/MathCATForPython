@@ -24,7 +24,7 @@ jobs:
         git reset l10n/stable addon/doc addon/locale
         git commit -m "Update translations"
         git pull
-        git push
+        # git push
         echo done # 'push' exits with '1' for some reason, so force proper exit
   
   zip-rules:  
