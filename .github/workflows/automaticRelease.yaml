@@ -166,7 +166,7 @@ jobs:
   build-addon:
     name: build-addon
     continue-on-error: false
-    needs: [l10n, rust-32]
+    needs: [l10n, zip-rules, rust-32]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -176,12 +176,20 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: libmathcat_py-32-3.11-win.zip
+    # download the Rules dir (not part of checkout)
+    - name: Download 32 bit build
+      uses: actions/download-artifact@v4
+      with:
+        name: Rules.zip
     # put things where they belong
     - name: Set up addons dir
       run: |
         unzip libmathcat_py-32-3.11-win.zip
-        mv libmathcat_py.pyd addon/globalPlugins/MathCAT
-        sed 's/^import wx\.xrc/# import wx.xrc/' --in-place "addon/globalPlugins/MathCAT/MathCATgui.py"  # fix wx file
+        mv libmathcat_py.pyd Rules.zip addon/globalPlugins/MathCAT
+        cd addon/globalPlugins/MathCAT
+        sed 's/^import wx\.xrc/# import wx.xrc/' --in-place MathCATgui.py"  # fix wx file
+        unzip Rules.zip
+        rm Rules.zip
     # build the addon
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -195,13 +203,6 @@ jobs:
     - name: Run scons to build .addon file
       run: |
           scons
-    - name: list dirs
-      run: |
-        echo "toplevel dir?"
-        ls
-        echo "...MathCAT dir?"
-        ls addon/globalPlugins/MathCAT
-
     - name: Upload the addon 
       uses: actions/upload-artifact@v4
       with:
