@@ -22,8 +22,8 @@ jobs:
         git remote add l10n https://github.com/nvdaaddons/MathCAT
         git fetch l10n
         git reset l10n/stable addon/doc addon/locale
-        git commit -m "Update translations"
-        git pull
+        # git commit -m "Update translations"
+        # git pull
         # git push
         echo done # 'push' exits with '1' for some reason, so force proper exit
   
