@@ -43,6 +43,12 @@ jobs:
           filename: 'Rules.zip'
           directory: 'addon/globalPlugins/MathCAT'
           path: 'Rules'
+      - name: Build Rust Library 
+        run: |
+          echo "top level dir"
+          ls
+          echo "MathCAT dir"
+          ls addon/globalPlugins/MathCAT
       - name: Upload Rules.zip 
         uses: actions/upload-artifact@v4
         with:
