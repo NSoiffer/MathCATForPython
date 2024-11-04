@@ -23,9 +23,9 @@ jobs:
         git fetch l10n
         git reset l10n/stable addon/doc addon/locale
         # git commit -m "Update translations"
-        # git pull
-        # git push
-        echo done # 'push' exits with '1' for some reason, so force proper exit
+        git pull
+        git push
+        echo done # 'commit' exits with '1' for some reason, so force proper exit
   
   zip-rules:  
     name: zip up the rules directory
