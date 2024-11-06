@@ -16,38 +16,80 @@ Note: MathCAT is a general library for generating speech and braille from MathML
 
 Who should use MathCAT:
 
+* Those who use the following spoken or braille Languages:
+  * Languages: Chinese (Taiwan), English, Finnish, Indonesian, Spannish, Swedish, Vietnamese
+  * Braille: CMU (Portugese, Spanish), Finnish AsciiMath, LaTeX (as used in German braille), Nemeth, Swedish, UEB, Vietnamese
 * Those who need high quality Nemeth braille (MathPlayer's Nemeth is based on liblouis' Nemeth generation which has a number of significant bugs that are technically difficult to fix).
-* Those who need UEB technical braille, CMU (Spanish/Portuguese), German LaTeX, ASCIIMath, or Vietnamese braille
 * Those who want to try out the latest technology and are willing to help by reporting bugs
 * Those who use Eloquence as a voice
 
 Who should NOT use MathCAT:
 
-* Anyone who uses MathPlayer with a language that is not yet supported by MathCAT (translations exist for Chinese (Traditional), Spanish, Indonesian and Vietnamese; translations will be coming in the future) and are not comfortable with speech in one of the supported languages.
+* Anyone who uses MathPlayer with a language that is not yet supported by MathCAT and are not comfortable with speech in one of the supported languages.
 * Anyone who prefers Access8Math to MathPlayer (for speech or other features)
 
 MathCAT's rules for speech are not yet as extensive as MathPlayer's rules -- that may be another reason to stick with MathPlayer. MathCAT is being used as a testbed for ideas for MathML 4 that allow authors to express their intent so that ambiguous notations can be spoken correctly and not guessed at. I have held off on adding too many rules since the architecture of MathCAT is centered around using and inferring author intent and these are not fully settled yet.
 
 ## MathCAT Update Log
 
-### Version 0.6.3
+### Version 0.6.6
+
+Lots of changes because it has been a while since the last release.
+
+#### Speech
+
+* Added Swedish to supported languages.
+* Added Finnish to supported languages.
+* MathCAT will switch the voice when reading math if a different language from the current voice was set in the preference dialog.
+* Added a en-UK variant with some British ways to speak bracketing chars.
+* Added English rules for div, grad, and curl (calculus)
+* Added English rule for $P(A|B)$ so that | is spoken as "given"
+* In terse mode, integer subscripts are spoken as "x 1" instead of "x sub 1".
+* Changed the speech for ≈ from "congruent to" to "approximately equal to"
+* Changed speech for the general cases of `mover` and `munder` from "modified x with y above it" to "quantity x with y above it"
+* Improved rule for {} so that it isn't always spoken as "set of ...". It could just be bracketing chars.
+* Tweaked the speech for ∈ inside of a set so that the word "is" is dropped when part of a set -- "the set of all x is an element of ..." sounds poor.
+* Improved rule for chemistry recogition for atomic numbers.
+* Update to speech hint property names in the proposed MathML Core property list
+* Add speech for coordinates ("the point at 1 comma 2")
+
+#### Braille
+
+* Added support for Finnish version of AsciiMath braille
+* Added support for Swedish braille
+* Added support for Vietnamese accents position for Vietnamese braille vowel "rhymes".
+
+#### Other
+
 * All the language and braille Rule files are zipped up per directory and unzipped on demand.
   * This currently saves ~5mb when Rules.zip is unzipped, and will save even more as more languages and braille codes are added.
-  * This is in preparation for MathCAT being built into NVDA 2024.3
-* Added new preference `DecimalSeparator`.
-  * The default value is `Auto`, with other values being ".", ",", and "Custom". The first three values set `DecimalSeparators` and `BlockSeparators`.
-  * `Auto` sets those preferences based on the value of the `Language` pref. For some language such as Spanish, `,` is used in some countries and `.` is used in others. In this case, it is best to set the language to also include the country code (e.g, `es-es` or `es-mx`) to ensure the right value is used.
-* Added Swedish to supported languages.
+  * If you know certain languages or braille code will definitely be used (e.g., it is the default), then the files in those directories can be manually unzipped to save a few tens of milliseconds the first time the language/braille code by that user.
+* Added new preference DecimalSeparator.
+  * The default value is Auto, with other values being ".", ",", and "Custom". The first three values set DecimalSeparators and BlockSeparators.
+  * Auto sets those preferences based on the value of the Language pref. For some language such as Spanish, , is used in some countries and . is used in others. In this case, it is best to set the language to also include the country code (e.g, es-es or es-mx) to ensure the right value is used.
 * Added more Unicode chars to include both all Unicode chars marked as "Sm" and those with a mathclass (except Alphabetic and Glyph classes) in the Unicode standard.
-* After changing how prefs work in a previous version, I forgot to change `MathRate` and `PauseFactor` to be numbers, not strings.
-* Fixed bug in the braille Rules (missed change from earlier) where a third argument should have been given to say to look in the _Braille_ `definitions.yaml` files and not the speech ones when looking up the value of a definition.
-* Cleaned up use of `definitions.yaml`.
+* Add support for some (upcoming) new Unicode characters (equilibrium arrows and others) used in Chemistry into UEB and Nemeth
+* Several fixes for recognizing chemistry 
+
+#### Fixes
+
+* Fixed a bug in UEB where passage mode should have been used for capitals.
+* Fixed a crash with UEB in certain conditions with runs of capital letters.
+* Fixed bug in Navigation of tables (previously reported "Error in Navigation").
+* Fixed bug moving to previous/next column in tables when at a table row level.
+* Fixed bug when trying to correct bad MathML representation of chemistry inside of the base of a script
+* Fixed Vietnamese braille for "/"/
+* In the dialog code, the file location and %APPDATA% are now used to find the Rules and prefs files.
+* After changing how prefs work in a previous version, I forgot to change MathRate and PauseFactor to be numbers, not strings.
+* Fixed bug in the braille Rules (missed change from earlier) where a third argument should have been given to say to look in the Braille definitions.yaml files and not the speech ones when looking up the value of a definition.
+* Cleaned up use of definitions.yaml.
 * Fixed some bugs in the MathML cleanup for "," decimal separators.
 * Found a bug in braille highlighting when nothing is highlighted (maybe never happens which is why I didn't see it in practice?)
 * Fixed "Describe" mode so that it works -- it is still very minimal and probably not useful yet
-* Fixed minimum supported version
+* Add space after math speech to work around a MS Word bug that concatinates the next character in the text onto the math.
 
 ### Version 0.5.6
+
 * Added Copy As... to the MathCAT dialog (in the "Navagation" pane).
 * Fixed a bug where the language reverted to English when changing speech styles.
 * Fixed a bug with navigation and braille
