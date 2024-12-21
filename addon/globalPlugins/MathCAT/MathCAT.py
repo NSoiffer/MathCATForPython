@@ -300,7 +300,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 
         if not braille.handler.enabled:
             return
-        
+
         try:
             # update the braille to reflect the nav position (might be excess code, but it works)
             nav_node = libmathcat.GetNavigationMathMLId()
