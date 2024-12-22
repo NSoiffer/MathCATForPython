@@ -391,7 +391,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 this_SpeechStyle if this_SpeechStyle in all_style_files else all_style_files[0]
             )
         except Exception as e:
-            log.error(f"MathCAT: An exception occurred in GetSpeechStyles evaluating set SetStringSelection: {e}")
+            log.exception(f"MathCAT: An exception occurred in GetSpeechStyles evaluating set SetStringSelection: {e}")
             # that didn't work, choose the first in the list
             self.m_choiceSpeechStyle.SetSelection(0)
 
@@ -423,7 +423,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                         break
                     i += 1
             except Exception as e:
-                log.error(f"MathCAT: An exception occurred in set_ui_values ('{user_preferences['Speech']['Language']}'): {e}")
+                log.exception(f"MathCAT: An exception occurred in set_ui_values ('{user_preferences['Speech']['Language']}'): {e}")
                 # the language in the settings file is not in the folder structure, something went wrong,
                 # set to the first in the list
                 self.m_choiceLanguage.SetSelection(0)
@@ -431,7 +431,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 # now get the available SpeechStyles from the folder structure and set to the preference setting is possible
                 self.GetSpeechStyles(str(user_preferences["Speech"]["SpeechStyle"]))
             except Exception as e:
-                log.error(f"MathCAT: An exception occurred in set_ui_values (getting SpeechStyle): {e}")
+                log.exception(f"MathCAT: An exception occurred in set_ui_values (getting SpeechStyle): {e}")
                 self.m_choiceSpeechStyle.Append(
                     "Error when setting SpeechStyle for " + self.m_choiceLanguage.GetStringSelection()
                 )
@@ -483,7 +483,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 else:
                     self.m_choiceBrailleMathCode.SetSelection(0)
             except Exception as e:
-                log.error(f"MathCAT: An exception occurred while trying to set the Braille code: {e}")
+                log.exception(f"MathCAT: An exception occurred while trying to set the Braille code: {e}")
                 # the braille code in the settings file is not in the folder structure, something went wrong,
                 # set to the first in the list
                 self.m_choiceBrailleMathCode.SetSelection(0)
@@ -576,7 +576,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 if user_preferences[key1][key2] in valid_values:
                     return
         except Exception as e:
-            log.error(f"MathCAT: An exception occurred in validate: {e}")
+            log.exception(f"MathCAT: An exception occurred in validate: {e}")
             # the preferences entry does not exist
         if key1 not in user_preferences:
             user_preferences[key1] = {key2: default_value}
@@ -591,7 +591,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             if int(user_preferences[key1][key2]) >= valid_values[0] and int(user_preferences[key1][key2]) <= valid_values[1]:
                 return
         except Exception as e:
-            log.error(f"MathCAT: An exception occurred in validate_int: {e}")
+            log.exception(f"MathCAT: An exception occurred in validate_int: {e}")
             # the preferences entry does not exist
         if key1 not in user_preferences:
             user_preferences[key1] = {key2: default_value}
@@ -649,7 +649,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         try:
             libmathcat.SetPreference("Language", user_preferences["Speech"]["Language"])
         except Exception as e:
-            log.error(f'Error in trying to set MathCAT "Language" preference to "{user_preferences["Speech"]["Language"]}": {e}')
+            log.exception(f'Error in trying to set MathCAT "Language" preference to "{user_preferences["Speech"]["Language"]}": {e}')
         if not os.path.exists(UserInterface.path_to_user_preferences_folder()):
             # create a folder for the user preferences
             os.mkdir(UserInterface.path_to_user_preferences_folder())

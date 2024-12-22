@@ -89,7 +89,7 @@ def getLanguageToUse(mathMl: str = "") -> str:
         # ignore regional differences if the MathCAT language setting doesn't have it.
         mathCATLanguageSetting = libmathcat.GetPreference("Language")
     except Exception as e:
-        log.error(e)
+        log.exception(e)
 
     # log.info(f"getLanguageToUse: {mathCATLanguageSetting}")
     if mathCATLanguageSetting != "Auto":
@@ -118,7 +118,7 @@ def ConvertSSMLTextForNVDA(text: str) -> list:
     try:
         mathCATLanguageSetting = libmathcat.GetPreference("Language")
     except Exception as e:
-        log.error(e)
+        log.exception(e)
     language = getLanguageToUse()
     nvdaLanguage = getCurrentLanguage().replace("_", "-")
     # log.info(f"mathCATLanguageSetting={mathCATLanguageSetting}, lang={language}, NVDA={nvdaLanguage}")
@@ -147,7 +147,7 @@ def ConvertSSMLTextForNVDA(text: str) -> list:
         try:
             libmathcat.SetPreference("Language", language)
         except Exception as e:
-            log.error(e)
+            log.exception(e)
             language = mathCATLanguageSetting  # didn't set the language
     if language != nvdaLanguage:
         out.append(LangChangeCommand(language))
@@ -195,7 +195,7 @@ def ConvertSSMLTextForNVDA(text: str) -> list:
         try:
             libmathcat.SetPreference("Language", mathCATLanguageSetting)
         except Exception as e:
-            log.error(e)
+            log.exception(e)
     if language != nvdaLanguage:
         out.append(LangChangeCommand(None))
     # log.info(f"Speech commands: '{out}'")
@@ -226,7 +226,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             text = libmathcat.DoNavigateCommand("ZoomIn")
             speech.speak(ConvertSSMLTextForNVDA(text))
         except Exception as e:
-            log.error(e)
+            log.exception(e)
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("Error in starting navigation of math: see NVDA error log for details"))
 
@@ -239,7 +239,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
         try:
             region.rawText = libmathcat.GetBraille("")
         except Exception as e:
-            log.error(e)
+            log.exception(e)
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("Error in brailling math: see NVDA error log for details"))
             region.rawText = ""
@@ -294,7 +294,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
                 # log.info(f"Navigate speech for {gesture.vkCode}/(s={'shift' in modNames}, c={'control' in modNames}): '{text}'")
                 speech.speak(ConvertSSMLTextForNVDA(text))
         except Exception as e:
-            log.error(e)
+            log.exception(e)
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("Error in navigating math: see NVDA error log for details"))
 
@@ -315,7 +315,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             braille.handler.buffer.update()
             braille.handler.update()
         except Exception as e:
-            log.error(e)
+            log.exception(e)
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("Error in brailling math: see NVDA error log for details"))
 
@@ -335,7 +335,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             try:
                 copy_as = libmathcat.GetPreference("CopyAs").lower()
             except Exception as e:
-                log.error(f"Not able to get 'CopyAs' preference: {e}")
+                log.exception(f"Not able to get 'CopyAs' preference: {e}")
             if copy_as == "asciimath" or copy_as == "latex":
                 # save the old braille code, set the new one, get the braille, then reset the code
                 saved_braille_code: str = libmathcat.GetPreference("BrailleCode")
@@ -358,7 +358,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             # Translators: copy to clipboard
             ui.message(_("copy as ") + copy_as)
         except Exception as e:
-            log.error(e)
+            log.exception(e)
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("unable to copy math: see NVDA error log for details"))
 
@@ -440,7 +440,7 @@ class MathCAT(mathPres.MathPresentationProvider):
             libmathcat.SetRulesDir(rules_dir)
             libmathcat.SetPreference("TTS", "SSML")
         except Exception as e:
-            log.error(e)
+            log.exception(e)
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("MathCAT initialization failed: see NVDA error log for details"))
 
@@ -452,8 +452,8 @@ class MathCAT(mathPres.MathPresentationProvider):
             libmathcat.SetPreference("Language", language)
             libmathcat.SetMathML(mathml)
         except Exception as e:
-            log.error(e)
-            log.error(f"MathML is {mathml}")
+            log.exception(e)
+            log.exception(f"MathML is {mathml}")
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
             libmathcat.SetMathML("<math></math>")  # set it to something
@@ -483,7 +483,7 @@ class MathCAT(mathPres.MathPresentationProvider):
                 return ConvertSSMLTextForNVDA(libmathcat.GetSpokenText())
 
         except Exception as e:
-            log.error(e)
+            log.exception(e)
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("Error in speaking math: see NVDA error log for details"))
             return [""]
@@ -492,7 +492,7 @@ class MathCAT(mathPres.MathPresentationProvider):
         try:
             return libmathcat.GetPreference("SpeechSound") != "None"
         except Exception as e:
-            log.error(f"MathCAT: An exception occurred in _add_sounds: {e}")
+            log.exception(f"MathCAT: An exception occurred in _add_sounds: {e}")
             return False
 
     def getBrailleForMathMl(self, mathml: str):
@@ -500,15 +500,15 @@ class MathCAT(mathPres.MathPresentationProvider):
         try:
             libmathcat.SetMathML(mathml)
         except Exception as e:
-            log.error(e)
-            log.error(f"MathML is {mathml}")
+            log.exception(e)
+            log.exception(f"MathML is {mathml}")
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
             libmathcat.SetMathML("<math></math>")  # set it to something
         try:
             return libmathcat.GetBraille("")
         except Exception as e:
-            log.error(e)
+            log.exception(e)
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("Error in brailling math: see NVDA error log for details"))
             return ""
@@ -584,7 +584,7 @@ def patched_speak(self, speechSequence: SpeechSequence):  # noqa: C901
                 if item.text:
                     textList.append(self._processText(item.text))
         else:
-            log.error("Unknown speech: %s" % item)
+            log.exception("Unknown speech: %s" % item)
     # Close any open tags.
     if langChanged:
         textList.append("</voice>")
