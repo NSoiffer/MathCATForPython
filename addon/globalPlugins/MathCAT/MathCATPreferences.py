@@ -423,7 +423,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                         break
                     i += 1
             except Exception as e:
-                log.exception(f"MathCAT: An exception occurred in set_ui_values ('{user_preferences['Speech']['Language']}'): {e}")
+                log.exception(
+                    f"MathCAT: An exception occurred in set_ui_values ('{user_preferences['Speech']['Language']}'): {e}"
+                )
                 # the language in the settings file is not in the folder structure, something went wrong,
                 # set to the first in the list
                 self.m_choiceLanguage.SetSelection(0)
@@ -649,7 +651,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         try:
             libmathcat.SetPreference("Language", user_preferences["Speech"]["Language"])
         except Exception as e:
-            log.exception(f'Error in trying to set MathCAT "Language" preference to "{user_preferences["Speech"]["Language"]}": {e}')
+            log.exception(
+                f'Error in trying to set MathCAT "Language" preference to "{user_preferences["Speech"]["Language"]}": {e}'
+            )
         if not os.path.exists(UserInterface.path_to_user_preferences_folder()):
             # create a folder for the user preferences
             os.mkdir(UserInterface.path_to_user_preferences_folder())
