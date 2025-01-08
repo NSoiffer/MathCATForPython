@@ -383,6 +383,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             # remove "_Rules.yaml" from the list
             name[: name.find("_Rules.yaml")] for name in getSpeechStyleFromDirectory(languagePath, languageCode)
         ]
+        # There isn't a LiteralSpeak rules file since it has no language-specific rules. We add it at the end.
+        # Translators: at the moment, do NOT translate this string as some code specifically looks for this name.
+        all_style_files.append("LiteralSpeak")
         for name in all_style_files:
             self.m_choiceSpeechStyle.Append((name))
         try:
