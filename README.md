@@ -28,16 +28,17 @@ Who should NOT use MathCAT:
 * Anyone who uses MathPlayer with a language that is not yet supported by MathCAT and are not comfortable with speech in one of the supported languages.
 * Anyone who prefers Access8Math to MathPlayer (for speech or other features)
 
-MathCAT's rules for speech are not yet as extensive as MathPlayer's rules -- that may be another reason to stick with MathPlayer. MathCAT is being used as a testbed for ideas for MathML 4 that allow authors to express their intent so that ambiguous notations can be spoken correctly and not guessed at. I have held off on adding too many rules since the architecture of MathCAT is centered around using and inferring author intent and these are not fully settled yet.
+MathCAT's rules for speech are not yet as extensive as MathPlayer's rules although they are getting close -- that may be another reason to stick with MathPlayer. MathCAT is being used as a testbed for ideas for MathML 4 that allow authors to express their intent so that ambiguous notations can be spoken correctly and not guessed at. I have held off on adding too many rules since the architecture of MathCAT is centered around using and inferring author intent and these are not fully settled yet.
 
 ## MathCAT Update Log
 
-### Version 0.6.6
+### Version 0.6.7
 
 Lots of changes because it has been a while since the last release.
 
 #### Speech
 
+* Added "LiteralSpeak" style that does not infer what the meaning of the math and therefore, how that meaning spoken.
 * Added Swedish to supported languages.
 * Added Finnish to supported languages.
 * MathCAT will switch the voice when reading math if a different language from the current voice was set in the preference dialog.
@@ -46,12 +47,21 @@ Lots of changes because it has been a while since the last release.
 * Added English rule for $P(A|B)$ so that | is spoken as "given"
 * In terse mode, integer subscripts are spoken as "x 1" instead of "x sub 1".
 * Changed the speech for ≈ from "congruent to" to "approximately equal to"
+* Added inference for cross-product and dot-product
+* Added inference for div, grad, and curl
+* Be more restrictive when infering a table 
 * Changed speech for the general cases of `mover` and `munder` from "modified x with y above it" to "quantity x with y above it"
 * Improved rule for {} so that it isn't always spoken as "set of ...". It could just be bracketing chars.
 * Tweaked the speech for ∈ inside of a set so that the word "is" is dropped when part of a set -- "the set of all x is an element of ..." sounds poor.
-* Improved rule for chemistry recogition for atomic numbers.
+* Improved rule for chemistry recognition for atomic numbers.
 * Update to speech hint property names in the proposed MathML Core property list
 * Add speech for coordinates ("the point at 1 comma 2")
+* Added pauses for a ","
+* Added speech for units (e.g., "km", "in") -- won't work for single letter units such as "m" and "s" unless marked as a unit
+
+#### Navigation
+
+* Substantial rewrite of the navigation rules so that follow the inferred meaning. For example, if MathCAT says "absolute value of x" and you "zoom in", then you move to the "x", not to a vertical bar. As another example, if MathCAT determines that a table consists of rows of equations, navigation won't concatenate the columns so that the table acts like there is only one column.
 
 #### Braille
 
@@ -73,6 +83,8 @@ Lots of changes because it has been a while since the last release.
 
 #### Fixes
 
+* Fixed a bug where empty cells in a table that is piecewise, m:system-of-equations or lines were spoken
+* Fixed bug where open/closed intervals were inferred when brackets/parens were nested (can't be an interval)
 * Fixed a bug in UEB where passage mode should have been used for capitals.
 * Fixed a crash with UEB in certain conditions with runs of capital letters.
 * Fixed bug in Navigation of tables (previously reported "Error in Navigation").
