@@ -37,7 +37,7 @@ Navigation_NavMode = ("Enhanced", "Simple", "Character")
 # Navigation_OverView is boolean
 Navigation_NavVerbosity = ("Terse", "Medium", "Verbose")
 # Navigation_AutoZoomOut is boolean
-Navigation_CopyAs = ("MathML", "LaTeX", "ASCIIMath")
+Navigation_CopyAs = ("MathML", "LaTeX", "ASCIIMath", "Speech")
 Braille_BrailleNavHighlight = ("Off", "FirstChar", "EndPoints", "All")
 
 
@@ -638,8 +638,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
         UserInterface.validate("Navigation", "NavVerbosity", ["Terse", "Medium", "Full"], "Medium")
         #  AutoZoomOut: true           # Auto zoom out of 2D exprs (use shift-arrow to force zoom out if unchecked)
         UserInterface.validate("Navigation", "AutoZoomOut", [False, True], True)
-        #  CopyAs: MathML        # MathML, LaTeX, ASCIIMath
-        UserInterface.validate("Navigation", "CopyAs", ["MathML", "LaTeX", "ASCIIMath"], "MathML")
+        #  CopyAs: MathML        # MathML, LaTeX, ASCIIMath, Speech
+        UserInterface.validate("Navigation", "CopyAs", ["MathML", "LaTeX", "ASCIIMath", "Speech"], "MathML")
         # Braille:
         #  BrailleNavHighlight: EndPoints
         # Highlight with dots 7 & 8 the current nav node -- values are Off, FirstChar, EndPoints, All

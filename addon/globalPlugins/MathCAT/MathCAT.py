@@ -203,7 +203,8 @@ def ConvertSSMLTextForNVDA(text: str) -> list:
 
 
 class MathCATInteraction(mathPres.MathInteractionNVDAObject):
-    # Put MathML on the clipboard using the two formats below (defined by MathML spec)
+    # Put MathML or other formats on the clipboard.
+    # MathML is put on the clipboard using the two formats below (defined by MathML spec)
     # We use both formats because some apps may only use one or the other
     # Note: filed https://github.com/nvaccess/nvda/issues/13240 to make this usable outside of MathCAT
     CF_MathML = windll.user32.RegisterClipboardFormatW("MathML")
@@ -352,7 +353,20 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
                     )  # copy will fix up name spacing
                 elif self.init_mathml != "":
                     mathml = self.init_mathml
-                text_to_copy = self._wrapMathMLForClipBoard(mathml)
+                if copy_as == "speech":
+                    # save the old MathML, set the navigation MathML as MathMl, get the speech, then reset the MathML
+                    saved_mathml: str = self.init_mathml
+                    saved_tts = libmathcat.GetPreference("TTS")
+                    if saved_mathml == '':      # shouldn't happen
+                        raise Exception("Internal error -- MathML not set for copy")
+                    libmathcat.SetPreference("TTS", "None")
+                    libmathcat.SetMathML(mathml)
+                    # get the speech text and collapse the whitespace
+                    text_to_copy = ' '.join(libmathcat.GetSpokenText().split())
+                    libmathcat.SetPreference("TTS", saved_tts)
+                    libmathcat.SetMathML(saved_mathml)
+                else:
+                    text_to_copy = self._wrapMathMLForClipBoard(mathml)
 
             self._copyToClipAsMathML(text_to_copy, copy_as == "mathml")
             # Translators: copy to clipboard

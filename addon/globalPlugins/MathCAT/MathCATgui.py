@@ -584,6 +584,8 @@ class MathCATPreferencesDialog(wx.Dialog):
             _("LaTeX"),
             # Translators: options for Copy expression to clipboard as -- "ASCIIMath"
             _("ASCIIMath"),
+            # Translators: options for Copy expression to clipboard as -- speech text
+            _("Speech"),
         ]
         self.m_choiceCopyAs = wx.Choice(
             self.m_panelNavigation,
