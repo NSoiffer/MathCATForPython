@@ -49,7 +49,7 @@ Lots of changes because it has been a while since the last release.
 * Changed the speech for ≈ from "congruent to" to "approximately equal to"
 * Added inference for cross-product and dot-product
 * Added inference for div, grad, and curl
-* Be more restrictive when infering a table 
+* Be more restrictive when inferring a table 
 * Changed speech for the general cases of `mover` and `munder` from "modified x with y above it" to "quantity x with y above it"
 * Improved rule for {} so that it isn't always spoken as "set of ...". It could just be bracketing chars.
 * Tweaked the speech for ∈ inside of a set so that the word "is" is dropped when part of a set -- "the set of all x is an element of ..." sounds poor.
@@ -58,9 +58,11 @@ Lots of changes because it has been a while since the last release.
 * Add speech for coordinates ("the point at 1 comma 2")
 * Added pauses for a ","
 * Added speech for units (e.g., "km", "in") -- won't work for single letter units such as "m" and "s" unless marked as a unit
+* Terse mode now says "of" for functions except for trig/log functions. It was a little too terse before.
 
 #### Navigation
 
+* Added "Speech" to copy menu when navigating so that you can copy out the text used to speak the focus point in the expression being explored.
 * Substantial rewrite of the navigation rules so that follow the inferred meaning. For example, if MathCAT says "absolute value of x" and you "zoom in", then you move to the "x", not to a vertical bar. As another example, if MathCAT determines that a table consists of rows of equations, navigation won't concatenate the columns so that the table acts like there is only one column.
 
 #### Braille
@@ -79,7 +81,8 @@ Lots of changes because it has been a while since the last release.
   * Auto sets those preferences based on the value of the Language pref. For some language such as Spanish, , is used in some countries and . is used in others. In this case, it is best to set the language to also include the country code (e.g, es-es or es-mx) to ensure the right value is used.
 * Added more Unicode chars to include both all Unicode chars marked as "Sm" and those with a mathclass (except Alphabetic and Glyph classes) in the Unicode standard.
 * Add support for some (upcoming) new Unicode characters (equilibrium arrows and others) used in Chemistry into UEB and Nemeth
-* Several fixes for recognizing chemistry 
+* Fixed a bug with double-struck numbers for Nemeth.
+* Several fixes for recognizing chemistry
 
 #### Fixes
 
