@@ -32,9 +32,9 @@ MathCAT's rules for speech are not yet as extensive as MathPlayer's rules althou
 
 ## MathCAT Update Log
 
-### Version 0.6.7
+### Version 0.6.8
 
-Lots of changes because it has been a while since the last release.
+Lots of changes because it has been a while since the last official release.
 
 #### Speech
 
@@ -49,6 +49,7 @@ Lots of changes because it has been a while since the last release.
 * Changed the speech for ≈ from "congruent to" to "approximately equal to"
 * Added inference for cross-product and dot-product
 * Added inference for div, grad, and curl
+* Added special speech for zero, identity, and diagonal matrices in English
 * Be more restrictive when inferring a table 
 * Changed speech for the general cases of `mover` and `munder` from "modified x with y above it" to "quantity x with y above it"
 * Improved rule for {} so that it isn't always spoken as "set of ...". It could just be bracketing chars.
@@ -64,12 +65,15 @@ Lots of changes because it has been a while since the last release.
 
 * Added "Speech" to copy menu when navigating so that you can copy out the text used to speak the focus point in the expression being explored.
 * Substantial rewrite of the navigation rules so that follow the inferred meaning. For example, if MathCAT says "absolute value of x" and you "zoom in", then you move to the "x", not to a vertical bar. As another example, if MathCAT determines that a table consists of rows of equations, navigation won't concatenate the columns so that the table acts like there is only one column.
+* "Speak Overview" didn't do anything (fixed). Overviews remain under-developed.
 
 #### Braille
 
-* Added support for Finnish version of AsciiMath braille
-* Added support for Swedish braille
+* Added support for Finnish version of AsciiMath braille.
+* Added support for Swedish braille.
 * Added support for Vietnamese accents position for Vietnamese braille vowel "rhymes".
+* Added preferences so that Nemeth users can remap typeforms (e.g, map BlackBoard Bold to a different character).
+* Changed Blackboard typeform indicator to reuse italic indicator instead of reusing the script indicator. By changing the Nemeth typeform values in NVDA's addon subdirectory `addons\MathCAT\globalPlugins\MathCAT\Rulesprefs.yaml or adding it to `%AppData%\MathCAT\prefs.yaml`, you can restore the old mapping.
 
 #### Other
 
@@ -82,18 +86,20 @@ Lots of changes because it has been a while since the last release.
 * Added more Unicode chars to include both all Unicode chars marked as "Sm" and those with a mathclass (except Alphabetic and Glyph classes) in the Unicode standard.
 * Add support for some (upcoming) new Unicode characters (equilibrium arrows and others) used in Chemistry into UEB and Nemeth
 * Fixed a bug with double-struck numbers for Nemeth.
-* Several fixes for recognizing chemistry
+* Several fixes for recognizing chemistry.
 
 #### Fixes
 
-* Fixed a bug where empty cells in a table that is piecewise, m:system-of-equations or lines were spoken
-* Fixed bug where open/closed intervals were inferred when brackets/parens were nested (can't be an interval)
+* Setting .
+* Fixed sans-serif indicator for Nemeth braille.
+* Fixed a bug where empty cells in a table that is piecewise, m:system-of-equations or lines were spoken.
+* Fixed bug where open/closed intervals were inferred when brackets/parens were nested (can't be an interval).
 * Fixed a bug in UEB where passage mode should have been used for capitals.
 * Fixed a crash with UEB in certain conditions with runs of capital letters.
 * Fixed bug in Navigation of tables (previously reported "Error in Navigation").
 * Fixed bug moving to previous/next column in tables when at a table row level.
-* Fixed bug when trying to correct bad MathML representation of chemistry inside of the base of a script
-* Fixed Vietnamese braille for "/"/
+* Fixed bug when trying to correct bad MathML representation of chemistry inside of the base of a script.
+* Fixed Vietnamese braille for "/".
 * In the dialog code, the file location and %APPDATA% are now used to find the Rules and prefs files.
 * After changing how prefs work in a previous version, I forgot to change MathRate and PauseFactor to be numbers, not strings.
 * Fixed bug in the braille Rules (missed change from earlier) where a third argument should have been given to say to look in the Braille definitions.yaml files and not the speech ones when looking up the value of a definition.
