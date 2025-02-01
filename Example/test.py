@@ -85,7 +85,7 @@ def test():
     mathml = "<math><msup intent='transpose:postfix($x)'> <mi arg='x'>x</mi> <mi>T</mi> </msup> </math>"
     setMathMLForMathCAT(mathml)
     speech = getSpeech()
-    if speech != ', x transpose':
+    if speech != 'x transpose':
         sys.exit(f"MathML: {mathml}\nSpeech: '{speech}'")
 
     mathml = "<math><mrow intent='_(x, $op)'><mo arg='op'>!</mo></mrow></math>"
