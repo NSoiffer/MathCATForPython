@@ -41,6 +41,7 @@ Lots of changes because it has been a while since the last official release.
 * Added "LiteralSpeak" style that does not infer what the meaning of the math and therefore, how that meaning spoken.
 * Added Swedish to supported languages.
 * Added Finnish to supported languages.
+* For Vietnamese, added optional pitch change and beep for capital letters
 * MathCAT will switch the voice when reading math if a different language from the current voice was set in the preference dialog.
 * Added a en-UK variant with some British ways to speak bracketing chars.
 * Added English rules for div, grad, and curl (calculus)
