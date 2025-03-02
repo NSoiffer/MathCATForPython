@@ -153,6 +153,7 @@ def ConvertSSMLTextForNVDA(text: str) -> list:
         out.append(LangChangeCommand(language))
 
     resetProsody = []
+    # log.info(f"\ntext: {text}")
     for m in RE_MATHML_SPEECH.finditer(text):
         if m.lastgroup == "break":
             if use_break:
@@ -306,7 +307,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             # update the braille to reflect the nav position (might be excess code, but it works)
             nav_node = libmathcat.GetNavigationMathMLId()
             braille_chars = libmathcat.GetBraille(nav_node[0])
-            log.info(f'braille display = {config.conf["braille"]["display"]}, braille_chars: {braille_chars}')
+            # log.info(f'braille display = {config.conf["braille"]["display"]}, braille_chars: {braille_chars}')
             region = braille.Region()
             region.rawText = braille_chars
             region.focusToHardLeft = True
@@ -546,7 +547,7 @@ def _monkeyPatchESpeak():
 
 
 def patched_speak(self, speechSequence: SpeechSequence):  # noqa: C901
-    # log.info(f"patched_speak input: {speechSequence}")
+    # log.info(f"\npatched_speak input: {speechSequence}")
     textList: List[str] = []
     langChanged = False
     prosody: Dict[str, int] = {}
@@ -566,6 +567,11 @@ def patched_speak(self, speechSequence: SpeechSequence):  # noqa: C901
             langChanged = True
         elif isinstance(item, BreakCommand):
             textList.append(f'<break time="{item.time}ms" />')
+        elif isinstance(item, RateCommand):
+            if item.multiplier == 1:
+                textList.append('<prosody/>')
+            else:
+                textList.append(f"<prosody rate={int(item.multiplier * 100)}%>")
         elif type(item) in self.PROSODY_ATTRS:
             if prosody:
                 # Close previous prosody tag.
@@ -605,7 +611,7 @@ def patched_speak(self, speechSequence: SpeechSequence):  # noqa: C901
     if prosody:
         textList.append("</prosody>")
     text = "".join(textList)
-    # log.info(f"\ntext={text}")
+    # log.info(f"monkey-patched text={text}")
     # Added saving old rate and then resetting to that -- work around for https://github.com/nvaccess/nvda/issues/15221
     # I'm not clear why this works since _set_rate() is called before the speech is finished speaking
     synth = getSynth()
