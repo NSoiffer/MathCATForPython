@@ -64,7 +64,7 @@ def test():
     mathml = "<math><mfrac> <mn>1</mn> <mi>X</mi> </mfrac> </math>"
     setMathMLForMathCAT(mathml)
     speech = getSpeech()
-    if speech != '1 over  cap x,':
+    if speech != '1 over  cap x':
         sys.exit(f"MathML: {mathml}\nSpeech: '{speech}'")
     braille = getBraille()
     if braille != '⠹⠂⠌⠠⠭⠼':
