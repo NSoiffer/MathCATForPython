@@ -46,7 +46,10 @@ Lots of changes because it has been a while since the last official release.
 * Added a en-UK variant with some British ways to speak bracketing chars.
 * Added English rules for div, grad, and curl (calculus)
 * Added English rule for $P(A|B)$ so that | is spoken as "given"
+* Added more cases where invisible times is spoken (before roots)
 * In terse mode, integer subscripts are spoken as "x 1" instead of "x sub 1".
+* Added ability for authors to insert pauses (English only at the moment)
+* Added a pause before row/equation/line labels
 * Changed the speech for ≈ from "congruent to" to "approximately equal to"
 * Added inference for cross-product and dot-product
 * Added inference for div, grad, and curl
@@ -59,6 +62,10 @@ Lots of changes because it has been a while since the last official release.
 * Update to speech hint property names in the proposed MathML Core property list
 * Add speech for coordinates ("the point at 1 comma 2")
 * Added pauses for a ","
+* Added an experimental `:pause-long`, `:pause-medium`, `:pause-short` for intent
+* Added an 'xlong' pause
+* Increased the meaning of short/medium/long pauses from 150ms/300ms/600ms to 200ms/400ms/800ms. As always, these are scaled to the speech rate.
+* In MathML 4, `mlabedtr` is deprecated. A workaround is to use the intent property `:equation-label` on an `mtd` and this is now supported
 * Added speech for units (e.g., "km", "in") -- won't work for single letter units such as "m" and "s" unless marked as a unit
 * Terse mode now says "of" for functions except for trig/log functions. It was a little too terse before.
 
@@ -91,7 +98,7 @@ Lots of changes because it has been a while since the last official release.
 
 #### Fixes
 
-* Setting .
+* Fixed bug with espeak where it would slow down
 * Fixed sans-serif indicator for Nemeth braille.
 * Fixed a bug where empty cells in a table that is piecewise, m:system-of-equations or lines were spoken.
 * Fixed bug where open/closed intervals were inferred when brackets/parens were nested (can't be an interval).
