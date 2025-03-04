@@ -81,6 +81,10 @@ PROSODY_COMMANDS = {
 }
 RE_MATH_LANG = re.compile(r"""<math .*(xml:)?lang=["']([^'"]+)["'].*>""")
 
+# try to get around espeak bug where voice slows down (for other voices, just a waste of time)
+# we use a global that gets set at a time when the rate is probably good (SetMathML)
+_synthesizer_rate: int | None = None
+
 
 def getLanguageToUse(mathMl: str = "") -> str:
     """Get the language specified in a math tag if the language pref is Auto, else the language preference."""
@@ -123,15 +127,12 @@ def ConvertSSMLTextForNVDA(text: str) -> list:
     nvdaLanguage = getCurrentLanguage().replace("_", "-")
     # log.info(f"mathCATLanguageSetting={mathCATLanguageSetting}, lang={language}, NVDA={nvdaLanguage}")
 
-    synth = getSynth()
     _monkeyPatchESpeak()
-    wpm = synth._percentToParam(synth.rate, 80, 450)
-    try:
-        if synth.rateBoost:
-            wpm *= 3  # a guess based on espeak -- not sure what oneCore does
-    except AttributeError:
-        pass  # SAPI voices don't have 'rateBoost' attr
-
+    
+    synth = getSynth()
+    # I tried the engines on a 180 word excerpt. The speeds do not change linearly and differ a it between engines
+    # At "50" espeak finished in 46 sec, sapi in 75 sec, and one core in 70; at '100' one core was much slower than the others
+    wpm = 2*getSynth()._get_rate()
     breakMulti = 180.0 / wpm
     supported_commands = synth.supportedCommands
     use_break = BreakCommand in supported_commands
@@ -224,6 +225,9 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 
     def reportFocus(self):
         super(MathCATInteraction, self).reportFocus()
+        # try to get around espeak bug where voice slows down
+        if _synthesizer_rate and getSynth().name == 'espeak' :
+            getSynth()._set_rate(_synthesizer_rate)
         try:
             text = libmathcat.DoNavigateCommand("ZoomIn")
             speech.speak(ConvertSSMLTextForNVDA(text))
@@ -231,6 +235,11 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             log.exception(e)
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("Error in starting navigation of math: see NVDA error log for details"))
+        finally:
+            # try to get around espeak bug where voice slows down
+            if _synthesizer_rate and getSynth().name == 'espeak':
+                # log.info(f'reportFocus: reset to {_synthesizer_rate}')
+                getSynth()._set_rate(_synthesizer_rate)
 
     def getBrailleRegions(self, review: bool = False):
         # log.info("***MathCAT start getBrailleRegions")
@@ -282,8 +291,10 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             return super().getScript(gesture)
 
     def script_navigate(self, gesture: KeyboardInputGesture):
-        # log.info("***MathCAT script_navigate")
         try:
+            # try to get around espeak bug where voice slows down
+            if _synthesizer_rate and getSynth().name == 'espeak' :
+                getSynth()._set_rate(_synthesizer_rate)
             if (gesture is not None):  # == None when initial focus -- handled in reportFocus()
                 modNames = gesture.modifierNames
                 text = libmathcat.DoNavigateKeyPress(
@@ -299,6 +310,11 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
             log.exception(e)
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("Error in navigating math: see NVDA error log for details"))
+        finally:
+            # try to get around espeak bug where voice slows down
+            if _synthesizer_rate and getSynth().name == 'espeak':
+                # log.info(f'script_navigate: reset to {_synthesizer_rate}')
+                getSynth()._set_rate(_synthesizer_rate)
 
         if not braille.handler.enabled:
             return
@@ -460,6 +476,14 @@ class MathCAT(mathPres.MathPresentationProvider):
             speech.speakMessage(_("MathCAT initialization failed: see NVDA error log for details"))
 
     def getSpeechForMathMl(self, mathml: str):
+        global _synthesizer_rate
+        synth = getSynth()
+        synthConfig = config.conf["speech"][synth.name]
+        if synth.name == 'espeak':
+            _synthesizer_rate = synthConfig['rate']
+            # log.info(f'_synthesizer_rate={_synthesizer_rate}, get_rate()={getSynth()._get_rate()}')
+            getSynth()._set_rate(_synthesizer_rate)
+        # log.info(f'..............get_rate()={getSynth()._get_rate()}, name={synth.name}')
         try:
             # need to set Language before the MathML for DecimalSeparator canonicalization
             language = getLanguageToUse(mathml)
@@ -473,8 +497,6 @@ class MathCAT(mathPres.MathPresentationProvider):
             speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
             libmathcat.SetMathML("<math></math>")  # set it to something
         try:
-            synth = getSynth()
-            synthConfig = config.conf["speech"][synth.name]
             supported_commands = synth.supportedCommands
             # Set preferences for capital letters
             libmathcat.SetPreference(
@@ -502,6 +524,12 @@ class MathCAT(mathPres.MathPresentationProvider):
             # Translators: this message directs users to look in the log file
             speech.speakMessage(_("Error in speaking math: see NVDA error log for details"))
             return [""]
+        finally:
+            # try to get around espeak bug where voice slows down
+            if _synthesizer_rate and getSynth().name == 'espeak' :
+                # log.info(f'getSpeechForMathMl: reset to {_synthesizer_rate}')
+                getSynth()._set_rate(_synthesizer_rate)
+
 
     def _add_sounds(self):
         try:
@@ -612,9 +640,7 @@ def patched_speak(self, speechSequence: SpeechSequence):  # noqa: C901
         textList.append("</prosody>")
     text = "".join(textList)
     # log.info(f"monkey-patched text={text}")
-    # Added saving old rate and then resetting to that -- work around for https://github.com/nvaccess/nvda/issues/15221
-    # I'm not clear why this works since _set_rate() is called before the speech is finished speaking
-    synth = getSynth()
-    oldRate = synth._get_rate()
+    oldRate: int = getSynth()._get_rate()
     _espeak.speak(text)
-    synth._set_rate(oldRate)
+    # try to get around espeak bug where voice slows down
+    getSynth()._set_rate(oldRate)
