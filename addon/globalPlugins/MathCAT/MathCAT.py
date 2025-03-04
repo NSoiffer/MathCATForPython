@@ -128,7 +128,7 @@ def ConvertSSMLTextForNVDA(text: str) -> list:
     # log.info(f"mathCATLanguageSetting={mathCATLanguageSetting}, lang={language}, NVDA={nvdaLanguage}")
 
     _monkeyPatchESpeak()
-    
+
     synth = getSynth()
     # I tried the engines on a 180 word excerpt. The speeds do not change linearly and differ a it between engines
     # At "50" espeak finished in 46 sec, sapi in 75 sec, and one core in 70; at '100' one core was much slower than the others
@@ -226,7 +226,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
     def reportFocus(self):
         super(MathCATInteraction, self).reportFocus()
         # try to get around espeak bug where voice slows down
-        if _synthesizer_rate and getSynth().name == 'espeak' :
+        if _synthesizer_rate and getSynth().name == 'espeak':
             getSynth()._set_rate(_synthesizer_rate)
         try:
             text = libmathcat.DoNavigateCommand("ZoomIn")
@@ -293,7 +293,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
     def script_navigate(self, gesture: KeyboardInputGesture):
         try:
             # try to get around espeak bug where voice slows down
-            if _synthesizer_rate and getSynth().name == 'espeak' :
+            if _synthesizer_rate and getSynth().name == 'espeak':
                 getSynth()._set_rate(_synthesizer_rate)
             if (gesture is not None):  # == None when initial focus -- handled in reportFocus()
                 modNames = gesture.modifierNames
@@ -526,10 +526,9 @@ class MathCAT(mathPres.MathPresentationProvider):
             return [""]
         finally:
             # try to get around espeak bug where voice slows down
-            if _synthesizer_rate and getSynth().name == 'espeak' :
+            if _synthesizer_rate and getSynth().name == 'espeak':
                 # log.info(f'getSpeechForMathMl: reset to {_synthesizer_rate}')
                 getSynth()._set_rate(_synthesizer_rate)
-
 
     def _add_sounds(self):
         try:
