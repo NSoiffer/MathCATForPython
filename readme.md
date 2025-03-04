@@ -99,6 +99,7 @@ Lots of changes because it has been a while since the last official release.
 #### Fixes
 
 * Fixed bug with espeak where it would slow down
+* Forgot to implement relative slowdown when navigating -- fixed
 * Fixed sans-serif indicator for Nemeth braille.
 * Fixed a bug where empty cells in a table that is piecewise, m:system-of-equations or lines were spoken.
 * Fixed bug where open/closed intervals were inferred when brackets/parens were nested (can't be an interval).
