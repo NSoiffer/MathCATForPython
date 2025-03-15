@@ -530,6 +530,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
             Braille_BrailleNavHighlight[self.m_choiceBrailleHighlights.GetSelection()]
         )
         user_preferences["Braille"]["BrailleCode"] = self.m_choiceBrailleMathCode.GetStringSelection()
+        if "NVDAAddOn" not in user_preferences:
+            user_preferences["NVDAAddOn"] = {"LastCategory": "0"}
         user_preferences["NVDAAddOn"]["LastCategory"] = self.m_listBoxPreferencesTopic.GetSelection()
 
     @staticmethod
