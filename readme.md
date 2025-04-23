@@ -32,6 +32,14 @@ MathCAT's rules for speech are not yet as extensive as MathPlayer's rules althou
 
 ## MathCAT Update Log
 
+### Version 0.6.9
+
+* Update manifest to indicate compatibility with 2025.1
+* Fix unhandled exception when opening up a new user preference file
+* Strip '_' and '-' from unmatched intent names (and literals). For example "my-function" should be "my function".
+* Add rule for "x check" (inverted hat)
+* Add rule for repeating decimals for 'en'. This only handles the line over the repeating part, not other notations.
+
 ### Version 0.6.8
 
 Lots of changes because it has been a while since the last official release.
