@@ -24,8 +24,10 @@ class Node(object):
 
 class ScalarNode(Node):
     id = 'scalar'
-    def __init__(self, tag, value,
-            start_mark=None, end_mark=None, style=None):
+    def __init__(
+        self, tag, value,
+        start_mark=None, end_mark=None, style=None,
+    ):
         self.tag = tag
         self.value = value
         self.start_mark = start_mark
@@ -33,8 +35,10 @@ class ScalarNode(Node):
         self.style = style
 
 class CollectionNode(Node):
-    def __init__(self, tag, value,
-            start_mark=None, end_mark=None, flow_style=None):
+    def __init__(
+        self, tag, value,
+        start_mark=None, end_mark=None, flow_style=None,
+    ):
         self.tag = tag
         self.value = value
         self.start_mark = start_mark
@@ -46,4 +50,3 @@ class SequenceNode(CollectionNode):
 
 class MappingNode(CollectionNode):
     id = 'mapping'
-

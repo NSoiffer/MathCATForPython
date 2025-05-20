@@ -25,14 +25,14 @@ jobs:
         git commit -m "Update translations" --allow-empty
         git pull
         git push
-  
-  zip-rules:  
+
+  zip-rules:
     name: zip up the rules directory
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Build Rust Library 
+      - name: Build Rust Library
         run: |
           cargo build --target x86_64-unknown-linux-gnu   # doesn't need a release build since all that we want is the Rules dir
       - name: create rules.zip
@@ -42,7 +42,7 @@ jobs:
           filename: 'Rules.zip'
           directory: 'addon/globalPlugins/MathCAT'
           path: 'Rules'
-      - name: Upload Rules.zip 
+      - name: Upload Rules.zip
         uses: actions/upload-artifact@v4
         with:
           name: 'Rules.zip'
@@ -50,7 +50,7 @@ jobs:
           compression-level: 0
           retention-days: 1
 
-  rust-32:  
+  rust-32:
     name: Build 32 bit windows pyd file
     runs-on: windows-latest  # needs to run on windows because of bzip2
     steps:
@@ -61,7 +61,7 @@ jobs:
         with:
           python-version: 3.11
           architecture: 'x86'
-      - name: Build Rust Library 
+      - name: Build Rust Library
         run: |
           cargo build --target i686-pc-windows-msvc --release
       - name: Setup Example dir
@@ -79,15 +79,15 @@ jobs:
           filename: '../libmathcat_py-32-3.11-win.zip'
           directory: 'Example'
           path: 'libmathcat_py.pyd'
-      - name: Upload 32 bit pyd file 
+      - name: Upload 32 bit pyd file
         uses: actions/upload-artifact@v4
         with:
           name: libmathcat_py-32-3.11-win.zip
           path: libmathcat_py-32-3.11-win.zip
           compression-level: 0
           retention-days: 1
-  
-  rust-64:  
+
+  rust-64:
     name: Build 64 bit windows pyd file
     runs-on: windows-latest  # needs to run on windows because of bzip2
     steps:
@@ -98,7 +98,7 @@ jobs:
         with:
           python-version: 3.11
           architecture: 'x64'
-      - name: Build Rust Library 
+      - name: Build Rust Library
         run: |
           cargo build --target x86_64-pc-windows-msvc --release
       - name: Setup Example dir
@@ -116,15 +116,15 @@ jobs:
         run: |
           cd Example
           python test.py
-      - name: Upload 64 bit pyd file 
+      - name: Upload 64 bit pyd file
         uses: actions/upload-artifact@v4
         with:
           name: libmathcat_py-64-3.11-win.zip
           path: libmathcat_py-64-3.11-win.zip
           compression-level: 0
           retention-days: 1
-       
-  linux-64:  
+
+  linux-64:
     name: Build linux pyd file (64-bit intel)
     runs-on: ubuntu-latest
     steps:
@@ -135,7 +135,7 @@ jobs:
         with:
           python-version: 3.11
           architecture: 'x64'
-      - name: Build Rust Library 
+      - name: Build Rust Library
         run: |
           cargo build --target x86_64-unknown-linux-gnu --release
       - name: Setup Example dir
@@ -154,14 +154,14 @@ jobs:
           filename: '../libmathcat_py-64-3.11-linux.zip'
           directory: 'Example'
           path: 'libmathcat_py.so'
-      - name: Upload 64 bit pyd file 
+      - name: Upload 64 bit pyd file
         uses: actions/upload-artifact@v4
         with:
           name: libmathcat_py-64-3.11-linux.zip
           path: libmathcat_py-64-3.11-linux.zip
           compression-level: 0
           retention-days: 1
- 
+
   build-addon:
     name: build-addon
     continue-on-error: false
@@ -202,7 +202,7 @@ jobs:
     - name: Run scons to build .addon file
       run: |
           scons
-    - name: Upload the addon 
+    - name: Upload the addon
       uses: actions/upload-artifact@v4
       with:
         name: addon
@@ -210,7 +210,7 @@ jobs:
         compression-level: 0
         retention-days: 1
 
-  pre-release:  
+  pre-release:
     name: Pre Release
     continue-on-error: false
     needs: [zip-rules, rust-32, rust-64, linux-64, build-addon]

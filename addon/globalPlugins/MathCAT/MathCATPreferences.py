@@ -42,644 +42,681 @@ Braille_BrailleNavHighlight = ("Off", "FirstChar", "EndPoints", "All")
 
 
 class UserInterface(MathCATgui.MathCATPreferencesDialog):
-    def __init__(self, parent):
-        # initialize parent class
-        MathCATgui.MathCATPreferencesDialog.__init__(self, parent)
+	def __init__(self, parent):
+		# initialize parent class
+		MathCATgui.MathCATPreferencesDialog.__init__(self, parent)
 
-        # load the logo into the dialog
-        full_path_to_logo = (
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
-        )
-        if os.path.exists(full_path_to_logo):
-            self.m_bitmapLogo.SetBitmap(wx.Bitmap(full_path_to_logo))
+		# load the logo into the dialog
+		full_path_to_logo = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
+		if os.path.exists(full_path_to_logo):
+			self.m_bitmapLogo.SetBitmap(wx.Bitmap(full_path_to_logo))
 
-        # load in the system values followed by the user prefs (if any)
-        UserInterface.load_default_preferences()
-        UserInterface.load_user_preferences()
+		# load in the system values followed by the user prefs (if any)
+		UserInterface.load_default_preferences()
+		UserInterface.load_user_preferences()
 
-        # hack for "CopyAs" because its location in the prefs is not yet fixed
-        if "CopyAs" not in user_preferences["Navigation"]:
-            user_preferences["Navigation"]["CopyAs"] = (
-                user_preferences["Other"]["CopyAs"] if "CopyAs" in user_preferences["Other"] else "MathML"
-            )
-        UserInterface.validate_user_preferences()
+		# hack for "CopyAs" because its location in the prefs is not yet fixed
+		if "CopyAs" not in user_preferences["Navigation"]:
+			user_preferences["Navigation"]["CopyAs"] = (
+				user_preferences["Other"]["CopyAs"] if "CopyAs" in user_preferences["Other"] else "MathML"
+			)
+		UserInterface.validate_user_preferences()
 
-        if "NVDAAddOn" in user_preferences:
-            # set the categories selection to what we used on last run
-            self.m_listBoxPreferencesTopic.SetSelection(user_preferences["NVDAAddOn"]["LastCategory"])
-            # show the appropriate dialogue page
-            self.m_simplebookPanelsCategories.SetSelection(self.m_listBoxPreferencesTopic.GetSelection())
-        else:
-            # set the categories selection to the first item
-            self.m_listBoxPreferencesTopic.SetSelection(0)
-            user_preferences["NVDAAddOn"] = {"LastCategory": "0"}
-        # populate the languages and braille codes
-        UserInterface.GetLanguages(self)
-        UserInterface.GetBrailleCodes(self)
-        # set the ui items to match the preferences
-        UserInterface.set_ui_values(self)
+		if "NVDAAddOn" in user_preferences:
+			# set the categories selection to what we used on last run
+			self.m_listBoxPreferencesTopic.SetSelection(user_preferences["NVDAAddOn"]["LastCategory"])
+			# show the appropriate dialogue page
+			self.m_simplebookPanelsCategories.SetSelection(self.m_listBoxPreferencesTopic.GetSelection())
+		else:
+			# set the categories selection to the first item
+			self.m_listBoxPreferencesTopic.SetSelection(0)
+			user_preferences["NVDAAddOn"] = {"LastCategory": "0"}
+		# populate the languages and braille codes
+		UserInterface.GetLanguages(self)
+		UserInterface.GetBrailleCodes(self)
+		# set the ui items to match the preferences
+		UserInterface.set_ui_values(self)
 
-    @staticmethod
-    def path_to_languages_folder():
-        # the user preferences file is stored at: MathCAT\Rules\Languages
-        return os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "Languages")
+	@staticmethod
+	def path_to_languages_folder():
+		# the user preferences file is stored at: MathCAT\Rules\Languages
+		return os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "Languages")
 
-    @staticmethod
-    def pathToBrailleFolder():
-        # the user preferences file is stored at: MathCAT\Rules\Languages
-        return os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "Braille")
+	@staticmethod
+	def pathToBrailleFolder():
+		# the user preferences file is stored at: MathCAT\Rules\Languages
+		return os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "Braille")
 
-    @staticmethod
-    def LanguagesDict() -> Dict[str, str]:
-        languages = {
-            "aa": "Afar",
-            "ab": "Аҧсуа",
-            "af": "Afrikaans",
-            "ak": "Akana",
-            "an": "Aragonés",
-            "ar": "العربية",
-            "as": "অসমীয়া",
-            "av": "Авар",
-            "ay": "Aymar",
-            "az": "Azərbaycanca / آذربايجان",
-            "ba": "Башҡорт",
-            "be": "Беларуская",
-            "bg": "Български",
-            "bh": "भोजपुरी",
-            "bi": "Bislama",
-            "bm": "Bahamanian",
-            "bn": "বাংলা",
-            "bo": "བོད་ཡིག / Bod skad",
-            "bs": "Bosanski",
-            "ca": "Català",
-            "ce": "Нохчийн",
-            "ch": "Chamoru",
-            "co": "Corsu",
-            "cr": "Nehiyaw",
-            "cs": "Česky",
-            "cu": "словѣньскъ / slověnĭskŭ",
-            "cv": "Чăваш",
-            "cy": "Cymraeg",
-            "da": "Dansk",
-            "de": "Deutsch",
-            "dv": "ދިވެހިބަސް",
-            "dz": "རྫོང་ཁ",
-            "ee": "Ɛʋɛ",
-            "el": "Ελληνικά",
-            "en": "English",
-            "en-GB": "English, United Kingdom",
-            "en-US": "English, United States",
-            "eo": "Esperanto",
-            "es": "Español",
-            "fa": "فارسی",
-            "fi": "Suomi",
-            "fj": "Na Vosa Vakaviti",
-            "fo": "Føroyskt",
-            "fr": "Français",
-            "fy": "Frysk",
-            "ga": "Gaeilge",
-            "gd": "Gàidhlig",
-            "gl": "Galego",
-            "gn": "Avañe'ẽ",
-            "gu": "ગુજરાતી",
-            "gv": "Gaelg",
-            "ha": "هَوُسَ",
-            "he": "עברית",
-            "hi": "हिन्दी",
-            "ho": "Hiri Motu",
-            "hr": "Hrvatski",
-            "ht": "Krèyol ayisyen",
-            "hu": "Magyar",
-            "hy": "Հայերեն",
-            "hz": "Otsiherero",
-            "ia": "Interlingua",
-            "id": "Bahasa Indonesia",
-            "ig": "Igbo",
-            "ii": "ꆇꉙ / 四川彝语",
-            "ik": "Iñupiak",
-            "io": "Ido",
-            "is": "Íslenska",
-            "it": "Italiano",
-            "iu": "ᐃᓄᒃᑎᑐᑦ",
-            "ja": "日本語",
-            "jv": "Basa Jawa",
-            "ka": "ქართული",
-            "kg": "KiKongo",
-            "ki": "Gĩkũyũ",
-            "kj": "Kuanyama",
-            "kk": "Қазақша",
-            "km": "ភាសាខ្មែរ",
-            "kn": "ಕನ್ನಡ",
-            "ko": "한국어",
-            "ks": "कॉशुर / کٲش",
-            "ku": "Kurdî",
-            "kv": "Коми",
-            "kw": "Kernewek",
-            "ky": "Kırgızca / Кыргызча",
-            "la": "Latina",
-            "lb": "Lëtzebuergesch",
-            "lg": "Luganda",
-            "li": "Limburgs",
-            "ln": "Lingála",
-            "lo": "ລາວ / Pha xa lao",
-            "lt": "Lietuvių",
-            "lv": "Latviešu",
-            "mg": "Malagasy",
-            "mh": "Kajin Majel / Ebon",
-            "mk": "Македонски",
-            "ml": "മലയാളം",
-            "mn": "Монгол",
-            "mo": "Moldovenească",
-            "ms": "Bahasa Melayu",
-            "mt": "bil-Malti",
-            "my": "Myanmasa",
-            "na": "Dorerin Naoero",
-            "ne": "नेपाली",
-            "ng": "Oshiwambo",
-            "nl": "Nederlands",
-            "nn": "Norsk (nynorsk)",
-            "nr": "isiNdebele",
-            "nv": "Diné bizaad",
-            "ny": "Chi-Chewa",
-            "oc": "Occitan",
-            "oj": "ᐊᓂᔑᓈᐯᒧᐎᓐ / Anishinaabemowin",
-            "om": "Oromoo",
-            "os": "Иронау",
-            "pa": "ਪੰਜਾਬੀ / پنجابی",
-            "pi": "Pāli / पाऴि",
-            "pl": "Polski",
-            "ps": "پښتو",
-            "pt": "Português",
-            "qu": "Runa Simi",
-            "rm": "Rumantsch",
-            "ro": "Română",
-            "ru": "Русский",
-            "rw": "Kinyarwandi",
-            "sa": "संस्कृतम्",
-            "sc": "Sardu",
-            "sd": "सिंधी / سنڌي",
-            "se": "Davvisámegiella",
-            "sg": "Sängö",
-            "sh": "Srpskohrvatski / Српскохрватски",
-            "si": "සිංහල",
-            "sk": "Slovenčina",
-            "sl": "Slovenščina",
-            "sm": "Gagana Samoa",
-            "sn": "chiShona",
-            "so": "Soomaaliga",
-            "sq": "Shqip",
-            "sr": "Српски",
-            "ss": "SiSwati",
-            "st": "Sesotho",
-            "su": "Basa Sunda",
-            "sv": "Svenska",
-            "sw": "Kiswahili",
-            "ta": "தமிழ்",
-            "tg": "Тоҷикӣ",
-            "th": "ไทย / Phasa Thai",
-            "ti": "ትግርኛ",
-            "tk": "Туркмен / تركمن",
-            "tl": "Tagalog",
-            "to": "Lea Faka-Tonga",
-            "tr": "Türkçe",
-            "ts": "Xitsonga",
-            "tt": "Tatarça",
-            "tw": "Twi",
-            "ty": "Reo Mā`ohi",
-            "ug": "Uyƣurqə / ئۇيغۇرچە",
-            "uk": "Українська",
-            "ur": "اردو",
-            "uz": "Ўзбек",
-            "ve": "Tshivenḓa",
-            "vi": "Tiếng Việt",
-            "vo": "Volapük",
-            "wa": "Walon",
-            "wo": "Wollof",
-            "xh": "isiXhosa",
-            "yi": "ייִדיש",
-            "yo": "Yorùbá",
-            "za": "Cuengh / Tôô / 壮语",
-            "zh": "中文",
-            "zh-HANS": "Chinese, Simplified",
-            "zh-HANT": "Chinese, Traditional",
-            "zh-TW": "Chinese, Traditional, Taiwan",
-            "zu": "isiZulu",
-        }
-        return languages
+	@staticmethod
+	def LanguagesDict() -> Dict[str, str]:
+		languages = {
+			"aa": "Afar",
+			"ab": "Аҧсуа",
+			"af": "Afrikaans",
+			"ak": "Akana",
+			"an": "Aragonés",
+			"ar": "العربية",
+			"as": "অসমীয়া",
+			"av": "Авар",
+			"ay": "Aymar",
+			"az": "Azərbaycanca / آذربايجان",
+			"ba": "Башҡорт",
+			"be": "Беларуская",
+			"bg": "Български",
+			"bh": "भोजपुरी",
+			"bi": "Bislama",
+			"bm": "Bahamanian",
+			"bn": "বাংলা",
+			"bo": "བོད་ཡིག / Bod skad",
+			"bs": "Bosanski",
+			"ca": "Català",
+			"ce": "Нохчийн",
+			"ch": "Chamoru",
+			"co": "Corsu",
+			"cr": "Nehiyaw",
+			"cs": "Česky",
+			"cu": "словѣньскъ / slověnĭskŭ",
+			"cv": "Чăваш",
+			"cy": "Cymraeg",
+			"da": "Dansk",
+			"de": "Deutsch",
+			"dv": "ދިވެހިބަސް",
+			"dz": "རྫོང་ཁ",
+			"ee": "Ɛʋɛ",
+			"el": "Ελληνικά",
+			"en": "English",
+			"en-GB": "English, United Kingdom",
+			"en-US": "English, United States",
+			"eo": "Esperanto",
+			"es": "Español",
+			"fa": "فارسی",
+			"fi": "Suomi",
+			"fj": "Na Vosa Vakaviti",
+			"fo": "Føroyskt",
+			"fr": "Français",
+			"fy": "Frysk",
+			"ga": "Gaeilge",
+			"gd": "Gàidhlig",
+			"gl": "Galego",
+			"gn": "Avañe'ẽ",
+			"gu": "ગુજરાતી",
+			"gv": "Gaelg",
+			"ha": "هَوُسَ",
+			"he": "עברית",
+			"hi": "हिन्दी",
+			"ho": "Hiri Motu",
+			"hr": "Hrvatski",
+			"ht": "Krèyol ayisyen",
+			"hu": "Magyar",
+			"hy": "Հայերեն",
+			"hz": "Otsiherero",
+			"ia": "Interlingua",
+			"id": "Bahasa Indonesia",
+			"ig": "Igbo",
+			"ii": "ꆇꉙ / 四川彝语",
+			"ik": "Iñupiak",
+			"io": "Ido",
+			"is": "Íslenska",
+			"it": "Italiano",
+			"iu": "ᐃᓄᒃᑎᑐᑦ",
+			"ja": "日本語",
+			"jv": "Basa Jawa",
+			"ka": "ქართული",
+			"kg": "KiKongo",
+			"ki": "Gĩkũyũ",
+			"kj": "Kuanyama",
+			"kk": "Қазақша",
+			"km": "ភាសាខ្មែរ",
+			"kn": "ಕನ್ನಡ",
+			"ko": "한국어",
+			"ks": "कॉशुर / کٲش",
+			"ku": "Kurdî",
+			"kv": "Коми",
+			"kw": "Kernewek",
+			"ky": "Kırgızca / Кыргызча",
+			"la": "Latina",
+			"lb": "Lëtzebuergesch",
+			"lg": "Luganda",
+			"li": "Limburgs",
+			"ln": "Lingála",
+			"lo": "ລາວ / Pha xa lao",
+			"lt": "Lietuvių",
+			"lv": "Latviešu",
+			"mg": "Malagasy",
+			"mh": "Kajin Majel / Ebon",
+			"mk": "Македонски",
+			"ml": "മലയാളം",
+			"mn": "Монгол",
+			"mo": "Moldovenească",
+			"ms": "Bahasa Melayu",
+			"mt": "bil-Malti",
+			"my": "Myanmasa",
+			"na": "Dorerin Naoero",
+			"ne": "नेपाली",
+			"ng": "Oshiwambo",
+			"nl": "Nederlands",
+			"nn": "Norsk (nynorsk)",
+			"nr": "isiNdebele",
+			"nv": "Diné bizaad",
+			"ny": "Chi-Chewa",
+			"oc": "Occitan",
+			"oj": "ᐊᓂᔑᓈᐯᒧᐎᓐ / Anishinaabemowin",
+			"om": "Oromoo",
+			"os": "Иронау",
+			"pa": "ਪੰਜਾਬੀ / پنجابی",
+			"pi": "Pāli / पाऴि",
+			"pl": "Polski",
+			"ps": "پښتو",
+			"pt": "Português",
+			"qu": "Runa Simi",
+			"rm": "Rumantsch",
+			"ro": "Română",
+			"ru": "Русский",
+			"rw": "Kinyarwandi",
+			"sa": "संस्कृतम्",
+			"sc": "Sardu",
+			"sd": "सिंधी / سنڌي",
+			"se": "Davvisámegiella",
+			"sg": "Sängö",
+			"sh": "Srpskohrvatski / Српскохрватски",
+			"si": "සිංහල",
+			"sk": "Slovenčina",
+			"sl": "Slovenščina",
+			"sm": "Gagana Samoa",
+			"sn": "chiShona",
+			"so": "Soomaaliga",
+			"sq": "Shqip",
+			"sr": "Српски",
+			"ss": "SiSwati",
+			"st": "Sesotho",
+			"su": "Basa Sunda",
+			"sv": "Svenska",
+			"sw": "Kiswahili",
+			"ta": "தமிழ்",
+			"tg": "Тоҷикӣ",
+			"th": "ไทย / Phasa Thai",
+			"ti": "ትግርኛ",
+			"tk": "Туркмен / تركمن",
+			"tl": "Tagalog",
+			"to": "Lea Faka-Tonga",
+			"tr": "Türkçe",
+			"ts": "Xitsonga",
+			"tt": "Tatarça",
+			"tw": "Twi",
+			"ty": "Reo Mā`ohi",
+			"ug": "Uyƣurqə / ئۇيغۇرچە",
+			"uk": "Українська",
+			"ur": "اردو",
+			"uz": "Ўзбек",
+			"ve": "Tshivenḓa",
+			"vi": "Tiếng Việt",
+			"vo": "Volapük",
+			"wa": "Walon",
+			"wo": "Wollof",
+			"xh": "isiXhosa",
+			"yi": "ייִדיש",
+			"yo": "Yorùbá",
+			"za": "Cuengh / Tôô / 壮语",
+			"zh": "中文",
+			"zh-HANS": "Chinese, Simplified",
+			"zh-HANT": "Chinese, Traditional",
+			"zh-TW": "Chinese, Traditional, Taiwan",
+			"zu": "isiZulu",
+		}
+		return languages
 
-    def get_rules_files(self, pathToDir: str, processSubDirs: Callable[[str, str], List[str]] | None) -> List[str]:
-        language = os.path.basename(pathToDir)
-        ruleFiles = [os.path.basename(file) for file in glob.glob(os.path.join(pathToDir, "*_Rules.yaml"))]
-        for dir in os.listdir(pathToDir):
-            if os.path.isdir(os.path.join(pathToDir, dir)):
-                if processSubDirs:
-                    ruleFiles.extend(processSubDirs(dir, language))
+	def get_rules_files(
+		self,
+		pathToDir: str,
+		processSubDirs: Callable[[str, str], List[str]] | None,
+	) -> List[str]:
+		language = os.path.basename(pathToDir)
+		ruleFiles = [os.path.basename(file) for file in glob.glob(os.path.join(pathToDir, "*_Rules.yaml"))]
+		for dir in os.listdir(pathToDir):
+			if os.path.isdir(os.path.join(pathToDir, dir)):
+				if processSubDirs:
+					ruleFiles.extend(processSubDirs(dir, language))
 
-        if len(ruleFiles) == 0:
-            # look in the .zip file for the style files, including regional subdirs -- it might not have been unzipped
-            try:
-                zip_file = ZipFile(f"{pathToDir}\\{language}.zip", "r")
-                for file in zip_file.namelist():
-                    if file.endswith('_Rules.yaml'):
-                        ruleFiles.append(file)
-                    elif zip_file.getinfo(file).is_dir() and processSubDirs:
-                        ruleFiles.extend(processSubDirs(dir, language))
-            except Exception as e:
-                log.debugWarning(f"MathCAT Dialog: didn't find zip file {zip_file}. Error: {e}")
+		if len(ruleFiles) == 0:
+			# look in the .zip file for the style files, including regional subdirs -- it might not have been unzipped
+			try:
+				zip_file = ZipFile(f"{pathToDir}\\{language}.zip", "r")
+				for file in zip_file.namelist():
+					if file.endswith("_Rules.yaml"):
+						ruleFiles.append(file)
+					elif zip_file.getinfo(file).is_dir() and processSubDirs:
+						ruleFiles.extend(processSubDirs(dir, language))
+			except Exception as e:
+				log.debugWarning(f"MathCAT Dialog: didn't find zip file {zip_file}. Error: {e}")
 
-        return ruleFiles
+		return ruleFiles
 
-    def GetLanguages(self):
+	def GetLanguages(self):
+		def addRegionalLanguages(subDir: str, language: str) -> List[str]:
+			# the language variants are in folders named using ISO 3166-1 alpha-2
+			# codes https://en.wikipedia.org/wiki/ISO_3166-2
+			# check if there are language variants in the language folder
+			if subDir != "SharedRules":
+				languagesDict = UserInterface.LanguagesDict()
+				# add to the listbox the text for this language variant together with the code
+				regionalCode = language + "-" + subDir.upper()
+				if languagesDict.get(regionalCode, "missing") != "missing":
+					self.m_choiceLanguage.Append(f"{languagesDict[regionalCode]} ({language}-{subDir})")
+				elif languagesDict.get(language, "missing") != "missing":
+					self.m_choiceLanguage.Append(f"{languagesDict[language]} ({regionalCode})")
+				else:
+					self.m_choiceLanguage.Append(f"{language} ({regionalCode})")
+				return [os.path.basename(file) for file in glob.glob(os.path.join(subDir, "*_Rules.yaml"))]
+			return []
 
-        def addRegionalLanguages(subDir: str, language: str) -> List[str]:
-            # the language variants are in folders named using ISO 3166-1 alpha-2
-            # codes https://en.wikipedia.org/wiki/ISO_3166-2
-            # check if there are language variants in the language folder
-            if subDir != "SharedRules":
-                languagesDict = UserInterface.LanguagesDict()
-                # add to the listbox the text for this language variant together with the code
-                regionalCode = language + "-" + subDir.upper()
-                if languagesDict.get(regionalCode, "missing") != "missing":
-                    self.m_choiceLanguage.Append(f"{languagesDict[regionalCode]} ({language}-{subDir})")
-                elif languagesDict.get(language, "missing") != "missing":
-                    self.m_choiceLanguage.Append(f"{languagesDict[language]} ({regionalCode})")
-                else:
-                    self.m_choiceLanguage.Append(f"{language} ({regionalCode})")
-                return [os.path.basename(file) for file in glob.glob(os.path.join(subDir, "*_Rules.yaml"))]
-            return []
+		# initialise the language list
+		languagesDict = UserInterface.LanguagesDict()
+		# clear the language names in the dialog
+		self.m_choiceLanguage.Clear()
+		# Translators: menu item -- use the language of the voice chosen in the NVDA speech settings dialog
+		# "Auto" == "Automatic" -- other items in menu are "English (en)", etc., so this matches that style
+		self.m_choiceLanguage.Append(_("Use Voice's Language (Auto)"))
+		# populate the available language names in the dialog
+		# the implemented languages are in folders named using the relevant ISO 639-1
+		#   code https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+		languageDir = UserInterface.path_to_languages_folder()
+		for language in os.listdir(languageDir):
+			pathToLanguageDir = os.path.join(UserInterface.path_to_languages_folder(), language)
+			if os.path.isdir(pathToLanguageDir):
+				# only add this language if there is a xxx_Rules.yaml file
+				if len(self.get_rules_files(pathToLanguageDir, addRegionalLanguages)) > 0:
+					# add to the listbox the text for this language together with the code
+					if languagesDict.get(language, "missing") != "missing":
+						self.m_choiceLanguage.Append(languagesDict[language] + " (" + language + ")")
+					else:
+						self.m_choiceLanguage.Append(language + " (" + language + ")")
 
-        # initialise the language list
-        languagesDict = UserInterface.LanguagesDict()
-        # clear the language names in the dialog
-        self.m_choiceLanguage.Clear()
-        # Translators: menu item -- use the language of the voice chosen in the NVDA speech settings dialog
-        # "Auto" == "Automatic" -- other items in menu are "English (en)", etc., so this matches that style
-        self.m_choiceLanguage.Append(_("Use Voice's Language (Auto)"))
-        # populate the available language names in the dialog
-        # the implemented languages are in folders named using the relevant ISO 639-1
-        #   code https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-        languageDir = UserInterface.path_to_languages_folder()
-        for language in os.listdir(languageDir):
-            pathToLanguageDir = os.path.join(UserInterface.path_to_languages_folder(), language)
-            if os.path.isdir(pathToLanguageDir):
-                # only add this language if there is a xxx_Rules.yaml file
-                if len(self.get_rules_files(pathToLanguageDir, addRegionalLanguages)) > 0:
-                    # add to the listbox the text for this language together with the code
-                    if languagesDict.get(language, "missing") != "missing":
-                        self.m_choiceLanguage.Append(languagesDict[language] + " (" + language + ")")
-                    else:
-                        self.m_choiceLanguage.Append(language + " (" + language + ")")
+	def GetLanguageCode(self):
+		lang_selection = self.m_choiceLanguage.GetStringSelection()
+		lang_code = lang_selection[lang_selection.find("(") + 1 : lang_selection.find(")")]
+		return lang_code
 
-    def GetLanguageCode(self):
-        lang_selection = self.m_choiceLanguage.GetStringSelection()
-        lang_code = lang_selection[
-            lang_selection.find("(") + 1: lang_selection.find(")")
-        ]
-        return lang_code
+	def GetSpeechStyles(self, this_SpeechStyle: str):
+		"""Get all the speech styles for the current language.
+		This sets the SpeechStyles dialog entry"""
+		from speech import getCurrentLanguage
 
-    def GetSpeechStyles(self, this_SpeechStyle: str):
-        """Get all the speech styles for the current language.
-           This sets the SpeechStyles dialog entry"""
-        from speech import getCurrentLanguage
+		def getSpeechStyleFromDirectory(dir: str, lang: str) -> list[str]:
+			r"""Get the speech styles from any regional dialog, from the main language, dir and if there isn't from the zip file.
+			The 'lang', if it has a region dialect, is of the form 'en\uk'
+			The returned list is sorted alphabetically"""
+			# start with the regional dialect, then add on any (unique) styles in the main dir
+			main_lang = lang.split("\\")[0]  # does the right thing even if there is no regional directory
+			all_style_files = []
+			if lang.find("\\") >= 0:
+				all_style_files = [
+					os.path.basename(name) for name in glob.glob(dir + lang + "\\*_Rules.yaml")
+				]
+			all_style_files.extend(
+				[os.path.basename(name) for name in glob.glob(dir + main_lang + "\\*_Rules.yaml")],
+			)
+			all_style_files = list(set(all_style_files))  # make them unique
+			if len(all_style_files) == 0:
+				# look in the .zip file for the style files -- this will have regional variants, but also have that dir
+				try:
+					zip_file = dir + main_lang + "\\" + main_lang + ".zip"
+					zip_file = ZipFile(zip_file, "r")  # file might not exist
+					all_style_files = [
+						name.split("/")[-1] for name in zip_file.namelist() if name.endswith("_Rules.yaml")
+					]
+				except Exception as e:
+					log.debugWarning(f"MathCAT Dialog: didn't find zip file {zip_file}. Error: {e}")
+			all_style_files.sort()
+			return all_style_files
 
-        def getSpeechStyleFromDirectory(dir: str, lang: str) -> list[str]:
-            r"""Get the speech styles from any regional dialog, from the main language, dir and if there isn't from the zip file.
-               The 'lang', if it has a region dialect, is of the form 'en\uk'
-               The returned list is sorted alphabetically"""
-            # start with the regional dialect, then add on any (unique) styles in the main dir
-            main_lang = lang.split("\\")[0]        # does the right thing even if there is no regional directory
-            all_style_files = []
-            if lang.find("\\") >= 0:
-                all_style_files = [os.path.basename(name) for name in glob.glob(dir + lang + "\\*_Rules.yaml")]
-            all_style_files.extend(
-                [os.path.basename(name) for name in glob.glob(dir + main_lang + "\\*_Rules.yaml")]
-            )
-            all_style_files = list(set(all_style_files))   # make them unique
-            if len(all_style_files) == 0:
-                # look in the .zip file for the style files -- this will have regional variants, but also have that dir
-                try:
-                    zip_file = dir + main_lang + "\\" + main_lang + ".zip"
-                    zip_file = ZipFile(zip_file, "r")  # file might not exist
-                    all_style_files = [name.split("/")[-1] for name in zip_file.namelist() if name.endswith('_Rules.yaml')]
-                except Exception as e:
-                    log.debugWarning(f"MathCAT Dialog: didn't find zip file {zip_file}. Error: {e}")
-            all_style_files.sort()
-            return all_style_files
+		# clear the SpeechStyle choices
+		self.m_choiceSpeechStyle.Clear()
+		# get the currently selected language code
+		languageCode = UserInterface.GetLanguageCode(self)
 
-        # clear the SpeechStyle choices
-        self.m_choiceSpeechStyle.Clear()
-        # get the currently selected language code
-        languageCode = UserInterface.GetLanguageCode(self)
+		if languageCode == "Auto":
+			# list the speech styles for the current voice rather than have none listed
+			languageCode = getCurrentLanguage().lower().replace("_", "-")
+		languageCode = languageCode.replace("-", "\\")
 
-        if languageCode == "Auto":
-            # list the speech styles for the current voice rather than have none listed
-            languageCode = getCurrentLanguage().lower().replace("_", "-")
-        languageCode = languageCode.replace("-", "\\")
+		languagePath = UserInterface.path_to_languages_folder() + "\\"
+		# log.info(f"languagePath={languagePath}")
+		# populate the m_choiceSpeechStyle choices
+		all_style_files = [
+			# remove "_Rules.yaml" from the list
+			name[: name.find("_Rules.yaml")]
+			for name in getSpeechStyleFromDirectory(languagePath, languageCode)
+		]
+		# There isn't a LiteralSpeak rules file since it has no language-specific rules. We add it at the end.
+		# Translators: at the moment, do NOT translate this string as some code specifically looks for this name.
+		all_style_files.append("LiteralSpeak")
+		for name in all_style_files:
+			self.m_choiceSpeechStyle.Append((name))
+		try:
+			# set the SpeechStyle to the same as previous
+			self.m_choiceSpeechStyle.SetStringSelection(
+				this_SpeechStyle if this_SpeechStyle in all_style_files else all_style_files[0],
+			)
+		except Exception as e:
+			log.exception(
+				f"MathCAT: An exception occurred in GetSpeechStyles evaluating set SetStringSelection: {e}",
+			)
+			# that didn't work, choose the first in the list
+			self.m_choiceSpeechStyle.SetSelection(0)
 
-        languagePath = UserInterface.path_to_languages_folder() + "\\"
-        # log.info(f"languagePath={languagePath}")
-        # populate the m_choiceSpeechStyle choices
-        all_style_files = [
-            # remove "_Rules.yaml" from the list
-            name[: name.find("_Rules.yaml")] for name in getSpeechStyleFromDirectory(languagePath, languageCode)
-        ]
-        # There isn't a LiteralSpeak rules file since it has no language-specific rules. We add it at the end.
-        # Translators: at the moment, do NOT translate this string as some code specifically looks for this name.
-        all_style_files.append("LiteralSpeak")
-        for name in all_style_files:
-            self.m_choiceSpeechStyle.Append((name))
-        try:
-            # set the SpeechStyle to the same as previous
-            self.m_choiceSpeechStyle.SetStringSelection(
-                this_SpeechStyle if this_SpeechStyle in all_style_files else all_style_files[0]
-            )
-        except Exception as e:
-            log.exception(f"MathCAT: An exception occurred in GetSpeechStyles evaluating set SetStringSelection: {e}")
-            # that didn't work, choose the first in the list
-            self.m_choiceSpeechStyle.SetSelection(0)
+	def GetBrailleCodes(self):
+		# initialise the braille code list
+		self.m_choiceBrailleMathCode.Clear()
+		# populate the available braille codes in the dialog
+		# the dir names are used, not the rule file names because the dir names have to be unique
+		pathToBrailleFolder = UserInterface.pathToBrailleFolder()
+		for braille_code in os.listdir(pathToBrailleFolder):
+			pathToBrailleCode = os.path.join(pathToBrailleFolder, braille_code)
+			if os.path.isdir(pathToBrailleCode):
+				if len(self.get_rules_files(pathToBrailleCode, None)) > 0:
+					self.m_choiceBrailleMathCode.Append(braille_code)
 
-    def GetBrailleCodes(self):
-        # initialise the braille code list
-        self.m_choiceBrailleMathCode.Clear()
-        # populate the available braille codes in the dialog
-        # the dir names are used, not the rule file names because the dir names have to be unique
-        pathToBrailleFolder = UserInterface.pathToBrailleFolder()
-        for braille_code in os.listdir(pathToBrailleFolder):
-            pathToBrailleCode = os.path.join(pathToBrailleFolder, braille_code)
-            if os.path.isdir(pathToBrailleCode):
-                if len(self.get_rules_files(pathToBrailleCode, None)) > 0:
-                    self.m_choiceBrailleMathCode.Append(braille_code)
+	def set_ui_values(self):
+		# set the UI elements to the ones read from the preference file(s)
+		try:
+			self.m_choiceImpairment.SetSelection(
+				Speech_Impairment.index(user_preferences["Speech"]["Impairment"]),
+			)
+			try:
+				lang_pref = user_preferences["Speech"]["Language"]
+				self.m_choiceLanguage.SetSelection(0)
+				i = 1  # no need to test i == 0
+				while i < self.m_choiceLanguage.GetCount():
+					if f"({lang_pref})" in self.m_choiceLanguage.GetString(i):
+						self.m_choiceLanguage.SetSelection(i)
+						break
+					i += 1
+			except Exception as e:
+				log.exception(
+					f"MathCAT: An exception occurred in set_ui_values ('{user_preferences['Speech']['Language']}'): {e}",
+				)
+				# the language in the settings file is not in the folder structure, something went wrong,
+				# set to the first in the list
+				self.m_choiceLanguage.SetSelection(0)
+			try:
+				# now get the available SpeechStyles from the folder structure and set to the preference setting is possible
+				self.GetSpeechStyles(str(user_preferences["Speech"]["SpeechStyle"]))
+			except Exception as e:
+				log.exception(f"MathCAT: An exception occurred in set_ui_values (getting SpeechStyle): {e}")
+				self.m_choiceSpeechStyle.Append(
+					"Error when setting SpeechStyle for " + self.m_choiceLanguage.GetStringSelection(),
+				)
+			# set the rest of the UI elements
+			self.m_choiceDecimalSeparator.SetSelection(
+				Speech_DecimalSeparator.index(user_preferences["Other"]["DecimalSeparator"]),
+			)
+			self.m_choiceSpeechAmount.SetSelection(
+				Speech_Verbosity.index(user_preferences["Speech"]["Verbosity"]),
+			)
+			self.m_sliderRelativeSpeed.SetValue(user_preferences["Speech"]["MathRate"])
+			pause_factor = (
+				0
+				if int(user_preferences["Speech"]["PauseFactor"]) <= 1
+				else round(
+					math.log(
+						int(user_preferences["Speech"]["PauseFactor"]) / PAUSE_FACTOR_SCALE,
+						PAUSE_FACTOR_LOG_BASE,
+					),
+				)
+			)
+			self.m_sliderPauseFactor.SetValue(pause_factor)
+			self.m_checkBoxSpeechSound.SetValue(user_preferences["Speech"]["SpeechSound"] == "Beep")
+			self.m_choiceSpeechForChemical.SetSelection(
+				Speech_Chemistry.index(user_preferences["Speech"]["Chemistry"]),
+			)
 
-    def set_ui_values(self):
-        # set the UI elements to the ones read from the preference file(s)
-        try:
-            self.m_choiceImpairment.SetSelection(
-                Speech_Impairment.index(user_preferences["Speech"]["Impairment"])
-            )
-            try:
-                lang_pref = user_preferences["Speech"]["Language"]
-                self.m_choiceLanguage.SetSelection(0)
-                i = 1       # no need to test i == 0
-                while i < self.m_choiceLanguage.GetCount():
-                    if f"({lang_pref})" in self.m_choiceLanguage.GetString(i):
-                        self.m_choiceLanguage.SetSelection(i)
-                        break
-                    i += 1
-            except Exception as e:
-                log.exception(
-                    f"MathCAT: An exception occurred in set_ui_values ('{user_preferences['Speech']['Language']}'): {e}"
-                )
-                # the language in the settings file is not in the folder structure, something went wrong,
-                # set to the first in the list
-                self.m_choiceLanguage.SetSelection(0)
-            try:
-                # now get the available SpeechStyles from the folder structure and set to the preference setting is possible
-                self.GetSpeechStyles(str(user_preferences["Speech"]["SpeechStyle"]))
-            except Exception as e:
-                log.exception(f"MathCAT: An exception occurred in set_ui_values (getting SpeechStyle): {e}")
-                self.m_choiceSpeechStyle.Append(
-                    "Error when setting SpeechStyle for " + self.m_choiceLanguage.GetStringSelection()
-                )
-            # set the rest of the UI elements
-            self.m_choiceDecimalSeparator.SetSelection(
-                Speech_DecimalSeparator.index(user_preferences["Other"]["DecimalSeparator"])
-            )
-            self.m_choiceSpeechAmount.SetSelection(Speech_Verbosity.index(user_preferences["Speech"]["Verbosity"]))
-            self.m_sliderRelativeSpeed.SetValue(user_preferences["Speech"]["MathRate"])
-            pause_factor = (
-                0
-                if int(user_preferences["Speech"]["PauseFactor"]) <= 1
-                else round(
-                    math.log(
-                        int(user_preferences["Speech"]["PauseFactor"]) / PAUSE_FACTOR_SCALE,
-                        PAUSE_FACTOR_LOG_BASE,
-                    )
-                )
-            )
-            self.m_sliderPauseFactor.SetValue(pause_factor)
-            self.m_checkBoxSpeechSound.SetValue(user_preferences["Speech"]["SpeechSound"] == "Beep")
-            self.m_choiceSpeechForChemical.SetSelection(Speech_Chemistry.index(user_preferences["Speech"]["Chemistry"]))
+			self.m_choiceNavigationMode.SetSelection(
+				Navigation_NavMode.index(user_preferences["Navigation"]["NavMode"]),
+			)
+			self.m_checkBoxResetNavigationMode.SetValue(user_preferences["Navigation"]["ResetNavMode"])
+			self.m_choiceSpeechAmountNavigation.SetSelection(
+				Navigation_NavVerbosity.index(user_preferences["Navigation"]["NavVerbosity"]),
+			)
+			if user_preferences["Navigation"]["Overview"]:
+				self.m_choiceNavigationSpeech.SetSelection(1)
+			else:
+				self.m_choiceNavigationSpeech.SetSelection(0)
+			self.m_checkBoxResetNavigationSpeech.SetValue(user_preferences["Navigation"]["ResetOverview"])
+			self.m_checkBoxAutomaticZoom.SetValue(user_preferences["Navigation"]["AutoZoomOut"])
+			self.m_choiceCopyAs.SetSelection(
+				Navigation_CopyAs.index(user_preferences["Navigation"]["CopyAs"]),
+			)
 
-            self.m_choiceNavigationMode.SetSelection(Navigation_NavMode.index(user_preferences["Navigation"]["NavMode"]))
-            self.m_checkBoxResetNavigationMode.SetValue(user_preferences["Navigation"]["ResetNavMode"])
-            self.m_choiceSpeechAmountNavigation.SetSelection(
-                Navigation_NavVerbosity.index(user_preferences["Navigation"]["NavVerbosity"])
-            )
-            if user_preferences["Navigation"]["Overview"]:
-                self.m_choiceNavigationSpeech.SetSelection(1)
-            else:
-                self.m_choiceNavigationSpeech.SetSelection(0)
-            self.m_checkBoxResetNavigationSpeech.SetValue(user_preferences["Navigation"]["ResetOverview"])
-            self.m_checkBoxAutomaticZoom.SetValue(user_preferences["Navigation"]["AutoZoomOut"])
-            self.m_choiceCopyAs.SetSelection(Navigation_CopyAs.index(user_preferences["Navigation"]["CopyAs"]))
+			self.m_choiceBrailleHighlights.SetSelection(
+				Braille_BrailleNavHighlight.index(user_preferences["Braille"]["BrailleNavHighlight"]),
+			)
+			try:
+				braille_pref = user_preferences["Braille"]["BrailleCode"]
+				i = 0
+				while braille_pref != self.m_choiceBrailleMathCode.GetString(i):
+					i = i + 1
+					if i == self.m_choiceBrailleMathCode.GetCount():
+						break
+				if braille_pref == self.m_choiceBrailleMathCode.GetString(i):
+					self.m_choiceBrailleMathCode.SetSelection(i)
+				else:
+					self.m_choiceBrailleMathCode.SetSelection(0)
+			except Exception as e:
+				log.exception(f"MathCAT: An exception occurred while trying to set the Braille code: {e}")
+				# the braille code in the settings file is not in the folder structure, something went wrong,
+				# set to the first in the list
+				self.m_choiceBrailleMathCode.SetSelection(0)
+		except KeyError as err:
+			print("Key not found", err)
 
-            self.m_choiceBrailleHighlights.SetSelection(
-                Braille_BrailleNavHighlight.index(user_preferences["Braille"]["BrailleNavHighlight"])
-            )
-            try:
-                braille_pref = user_preferences["Braille"]["BrailleCode"]
-                i = 0
-                while braille_pref != self.m_choiceBrailleMathCode.GetString(i):
-                    i = i + 1
-                    if i == self.m_choiceBrailleMathCode.GetCount():
-                        break
-                if braille_pref == self.m_choiceBrailleMathCode.GetString(i):
-                    self.m_choiceBrailleMathCode.SetSelection(i)
-                else:
-                    self.m_choiceBrailleMathCode.SetSelection(0)
-            except Exception as e:
-                log.exception(f"MathCAT: An exception occurred while trying to set the Braille code: {e}")
-                # the braille code in the settings file is not in the folder structure, something went wrong,
-                # set to the first in the list
-                self.m_choiceBrailleMathCode.SetSelection(0)
-        except KeyError as err:
-            print("Key not found", err)
+	def get_ui_values(self):
+		global user_preferences
+		# read the values from the UI and update the user preferences dictionary
+		user_preferences["Speech"]["Impairment"] = Speech_Impairment[self.m_choiceImpairment.GetSelection()]
+		user_preferences["Speech"]["Language"] = self.GetLanguageCode()
+		user_preferences["Other"]["DecimalSeparator"] = Speech_DecimalSeparator[
+			self.m_choiceDecimalSeparator.GetSelection()
+		]
+		user_preferences["Speech"]["SpeechStyle"] = self.m_choiceSpeechStyle.GetStringSelection()
+		user_preferences["Speech"]["Verbosity"] = Speech_Verbosity[self.m_choiceSpeechAmount.GetSelection()]
+		user_preferences["Speech"]["MathRate"] = self.m_sliderRelativeSpeed.GetValue()
+		pf_slider = self.m_sliderPauseFactor.GetValue()
+		pause_factor = (
+			0 if pf_slider == 0 else round(PAUSE_FACTOR_SCALE * math.pow(PAUSE_FACTOR_LOG_BASE, pf_slider))
+		)  # avoid log(0)
+		user_preferences["Speech"]["PauseFactor"] = pause_factor
+		if self.m_checkBoxSpeechSound.GetValue():
+			user_preferences["Speech"]["SpeechSound"] = "Beep"
+		else:
+			user_preferences["Speech"]["SpeechSound"] = "None"
+		user_preferences["Speech"]["Chemistry"] = Speech_Chemistry[
+			self.m_choiceSpeechForChemical.GetSelection()
+		]
+		user_preferences["Navigation"]["NavMode"] = Navigation_NavMode[
+			self.m_choiceNavigationMode.GetSelection()
+		]
+		user_preferences["Navigation"]["ResetNavMode"] = self.m_checkBoxResetNavigationMode.GetValue()
+		user_preferences["Navigation"]["NavVerbosity"] = Navigation_NavVerbosity[
+			self.m_choiceSpeechAmountNavigation.GetSelection()
+		]
+		user_preferences["Navigation"]["Overview"] = self.m_choiceNavigationSpeech.GetSelection() != 0
+		user_preferences["Navigation"]["ResetOverview"] = self.m_checkBoxResetNavigationSpeech.GetValue()
+		user_preferences["Navigation"]["AutoZoomOut"] = self.m_checkBoxAutomaticZoom.GetValue()
+		user_preferences["Navigation"]["CopyAs"] = Navigation_CopyAs[self.m_choiceCopyAs.GetSelection()]
 
-    def get_ui_values(self):
-        global user_preferences
-        # read the values from the UI and update the user preferences dictionary
-        user_preferences["Speech"]["Impairment"] = Speech_Impairment[self.m_choiceImpairment.GetSelection()]
-        user_preferences["Speech"]["Language"] = self.GetLanguageCode()
-        user_preferences["Other"]["DecimalSeparator"] = Speech_DecimalSeparator[self.m_choiceDecimalSeparator.GetSelection()]
-        user_preferences["Speech"]["SpeechStyle"] = self.m_choiceSpeechStyle.GetStringSelection()
-        user_preferences["Speech"]["Verbosity"] = Speech_Verbosity[self.m_choiceSpeechAmount.GetSelection()]
-        user_preferences["Speech"]["MathRate"] = self.m_sliderRelativeSpeed.GetValue()
-        pf_slider = self.m_sliderPauseFactor.GetValue()
-        pause_factor = (
-            0
-            if pf_slider == 0
-            else round(PAUSE_FACTOR_SCALE * math.pow(PAUSE_FACTOR_LOG_BASE, pf_slider))
-        )  # avoid log(0)
-        user_preferences["Speech"]["PauseFactor"] = pause_factor
-        if self.m_checkBoxSpeechSound.GetValue():
-            user_preferences["Speech"]["SpeechSound"] = "Beep"
-        else:
-            user_preferences["Speech"]["SpeechSound"] = "None"
-        user_preferences["Speech"]["Chemistry"] = Speech_Chemistry[self.m_choiceSpeechForChemical.GetSelection()]
-        user_preferences["Navigation"]["NavMode"] = Navigation_NavMode[self.m_choiceNavigationMode.GetSelection()]
-        user_preferences["Navigation"]["ResetNavMode"] = self.m_checkBoxResetNavigationMode.GetValue()
-        user_preferences["Navigation"]["NavVerbosity"] = Navigation_NavVerbosity[
-            self.m_choiceSpeechAmountNavigation.GetSelection()
-        ]
-        user_preferences["Navigation"]["Overview"] = self.m_choiceNavigationSpeech.GetSelection() != 0
-        user_preferences["Navigation"]["ResetOverview"] = self.m_checkBoxResetNavigationSpeech.GetValue()
-        user_preferences["Navigation"]["AutoZoomOut"] = self.m_checkBoxAutomaticZoom.GetValue()
-        user_preferences["Navigation"]["CopyAs"] = Navigation_CopyAs[self.m_choiceCopyAs.GetSelection()]
+		user_preferences["Braille"]["BrailleNavHighlight"] = Braille_BrailleNavHighlight[
+			self.m_choiceBrailleHighlights.GetSelection()
+		]
+		user_preferences["Braille"]["BrailleCode"] = self.m_choiceBrailleMathCode.GetStringSelection()
+		if "NVDAAddOn" not in user_preferences:
+			user_preferences["NVDAAddOn"] = {"LastCategory": "0"}
+		user_preferences["NVDAAddOn"]["LastCategory"] = self.m_listBoxPreferencesTopic.GetSelection()
 
-        user_preferences["Braille"]["BrailleNavHighlight"] = (
-            Braille_BrailleNavHighlight[self.m_choiceBrailleHighlights.GetSelection()]
-        )
-        user_preferences["Braille"]["BrailleCode"] = self.m_choiceBrailleMathCode.GetStringSelection()
-        if "NVDAAddOn" not in user_preferences:
-            user_preferences["NVDAAddOn"] = {"LastCategory": "0"}
-        user_preferences["NVDAAddOn"]["LastCategory"] = self.m_listBoxPreferencesTopic.GetSelection()
+	@staticmethod
+	def path_to_default_preferences():
+		return os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "prefs.yaml")
 
-    @staticmethod
-    def path_to_default_preferences():
-        return (
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "prefs.yaml")
-        )
+	@staticmethod
+	def path_to_user_preferences_folder():
+		# the user preferences file is stored at: C:\Users\<user-name>AppData\Roaming\MathCAT\prefs.yaml
+		return os.path.join(os.path.expandvars("%APPDATA%"), "MathCAT")
 
-    @staticmethod
-    def path_to_user_preferences_folder():
-        # the user preferences file is stored at: C:\Users\<user-name>AppData\Roaming\MathCAT\prefs.yaml
-        return os.path.join(os.path.expandvars('%APPDATA%'), "MathCAT")
+	@staticmethod
+	def path_to_user_preferences():
+		# the user preferences file is stored at: C:\Users\<user-name>AppData\Roaming\MathCAT\prefs.yaml
+		return os.path.join(UserInterface.path_to_user_preferences_folder(), "prefs.yaml")
 
-    @staticmethod
-    def path_to_user_preferences():
-        # the user preferences file is stored at: C:\Users\<user-name>AppData\Roaming\MathCAT\prefs.yaml
-        return os.path.join(UserInterface.path_to_user_preferences_folder(), "prefs.yaml")
+	@staticmethod
+	def load_default_preferences():
+		global user_preferences
+		# load default preferences into the user preferences data structure (overwrites existing)
+		if os.path.exists(UserInterface.path_to_default_preferences()):
+			with open(
+				UserInterface.path_to_default_preferences(),
+				encoding="utf-8",
+			) as f:
+				user_preferences = yaml.load(f, Loader=yaml.FullLoader)
 
-    @staticmethod
-    def load_default_preferences():
-        global user_preferences
-        # load default preferences into the user preferences data structure (overwrites existing)
-        if os.path.exists(UserInterface.path_to_default_preferences()):
-            with open(
-                UserInterface.path_to_default_preferences(), encoding="utf-8"
-            ) as f:
-                user_preferences = yaml.load(f, Loader=yaml.FullLoader)  # type: ignore
+	@staticmethod
+	def load_user_preferences():
+		global user_preferences
+		# merge user file values into the user preferences data structure
+		if os.path.exists(UserInterface.path_to_user_preferences()):
+			with open(UserInterface.path_to_user_preferences(), encoding="utf-8") as f:
+				# merge with the default preferences, overwriting with the user's values
+				user_preferences.update(yaml.load(f, Loader=yaml.FullLoader))
 
-    @staticmethod
-    def load_user_preferences():
-        global user_preferences
-        # merge user file values into the user preferences data structure
-        if os.path.exists(UserInterface.path_to_user_preferences()):
-            with open(UserInterface.path_to_user_preferences(), encoding="utf-8") as f:
-                # merge with the default preferences, overwriting with the user's values
-                user_preferences.update(yaml.load(f, Loader=yaml.FullLoader))  # type: ignore
+	@staticmethod
+	def validate(key1: str, key2: str, valid_values: List[Union[str, bool]], default_value: Union[str, bool]):
+		global user_preferences
+		try:
+			if valid_values == []:
+				# any value is valid
+				if user_preferences[key1][key2] != "":
+					return
 
-    @staticmethod
-    def validate(key1: str, key2: str, valid_values: List[Union[str, bool]], default_value: Union[str, bool]):
-        global user_preferences
-        try:
-            if valid_values == []:
-                # any value is valid
-                if user_preferences[key1][key2] != "":
-                    return
+			else:
+				# any value in the list is valid
+				if user_preferences[key1][key2] in valid_values:
+					return
+		except Exception as e:
+			log.exception(f"MathCAT: An exception occurred in validate: {e}")
+			# the preferences entry does not exist
+		if key1 not in user_preferences:
+			user_preferences[key1] = {key2: default_value}
+		else:
+			user_preferences[key1][key2] = default_value
 
-            else:
-                # any value in the list is valid
-                if user_preferences[key1][key2] in valid_values:
-                    return
-        except Exception as e:
-            log.exception(f"MathCAT: An exception occurred in validate: {e}")
-            # the preferences entry does not exist
-        if key1 not in user_preferences:
-            user_preferences[key1] = {key2: default_value}
-        else:
-            user_preferences[key1][key2] = default_value
+	@staticmethod
+	def validate_int(key1: str, key2: str, valid_values: List[int], default_value: int):
+		global user_preferences
+		try:
+			# any value between lower and upper bounds is valid
+			if (
+				int(user_preferences[key1][key2]) >= valid_values[0]
+				and int(user_preferences[key1][key2]) <= valid_values[1]
+			):
+				return
+		except Exception as e:
+			log.exception(f"MathCAT: An exception occurred in validate_int: {e}")
+			# the preferences entry does not exist
+		if key1 not in user_preferences:
+			user_preferences[key1] = {key2: default_value}
+		else:
+			user_preferences[key1][key2] = default_value
 
-    @staticmethod
-    def validate_int(key1: str, key2: str, valid_values: List[int], default_value: int):
-        global user_preferences
-        try:
-            # any value between lower and upper bounds is valid
-            if int(user_preferences[key1][key2]) >= valid_values[0] and int(user_preferences[key1][key2]) <= valid_values[1]:
-                return
-        except Exception as e:
-            log.exception(f"MathCAT: An exception occurred in validate_int: {e}")
-            # the preferences entry does not exist
-        if key1 not in user_preferences:
-            user_preferences[key1] = {key2: default_value}
-        else:
-            user_preferences[key1][key2] = default_value
+	@staticmethod
+	def validate_user_preferences():
+		# check each user preference value to ensure it is present and valid, set default value if not
+		#  Speech:
+		# Impairment: Blindness       # LearningDisability, LowVision, Blindness
+		UserInterface.validate(
+			"Speech",
+			"Impairment",
+			["LearningDisability", "LowVision", "Blindness"],
+			"Blindness",
+		)
+		#   Language: en                # any known language code and sub-code -- could be en-uk, etc
+		UserInterface.validate("Speech", "Language", [], "en")
+		#    Verbosity: Medium           # Terse, Medium, Verbose
+		UserInterface.validate("Speech", "Verbosity", ["Terse", "Medium", "Verbose"], "Medium")
+		#    MathRate: 100               # Change from text speech rate (%)
+		UserInterface.validate_int("Speech", "MathRate", [0, 200], 100)
+		#    PauseFactor: 100            # TBC
+		UserInterface.validate_int("Speech", "PauseFactor", [0, 1000], 100)
+		#  SpeechSound: None           # make a sound when starting/ending math speech -- None, Beep
+		UserInterface.validate("Speech", "SpeechSound", ["None", "Beep"], "None")
+		#    SpeechStyle: ClearSpeak     # Any known speech style (falls back to ClearSpeak)
+		UserInterface.validate("Speech", "SpeechStyle", [], "ClearSpeak")
+		#    SubjectArea: General        # FIX: still working on this
+		UserInterface.validate("Speech", "SubjectArea", [], "General")
+		#    Chemistry: SpellOut         # SpellOut (H 2 0), AsCompound (Water), Off (H sub 2 O)
+		UserInterface.validate("Speech", "Chemistry", ["SpellOut", "Off"], "SpellOut")
+		# Navigation:
+		#  NavMode: Enhanced         # Enhanced, Simple, Character
+		UserInterface.validate("Navigation", "NavMode", ["Enhanced", "Simple", "Character"], "Enhanced")
+		#  ResetNavMode: false       # remember previous value and use it
+		UserInterface.validate("Navigation", "ResetNavMode", [False, True], False)
+		#  Overview: false             # speak the expression or give a description/overview
+		UserInterface.validate("Navigation", "Overview", [False, True], False)
+		#  ResetOverview: true        # remember previous value and use it
+		UserInterface.validate("Navigation", "ResetOverview", [False, True], True)
+		#  NavVerbosity: Medium        # Terse, Medium, Full (words to say for nav command)
+		UserInterface.validate("Navigation", "NavVerbosity", ["Terse", "Medium", "Full"], "Medium")
+		#  AutoZoomOut: true           # Auto zoom out of 2D exprs (use shift-arrow to force zoom out if unchecked)
+		UserInterface.validate("Navigation", "AutoZoomOut", [False, True], True)
+		#  CopyAs: MathML        # MathML, LaTeX, ASCIIMath, Speech
+		UserInterface.validate("Navigation", "CopyAs", ["MathML", "LaTeX", "ASCIIMath", "Speech"], "MathML")
+		# Braille:
+		#  BrailleNavHighlight: EndPoints
+		# Highlight with dots 7 & 8 the current nav node -- values are Off, FirstChar, EndPoints, All
+		UserInterface.validate(
+			"Braille",
+			"BrailleNavHighlight",
+			["Off", "FirstChar", "EndPoints", "All"],
+			"EndPoints",
+		)
+		#  BrailleCode: "Nemeth"                # Any supported braille code (currently Nemeth, UEB, CMU, Vietnam)
+		UserInterface.validate("Braille", "BrailleCode", [], "Nemeth")
 
-    @staticmethod
-    def validate_user_preferences():
-        # check each user preference value to ensure it is present and valid, set default value if not
-        #  Speech:
-        # Impairment: Blindness       # LearningDisability, LowVision, Blindness
-        UserInterface.validate("Speech", "Impairment", ["LearningDisability", "LowVision", "Blindness"], "Blindness")
-        #   Language: en                # any known language code and sub-code -- could be en-uk, etc
-        UserInterface.validate("Speech", "Language", [], "en")
-        #    Verbosity: Medium           # Terse, Medium, Verbose
-        UserInterface.validate("Speech", "Verbosity", ["Terse", "Medium", "Verbose"], "Medium")
-        #    MathRate: 100               # Change from text speech rate (%)
-        UserInterface.validate_int("Speech", "MathRate", [0, 200], 100)
-        #    PauseFactor: 100            # TBC
-        UserInterface.validate_int("Speech", "PauseFactor", [0, 1000], 100)
-        #  SpeechSound: None           # make a sound when starting/ending math speech -- None, Beep
-        UserInterface.validate("Speech", "SpeechSound", ["None", "Beep"], "None")
-        #    SpeechStyle: ClearSpeak     # Any known speech style (falls back to ClearSpeak)
-        UserInterface.validate("Speech", "SpeechStyle", [], "ClearSpeak")
-        #    SubjectArea: General        # FIX: still working on this
-        UserInterface.validate("Speech", "SubjectArea", [], "General")
-        #    Chemistry: SpellOut         # SpellOut (H 2 0), AsCompound (Water), Off (H sub 2 O)
-        UserInterface.validate("Speech", "Chemistry", ["SpellOut", "Off"], "SpellOut")
-        # Navigation:
-        #  NavMode: Enhanced         # Enhanced, Simple, Character
-        UserInterface.validate("Navigation", "NavMode", ["Enhanced", "Simple", "Character"], "Enhanced")
-        #  ResetNavMode: false       # remember previous value and use it
-        UserInterface.validate("Navigation", "ResetNavMode", [False, True], False)
-        #  Overview: false             # speak the expression or give a description/overview
-        UserInterface.validate("Navigation", "Overview", [False, True], False)
-        #  ResetOverview: true        # remember previous value and use it
-        UserInterface.validate("Navigation", "ResetOverview", [False, True], True)
-        #  NavVerbosity: Medium        # Terse, Medium, Full (words to say for nav command)
-        UserInterface.validate("Navigation", "NavVerbosity", ["Terse", "Medium", "Full"], "Medium")
-        #  AutoZoomOut: true           # Auto zoom out of 2D exprs (use shift-arrow to force zoom out if unchecked)
-        UserInterface.validate("Navigation", "AutoZoomOut", [False, True], True)
-        #  CopyAs: MathML        # MathML, LaTeX, ASCIIMath, Speech
-        UserInterface.validate("Navigation", "CopyAs", ["MathML", "LaTeX", "ASCIIMath", "Speech"], "MathML")
-        # Braille:
-        #  BrailleNavHighlight: EndPoints
-        # Highlight with dots 7 & 8 the current nav node -- values are Off, FirstChar, EndPoints, All
-        UserInterface.validate("Braille", "BrailleNavHighlight", ["Off", "FirstChar", "EndPoints", "All"], "EndPoints")
-        #  BrailleCode: "Nemeth"                # Any supported braille code (currently Nemeth, UEB, CMU, Vietnam)
-        UserInterface.validate("Braille", "BrailleCode", [], "Nemeth")
+	@staticmethod
+	def write_user_preferences():
+		# Language is special because it is set elsewhere by SetPreference which overrides the user_prefs -- so set it here
+		from . import libmathcat_py as libmathcat
 
-    @staticmethod
-    def write_user_preferences():
-        # Language is special because it is set elsewhere by SetPreference which overrides the user_prefs -- so set it here
-        from . import libmathcat_py as libmathcat      # type: ignore
-        try:
-            libmathcat.SetPreference("Language", user_preferences["Speech"]["Language"])
-        except Exception as e:
-            log.exception(
-                f'Error in trying to set MathCAT "Language" preference to "{user_preferences["Speech"]["Language"]}": {e}'
-            )
-        if not os.path.exists(UserInterface.path_to_user_preferences_folder()):
-            # create a folder for the user preferences
-            os.mkdir(UserInterface.path_to_user_preferences_folder())
-        with open(UserInterface.path_to_user_preferences(), "w", encoding="utf-8") as f:
-            # write values to the user preferences file, NOT the default
-            yaml.dump(user_preferences, stream=f, allow_unicode=True)
+		try:
+			libmathcat.SetPreference("Language", user_preferences["Speech"]["Language"])
+		except Exception as e:
+			log.exception(
+				f'Error in trying to set MathCAT "Language" preference to "{user_preferences["Speech"]["Language"]}": {e}',
+			)
+		if not os.path.exists(UserInterface.path_to_user_preferences_folder()):
+			# create a folder for the user preferences
+			os.mkdir(UserInterface.path_to_user_preferences_folder())
+		with open(UserInterface.path_to_user_preferences(), "w", encoding="utf-8") as f:
+			# write values to the user preferences file, NOT the default
+			yaml.dump(user_preferences, stream=f, allow_unicode=True)
 
-    def OnRelativeSpeedChanged(self, event):
-        rate = self.m_sliderRelativeSpeed.GetValue()
-        # Translators: this is a test string that is spoken. Only translate "the square root of x squared plus y squared"
-        text = _("<prosody rate='XXX%'>the square root of x squared plus y squared</prosody>").replace("XXX", str(rate), 1)
-        speak(ConvertSSMLTextForNVDA(text))
+	def OnRelativeSpeedChanged(self, event):
+		rate = self.m_sliderRelativeSpeed.GetValue()
+		# Translators: this is a test string that is spoken. Only translate "the square root of x squared plus y squared"
+		text = _("<prosody rate='XXX%'>the square root of x squared plus y squared</prosody>").replace(
+			"XXX",
+			str(rate),
+			1,
+		)
+		speak(ConvertSSMLTextForNVDA(text))
 
-    def OnPauseFactorChanged(self, event):
-        rate = self.m_sliderRelativeSpeed.GetValue()
-        pf_slider = self.m_sliderPauseFactor.GetValue()
-        pause_factor = 0 if pf_slider == 0 else round(PAUSE_FACTOR_SCALE * math.pow(PAUSE_FACTOR_LOG_BASE, pf_slider))
-        text = _(
-            # Translators: this is a test string that is spoken. Only translate "the fraction with numerator"
-            # and other parts NOT inside '<.../>',
-            "<prosody rate='{rate}%'>the fraction with numerator <break time='{pause_factor_300}ms'/>\
+	def OnPauseFactorChanged(self, event):
+		rate = self.m_sliderRelativeSpeed.GetValue()
+		pf_slider = self.m_sliderPauseFactor.GetValue()
+		pause_factor = (
+			0 if pf_slider == 0 else round(PAUSE_FACTOR_SCALE * math.pow(PAUSE_FACTOR_LOG_BASE, pf_slider))
+		)
+		text = _(
+			# Translators: this is a test string that is spoken. Only translate "the fraction with numerator"
+			# and other parts NOT inside '<.../>',
+			"<prosody rate='{rate}%'>the fraction with numerator <break time='{pause_factor_300}ms'/>\
                 <mark name='M63i335o-4'/> <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-5'/>\
                 <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme>\
                 power <break time='{pause_factor_128}ms'/> <mark name='M63i335o-6'/> plus  <mark name='M63i335o-7'/>1\
@@ -687,96 +724,96 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
                 <say-as interpret-as='characters'>x</say-as> to the <mark name='M63i335o-11'/>\
                 <say-as interpret-as='characters'>n</say-as> <phoneme alphabet='ipa' ph='θ'>-th</phoneme>power\
                 <break time='{pause_factor_128}ms'/> <mark name='M63i335o-12'/> minus  <mark name='M63i335o-13'/>1\
-                <break time='{pause_factor_600}ms'/>end fraction <break time='{pause_factor_150}ms'/>"
-        ).format(
-            rate=rate,
-            pause_factor_128=128 * pause_factor // 100,
-            pause_factor_150=150 * pause_factor // 100,
-            pause_factor_300=300 * pause_factor // 100,
-            pause_factor_600=600 * pause_factor // 100,
-        )
-        speak(ConvertSSMLTextForNVDA(text))
+                <break time='{pause_factor_600}ms'/>end fraction <break time='{pause_factor_150}ms'/>",
+		).format(
+			rate=rate,
+			pause_factor_128=128 * pause_factor // 100,
+			pause_factor_150=150 * pause_factor // 100,
+			pause_factor_300=300 * pause_factor // 100,
+			pause_factor_600=600 * pause_factor // 100,
+		)
+		speak(ConvertSSMLTextForNVDA(text))
 
-    def OnClickOK(self, event):
-        UserInterface.get_ui_values(self)
-        UserInterface.write_user_preferences()
-        self.Destroy()
+	def OnClickOK(self, event):
+		UserInterface.get_ui_values(self)
+		UserInterface.write_user_preferences()
+		self.Destroy()
 
-    def OnClickCancel(self, event):
-        self.Destroy()
+	def OnClickCancel(self, event):
+		self.Destroy()
 
-    def OnClickApply(self, event):
-        UserInterface.get_ui_values(self)
-        UserInterface.write_user_preferences()
+	def OnClickApply(self, event):
+		UserInterface.get_ui_values(self)
+		UserInterface.write_user_preferences()
 
-    def OnClickReset(self, event):
-        UserInterface.load_default_preferences()
-        UserInterface.validate_user_preferences()
-        UserInterface.set_ui_values(self)
+	def OnClickReset(self, event):
+		UserInterface.load_default_preferences()
+		UserInterface.validate_user_preferences()
+		UserInterface.set_ui_values(self)
 
-    def OnClickHelp(self, event):
-        webbrowser.open("https://nsoiffer.github.io/MathCAT/users.html")
+	def OnClickHelp(self, event):
+		webbrowser.open("https://nsoiffer.github.io/MathCAT/users.html")
 
-    def OnListBoxCategories(self, event):
-        # the category changed, now show the appropriate dialogue page
-        self.m_simplebookPanelsCategories.SetSelection(self.m_listBoxPreferencesTopic.GetSelection())
+	def OnListBoxCategories(self, event):
+		# the category changed, now show the appropriate dialogue page
+		self.m_simplebookPanelsCategories.SetSelection(self.m_listBoxPreferencesTopic.GetSelection())
 
-    def OnLanguage(self, event):
-        # the language changed, get the SpeechStyles for the new language
-        UserInterface.GetSpeechStyles(self, self.m_choiceSpeechStyle.GetStringSelection())
+	def OnLanguage(self, event):
+		# the language changed, get the SpeechStyles for the new language
+		UserInterface.GetSpeechStyles(self, self.m_choiceSpeechStyle.GetStringSelection())
 
-    def MathCATPreferencesDialogOnCharHook(self, event: wx.KeyEvent):
-        # designed choice is that Enter is the same as clicking OK, and Escape is the same as clicking Cancel
-        keyCode = event.GetKeyCode()
-        if keyCode == wx.WXK_ESCAPE:
-            UserInterface.OnClickCancel(self, event)
-            return
-        if keyCode == wx.WXK_RETURN:
-            UserInterface.OnClickOK(self, event)
-        if keyCode == wx.WXK_TAB:
-            if event.GetModifiers() == wx.MOD_CONTROL:
-                # cycle the category forward
-                new_category = self.m_listBoxPreferencesTopic.GetSelection() + 1
-                if new_category == 3:
-                    new_category = 0
-                self.m_listBoxPreferencesTopic.SetSelection(new_category)
-                # update the ui to show the new page
-                UserInterface.OnListBoxCategories(self, event)
-                # set the focus into the category list box
-                self.m_listBoxPreferencesTopic.SetFocus()
-                # jump out so the tab key is not processed
-                return
-            if event.GetModifiers() == wx.MOD_CONTROL | wx.MOD_SHIFT:
-                # cycle the category back
-                new_category = self.m_listBoxPreferencesTopic.GetSelection() - 1
-                if new_category == -1:
-                    new_category = 2
-                self.m_listBoxPreferencesTopic.SetSelection(new_category)
-                # update the ui to show the new page
-                UserInterface.OnListBoxCategories(self, event)
-                # update the ui to show the new page
-                self.m_listBoxPreferencesTopic.SetFocus()
-                # jump out so the tab key is not processed
-                return
-            if event.GetModifiers() == wx.MOD_NONE and (
-                MathCATgui.MathCATPreferencesDialog.FindFocus() == self.m_listBoxPreferencesTopic
-            ):
-                if self.m_listBoxPreferencesTopic.GetSelection() == 0:
-                    self.m_choiceImpairment.SetFocus()
-                elif self.m_listBoxPreferencesTopic.GetSelection() == 1:
-                    self.m_choiceNavigationMode.SetFocus()
-                elif self.m_listBoxPreferencesTopic.GetSelection() == 2:
-                    self.m_choiceBrailleMathCode.SetFocus()
-                return
-            if (event.GetModifiers() == wx.MOD_SHIFT) and (
-                MathCATgui.MathCATPreferencesDialog.FindFocus() == self.m_buttonOK
-            ):
-                if self.m_listBoxPreferencesTopic.GetSelection() == 0:
-                    self.m_choiceSpeechForChemical.SetFocus()
-                elif self.m_listBoxPreferencesTopic.GetSelection() == 1:
-                    self.m_choiceSpeechAmountNavigation.SetFocus()
-                elif self.m_listBoxPreferencesTopic.GetSelection() == 2:
-                    self.m_choiceBrailleHighlights.SetFocus()
-                return
-        # continue handling keyboard event
-        event.Skip()
+	def MathCATPreferencesDialogOnCharHook(self, event: wx.KeyEvent):
+		# designed choice is that Enter is the same as clicking OK, and Escape is the same as clicking Cancel
+		keyCode = event.GetKeyCode()
+		if keyCode == wx.WXK_ESCAPE:
+			UserInterface.OnClickCancel(self, event)
+			return
+		if keyCode == wx.WXK_RETURN:
+			UserInterface.OnClickOK(self, event)
+		if keyCode == wx.WXK_TAB:
+			if event.GetModifiers() == wx.MOD_CONTROL:
+				# cycle the category forward
+				new_category = self.m_listBoxPreferencesTopic.GetSelection() + 1
+				if new_category == 3:
+					new_category = 0
+				self.m_listBoxPreferencesTopic.SetSelection(new_category)
+				# update the ui to show the new page
+				UserInterface.OnListBoxCategories(self, event)
+				# set the focus into the category list box
+				self.m_listBoxPreferencesTopic.SetFocus()
+				# jump out so the tab key is not processed
+				return
+			if event.GetModifiers() == wx.MOD_CONTROL | wx.MOD_SHIFT:
+				# cycle the category back
+				new_category = self.m_listBoxPreferencesTopic.GetSelection() - 1
+				if new_category == -1:
+					new_category = 2
+				self.m_listBoxPreferencesTopic.SetSelection(new_category)
+				# update the ui to show the new page
+				UserInterface.OnListBoxCategories(self, event)
+				# update the ui to show the new page
+				self.m_listBoxPreferencesTopic.SetFocus()
+				# jump out so the tab key is not processed
+				return
+			if event.GetModifiers() == wx.MOD_NONE and (
+				MathCATgui.MathCATPreferencesDialog.FindFocus() == self.m_listBoxPreferencesTopic
+			):
+				if self.m_listBoxPreferencesTopic.GetSelection() == 0:
+					self.m_choiceImpairment.SetFocus()
+				elif self.m_listBoxPreferencesTopic.GetSelection() == 1:
+					self.m_choiceNavigationMode.SetFocus()
+				elif self.m_listBoxPreferencesTopic.GetSelection() == 2:
+					self.m_choiceBrailleMathCode.SetFocus()
+				return
+			if (event.GetModifiers() == wx.MOD_SHIFT) and (
+				MathCATgui.MathCATPreferencesDialog.FindFocus() == self.m_buttonOK
+			):
+				if self.m_listBoxPreferencesTopic.GetSelection() == 0:
+					self.m_choiceSpeechForChemical.SetFocus()
+				elif self.m_listBoxPreferencesTopic.GetSelection() == 1:
+					self.m_choiceSpeechAmountNavigation.SetFocus()
+				elif self.m_listBoxPreferencesTopic.GetSelection() == 2:
+					self.m_choiceBrailleHighlights.SetFocus()
+				return
+		# continue handling keyboard event
+		event.Skip()

@@ -15,10 +15,12 @@ class EmitterError(YAMLError):
     pass
 
 class ScalarAnalysis:
-    def __init__(self, scalar, empty, multiline,
-            allow_flow_plain, allow_block_plain,
-            allow_single_quoted, allow_double_quoted,
-            allow_block):
+    def __init__(
+        self, scalar, empty, multiline,
+        allow_flow_plain, allow_block_plain,
+        allow_single_quoted, allow_double_quoted,
+        allow_block,
+    ):
         self.scalar = scalar
         self.empty = empty
         self.multiline = multiline
@@ -35,8 +37,10 @@ class Emitter:
         'tag:yaml.org,2002:' : '!!',
     }
 
-    def __init__(self, stream, canonical=None, indent=None, width=None,
-            allow_unicode=None, line_break=None):
+    def __init__(
+        self, stream, canonical=None, indent=None, width=None,
+        allow_unicode=None, line_break=None,
+    ):
 
         # The stream should have the methods `write` and possibly `flush`.
         self.stream = stream
@@ -164,8 +168,10 @@ class Emitter:
             self.write_stream_start()
             self.state = self.expect_first_document_start
         else:
-            raise EmitterError("expected StreamStartEvent, but got %s"
-                    % self.event)
+            raise EmitterError(
+                "expected StreamStartEvent, but got %s"
+                % self.event,
+            )
 
     def expect_nothing(self):
         raise EmitterError("expected nothing, but got %s" % self.event)
@@ -192,9 +198,11 @@ class Emitter:
                     handle_text = self.prepare_tag_handle(handle)
                     prefix_text = self.prepare_tag_prefix(prefix)
                     self.write_tag_directive(handle_text, prefix_text)
-            implicit = (first and not self.event.explicit and not self.canonical
-                    and not self.event.version and not self.event.tags
-                    and not self.check_empty_document())
+            implicit = (
+                first and not self.event.explicit and not self.canonical
+                and not self.event.version and not self.event.tags
+                and not self.check_empty_document()
+            )
             if not implicit:
                 self.write_indent()
                 self.write_indicator('---', True)
@@ -208,8 +216,10 @@ class Emitter:
             self.write_stream_end()
             self.state = self.expect_nothing
         else:
-            raise EmitterError("expected DocumentStartEvent, but got %s"
-                    % self.event)
+            raise EmitterError(
+                "expected DocumentStartEvent, but got %s"
+                % self.event,
+            )
 
     def expect_document_end(self):
         if isinstance(self.event, DocumentEndEvent):
@@ -220,8 +230,10 @@ class Emitter:
             self.flush_stream()
             self.state = self.expect_document_start
         else:
-            raise EmitterError("expected DocumentEndEvent, but got %s"
-                    % self.event)
+            raise EmitterError(
+                "expected DocumentEndEvent, but got %s"
+                % self.event,
+            )
 
     def expect_document_root(self):
         self.states.append(self.expect_document_end)
@@ -229,8 +241,10 @@ class Emitter:
 
     # Node handlers.
 
-    def expect_node(self, root=False, sequence=False, mapping=False,
-            simple_key=False):
+    def expect_node(
+        self, root=False, sequence=False, mapping=False,
+        simple_key=False,
+    ):
         self.root_context = root
         self.sequence_context = sequence
         self.mapping_context = mapping
@@ -420,19 +434,25 @@ class Emitter:
     # Checkers.
 
     def check_empty_sequence(self):
-        return (isinstance(self.event, SequenceStartEvent) and self.events
-                and isinstance(self.events[0], SequenceEndEvent))
+        return (
+            isinstance(self.event, SequenceStartEvent) and self.events
+            and isinstance(self.events[0], SequenceEndEvent)
+        )
 
     def check_empty_mapping(self):
-        return (isinstance(self.event, MappingStartEvent) and self.events
-                and isinstance(self.events[0], MappingEndEvent))
+        return (
+            isinstance(self.event, MappingStartEvent) and self.events
+            and isinstance(self.events[0], MappingEndEvent)
+        )
 
     def check_empty_document(self):
         if not isinstance(self.event, DocumentStartEvent) or not self.events:
             return False
         event = self.events[0]
-        return (isinstance(event, ScalarEvent) and event.anchor is None
-                and event.tag is None and event.implicit and event.value == '')
+        return (
+            isinstance(event, ScalarEvent) and event.anchor is None
+            and event.tag is None and event.implicit and event.value == ''
+        )
 
     def check_simple_key(self):
         length = 0
@@ -449,10 +469,16 @@ class Emitter:
             if self.analysis is None:
                 self.analysis = self.analyze_scalar(self.event.value)
             length += len(self.analysis.scalar)
-        return (length < 128 and (isinstance(self.event, AliasEvent)
-            or (isinstance(self.event, ScalarEvent)
-                    and not self.analysis.empty and not self.analysis.multiline)
-            or self.check_empty_sequence() or self.check_empty_mapping()))
+        return (
+            length < 128 and (
+                isinstance(self.event, AliasEvent)
+                or (
+                    isinstance(self.event, ScalarEvent)
+                    and not self.analysis.empty and not self.analysis.multiline
+                )
+                or self.check_empty_sequence() or self.check_empty_mapping()
+            )
+        )
 
     # Anchor, Tag, and Scalar processors.
 
@@ -497,18 +523,28 @@ class Emitter:
         if self.event.style == '"' or self.canonical:
             return '"'
         if not self.event.style and self.event.implicit[0]:
-            if (not (self.simple_key_context and
-                    (self.analysis.empty or self.analysis.multiline))
-                and (self.flow_level and self.analysis.allow_flow_plain
-                    or (not self.flow_level and self.analysis.allow_block_plain))):
+            if (
+                not (
+                    self.simple_key_context and
+                    (self.analysis.empty or self.analysis.multiline)
+                )
+                and (
+                    self.flow_level and self.analysis.allow_flow_plain
+                    or (not self.flow_level and self.analysis.allow_block_plain)
+                )
+            ):
                 return ''
         if self.event.style and self.event.style in '|>':
-            if (not self.flow_level and not self.simple_key_context
-                    and self.analysis.allow_block):
+            if (
+                not self.flow_level and not self.simple_key_context
+                and self.analysis.allow_block
+            ):
                 return self.event.style
         if not self.event.style or self.event.style == '\'':
-            if (self.analysis.allow_single_quoted and
-                    not (self.simple_key_context and self.analysis.multiline)):
+            if (
+                self.analysis.allow_single_quoted and
+                not (self.simple_key_context and self.analysis.multiline)
+            ):
                 return '\''
         return '"'
 
@@ -548,10 +584,14 @@ class Emitter:
         if handle[0] != '!' or handle[-1] != '!':
             raise EmitterError("tag handle must start and end with '!': %r" % handle)
         for ch in handle[1:-1]:
-            if not ('0' <= ch <= '9' or 'A' <= ch <= 'Z' or 'a' <= ch <= 'z'    \
-                    or ch in '-_'):
-                raise EmitterError("invalid character %r in the tag handle: %r"
-                        % (ch, handle))
+            if not (
+                '0' <= ch <= '9' or 'A' <= ch <= 'Z' or 'a' <= ch <= 'z'    \
+                    or ch in '-_'
+            ):
+                raise EmitterError(
+                    "invalid character %r in the tag handle: %r"
+                    % (ch, handle),
+                )
         return handle
 
     def prepare_tag_prefix(self, prefix):
@@ -617,20 +657,26 @@ class Emitter:
         if not anchor:
             raise EmitterError("anchor must not be empty")
         for ch in anchor:
-            if not ('0' <= ch <= '9' or 'A' <= ch <= 'Z' or 'a' <= ch <= 'z'    \
-                    or ch in '-_'):
-                raise EmitterError("invalid character %r in the anchor: %r"
-                        % (ch, anchor))
+            if not (
+                '0' <= ch <= '9' or 'A' <= ch <= 'Z' or 'a' <= ch <= 'z'    \
+                    or ch in '-_'
+            ):
+                raise EmitterError(
+                    "invalid character %r in the anchor: %r"
+                    % (ch, anchor),
+                )
         return anchor
 
     def analyze_scalar(self, scalar):
 
         # Empty scalar is a special case.
         if not scalar:
-            return ScalarAnalysis(scalar=scalar, empty=True, multiline=False,
-                    allow_flow_plain=False, allow_block_plain=True,
-                    allow_single_quoted=True, allow_double_quoted=True,
-                    allow_block=False)
+            return ScalarAnalysis(
+                scalar=scalar, empty=True, multiline=False,
+                allow_flow_plain=False, allow_block_plain=True,
+                allow_single_quoted=True, allow_double_quoted=True,
+                allow_block=False,
+            )
 
         # Indicators and special characters.
         block_indicators = False
@@ -655,8 +701,10 @@ class Emitter:
         preceded_by_whitespace = True
 
         # Last character or followed by a whitespace.
-        followed_by_whitespace = (len(scalar) == 1 or
-                scalar[1] in '\0 \t\r\n\x85\u2028\u2029')
+        followed_by_whitespace = (
+            len(scalar) == 1 or
+            scalar[1] in '\0 \t\r\n\x85\u2028\u2029'
+        )
 
         # The previous character is a space.
         previous_space = False
@@ -697,9 +745,11 @@ class Emitter:
             if ch in '\n\x85\u2028\u2029':
                 line_breaks = True
             if not (ch == '\n' or '\x20' <= ch <= '\x7E'):
-                if (ch == '\x85' or '\xA0' <= ch <= '\uD7FF'
-                        or '\uE000' <= ch <= '\uFFFD'
-                        or '\U00010000' <= ch < '\U0010ffff') and ch != '\uFEFF':
+                if (
+                    ch == '\x85' or '\xA0' <= ch <= '\uD7FF'
+                    or '\uE000' <= ch <= '\uFFFD'
+                    or '\U00010000' <= ch < '\U0010ffff'
+                ) and ch != '\uFEFF':
                     unicode_characters = True
                     if not self.allow_unicode:
                         special_characters = True
@@ -732,8 +782,10 @@ class Emitter:
             # Prepare for the next character.
             index += 1
             preceded_by_whitespace = (ch in '\0 \t\r\n\x85\u2028\u2029')
-            followed_by_whitespace = (index+1 >= len(scalar) or
-                    scalar[index+1] in '\0 \t\r\n\x85\u2028\u2029')
+            followed_by_whitespace = (
+                index+1 >= len(scalar) or
+                scalar[index+1] in '\0 \t\r\n\x85\u2028\u2029'
+            )
 
         # Let's decide what styles are allowed.
         allow_flow_plain = True
@@ -743,8 +795,10 @@ class Emitter:
         allow_block = True
 
         # Leading and trailing whitespaces are bad for plain scalars.
-        if (leading_space or leading_break
-                or trailing_space or trailing_break):
+        if (
+            leading_space or leading_break
+            or trailing_space or trailing_break
+        ):
             allow_flow_plain = allow_block_plain = False
 
         # We do not permit trailing spaces for block scalars.
@@ -775,13 +829,15 @@ class Emitter:
         if block_indicators:
             allow_block_plain = False
 
-        return ScalarAnalysis(scalar=scalar,
-                empty=False, multiline=line_breaks,
-                allow_flow_plain=allow_flow_plain,
-                allow_block_plain=allow_block_plain,
-                allow_single_quoted=allow_single_quoted,
-                allow_double_quoted=allow_double_quoted,
-                allow_block=allow_block)
+        return ScalarAnalysis(
+            scalar=scalar,
+            empty=False, multiline=line_breaks,
+            allow_flow_plain=allow_flow_plain,
+            allow_block_plain=allow_block_plain,
+            allow_single_quoted=allow_single_quoted,
+            allow_double_quoted=allow_double_quoted,
+            allow_block=allow_block,
+        )
 
     # Writers.
 
@@ -797,8 +853,10 @@ class Emitter:
     def write_stream_end(self):
         self.flush_stream()
 
-    def write_indicator(self, indicator, need_whitespace,
-            whitespace=False, indention=False):
+    def write_indicator(
+        self, indicator, need_whitespace,
+        whitespace=False, indention=False,
+    ):
         if self.whitespace or not need_whitespace:
             data = indicator
         else:
@@ -931,10 +989,16 @@ class Emitter:
             if end < len(text):
                 ch = text[end]
             if ch is None or ch in '"\\\x85\u2028\u2029\uFEFF' \
-                    or not ('\x20' <= ch <= '\x7E'
-                        or (self.allow_unicode
-                            and ('\xA0' <= ch <= '\uD7FF'
-                                or '\uE000' <= ch <= '\uFFFD'))):
+                    or not (
+                        '\x20' <= ch <= '\x7E'
+                        or (
+                            self.allow_unicode
+                            and (
+                                '\xA0' <= ch <= '\uD7FF'
+                                or '\uE000' <= ch <= '\uFFFD'
+                            )
+                        )
+                    ):
                 if start < end:
                     data = text[start:end]
                     self.column += len(data)
