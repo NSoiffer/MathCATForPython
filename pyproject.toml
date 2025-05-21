@@ -1,0 +1,210 @@
+[build-system]
+requires = ["setuptools~=72.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "MathCATForPython"
+dynamic = ["version"]
+description = "Math Capable Assistive Technology (MathCAT) Python bindings and addon for NVDA"
+maintainers = [
+	{name = "Neil Soiffer", email = "soiffer@alum.nit.edu"},
+]
+requires-python = ">=3.11,<3.12"
+classifiers = [
+	"Development Status :: 5 - Production/Stable",
+	"Intended Audience :: End Users/Desktop",
+	"License :: OSI Approved :: GNU General Public License v2",
+	"Operating System :: Microsoft :: Windows",
+	"Programming Language :: Python :: 3",
+	"Topic :: Accessibility",
+]
+readme = "readme.md"
+license = {file = "LICENSE"}
+dependencies = [
+	"wxPython==4.2.2",
+]
+
+[project.urls]
+Repository = "http://github.com/NSoiffer/MathCATForPython"
+
+[tool.ruff]
+line-length = 110
+
+builtins = [
+	# translation lookup
+	"_",
+	# translation lookup
+	"ngettext",
+	# translation lookup
+	"pgettext",
+	# translation lookup
+	"npgettext",
+]
+
+include = [
+	"*.py",
+	"sconstruct",
+]
+
+exclude = [
+	".git",
+	"__pycache__",
+	".venv",
+	"./addon/globalPlugins/MathCAT/yaml/*",
+]
+
+[tool.ruff.format]
+indent-style = "tab"
+line-ending = "lf"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 15
+
+[tool.ruff.lint]
+ignore = [
+	# indentation contains tabs
+	"W191",
+]
+logger-objects = ["logHandler.log"]
+
+[tool.ruff.lint.per-file-ignores]
+# sconscripts contains many inbuilt functions not recognised by the lint,
+# so ignore F821.
+"sconstruct" = ["F821"]
+
+[tool.pyright]
+venvPath = ".venv"
+venv = "."
+pythonPlatform = "Windows"
+typeCheckingMode = "strict"
+
+include = [
+	"**/*.py",
+]
+
+exclude = [
+	"sconstruct",
+	".git",
+	"__pycache__",
+	".venv",
+	# When excluding concrete paths relative to a directory,
+	# not matching multiple folders by name e.g. `__pycache__`,
+	# paths are relative to the configuration file.
+]
+
+# Tell pyright where to load python code from
+extraPaths = [
+	"./addon",
+]
+
+# General config
+analyzeUnannotatedFunctions = true
+deprecateTypingAliases = true
+
+# Stricter typing
+strictParameterNoneValue = true
+strictListInference = true
+strictDictionaryInference = true
+strictSetInference = true
+
+# Compliant rules
+reportAssertAlwaysTrue = true
+reportAssertTypeFailure = true
+reportDuplicateImport = true
+reportIncompleteStub = true
+reportInconsistentOverload = true
+reportInconsistentConstructor = true
+reportInvalidStringEscapeSequence = true
+reportInvalidStubStatement = true
+reportInvalidTypeVarUse = true
+reportMatchNotExhaustive = true
+reportMissingModuleSource = true
+reportMissingImports = false # temporarily setting to false for MathCAT integration
+reportNoOverloadImplementation = true
+reportOptionalContextManager = true
+reportOverlappingOverload = true
+reportPrivateImportUsage = true
+reportPropertyTypeMismatch = true
+reportSelfClsParameterName = true
+reportShadowedImports = true
+reportTypeCommentUsage = true
+reportTypedDictNotRequiredAccess = true
+reportUndefinedVariable = true
+reportUnusedExpression = true
+reportUnboundVariable = true
+reportUnhashable = true
+reportUnnecessaryCast = true
+reportUnnecessaryContains = true
+reportUnnecessaryTypeIgnoreComment = true
+reportUntypedClassDecorator = true
+reportUntypedFunctionDecorator = true
+reportUnusedClass = true
+reportUnusedCoroutine = true
+reportUnusedExcept = true
+
+# Should switch to true when possible
+reportDeprecated = false
+
+# Can be enabled by generating type stubs for modules via pyright CLI
+reportMissingTypeStubs = false
+
+reportUnsupportedDunderAll = false
+reportAbstractUsage = false
+reportUntypedBaseClass = false
+reportOptionalIterable = false
+reportCallInDefaultInitializer = false
+reportInvalidTypeArguments = false
+reportUntypedNamedTuple = false
+reportRedeclaration = false
+reportOptionalCall = false
+reportConstantRedefinition = false
+reportWildcardImportFromLibrary = false
+reportIncompatibleVariableOverride = false
+reportInvalidTypeForm = false
+reportGeneralTypeIssues = false
+reportOptionalOperand = false
+reportUnnecessaryComparison = false
+reportFunctionMemberAccess = false
+reportUnnecessaryIsInstance = false
+reportUnusedFunction = false
+reportImportCycles = false
+reportUnusedImport = false
+reportUnusedVariable = false
+reportOperatorIssue = false
+reportAssignmentType = false
+reportReturnType = false
+reportPossiblyUnboundVariable = false
+reportMissingSuperCall = false
+reportUninitializedInstanceVariable = false
+reportUnknownLambdaType = false
+reportMissingTypeArgument = false
+reportImplicitStringConcatenation = false
+reportIncompatibleMethodOverride = false
+reportPrivateUsage = false
+reportUnusedCallResult = false
+reportOptionalSubscript = false
+reportCallIssue = false
+reportOptionalMemberAccess = false
+reportImplicitOverride = false
+reportIndexIssue = false
+reportAttributeAccessIssue = false
+reportArgumentType = false
+reportUnknownParameterType = false
+reportMissingParameterType = false
+reportUnknownVariableType = false
+reportUnknownArgumentType = false
+reportUnknownMemberType = false
+
+[dependency-groups]
+dev = [
+	"SCons==4.8.1",
+	"setuptools~=72.0",
+]
+lint = [
+	"ruff==0.8.1",
+	"pre-commit==4.0.1",
+	"pyright==1.1.396",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "buildVersion.version_detailed"}

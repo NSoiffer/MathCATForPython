@@ -34,13 +34,17 @@ class ReaderError(YAMLError):
         if isinstance(self.character, bytes):
             return "'%s' codec can't decode byte #x%02x: %s\n"  \
                     "  in \"%s\", position %d"    \
-                    % (self.encoding, ord(self.character), self.reason,
-                            self.name, self.position)
+                    % (
+                        self.encoding, ord(self.character), self.reason,
+                        self.name, self.position,
+                    )
         else:
             return "unacceptable character #x%04x: %s\n"    \
                     "  in \"%s\", position %d"    \
-                    % (self.character, self.reason,
-                            self.name, self.position)
+                    % (
+                        self.character, self.reason,
+                        self.name, self.position,
+                    )
 
 class Reader(object):
     # Reader:
@@ -113,11 +117,15 @@ class Reader(object):
 
     def get_mark(self):
         if self.stream is None:
-            return Mark(self.name, self.index, self.line, self.column,
-                    self.buffer, self.pointer)
+            return Mark(
+                self.name, self.index, self.line, self.column,
+                self.buffer, self.pointer,
+            )
         else:
-            return Mark(self.name, self.index, self.line, self.column,
-                    None, None)
+            return Mark(
+                self.name, self.index, self.line, self.column,
+                None, None,
+            )
 
     def determine_encoding(self):
         while not self.eof and (self.raw_buffer is None or len(self.raw_buffer) < 2):
@@ -140,8 +148,10 @@ class Reader(object):
         if match:
             character = match.group()
             position = self.index+(len(self.buffer)-self.pointer)+match.start()
-            raise ReaderError(self.name, position, ord(character),
-                    'unicode', "special characters are not allowed")
+            raise ReaderError(
+                self.name, position, ord(character),
+                'unicode', "special characters are not allowed",
+            )
 
     def update(self, length):
         if self.raw_buffer is None:
@@ -153,16 +163,20 @@ class Reader(object):
                 self.update_raw()
             if self.raw_decode is not None:
                 try:
-                    data, converted = self.raw_decode(self.raw_buffer,
-                            'strict', self.eof)
+                    data, converted = self.raw_decode(
+                        self.raw_buffer,
+                        'strict', self.eof,
+                    )
                 except UnicodeDecodeError as exc:
                     character = self.raw_buffer[exc.start]
                     if self.stream is not None:
                         position = self.stream_pointer-len(self.raw_buffer)+exc.start
                     else:
                         position = exc.start
-                    raise ReaderError(self.name, position, character,
-                            exc.encoding, exc.reason)
+                    raise ReaderError(
+                        self.name, position, character,
+                        exc.encoding, exc.reason,
+                    )
             else:
                 data = self.raw_buffer
                 converted = len(data)

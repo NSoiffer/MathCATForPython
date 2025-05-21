@@ -62,7 +62,7 @@ Lots of changes because it has been a while since the last official release.
 * Added inference for cross-product and dot-product
 * Added inference for div, grad, and curl
 * Added special speech for zero, identity, and diagonal matrices in English
-* Be more restrictive when inferring a table 
+* Be more restrictive when inferring a table
 * Changed speech for the general cases of `mover` and `munder` from "modified x with y above it" to "quantity x with y above it"
 * Improved rule for {} so that it isn't always spoken as "set of ...". It could just be bracketing chars.
 * Tweaked the speech for ∈ inside of a set so that the word "is" is dropped when part of a set -- "the set of all x is an element of ..." sounds poor.
@@ -147,7 +147,7 @@ Lots of changes because it has been a while since the last official release.
 * Fixed language switching when voice changes and MathCAT language is "Auto"
 * Added more checks for $Impairments to improve reading when it is not set for those who are blind
 * Nemeth: fix for "~" when it isn't part of an mrow
-* UEB: character additions, "~" spacing fix if prefix, xor fix, 
+* UEB: character additions, "~" spacing fix if prefix, xor fix,
 * MathML cleanup for accented vowels (mainly for Vietnamese)
 * Major rewrite of preference reading/updating code with big speedup -- added `CheckRuleFiles` pref to control which files are checked for updates
 * Added two new interface calls -- enables setting the navigaton location from the braille cursor (not part of MathCAT addon yet)
@@ -212,4 +212,3 @@ Note: there is now an option to get Vietnam's braille standard as braille output
 * A preference setting to control the duration of pausing (works with changes to relative speech rate for math)
 * Support to recognize chemistry notation and speak it appropriately
 * Translations to Indonesian and Vietnamese
-

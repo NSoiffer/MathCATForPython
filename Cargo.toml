@@ -31,7 +31,7 @@ version = "0.22"
 features = ["extension-module", "abi3"]
 
 [build-dependencies]
-zip = { version = "2.6", default-features = false, features = ["bzip2"] }
+zip = { version = "3.0", default-features = false, features = ["bzip2"] }
 mathcat = {version = "=0.6.9", features = ["include-zip"]}     # for building, we want the zip files so we can include them separately
 # mathcat = { path = "../MathCAT/", features = ["include-zip"]}     # for building, we want the zip files so we can include them separately
 # for testing MathCAT without having to publish a new version (change two occurrences)

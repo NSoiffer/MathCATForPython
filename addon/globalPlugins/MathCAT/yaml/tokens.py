@@ -4,11 +4,15 @@ class Token(object):
         self.start_mark = start_mark
         self.end_mark = end_mark
     def __repr__(self):
-        attributes = [key for key in self.__dict__
-                if not key.endswith('_mark')]
+        attributes = [
+            key for key in self.__dict__
+            if not key.endswith('_mark')
+        ]
         attributes.sort()
-        arguments = ', '.join(['%s=%r' % (key, getattr(self, key))
-                for key in attributes])
+        arguments = ', '.join([
+            '%s=%r' % (key, getattr(self, key))
+            for key in attributes
+        ])
         return '%s(%s)' % (self.__class__.__name__, arguments)
 
 #class BOMToken(Token):
@@ -30,8 +34,10 @@ class DocumentEndToken(Token):
 
 class StreamStartToken(Token):
     id = '<stream start>'
-    def __init__(self, start_mark=None, end_mark=None,
-            encoding=None):
+    def __init__(
+        self, start_mark=None, end_mark=None,
+        encoding=None,
+    ):
         self.start_mark = start_mark
         self.end_mark = end_mark
         self.encoding = encoding
@@ -101,4 +107,3 @@ class ScalarToken(Token):
         self.start_mark = start_mark
         self.end_mark = end_mark
         self.style = style
-

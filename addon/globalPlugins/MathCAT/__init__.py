@@ -10,14 +10,15 @@
 #   python3.dll has "Copyright © 2001-2022 Python Software Foundation; All Rights Reserved"
 
 
-import globalPluginHandler                  # we are a global plugin
+import globalPluginHandler  # we are a global plugin
 import globalVars
-import mathPres                             # math plugin stuff
+import mathPres  # math plugin stuff
 import wx
 import addonHandler
 from gui import mainFrame
 from .MathCAT import MathCAT
 from .MathCATPreferences import UserInterface
+
 # Import the _ function for translation
 _ = wx.GetTranslation
 addonHandler.initTranslation()
@@ -25,24 +26,24 @@ mathPres.registerProvider(MathCAT(), speech=True, braille=True, interaction=True
 
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # MathCAT.__init__(self)
-        self.add_MathCAT_menu()
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		# MathCAT.__init__(self)
+		self.add_MathCAT_menu()
 
-    def add_MathCAT_menu(self):
-        if not globalVars.appArgs.secure:
-            self.preferencesMenu = mainFrame.sysTrayIcon.preferencesMenu
-            # Translators: this show up in the NVDA preferences dialog. It opens the MathCAT preferences dialog
-            self.settings = self.preferencesMenu.Append(wx.ID_ANY, _("&MathCAT Settings..."))
-            mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.on_settings, self.settings)
+	def add_MathCAT_menu(self):
+		if not globalVars.appArgs.secure:
+			self.preferencesMenu = mainFrame.sysTrayIcon.preferencesMenu
+			# Translators: this show up in the NVDA preferences dialog. It opens the MathCAT preferences dialog
+			self.settings = self.preferencesMenu.Append(wx.ID_ANY, _("&MathCAT Settings..."))
+			mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.on_settings, self.settings)
 
-    def on_settings(self, evt):
-        mainFrame.popupSettingsDialog(UserInterface)
+	def on_settings(self, evt):
+		mainFrame.popupSettingsDialog(UserInterface)
 
-    def terminate(self):
-        try:
-            if not globalVars.appArgs.secure:
-                self.preferencesMenu.Remove(self.settings)
-        except (AttributeError, RuntimeError):
-            pass
+	def terminate(self):
+		try:
+			if not globalVars.appArgs.secure:
+				self.preferencesMenu.Remove(self.settings)
+		except (AttributeError, RuntimeError):
+			pass
