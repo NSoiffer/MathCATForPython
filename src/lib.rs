@@ -2,7 +2,7 @@
 //! 1. whatever preferences the AT needs to set, it is done with calls to [`SetPreference`].
 //! 2. the MathML is sent over via [`SetMathML`].
 //! 3. AT calls to get the speech [`GetSpokenText`] and calls [`GetBraille`] to get the (Unicode) braille.
-//! 
+//!
 //! Navigation can be done via calls to either:
 //! * [`DoNavigateKeyPress`] (takes key events as input)
 //! * [`DoNavigateCommand`] (takes the commands the key events internally map to)
@@ -14,7 +14,7 @@
 //! * [`GetNavigationMathML`] -- returns a string representing the MathML for the selected node
 //! Note: a second integer is returned. This is the offset in characters for a leaf node.
 //!   This is needed when navigating by character for multi-symbol leaf nodes such as "sin" and "1234"
-//! 
+//!
 //! It is also possible to find out what preferences are currently set by calling [`GetPreference`]
 //!
 //! AT can pass key strokes to allow a user to navigate the MathML by calling [`DoNavigateKeyPress`]; the speech is returned.
@@ -97,7 +97,7 @@ pub fn GetPreference(_py: Python, name: String) -> PyResult<String> {
 #[pyfunction]
 /// Get the braille associated with the MathML node with a given id (MathML set by `SetMathML`]).
 /// An empty string can be used to return the braille associated with the entire expression.
-/// 
+///
 /// The braille returned depends upon the preference for braille output.
 pub fn GetBraille(_py: Python, nav_node_id: String) -> PyResult<String> {
     return convert_error( get_braille(nav_node_id) );
@@ -106,7 +106,7 @@ pub fn GetBraille(_py: Python, nav_node_id: String) -> PyResult<String> {
 #[pyfunction]
 /// Get the braille associated with the MathML node with a given id (MathML set by `SetMathML`]).
 /// An empty string can be used to return the braille associated with the entire expression.
-/// 
+///
 /// The braille returned depends upon the preference for braille output.
 pub fn GetNavigationBraille(_py: Python) -> PyResult<String> {
     return convert_error( get_navigation_braille() );
@@ -124,17 +124,17 @@ pub fn DoNavigateKeyPress(_py: Python, key: usize, shift_key: bool, control_key:
 /// Given a command, the current node is moved accordingly (or value reported in some cases).
 ///
 /// The spoken text for the new current node is returned.
-/// 
+///
 /// The list of legal commands are:
-/// "MovePrevious", "MoveNext", "MoveStart", "MoveEnd", "MoveLineStart", "MoveLineEnd", 
-/// "MoveCellPrevious", "MoveCellNext", "MoveCellUp", "MoveCellDown", "MoveColumnStart", "MoveColumnEnd", 
-/// "ZoomIn", "ZoomOut", "ZoomOutAll", "ZoomInAll", 
-/// "MoveLastLocation", 
-/// "ReadPrevious", "ReadNext", "ReadCurrent", "ReadCellCurrent", "ReadStart", "ReadEnd", "ReadLineStart", "ReadLineEnd", 
-/// "DescribePrevious", "DescribeNext", "DescribeCurrent", 
-/// "WhereAmI", "WhereAmIAll", 
-/// "ToggleZoomLockUp", "ToggleZoomLockDown", "ToggleSpeakMode", 
-/// "Exit", 
+/// "MovePrevious", "MoveNext", "MoveStart", "MoveEnd", "MoveLineStart", "MoveLineEnd",
+/// "MoveCellPrevious", "MoveCellNext", "MoveCellUp", "MoveCellDown", "MoveColumnStart", "MoveColumnEnd",
+/// "ZoomIn", "ZoomOut", "ZoomOutAll", "ZoomInAll",
+/// "MoveLastLocation",
+/// "ReadPrevious", "ReadNext", "ReadCurrent", "ReadCellCurrent", "ReadStart", "ReadEnd", "ReadLineStart", "ReadLineEnd",
+/// "DescribePrevious", "DescribeNext", "DescribeCurrent",
+/// "WhereAmI", "WhereAmIAll",
+/// "ToggleZoomLockUp", "ToggleZoomLockDown", "ToggleSpeakMode",
+/// "Exit",
 /// "MoveTo0","MoveTo1","MoveTo2","MoveTo3","MoveTo4","MoveTo5","MoveTo6","MoveTo7","MoveTo8","MoveTo9",
 /// "Read0","Read1","Read2","Read3","Read4","Read5","Read6","Read7","Read8","Read9",
 /// "Describe0","Describe1","Describe2","Describe3","Describe4","Describe5","Describe6","Describe7","Describe8","Describe9",
