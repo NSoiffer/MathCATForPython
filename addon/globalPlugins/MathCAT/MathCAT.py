@@ -82,7 +82,7 @@ RE_MATH_LANG = re.compile(r"""<math .*(xml:)?lang=["']([^'"]+)["'].*>""")
 
 # try to get around espeak bug where voice slows down (for other voices, just a waste of time)
 # we use a global that gets set at a time when the rate is probably good (SetMathML)
-_synthesizer_rate: int | None = None
+_synthesizerRate: int | None = None
 
 
 def getLanguageToUse(mathMl: str = "") -> str:
@@ -135,14 +135,14 @@ def ConvertSSMLTextForNVDA(text: str) -> list:
 	# At "50" espeak finished in 46 sec, sapi in 75 sec, and one core in 70; at '100' one core was much slower than the others
 	wpm = 2 * getSynth()._get_rate()
 	breakMulti = 180.0 / wpm
-	supported_commands = synth.supportedCommands
-	use_break = BreakCommand in supported_commands
-	use_pitch = PitchCommand in supported_commands
+	supportedCommands = synth.supportedCommands
+	useBreak = BreakCommand in supportedCommands
+	usePitch = PitchCommand in supportedCommands
 	# use_rate = RateCommand in supported_commands
 	# use_volume = VolumeCommand in supported_commands
-	use_phoneme = PhonemeCommand in supported_commands
+	usePhoneme = PhonemeCommand in supportedCommands
 	# as of 7/23, oneCore voices do not implement the CharacterModeCommand despite it being in supported_commands
-	use_character = CharacterModeCommand in supported_commands and synth.name != "oneCore"
+	useCharacter = CharacterModeCommand in supportedCommands and synth.name != "oneCore"
 	out = []
 	if mathCATLanguageSetting != language:
 		# log.info(f"Setting language to {language}")
@@ -158,23 +158,23 @@ def ConvertSSMLTextForNVDA(text: str) -> list:
 	# log.info(f"\ntext: {text}")
 	for m in RE_MATHML_SPEECH.finditer(text):
 		if m.lastgroup == "break":
-			if use_break:
+			if useBreak:
 				out.append(BreakCommand(time=int(int(m.group("break")) * breakMulti)))
 		elif m.lastgroup == "char":
 			ch = m.group("char")
-			if use_character:
+			if useCharacter:
 				out.extend((CharacterModeCommand(True), ch, CharacterModeCommand(False)))
 			else:
 				out.extend((" ", "eigh" if ch == "a" and language.startswith("en") else ch, " "))
 		elif m.lastgroup == "beep":
 			out.append(BeepCommand(2000, 50))
 		elif m.lastgroup == "pitch":
-			if use_pitch:
+			if usePitch:
 				out.append(PitchCommand(multiplier=int(m.group(m.lastgroup))))
 				resetProsody.append(PitchCommand)
 		elif m.lastgroup in PROSODY_COMMANDS:
 			command = PROSODY_COMMANDS[m.lastgroup]
-			if command in supported_commands:
+			if command in supportedCommands:
 				out.append(command(multiplier=int(m.group(m.lastgroup)) / 100.0))
 				resetProsody.append(command)
 		elif m.lastgroup == "prosodyReset":
@@ -182,7 +182,7 @@ def ConvertSSMLTextForNVDA(text: str) -> list:
 			command = resetProsody.pop()
 			out.append(command(multiplier=1))
 		elif m.lastgroup == "phonemeText":
-			if use_phoneme:
+			if usePhoneme:
 				out.append(PhonemeCommand(m.group("ipa"), text=m.group("phonemeText")))
 			else:
 				out.append(m.group("phonemeText"))
@@ -220,15 +220,15 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 	def __init__(self, provider=None, mathMl: Optional[str] = None):
 		super(MathCATInteraction, self).__init__(provider=provider, mathMl=mathMl)
 		if mathMl is None:
-			self.init_mathml = "<math></math>"
+			self.initMathML = "<math></math>"
 		else:
-			self.init_mathml = mathMl
+			self.initMathML = mathMl
 
 	def reportFocus(self):
 		super(MathCATInteraction, self).reportFocus()
 		# try to get around espeak bug where voice slows down
-		if _synthesizer_rate and getSynth().name == "espeak":
-			getSynth()._set_rate(_synthesizer_rate)
+		if _synthesizerRate and getSynth().name == "espeak":
+			getSynth()._set_rate(_synthesizerRate)
 		try:
 			text = libmathcat.DoNavigateCommand("ZoomIn")
 			speech.speak(ConvertSSMLTextForNVDA(text))
@@ -238,9 +238,9 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 			speech.speakMessage(_("Error in starting navigation of math: see NVDA error log for details"))
 		finally:
 			# try to get around espeak bug where voice slows down
-			if _synthesizer_rate and getSynth().name == "espeak":
+			if _synthesizerRate and getSynth().name == "espeak":
 				# log.info(f'reportFocus: reset to {_synthesizer_rate}')
-				getSynth()._set_rate(_synthesizer_rate)
+				getSynth()._set_rate(_synthesizerRate)
 
 	def getBrailleRegions(self, review: bool = False):
 		# log.info("***MathCAT start getBrailleRegions")
@@ -295,8 +295,8 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 	def script_navigate(self, gesture: KeyboardInputGesture):
 		try:
 			# try to get around espeak bug where voice slows down
-			if _synthesizer_rate and getSynth().name == "espeak":
-				getSynth()._set_rate(_synthesizer_rate)
+			if _synthesizerRate and getSynth().name == "espeak":
+				getSynth()._set_rate(_synthesizerRate)
 			if gesture is not None:  # == None when initial focus -- handled in reportFocus()
 				modNames = gesture.modifierNames
 				text = libmathcat.DoNavigateKeyPress(
@@ -314,20 +314,20 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 			speech.speakMessage(_("Error in navigating math: see NVDA error log for details"))
 		finally:
 			# try to get around espeak bug where voice slows down
-			if _synthesizer_rate and getSynth().name == "espeak":
+			if _synthesizerRate and getSynth().name == "espeak":
 				# log.info(f'script_navigate: reset to {_synthesizer_rate}')
-				getSynth()._set_rate(_synthesizer_rate)
+				getSynth()._set_rate(_synthesizerRate)
 
 		if not braille.handler.enabled:
 			return
 
 		try:
 			# update the braille to reflect the nav position (might be excess code, but it works)
-			nav_node = libmathcat.GetNavigationMathMLId()
-			braille_chars = libmathcat.GetBraille(nav_node[0])
+			navNode = libmathcat.GetNavigationMathMLId()
+			brailleChars = libmathcat.GetBraille(navNode[0])
 			# log.info(f'braille display = {config.conf["braille"]["display"]}, braille_chars: {braille_chars}')
 			region = braille.Region()
-			region.rawText = braille_chars
+			region.rawText = brailleChars
 			region.focusToHardLeft = True
 			region.update()
 			braille.handler.buffer.regions.append(region)
@@ -350,44 +350,44 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 	)  # type: ignore
 	def script_rawdataToClip(self, gesture: KeyboardInputGesture):
 		try:
-			copy_as = "mathml"  # value used even if "CopyAs" pref is invalid
-			text_to_copy = ""
+			copyAs = "mathml"  # value used even if "CopyAs" pref is invalid
+			textToCopy = ""
 			try:
-				copy_as = libmathcat.GetPreference("CopyAs").lower()
+				copyAs = libmathcat.GetPreference("CopyAs").lower()
 			except Exception as e:
 				log.exception(f"Not able to get 'CopyAs' preference: {e}")
-			if copy_as == "asciimath" or copy_as == "latex":
+			if copyAs == "asciimath" or copyAs == "latex":
 				# save the old braille code, set the new one, get the braille, then reset the code
-				saved_braille_code: str = libmathcat.GetPreference("BrailleCode")
-				libmathcat.SetPreference("BrailleCode", "LaTeX" if copy_as == "latex" else "ASCIIMath")
-				text_to_copy = libmathcat.GetNavigationBraille()
-				libmathcat.SetPreference("BrailleCode", saved_braille_code)
-				if copy_as == "asciimath":
-					copy_as = "ASCIIMath"  # speaks better in at least some voices
+				savedBrailleCode: str = libmathcat.GetPreference("BrailleCode")
+				libmathcat.SetPreference("BrailleCode", "LaTeX" if copyAs == "latex" else "ASCIIMath")
+				textToCopy = libmathcat.GetNavigationBraille()
+				libmathcat.SetPreference("BrailleCode", savedBrailleCode)
+				if copyAs == "asciimath":
+					copyAs = "ASCIIMath"  # speaks better in at least some voices
 			else:
 				mathml = libmathcat.GetNavigationMathML()[0]
 				if not re.match(self._startsWithMath, mathml):
 					mathml = "<math>\n" + mathml + "</math>"  # copy will fix up name spacing
-				elif self.init_mathml != "":
-					mathml = self.init_mathml
-				if copy_as == "speech":
+				elif self.initMathML != "":
+					mathml = self.initMathML
+				if copyAs == "speech":
 					# save the old MathML, set the navigation MathML as MathMl, get the speech, then reset the MathML
-					saved_mathml: str = self.init_mathml
-					saved_tts = libmathcat.GetPreference("TTS")
-					if saved_mathml == "":  # shouldn't happen
+					savedMathML: str = self.initMathML
+					savedTTS = libmathcat.GetPreference("TTS")
+					if savedMathML == "":  # shouldn't happen
 						raise Exception("Internal error -- MathML not set for copy")
 					libmathcat.SetPreference("TTS", "None")
 					libmathcat.SetMathML(mathml)
 					# get the speech text and collapse the whitespace
-					text_to_copy = " ".join(libmathcat.GetSpokenText().split())
-					libmathcat.SetPreference("TTS", saved_tts)
-					libmathcat.SetMathML(saved_mathml)
+					textToCopy = " ".join(libmathcat.GetSpokenText().split())
+					libmathcat.SetPreference("TTS", savedTTS)
+					libmathcat.SetMathML(savedMathML)
 				else:
-					text_to_copy = self._wrapMathMLForClipBoard(mathml)
+					textToCopy = self._wrapMathMLForClipBoard(mathml)
 
-			self._copyToClipAsMathML(text_to_copy, copy_as == "mathml")
+			self._copyToClipAsMathML(textToCopy, copyAs == "mathml")
 			# Translators: copy to clipboard
-			ui.message(_("copy as ") + copy_as)
+			ui.message(_("copy as ") + copyAs)
 		except Exception as e:
 			log.exception(e)
 			# Translators: this message directs users to look in the log file
@@ -402,16 +402,16 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 	def _wrapMathMLForClipBoard(self, text: str) -> str:
 		# cleanup the MathML a little
 		text = re.sub(self._hasAddedId, "", text)
-		mathml_with_ns = re.sub(self._hasDataAttr, "", text)
-		if not re.match(self._mathTagHasNameSpace, mathml_with_ns):
-			mathml_with_ns = mathml_with_ns.replace(
+		mathMLWithNS = re.sub(self._hasDataAttr, "", text)
+		if not re.match(self._mathTagHasNameSpace, mathMLWithNS):
+			mathMLWithNS = mathMLWithNS.replace(
 				"math",
 				"math xmlns='http://www.w3.org/1998/Math/MathML'",
 				1,
 			)
-		return mathml_with_ns
+		return mathMLWithNS
 
-	def _copyToClipAsMathML(self, text: str, is_mathml: bool, notify: Optional[bool] = False) -> bool:
+	def _copyToClipAsMathML(self, text: str, isMathML: bool, notify: Optional[bool] = False) -> bool:
 		"""Copies the given text to the windows clipboard.
 		@returns: True if it succeeds, False otherwise.
 		@param text: the text which will be copied to the clipboard
@@ -424,7 +424,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 		try:
 			with winUser.openClipboard(gui.mainFrame.Handle):
 				winUser.emptyClipboard()
-				if is_mathml:
+				if isMathML:
 					self._setClipboardData(self.CF_MathML, '<?xml version="1.0"?>' + text)
 					self._setClipboardData(self.CF_MathML_Presentation, '<?xml version="1.0"?>' + text)
 				self._setClipboardData(winUser.CF_UNICODETEXT, text)
@@ -468,9 +468,9 @@ class MathCAT(mathPres.MathPresentationProvider):
 
 		try:
 			# IMPORTANT -- SetRulesDir must be the first call to libmathcat besides GetVersion()
-			rules_dir = path.join(path.dirname(path.abspath(__file__)), "Rules")
-			log.info(f"MathCAT {libmathcat.GetVersion()} installed. Using rules dir: {rules_dir}")
-			libmathcat.SetRulesDir(rules_dir)
+			rulesDir = path.join(path.dirname(path.abspath(__file__)), "Rules")
+			log.info(f"MathCAT {libmathcat.GetVersion()} installed. Using rules dir: {rulesDir}")
+			libmathcat.SetRulesDir(rulesDir)
 			libmathcat.SetPreference("TTS", "SSML")
 		except Exception as e:
 			log.exception(e)
@@ -478,13 +478,13 @@ class MathCAT(mathPres.MathPresentationProvider):
 			speech.speakMessage(_("MathCAT initialization failed: see NVDA error log for details"))
 
 	def getSpeechForMathMl(self, mathml: str):
-		global _synthesizer_rate
+		global _synthesizerRate
 		synth = getSynth()
 		synthConfig = config.conf["speech"][synth.name]
 		if synth.name == "espeak":
-			_synthesizer_rate = synthConfig["rate"]
+			_synthesizerRate = synthConfig["rate"]
 			# log.info(f'_synthesizer_rate={_synthesizer_rate}, get_rate()={getSynth()._get_rate()}')
-			getSynth()._set_rate(_synthesizer_rate)
+			getSynth()._set_rate(_synthesizerRate)
 		# log.info(f'..............get_rate()={getSynth()._get_rate()}, name={synth.name}')
 		try:
 			# need to set Language before the MathML for DecimalSeparator canonicalization
@@ -499,7 +499,7 @@ class MathCAT(mathPres.MathPresentationProvider):
 			speech.speakMessage(_("Illegal MathML found: see NVDA error log for details"))
 			libmathcat.SetMathML("<math></math>")  # set it to something
 		try:
-			supported_commands = synth.supportedCommands
+			supportedCommands = synth.supportedCommands
 			# Set preferences for capital letters
 			libmathcat.SetPreference(
 				"CapitalLetters_Beep",
@@ -510,9 +510,9 @@ class MathCAT(mathPres.MathPresentationProvider):
 				"true" if synthConfig["sayCapForCapitals"] else "false",
 			)
 			# log.info(f"Speech text: {libmathcat.GetSpokenText()}")
-			if PitchCommand in supported_commands:
+			if PitchCommand in supportedCommands:
 				libmathcat.SetPreference("CapitalLetters_Pitch", str(synthConfig["capPitchChange"]))
-			if self._add_sounds():
+			if self._addSounds():
 				return (
 					[BeepCommand(800, 25)]
 					+ ConvertSSMLTextForNVDA(libmathcat.GetSpokenText())
@@ -528,11 +528,11 @@ class MathCAT(mathPres.MathPresentationProvider):
 			return [""]
 		finally:
 			# try to get around espeak bug where voice slows down
-			if _synthesizer_rate and getSynth().name == "espeak":
+			if _synthesizerRate and getSynth().name == "espeak":
 				# log.info(f'getSpeechForMathMl: reset to {_synthesizer_rate}')
-				getSynth()._set_rate(_synthesizer_rate)
+				getSynth()._set_rate(_synthesizerRate)
 
-	def _add_sounds(self):
+	def _addSounds(self):
 		try:
 			return libmathcat.GetPreference("SpeechSound") != "None"
 		except Exception as e:
@@ -572,10 +572,10 @@ def _monkeyPatchESpeak():
 		return  # already patched
 
 	CACHED_SYNTH = currentSynth
-	currentSynth.speak = patched_speak.__get__(currentSynth, type(currentSynth))
+	currentSynth.speak = patchedSpeak.__get__(currentSynth, type(currentSynth))
 
 
-def patched_speak(self, speechSequence: SpeechSequence):  # noqa: C901
+def patchedSpeak(self, speechSequence: SpeechSequence):  # noqa: C901
 	# log.info(f"\npatched_speak input: {speechSequence}")
 	textList: List[str] = []
 	langChanged = False
