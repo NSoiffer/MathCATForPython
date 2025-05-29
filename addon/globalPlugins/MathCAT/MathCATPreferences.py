@@ -11,7 +11,7 @@ import gettext
 import addonHandler
 from logHandler import log  # logging
 from typing import List, Dict, Union, Callable
-from .MathCAT import ConvertSSMLTextForNVDA
+from .MathCAT import convertSSMLTextForNVDA
 from speech import speak
 from zipfile import ZipFile
 
@@ -72,8 +72,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 			self._listBoxPreferencesTopic.SetSelection(0)
 			userPreferences["NVDAAddOn"] = {"LastCategory": "0"}
 		# populate the languages and braille codes
-		UserInterface.GetLanguages(self)
-		UserInterface.GetBrailleCodes(self)
+		UserInterface.getLanguages(self)
+		UserInterface.getBrailleCodes(self)
 		# set the ui items to match the preferences
 		UserInterface.setUIValues(self)
 
@@ -88,7 +88,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 		return os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "Braille")
 
 	@staticmethod
-	def LanguagesDict() -> Dict[str, str]:
+	def languagesDict() -> Dict[str, str]:
 		languages = {
 			"aa": "Afar",
 			"ab": "Аҧсуа",
@@ -291,13 +291,13 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 
 		return ruleFiles
 
-	def GetLanguages(self):
+	def getLanguages(self):
 		def addRegionalLanguages(subDir: str, language: str) -> List[str]:
 			# the language variants are in folders named using ISO 3166-1 alpha-2
 			# codes https://en.wikipedia.org/wiki/ISO_3166-2
 			# check if there are language variants in the language folder
 			if subDir != "SharedRules":
-				languagesDict = UserInterface.LanguagesDict()
+				languagesDict = UserInterface.languagesDict()
 				# add to the listbox the text for this language variant together with the code
 				regionalCode = language + "-" + subDir.upper()
 				if languagesDict.get(regionalCode, "missing") != "missing":
@@ -310,7 +310,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 			return []
 
 		# initialise the language list
-		languagesDict = UserInterface.LanguagesDict()
+		languagesDict = UserInterface.languagesDict()
 		# clear the language names in the dialog
 		self._choiceLanguage.Clear()
 		# Translators: menu item -- use the language of the voice chosen in the NVDA speech settings dialog
@@ -331,12 +331,12 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 					else:
 						self._choiceLanguage.Append(language + " (" + language + ")")
 
-	def GetLanguageCode(self):
+	def getLanguageCode(self):
 		lang_selection = self._choiceLanguage.GetStringSelection()
 		lang_code = lang_selection[lang_selection.find("(") + 1 : lang_selection.find(")")]
 		return lang_code
 
-	def GetSpeechStyles(self, thisSpeechStyle: str):
+	def getSpeechStyles(self, thisSpeechStyle: str):
 		"""Get all the speech styles for the current language.
 		This sets the SpeechStyles dialog entry"""
 		from speech import getCurrentLanguage
@@ -370,7 +370,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 		# clear the SpeechStyle choices
 		self._choiceSpeechStyle.Clear()
 		# get the currently selected language code
-		languageCode = UserInterface.GetLanguageCode(self)
+		languageCode = UserInterface.getLanguageCode(self)
 
 		if languageCode == "Auto":
 			# list the speech styles for the current voice rather than have none listed
@@ -402,7 +402,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 			# that didn't work, choose the first in the list
 			self._choiceSpeechStyle.SetSelection(0)
 
-	def GetBrailleCodes(self):
+	def getBrailleCodes(self):
 		# initialise the braille code list
 		self._choiceBrailleMathCode.Clear()
 		# populate the available braille codes in the dialog
@@ -438,7 +438,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 				self._choiceLanguage.SetSelection(0)
 			try:
 				# now get the available SpeechStyles from the folder structure and set to the preference setting is possible
-				self.GetSpeechStyles(str(userPreferences["Speech"]["SpeechStyle"]))
+				self.getSpeechStyles(str(userPreferences["Speech"]["SpeechStyle"]))
 			except Exception as e:
 				log.exception(f"MathCAT: An exception occurred in set_ui_values (getting SpeechStyle): {e}")
 				self._choiceSpeechStyle.Append(
@@ -511,7 +511,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 		global userPreferences
 		# read the values from the UI and update the user preferences dictionary
 		userPreferences["Speech"]["Impairment"] = Speech_Impairment[self._choiceImpairment.GetSelection()]
-		userPreferences["Speech"]["Language"] = self.GetLanguageCode()
+		userPreferences["Speech"]["Language"] = self.getLanguageCode()
 		userPreferences["Other"]["DecimalSeparator"] = Speech_DecimalSeparator[
 			self._choiceDecimalSeparator.GetSelection()
 		]
@@ -695,7 +695,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 			# write values to the user preferences file, NOT the default
 			yaml.dump(userPreferences, stream=f, allow_unicode=True)
 
-	def OnRelativeSpeedChanged(self, event):
+	def onRelativeSpeedChanged(self, event):
 		rate = self._sliderRelativeSpeed.GetValue()
 		# Translators: this is a test string that is spoken. Only translate "the square root of x squared plus y squared"
 		text = _("<prosody rate='XXX%'>the square root of x squared plus y squared</prosody>").replace(
@@ -703,9 +703,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 			str(rate),
 			1,
 		)
-		speak(ConvertSSMLTextForNVDA(text))
+		speak(convertSSMLTextForNVDA(text))
 
-	def OnPauseFactorChanged(self, event):
+	def onPauseFactorChanged(self, event):
 		rate = self._sliderRelativeSpeed.GetValue()
 		pfSlider = self._sliderPauseFactor.GetValue()
 		pauseFactor = (
@@ -730,44 +730,44 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 			pause_factor_300=300 * pauseFactor // 100,
 			pause_factor_600=600 * pauseFactor // 100,
 		)
-		speak(ConvertSSMLTextForNVDA(text))
+		speak(convertSSMLTextForNVDA(text))
 
-	def OnClickOK(self, event):
+	def onClickOK(self, event):
 		UserInterface.getUIValues(self)
 		UserInterface.writeUserPreferences()
 		self.Destroy()
 
-	def OnClickCancel(self, event):
+	def onClickCancel(self, event):
 		self.Destroy()
 
-	def OnClickApply(self, event):
+	def onClickApply(self, event):
 		UserInterface.getUIValues(self)
 		UserInterface.writeUserPreferences()
 
-	def OnClickReset(self, event):
+	def onClickReset(self, event):
 		UserInterface.loadDefaultPreferences()
 		UserInterface.validateUserPreferences()
 		UserInterface.setUIValues(self)
 
-	def OnClickHelp(self, event):
+	def onClickHelp(self, event):
 		webbrowser.open("https://nsoiffer.github.io/MathCAT/users.html")
 
-	def OnListBoxCategories(self, event):
+	def onListBoxCategories(self, event):
 		# the category changed, now show the appropriate dialogue page
 		self._simplebookPanelsCategories.SetSelection(self._listBoxPreferencesTopic.GetSelection())
 
-	def OnLanguage(self, event):
+	def onLanguage(self, event):
 		# the language changed, get the SpeechStyles for the new language
-		UserInterface.GetSpeechStyles(self, self._choiceSpeechStyle.GetStringSelection())
+		UserInterface.getSpeechStyles(self, self._choiceSpeechStyle.GetStringSelection())
 
-	def MathCATPreferencesDialogOnCharHook(self, event: wx.KeyEvent):
+	def mathCATPreferencesDialogOnCharHook(self, event: wx.KeyEvent):
 		# designed choice is that Enter is the same as clicking OK, and Escape is the same as clicking Cancel
 		keyCode = event.GetKeyCode()
 		if keyCode == wx.WXK_ESCAPE:
-			UserInterface.OnClickCancel(self, event)
+			UserInterface.onClickCancel(self, event)
 			return
 		if keyCode == wx.WXK_RETURN:
-			UserInterface.OnClickOK(self, event)
+			UserInterface.onClickOK(self, event)
 		if keyCode == wx.WXK_TAB:
 			if event.GetModifiers() == wx.MOD_CONTROL:
 				# cycle the category forward
@@ -776,7 +776,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 					newCategory = 0
 				self._listBoxPreferencesTopic.SetSelection(newCategory)
 				# update the ui to show the new page
-				UserInterface.OnListBoxCategories(self, event)
+				UserInterface.onListBoxCategories(self, event)
 				# set the focus into the category list box
 				self._listBoxPreferencesTopic.SetFocus()
 				# jump out so the tab key is not processed
@@ -788,7 +788,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 					newCategory = 2
 				self._listBoxPreferencesTopic.SetSelection(newCategory)
 				# update the ui to show the new page
-				UserInterface.OnListBoxCategories(self, event)
+				UserInterface.onListBoxCategories(self, event)
 				# update the ui to show the new page
 				self._listBoxPreferencesTopic.SetFocus()
 				# jump out so the tab key is not processed

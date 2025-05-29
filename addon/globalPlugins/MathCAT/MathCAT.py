@@ -110,7 +110,7 @@ def getLanguageToUse(mathMl: str = "") -> str:
 	return language
 
 
-def ConvertSSMLTextForNVDA(text: str) -> list:
+def convertSSMLTextForNVDA(text: str) -> list:
 	"""Change the SSML in the text into NVDA's command structure.
 	The environment is examined to determine whether a language switch is needed"""
 	# MathCAT's default rate is 180 wpm.
@@ -231,7 +231,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 			getSynth()._set_rate(_synthesizerRate)
 		try:
 			text = libmathcat.DoNavigateCommand("ZoomIn")
-			speech.speak(ConvertSSMLTextForNVDA(text))
+			speech.speak(convertSSMLTextForNVDA(text))
 		except Exception as e:
 			log.exception(e)
 			# Translators: this message directs users to look in the log file
@@ -307,7 +307,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 					False,
 				)
 				# log.info(f"Navigate speech for {gesture.vkCode}/(s={'shift' in modNames}, c={'control' in modNames}): '{text}'")
-				speech.speak(ConvertSSMLTextForNVDA(text))
+				speech.speak(convertSSMLTextForNVDA(text))
 		except Exception as e:
 			log.exception(e)
 			# Translators: this message directs users to look in the log file
@@ -515,11 +515,11 @@ class MathCAT(mathPres.MathPresentationProvider):
 			if self._addSounds():
 				return (
 					[BeepCommand(800, 25)]
-					+ ConvertSSMLTextForNVDA(libmathcat.GetSpokenText())
+					+ convertSSMLTextForNVDA(libmathcat.GetSpokenText())
 					+ [BeepCommand(600, 15)]
 				)
 			else:
-				return ConvertSSMLTextForNVDA(libmathcat.GetSpokenText())
+				return convertSSMLTextForNVDA(libmathcat.GetSpokenText())
 
 		except Exception as e:
 			log.exception(e)

@@ -809,54 +809,54 @@ class MathCATPreferencesDialog(wx.Dialog):
 		self.Centre(wx.BOTH)
 
 		# Connect Events
-		self.Bind(wx.EVT_CHAR_HOOK, self.MathCATPreferencesDialogOnCharHook)
-		self.Bind(wx.EVT_KEY_UP, self.MathCATPreferencesDialogOnKeyUp)
-		self._listBoxPreferencesTopic.Bind(wx.EVT_LISTBOX, self.OnListBoxCategories)
-		self._choiceLanguage.Bind(wx.EVT_CHOICE, self.OnLanguage)
+		self.Bind(wx.EVT_CHAR_HOOK, self.mathCATPreferencesDialogOnCharHook)
+		self.Bind(wx.EVT_KEY_UP, self.mathCATPreferencesDialogOnKeyUp)
+		self._listBoxPreferencesTopic.Bind(wx.EVT_LISTBOX, self.onListBoxCategories)
+		self._choiceLanguage.Bind(wx.EVT_CHOICE, self.onLanguage)
 		self._sliderRelativeSpeed.Bind(
 			wx.EVT_SCROLL_CHANGED,
-			self.OnRelativeSpeedChanged,
+			self.onRelativeSpeedChanged,
 		)
-		self._sliderPauseFactor.Bind(wx.EVT_SCROLL_CHANGED, self.OnPauseFactorChanged)
-		self._buttonOK.Bind(wx.EVT_BUTTON, self.OnClickOK)
-		self._buttonCancel.Bind(wx.EVT_BUTTON, self.OnClickCancel)
-		self._buttonApply.Bind(wx.EVT_BUTTON, self.OnClickApply)
-		self._buttonReset.Bind(wx.EVT_BUTTON, self.OnClickReset)
-		self._buttonHelp.Bind(wx.EVT_BUTTON, self.OnClickHelp)
+		self._sliderPauseFactor.Bind(wx.EVT_SCROLL_CHANGED, self.onPauseFactorChanged)
+		self._buttonOK.Bind(wx.EVT_BUTTON, self.onClickOK)
+		self._buttonCancel.Bind(wx.EVT_BUTTON, self.onClickCancel)
+		self._buttonApply.Bind(wx.EVT_BUTTON, self.onClickApply)
+		self._buttonReset.Bind(wx.EVT_BUTTON, self.onClickReset)
+		self._buttonHelp.Bind(wx.EVT_BUTTON, self.onClickHelp)
 
 	def __del__(self):
 		pass
 
 	# Virtual event handlers, override them in your derived class
-	def MathCATPreferencesDialogOnCharHook(self, event):
+	def mathCATPreferencesDialogOnCharHook(self, event):
 		event.Skip()
 
-	def MathCATPreferencesDialogOnKeyUp(self, event):
+	def mathCATPreferencesDialogOnKeyUp(self, event):
 		event.Skip()
 
-	def OnListBoxCategories(self, event):
+	def onListBoxCategories(self, event):
 		event.Skip()
 
-	def OnLanguage(self, event):
+	def onLanguage(self, event):
 		event.Skip()
 
-	def OnRelativeSpeedChanged(self, event):
+	def onRelativeSpeedChanged(self, event):
 		event.Skip()
 
-	def OnPauseFactorChanged(self, event):
+	def onPauseFactorChanged(self, event):
 		event.Skip()
 
-	def OnClickOK(self, event):
+	def onClickOK(self, event):
 		event.Skip()
 
-	def OnClickCancel(self, event):
+	def onClickCancel(self, event):
 		event.Skip()
 
-	def OnClickApply(self, event):
+	def onClickApply(self, event):
 		event.Skip()
 
-	def OnClickReset(self, event):
+	def onClickReset(self, event):
 		event.Skip()
 
-	def OnClickHelp(self, event):
+	def onClickHelp(self, event):
 		event.Skip()
