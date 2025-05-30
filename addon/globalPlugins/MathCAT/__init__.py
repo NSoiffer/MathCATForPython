@@ -29,16 +29,16 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		# MathCAT.__init__(self)
-		self.add_MathCAT_menu()
+		self.addMathCATMenu()
 
-	def add_MathCAT_menu(self):
+	def addMathCATMenu(self):
 		if not globalVars.appArgs.secure:
 			self.preferencesMenu = mainFrame.sysTrayIcon.preferencesMenu
 			# Translators: this show up in the NVDA preferences dialog. It opens the MathCAT preferences dialog
 			self.settings = self.preferencesMenu.Append(wx.ID_ANY, _("&MathCAT Settings..."))
-			mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.on_settings, self.settings)
+			mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.onSettings, self.settings)
 
-	def on_settings(self, evt):
+	def onSettings(self, evt):
 		mainFrame.popupSettingsDialog(UserInterface)
 
 	def terminate(self):
