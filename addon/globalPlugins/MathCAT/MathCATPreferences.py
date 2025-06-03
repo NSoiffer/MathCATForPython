@@ -10,7 +10,7 @@ import webbrowser
 import gettext
 import addonHandler
 from logHandler import log  # logging
-from typing import List, Dict, Union, Callable
+from collections.abc import Callable
 from .MathCAT import convertSSMLTextForNVDA
 from speech import speak
 from zipfile import ZipFile
@@ -20,11 +20,11 @@ _ = gettext.gettext
 
 # two constants to scale "PauseFactor"
 # these work out so that a slider that goes [0,14] has value ~100 at 7 and ~1000 at 14
-PAUSE_FACTOR_SCALE = 9.5
-PAUSE_FACTOR_LOG_BASE = 1.4
+PAUSE_FACTOR_SCALE: float = 9.5
+PAUSE_FACTOR_LOG_BASE: float = 1.4
 
 # initialize the user preferences tuples
-userPreferences: Dict[str, Dict[str, Union[int, str, bool]]] = {}
+userPreferences: dict[str, dict[str, int | str | bool]] = {}
 # Speech_Language is derived from the folder structures
 Speech_DecimalSeparator = ("Auto", ".", ",", "Custom")
 Speech_Impairment = ("LearningDisability", "Blindness", "LowVision")
@@ -47,7 +47,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 		MathCATgui.MathCATPreferencesDialog.__init__(self, parent)
 
 		# load the logo into the dialog
-		fullPathToLogo = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
+		fullPathToLogo: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
 		if os.path.exists(fullPathToLogo):
 			self._bitmapLogo.SetBitmap(wx.Bitmap(fullPathToLogo))
 
@@ -78,17 +78,17 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 		UserInterface.setUIValues(self)
 
 	@staticmethod
-	def pathToLanguagesFolder():
+	def pathToLanguagesFolder() -> str:
 		# the user preferences file is stored at: MathCAT\Rules\Languages
 		return os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "Languages")
 
 	@staticmethod
-	def pathToBrailleFolder():
+	def pathToBrailleFolder() -> str:
 		# the user preferences file is stored at: MathCAT\Rules\Languages
 		return os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "Braille")
 
 	@staticmethod
-	def languagesDict() -> Dict[str, str]:
+	def languagesDict() -> dict[str, str]:
 		languages = {
 			"aa": "Afar",
 			"ab": "Аҧсуа",
@@ -268,10 +268,12 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 	def getRulesFiles(
 		self,
 		pathToDir: str,
-		processSubDirs: Callable[[str, str], List[str]] | None,
-	) -> List[str]:
-		language = os.path.basename(pathToDir)
-		ruleFiles = [os.path.basename(file) for file in glob.glob(os.path.join(pathToDir, "*_Rules.yaml"))]
+		processSubDirs: Callable[[str, str], list[str]] | None,
+	) -> list[str]:
+		language: str = os.path.basename(pathToDir)
+		ruleFiles: list[str] = [
+			os.path.basename(file) for file in glob.glob(os.path.join(pathToDir, "*_Rules.yaml"))
+		]
 		for dir in os.listdir(pathToDir):
 			if os.path.isdir(os.path.join(pathToDir, dir)):
 				if processSubDirs:
@@ -280,7 +282,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 		if len(ruleFiles) == 0:
 			# look in the .zip file for the style files, including regional subdirs -- it might not have been unzipped
 			try:
-				zip_file = ZipFile(f"{pathToDir}\\{language}.zip", "r")
+				zip_file: ZipFile = ZipFile(f"{pathToDir}\\{language}.zip", "r")
 				for file in zip_file.namelist():
 					if file.endswith("_Rules.yaml"):
 						ruleFiles.append(file)
@@ -291,15 +293,15 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 
 		return ruleFiles
 
-	def getLanguages(self):
-		def addRegionalLanguages(subDir: str, language: str) -> List[str]:
+	def getLanguages(self) -> None:
+		def addRegionalLanguages(subDir: str, language: str) -> list[str]:
 			# the language variants are in folders named using ISO 3166-1 alpha-2
 			# codes https://en.wikipedia.org/wiki/ISO_3166-2
 			# check if there are language variants in the language folder
 			if subDir != "SharedRules":
-				languagesDict = UserInterface.languagesDict()
+				languagesDict: dict[str, str] = UserInterface.languagesDict()
 				# add to the listbox the text for this language variant together with the code
-				regionalCode = language + "-" + subDir.upper()
+				regionalCode: str = language + "-" + subDir.upper()
 				if languagesDict.get(regionalCode, "missing") != "missing":
 					self._choiceLanguage.Append(f"{languagesDict[regionalCode]} ({language}-{subDir})")
 				elif languagesDict.get(language, "missing") != "missing":
@@ -310,7 +312,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 			return []
 
 		# initialise the language list
-		languagesDict = UserInterface.languagesDict()
+		languagesDict: dict[str, str] = UserInterface.languagesDict()
 		# clear the language names in the dialog
 		self._choiceLanguage.Clear()
 		# Translators: menu item -- use the language of the voice chosen in the NVDA speech settings dialog
@@ -319,9 +321,9 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 		# populate the available language names in the dialog
 		# the implemented languages are in folders named using the relevant ISO 639-1
 		#   code https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-		languageDir = UserInterface.pathToLanguagesFolder()
+		languageDir: str = UserInterface.pathToLanguagesFolder()
 		for language in os.listdir(languageDir):
-			pathToLanguageDir = os.path.join(UserInterface.pathToLanguagesFolder(), language)
+			pathToLanguageDir: str = os.path.join(UserInterface.pathToLanguagesFolder(), language)
 			if os.path.isdir(pathToLanguageDir):
 				# only add this language if there is a xxx_Rules.yaml file
 				if len(self.getRulesFiles(pathToLanguageDir, addRegionalLanguages)) > 0:
@@ -331,10 +333,10 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 					else:
 						self._choiceLanguage.Append(language + " (" + language + ")")
 
-	def getLanguageCode(self):
-		lang_selection = self._choiceLanguage.GetStringSelection()
-		lang_code = lang_selection[lang_selection.find("(") + 1 : lang_selection.find(")")]
-		return lang_code
+	def getLanguageCode(self) -> str:
+		langSelection: str = self._choiceLanguage.GetStringSelection()
+		langCode: str = langSelection[langSelection.find("(") + 1 : langSelection.find(")")]
+		return langCode
 
 	def getSpeechStyles(self, thisSpeechStyle: str):
 		"""Get all the speech styles for the current language.
@@ -346,10 +348,12 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 			The 'lang', if it has a region dialect, is of the form 'en\uk'
 			The returned list is sorted alphabetically"""
 			# start with the regional dialect, then add on any (unique) styles in the main dir
-			mainLang = lang.split("\\")[0]  # does the right thing even if there is no regional directory
-			allStyleFiles = []
+			mainLang: str = lang.split("\\")[0]  # does the right thing even if there is no regional directory
+			allStyleFiles: list[str] = []
 			if lang.find("\\") >= 0:
-				allStyleFiles = [os.path.basename(name) for name in glob.glob(dir + lang + "\\*_Rules.yaml")]
+				allStyleFiles: list[str] = [
+					os.path.basename(name) for name in glob.glob(dir + lang + "\\*_Rules.yaml")
+				]
 			allStyleFiles.extend(
 				[os.path.basename(name) for name in glob.glob(dir + mainLang + "\\*_Rules.yaml")],
 			)
@@ -357,8 +361,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 			if len(allStyleFiles) == 0:
 				# look in the .zip file for the style files -- this will have regional variants, but also have that dir
 				try:
-					zipFile = dir + mainLang + "\\" + mainLang + ".zip"
-					zipFile = ZipFile(zipFile, "r")  # file might not exist
+					zipFilePath: str = dir + mainLang + "\\" + mainLang + ".zip"
+					zipFile: ZipFile = ZipFile(zipFilePath, "r")  # file might not exist
 					allStyleFiles = [
 						name.split("/")[-1] for name in zipFile.namelist() if name.endswith("_Rules.yaml")
 					]
@@ -370,7 +374,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 		# clear the SpeechStyle choices
 		self._choiceSpeechStyle.Clear()
 		# get the currently selected language code
-		languageCode = UserInterface.getLanguageCode(self)
+		languageCode: str = UserInterface.getLanguageCode(self)
 
 		if languageCode == "Auto":
 			# list the speech styles for the current voice rather than have none listed
@@ -402,28 +406,28 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 			# that didn't work, choose the first in the list
 			self._choiceSpeechStyle.SetSelection(0)
 
-	def getBrailleCodes(self):
+	def getBrailleCodes(self) -> None:
 		# initialise the braille code list
 		self._choiceBrailleMathCode.Clear()
 		# populate the available braille codes in the dialog
 		# the dir names are used, not the rule file names because the dir names have to be unique
-		pathToBrailleFolder = UserInterface.pathToBrailleFolder()
+		pathToBrailleFolder: str = UserInterface.pathToBrailleFolder()
 		for brailleCode in os.listdir(pathToBrailleFolder):
-			pathToBrailleCode = os.path.join(pathToBrailleFolder, brailleCode)
+			pathToBrailleCode: str = os.path.join(pathToBrailleFolder, brailleCode)
 			if os.path.isdir(pathToBrailleCode):
 				if len(self.getRulesFiles(pathToBrailleCode, None)) > 0:
 					self._choiceBrailleMathCode.Append(brailleCode)
 
-	def setUIValues(self):
+	def setUIValues(self) -> None:
 		# set the UI elements to the ones read from the preference file(s)
 		try:
 			self._choiceImpairment.SetSelection(
 				Speech_Impairment.index(userPreferences["Speech"]["Impairment"]),
 			)
 			try:
-				langPref = userPreferences["Speech"]["Language"]
+				langPref: str = userPreferences["Speech"]["Language"]
 				self._choiceLanguage.SetSelection(0)
-				i = 1  # no need to test i == 0
+				i: int = 1  # no need to test i == 0
 				while i < self._choiceLanguage.GetCount():
 					if f"({langPref})" in self._choiceLanguage.GetString(i):
 						self._choiceLanguage.SetSelection(i)
@@ -489,7 +493,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 				Braille_BrailleNavHighlight.index(userPreferences["Braille"]["BrailleNavHighlight"]),
 			)
 			try:
-				braillePref = userPreferences["Braille"]["BrailleCode"]
+				braillePref: str = userPreferences["Braille"]["BrailleCode"]
 				i = 0
 				while braillePref != self._choiceBrailleMathCode.GetString(i):
 					i = i + 1
@@ -507,7 +511,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 		except KeyError as err:
 			print("Key not found", err)
 
-	def getUIValues(self):
+	def getUIValues(self) -> None:
 		global userPreferences
 		# read the values from the UI and update the user preferences dictionary
 		userPreferences["Speech"]["Impairment"] = Speech_Impairment[self._choiceImpairment.GetSelection()]
@@ -518,8 +522,8 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 		userPreferences["Speech"]["SpeechStyle"] = self._choiceSpeechStyle.GetStringSelection()
 		userPreferences["Speech"]["Verbosity"] = Speech_Verbosity[self._choiceSpeechAmount.GetSelection()]
 		userPreferences["Speech"]["MathRate"] = self._sliderRelativeSpeed.GetValue()
-		pfSlider = self._sliderPauseFactor.GetValue()
-		pauseFactor = (
+		pfSlider: int = self._sliderPauseFactor.GetValue()
+		pauseFactor: int = (
 			0 if pfSlider == 0 else round(PAUSE_FACTOR_SCALE * math.pow(PAUSE_FACTOR_LOG_BASE, pfSlider))
 		)  # avoid log(0)
 		userPreferences["Speech"]["PauseFactor"] = pauseFactor
@@ -551,21 +555,21 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 		userPreferences["NVDAAddOn"]["LastCategory"] = self._listBoxPreferencesTopic.GetSelection()
 
 	@staticmethod
-	def pathToDefaultPreferences():
+	def pathToDefaultPreferences() -> str:
 		return os.path.join(os.path.dirname(os.path.abspath(__file__)), "Rules", "prefs.yaml")
 
 	@staticmethod
-	def pathToUserPreferencesFolder():
+	def pathToUserPreferencesFolder() -> str:
 		# the user preferences file is stored at: C:\Users\<user-name>AppData\Roaming\MathCAT\prefs.yaml
 		return os.path.join(os.path.expandvars("%APPDATA%"), "MathCAT")
 
 	@staticmethod
-	def pathToUserPreferences():
+	def pathToUserPreferences() -> str:
 		# the user preferences file is stored at: C:\Users\<user-name>AppData\Roaming\MathCAT\prefs.yaml
 		return os.path.join(UserInterface.pathToUserPreferencesFolder(), "prefs.yaml")
 
 	@staticmethod
-	def loadDefaultPreferences():
+	def loadDefaultPreferences() -> None:
 		global userPreferences
 		# load default preferences into the user preferences data structure (overwrites existing)
 		if os.path.exists(UserInterface.pathToDefaultPreferences()):
@@ -576,7 +580,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 				userPreferences = yaml.load(f, Loader=yaml.FullLoader)
 
 	@staticmethod
-	def loadUserPreferences():
+	def loadUserPreferences() -> None:
 		global userPreferences
 		# merge user file values into the user preferences data structure
 		if os.path.exists(UserInterface.pathToUserPreferences()):
@@ -585,7 +589,12 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 				userPreferences.update(yaml.load(f, Loader=yaml.FullLoader))
 
 	@staticmethod
-	def validate(key1: str, key2: str, validValues: List[Union[str, bool]], defaultValue: Union[str, bool]):
+	def validate(
+		key1: str,
+		key2: str,
+		validValues: list[str | bool],
+		defaultValue: str | bool,
+	) -> None:
 		global userPreferences
 		try:
 			if validValues == []:
@@ -606,7 +615,12 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 			userPreferences[key1][key2] = defaultValue
 
 	@staticmethod
-	def validateInt(key1: str, key2: str, validValues: List[int], defaultValue: int):
+	def validateInt(
+		key1: str,
+		key2: str,
+		validValues: list[int],
+		defaultValue: int,
+	) -> None:
 		global userPreferences
 		try:
 			# any value between lower and upper bounds is valid
@@ -678,7 +692,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 		UserInterface.validate("Braille", "BrailleCode", [], "Nemeth")
 
 	@staticmethod
-	def writeUserPreferences():
+	def writeUserPreferences() -> None:
 		# Language is special because it is set elsewhere by SetPreference which overrides the user_prefs -- so set it here
 		from . import libmathcat_py as libmathcat
 
@@ -695,23 +709,23 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 			# write values to the user preferences file, NOT the default
 			yaml.dump(userPreferences, stream=f, allow_unicode=True)
 
-	def onRelativeSpeedChanged(self, event):
-		rate = self._sliderRelativeSpeed.GetValue()
+	def onRelativeSpeedChanged(self, event: wx.ScrollEvent) -> None:
+		rate: int = self._sliderRelativeSpeed.GetValue()
 		# Translators: this is a test string that is spoken. Only translate "the square root of x squared plus y squared"
-		text = _("<prosody rate='XXX%'>the square root of x squared plus y squared</prosody>").replace(
+		text: str = _("<prosody rate='XXX%'>the square root of x squared plus y squared</prosody>").replace(
 			"XXX",
 			str(rate),
 			1,
 		)
 		speak(convertSSMLTextForNVDA(text))
 
-	def onPauseFactorChanged(self, event):
-		rate = self._sliderRelativeSpeed.GetValue()
+	def onPauseFactorChanged(self, event: wx.ScrollEvent) -> None:
+		rate: int = self._sliderRelativeSpeed.GetValue()
 		pfSlider = self._sliderPauseFactor.GetValue()
 		pauseFactor = (
 			0 if pfSlider == 0 else round(PAUSE_FACTOR_SCALE * math.pow(PAUSE_FACTOR_LOG_BASE, pfSlider))
 		)
-		text = _(
+		text: str = _(
 			# Translators: this is a test string that is spoken. Only translate "the fraction with numerator"
 			# and other parts NOT inside '<.../>',
 			"<prosody rate='{rate}%'>the fraction with numerator <break time='{pause_factor_300}ms'/>\
@@ -732,37 +746,37 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 		)
 		speak(convertSSMLTextForNVDA(text))
 
-	def onClickOK(self, event):
+	def onClickOK(self, event: wx.CommandEvent) -> None:
 		UserInterface.getUIValues(self)
 		UserInterface.writeUserPreferences()
 		self.Destroy()
 
-	def onClickCancel(self, event):
+	def onClickCancel(self, event: wx.CommandEvent) -> None:
 		self.Destroy()
 
-	def onClickApply(self, event):
+	def onClickApply(self, event: wx.CommandEvent) -> None:
 		UserInterface.getUIValues(self)
 		UserInterface.writeUserPreferences()
 
-	def onClickReset(self, event):
+	def onClickReset(self, event: wx.CommandEvent) -> None:
 		UserInterface.loadDefaultPreferences()
 		UserInterface.validateUserPreferences()
 		UserInterface.setUIValues(self)
 
-	def onClickHelp(self, event):
+	def onClickHelp(self, event: wx.CommandEvent) -> None:
 		webbrowser.open("https://nsoiffer.github.io/MathCAT/users.html")
 
-	def onListBoxCategories(self, event):
+	def onListBoxCategories(self, event: wx.CommandEvent) -> None:
 		# the category changed, now show the appropriate dialogue page
 		self._simplebookPanelsCategories.SetSelection(self._listBoxPreferencesTopic.GetSelection())
 
-	def onLanguage(self, event):
+	def onLanguage(self, event: wx.CommandEvent) -> None:
 		# the language changed, get the SpeechStyles for the new language
 		UserInterface.getSpeechStyles(self, self._choiceSpeechStyle.GetStringSelection())
 
-	def mathCATPreferencesDialogOnCharHook(self, event: wx.KeyEvent):
+	def mathCATPreferencesDialogOnCharHook(self, event: wx.KeyEvent) -> None:
 		# designed choice is that Enter is the same as clicking OK, and Escape is the same as clicking Cancel
-		keyCode = event.GetKeyCode()
+		keyCode: int = event.GetKeyCode()
 		if keyCode == wx.WXK_ESCAPE:
 			UserInterface.onClickCancel(self, event)
 			return
@@ -771,7 +785,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 		if keyCode == wx.WXK_TAB:
 			if event.GetModifiers() == wx.MOD_CONTROL:
 				# cycle the category forward
-				newCategory = self._listBoxPreferencesTopic.GetSelection() + 1
+				newCategory: int = self._listBoxPreferencesTopic.GetSelection() + 1
 				if newCategory == 3:
 					newCategory = 0
 				self._listBoxPreferencesTopic.SetSelection(newCategory)
@@ -783,7 +797,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 				return
 			if event.GetModifiers() == wx.MOD_CONTROL | wx.MOD_SHIFT:
 				# cycle the category back
-				newCategory = self._listBoxPreferencesTopic.GetSelection() - 1
+				newCategory: int = self._listBoxPreferencesTopic.GetSelection() - 1
 				if newCategory == -1:
 					newCategory = 2
 				self._listBoxPreferencesTopic.SetSelection(newCategory)
