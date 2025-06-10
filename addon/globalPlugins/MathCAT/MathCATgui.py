@@ -13,7 +13,16 @@ addonHandler.initTranslation()
 
 
 class MathCATPreferencesDialog(wx.Dialog):
-	def __init__(self, parent):
+	"""Main dialog window for configuring MathCAT preferences.
+
+	This base class sets up the layout and controls.
+	"""
+
+	def __init__(self, parent: wx.Window | None):
+		"""Initialize the preferences dialog.
+
+		:param parent: The parent window for this dialog.
+		"""
 		wx.Dialog.__init__(
 			self,
 			parent,
@@ -825,38 +834,50 @@ class MathCATPreferencesDialog(wx.Dialog):
 		self._buttonHelp.Bind(wx.EVT_BUTTON, self.onClickHelp)
 
 	def __del__(self):
+		"""Destructor placeholder; override if cleanup is needed."""
 		pass
 
 	# Virtual event handlers, override them in your derived class
 	def mathCATPreferencesDialogOnCharHook(self, event: wx.KeyEvent) -> None:
+		"""Handle character input events; override in subclass as needed."""
 		event.Skip()
 
 	def mathCATPreferencesDialogOnKeyUp(self, event: wx.KeyEvent) -> None:
+		"""Handle key release events; override in subclass as needed."""
 		event.Skip()
 
 	def onListBoxCategories(self, event: wx.CommandEvent) -> None:
+		"""Handle selection events in the categories list box; override in subclass as needed."""
 		event.Skip()
 
 	def onLanguage(self, event: wx.CommandEvent) -> None:
+		"""Handle language selection; override in subclass as needed."""
 		event.Skip()
 
 	def onRelativeSpeedChanged(self, event: wx.ScrollEvent) -> None:
+		"""Handle change in relative speed; override in subclass as needed."""
 		event.Skip()
 
 	def onPauseFactorChanged(self, event: wx.ScrollEvent) -> None:
+		"""Handle change in pause factor; override in subclass as needed."""
 		event.Skip()
 
 	def onClickOK(self, event: wx.CommandEvent) -> None:
+		"""Handle OK button click; override in subclass as needed."""
 		event.Skip()
 
 	def onClickCancel(self, event: wx.CommandEvent) -> None:
+		"""Handle Cancel button click; override in subclass as needed."""
 		event.Skip()
 
 	def onClickApply(self, event: wx.CommandEvent) -> None:
+		"""Handle Apply button click; override in subclass as needed."""
 		event.Skip()
 
 	def onClickReset(self, event: wx.CommandEvent) -> None:
+		"""Handle Reset button click; override in subclass as needed."""
 		event.Skip()
 
 	def onClickHelp(self, event: wx.CommandEvent) -> None:
+		"""Handle Help button click; override in subclass as needed."""
 		event.Skip()

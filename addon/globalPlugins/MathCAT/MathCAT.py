@@ -92,7 +92,11 @@ _synthesizerRate: int | None = None
 
 
 def getLanguageToUse(mathMl: str = "") -> str:
-	"""Get the language specified in a math tag if the language pref is Auto, else the language preference."""
+	"""Get the language specified in a math tag if the language pref is Auto, else the language preference.
+
+	:param mathMl: The MathML string to examine for language. Defaults to an empty string.
+	:returns: The language string to use.
+	"""
 	mathCATLanguageSetting: str = "Auto"
 	try:
 		# ignore regional differences if the MathCAT language setting doesn't have it.
@@ -117,8 +121,13 @@ def getLanguageToUse(mathMl: str = "") -> str:
 
 
 def convertSSMLTextForNVDA(text: str) -> list[str | SpeechCommand]:
-	"""Change the SSML in the text into NVDA's command structure.
-	The environment is examined to determine whether a language switch is needed"""
+	"""
+	Change the SSML in the text into NVDA's command structure.
+	The environment is examined to determine whether a language switch is needed.
+
+	:param text: The SSML text to convert.
+	:returns: A list of strings and SpeechCommand objects.
+	"""
 	# MathCAT's default rate is 180 wpm.
 	# Assume that 0% is 80 wpm and 100% is 450 wpm and scale accordingly.
 	# log.info(f"\nSpeech str: '{text}'")
@@ -212,6 +221,8 @@ def convertSSMLTextForNVDA(text: str) -> list[str | SpeechCommand]:
 
 
 class MathCATInteraction(mathPres.MathInteractionNVDAObject):
+	"""An NVDA object used to interact with MathML."""
+
 	# Put MathML or other formats on the clipboard.
 	# MathML is put on the clipboard using the two formats below (defined by MathML spec)
 	# We use both formats because some apps may only use one or the other
@@ -225,9 +236,14 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 
 	def __init__(
 		self,
-		provider: mathPres.MathPresentationProvider = None,
+		provider: mathPres.MathPresentationProvider | None = None,
 		mathMl: str | None = None,
 	):
+		"""Initialize the MathCATInteraction object.
+
+		:param provider: Optional presentation provider.
+		:param mathMl: Optional initial MathML string.
+		"""
 		super(MathCATInteraction, self).__init__(provider=provider, mathMl=mathMl)
 		if mathMl is None:
 			self.initMathML = "<math></math>"
@@ -235,6 +251,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 			self.initMathML = mathMl
 
 	def reportFocus(self) -> None:
+		"""Calls MathCAT's ZoomIn command and speaks the resulting text."""
 		super(MathCATInteraction, self).reportFocus()
 		# try to get around espeak bug where voice slows down
 		if _synthesizerRate and getSynth().name == "espeak":
@@ -256,6 +273,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 		self,
 		review: bool = False,
 	) -> Generator[braille.Region, None, None]:
+		"""Yields braille.Region objects for this MathCATInteraction object."""
 		# log.info("***MathCAT start getBrailleRegions")
 		yield braille.NVDAObjectRegion(self, appendText=" ")
 		region: braille.Region = braille.Region()
@@ -276,7 +294,12 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 		self,
 		gesture: KeyboardInputGesture,
 	) -> Callable[KeyboardInputGesture, None] | None:
-		# Pass most keys to MathCAT. Pretty ugly.
+		"""
+		Returns the script function bound to the given gesture.
+
+		:param gesture: A KeyboardInputGesture sent to this object.
+		:returns: The script bound to that gesture.
+		"""
 		if (
 			isinstance(gesture, KeyboardInputGesture)
 			and "NVDA" not in gesture.modifierNames
@@ -309,6 +332,10 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 			return super().getScript(gesture)
 
 	def script_navigate(self, gesture: KeyboardInputGesture) -> None:
+		"""Performs the specified navigation command.
+
+		:param gesture: They keyboard command which specified the navigation command to perform.
+		"""
 		try:
 			# try to get around espeak bug where voice slows down
 			if _synthesizerRate and getSynth().name == "espeak":
@@ -365,6 +392,10 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 		gesture="kb:control+c",
 	)
 	def script_rawdataToClip(self, gesture: KeyboardInputGesture) -> None:
+		"""Copies the raw data to the clipboard, either as MathML, ASCII math, or LaTeX, depending on user preferences.
+
+		:param gesture: The gesture which activated this script.
+		"""
 		try:
 			copyAs: str = "mathml"  # value used even if "CopyAs" pref is invalid
 			textToCopy: str = ""
@@ -416,7 +447,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 	_hasDataAttr: re.Pattern = re.compile(" data-[^=]+='[^']*'")
 
 	def _wrapMathMLForClipBoard(self, text: str) -> str:
-		# cleanup the MathML a little
+		"""Cleanup the MathML a little."""
 		text = re.sub(self._hasAddedId, "", text)
 		mathMLWithNS: str = re.sub(self._hasDataAttr, "", text)
 		if not re.match(self._mathTagHasNameSpace, mathMLWithNS):
@@ -434,9 +465,10 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 		notify: bool | None = False,
 	) -> bool:
 		"""Copies the given text to the windows clipboard.
-		@returns: True if it succeeds, False otherwise.
-		@param text: the text which will be copied to the clipboard
-		@param notify: whether to emit a confirmation message
+
+		:param text: the text which will be copied to the clipboard.
+		:param notify: whether to emit a confirmation message.
+		:returns: True if it succeeds, False otherwise.
 		"""
 		# copied from api.py and modified to use CF_MathML_Presentation
 		if not isinstance(text, str) or len(text) == 0:
@@ -463,6 +495,12 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 		return False
 
 	def _setClipboardData(self, format: int, data: str) -> None:
+		"""Sets the clipboard data to the given data with the specified format.
+
+		:param format: The format for the clipboard data.
+			This is an integer format code returned by windll.user32.RegisterClipboardFormatW.
+		:param data: The data to set on the clipboard.
+		"""
 		# Need to support MathML Presentation, so this copied from winUser.py and the first two lines are commented out
 		# For now only unicode is a supported format
 		# if format!=CF_UNICODETEXT:
@@ -485,6 +523,7 @@ class MathCATInteraction(mathPres.MathInteractionNVDAObject):
 
 class MathCAT(mathPres.MathPresentationProvider):
 	def __init__(self):
+		"""Initializes MathCAT, loading the rules specified in the rules directory."""
 		# super(MathCAT, self).__init__(*args, **kwargs)
 
 		try:
@@ -502,6 +541,11 @@ class MathCAT(mathPres.MathPresentationProvider):
 		self,
 		mathml: str,
 	) -> list[str | SpeechCommand]:
+		"""Outputs a MathML string as speech.
+
+		:param mathml: A MathML string.
+		:returns: A list of speech commands and strings representing the given MathML.
+		"""
 		global _synthesizerRate
 		synth: SynthDriver = getSynth()
 		synthConfig = config.conf["speech"][synth.name]
@@ -557,6 +601,10 @@ class MathCAT(mathPres.MathPresentationProvider):
 				getSynth()._set_rate(_synthesizerRate)
 
 	def _addSounds(self) -> bool:
+		"""Queries the user preferences to determine whether or not sounds should be added.
+
+		:returns: True if MathCAT's `SpeechSound` preference is set, and False otherwise.
+		"""
 		try:
 			return libmathcat.GetPreference("SpeechSound") != "None"
 		except Exception as e:
@@ -564,6 +612,11 @@ class MathCAT(mathPres.MathPresentationProvider):
 			return False
 
 	def getBrailleForMathMl(self, mathml: str) -> str:
+		"""Gets the braille representation of a given MathML string by calling MathCAT's GetBraille function.
+
+		:param mathml: A MathML string.
+		:returns: A braille string representing the input MathML.
+		"""
 		# log.info("***MathCAT getBrailleForMathMl")
 		try:
 			libmathcat.SetMathML(mathml)
@@ -582,6 +635,10 @@ class MathCAT(mathPres.MathPresentationProvider):
 			return ""
 
 	def interactWithMathMl(self, mathml: str) -> None:
+		"""Interact with a MathML string, creating a MathCATInteraction object.
+
+		:param mathml: The MathML representing the math to interact with.
+		"""
 		MathCATInteraction(provider=self, mathMl=mathml).setFocus()
 		MathCATInteraction(provider=self, mathMl=mathml).script_navigate(None)
 
@@ -590,6 +647,7 @@ CACHED_SYNTH: SynthDriver | None = None
 
 
 def _monkeyPatchESpeak() -> None:
+	"""Patches an eSpeak bug where the voice slows down."""
 	global CACHED_SYNTH
 	currentSynth: SynthDriver = getSynth()
 	if currentSynth.name != "espeak" or CACHED_SYNTH == currentSynth:
