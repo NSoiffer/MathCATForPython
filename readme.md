@@ -212,3 +212,22 @@ Note: there is now an option to get Vietnam's braille standard as braille output
 * A preference setting to control the duration of pausing (works with changes to relative speech rate for math)
 * Support to recognize chemistry notation and speak it appropriately
 * Translations to Indonesian and Vietnamese
+
+## Development Environment
+
+How to set up your developer environment:
+
+1. Install Python 3.11 (32-bit).
+1. Set up your virtual environment.
+    * `python -m venv .venv`
+1. Install python dependencies to `.venv`.
+    * Activate the virtual environment
+    `.venv\Scripts\activate`
+    * Install lint dependencies
+    `pip install ruff==0.8.1 pre-commit==4.0.1 pyright==1.1.396`
+1. Import NVDA code.
+    * NVDA source code needs to be discoverable to get type hints, namespace resolution, code completion, and other IDE hints.
+    * The relative path `../nvda/source` is included in the pyright configuration in `pyproject.toml`.
+    * The [NVDA repository](https://github.com/nvaccess/nvda) should be cloned into the same parent directory.
+    i.e. as a sibling to this repository.
+    Alternatively, update `../nvda/source` in `pyproject.toml` to another location where the NVDA repository has been cloned.
