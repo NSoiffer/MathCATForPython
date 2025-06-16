@@ -6,7 +6,7 @@
 
 [package]
 name = "MathCatForPython"
-version = "0.6.9"
+version = "0.6.10"
 authors = ["Neil Soiffer <soiffer@alum.mit.edu>"]
 edition = "2018"
 resolver = "2"    # allows different build dependency features
