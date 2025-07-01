@@ -5,12 +5,13 @@
   versions antérieures)
 * Télécharger [version stable][1]
 
-MathCAT is designed to eventually replace MathPlayer because MathPlayer is
-no longer supported. MathCAT generates speech and braille from MathML. The
-speech for math produced by MathCAT is enhanced with prosody so that it
-sounds more natural. The speech can be navigated in three modes using the
-same commands as MathPlayer. In addition, the navigation node is indicated
-on a braille display. Both Nemeth and UEB technical are supported.
+MathCAT est conçu pour finalement remplacer MathPlayer, car ce dernier n'est
+plus pris en charge. MathCAT génère la parole et le braille à partir de
+MathML. La parole produite par MathCAT pour les mathématiques est améliorée
+avec intonation afin qu'elle semble plus naturelle. Vous pouvez naviguer
+dans la parole de trois façons en utilisant les mêmes commandes que dans
+MathPlayer. De plus, le nœud de navigation est indiqué sur l'afficheur
+braille. les codes Nemeth et UEB technique sont pris en charge.
 
 MathCAT a un certain nombre d'options de configuration qui contrôlent la
 parole, la navigation et le braille. Beaucoup d'entre eux peuvent être
@@ -42,10 +43,11 @@ Qui devrait utiliser MathCAT :
 
 Qui ne devrait pas utiliser MathCAT :
 
-* Anyone who uses MathPlayer with a language that is not yet supported by
-  MathCAT (translations exist for Chinese (Traditional), Spanish, Indonesian
-  and Vietnamese; translations will be coming in the future) and are not
-  comfortable with speech in one of the supported languages.
+* Toute personne utilisant MathPlayer avec une langue pas encore prise en
+  charge par Mathcat (des traductions existent pour le chinois
+  (traditionnel), l'espagnol, l'indonésien et le vietnamien; d'autres
+  traductions doivent arriver dans un futur proche) et qui ne se sent pas à
+  l'aise avec la parole dans les langues prises en charge.
 * Quiconque préfère Access8Math à MathPlayer (pour la parole ou d'autres
   fonctionnalités)
 
@@ -62,55 +64,63 @@ pas encore complètement établi.
 
 ### Version 0.6.3
 
-* All the language and braille Rule files are zipped up per directory and
-  unzipped on demand.
+* Tous les fichiers de règles de langue et de braille sont zippés par
+  répertoire et décompressés à la demande.
 
-	* This currently saves ~5mb when Rules.zip is unzipped, and will save even
-	  more as more languages and braille codes are added.
-	* This is in preparation for MathCAT being built into NVDA 2024.3
+	* Cela économise actuellement environ 5 Mo lorsque les règles.zip sont
+	  décompressées et économisera encore plus lorsque plus de langues et de
+	  codes braille seront ajoutés.
+	* Ceci est en préparation pour l'intégration de Mathcat dans NVDA 2024.3
 
-* Added new preference `DecimalSeparator`.
+* Ajout d'une nouvelle préférence `Decimalseparator`.
 
-	* The default value is `Auto`, with other values being ".", ",", and
-	  "Custom". The first three values set `DecimalSeparators` and
-	  `BlockSeparators`.
-	* `Auto` sets those preferences based on the value of the `Language`
-	  pref. For some language such as Spanish, `,` is used in some countries
-	  and `.` is used in others. In this case, it is best to set the language
-	  to also include the country code (e.g, `es-es` or `es-mx`) to ensure the
-	  right value is used.
+	* La valeur par défaut est `Auto`, les autres valeurs étant ".", "," et
+	  "Custom". Les trois premières valeurs définissent `Decimalseparators` et
+	  `Blockseparators`.
+	* `Auto` définit ces préférences en fonction de la valeur de pref
+	  `Language`. Pour certaines langue comme l'espagnol, `,`,est utilisée dans
+	  certains pays et `.` est utilisée dans d'autres. Dans ce cas, il est
+	  préférable de définir la langue pour inclure également le code du pays
+	  (par exemple, `es-es` ou `es-mx`) pour s'assurer que la bonne valeur est
+	  utilisée.
 
-* Added Swedish to supported languages.
+* Ajout du suédois aux langues prises en charge.
 * Added more Unicode chars to include both all Unicode chars marked as "Sm"
   and those with a mathclass (except Alphabetic and Glyph classes) in the
   Unicode standard.
-* After changing how prefs work in a previous version, I forgot to change
-  `MathRate` and `PauseFactor` to be numbers, not strings.
+* Après avoir changé le fonctionnement des préfes dans une version
+  précédente, j'ai oublié de modifier `Mathrate` et `Pausefactor` afin
+  qu'ils soient des nombres, pas des chaînes.
 * Fixed bug in the braille Rules (missed change from earlier) where a third
   argument should have been given to say to look in the _Braille_
   `definitions.yaml` files and not the speech ones when looking up the value
   of a definition.
-* Cleaned up use of `definitions.yaml`.
-* Fixed some bugs in the MathML cleanup for "," decimal separators.
+* Nettoyage de l'utilisation de `definitions.yaml`.
+* Correction de bugs dans le nettoyage du MathML pour les séparateurs
+  décimaux ",".
 * Found a bug in braille highlighting when nothing is highlighted (maybe
   never happens which is why I didn't see it in practice?)
-* Fixed "Describe" mode so that it works -- it is still very minimal and
-  probably not useful yet
-* Fixed minimum supported version
+* Correction du mode "Décrire" pour qu'il fonctionne -- il est encore très
+  minimaliste et probablement pas encore utile
+* Correction de la version minimale prise en charge
 
 ### Version 0.5.6
-* Added Copy As... to the MathCAT dialog (in the "Navagation" pane).
-* Fixed a bug where the language reverted to English when changing speech
-  styles.
-* Fixed a bug with navigation and braille
-* Fixed some Asciimath spacing problems.
-* Improved chemistry recognition
-* Updated MathCAT to new BANA Nemeth chemistry spec (still only single line
-  and special case style/font changes not handled)
-* Fix a crash when non-ASCII digits (e.g., bold digits) are used in numbers
-* Don't use italic indicators in braille codes when the math alphanumeric
-  italic chars are used
-* Some other smaller bug fixes that weren't reported by users
+* Ajout de Copier en tant que... au dialogue MathCAT (dans le volet
+  "Navigation").
+* Correction d'un bug où la langue retournait à l'anglais lors de la
+  modification des styles de parole.
+* Correction d'un bug relatif à la navigation et au braille
+* Correction de problèmes d'espacement Asciimath.
+* Reconnaissance améliorée de la chimie
+* Mise à jour de Mathcat pour les nouvelles spécifications de chimie Bana
+  Nemeth (toujours seulement pour les lignes simples, cas spéciaux de
+  changement de style ou de police non pris en charge)
+* Correction d'un plantage lorsque des chiffres non ASCII (par exemple, des
+  chiffres en gras) sont utilisés dans les nombres
+* Pas d'utilisation d'indicateurs italiques dans les codes braille lorsque
+  les caractères italiques alphanumériques mathématiques sont utilisés
+* Quelques autres corrections de bogues plus petites qui n'ont pas été
+  rapportées par les utilisateurs
 
 ### Version 0.5.0
 * Ajout du code braille LaTeX allemand. Contrairement à d'autres codes
@@ -228,10 +238,10 @@ implémentation fiable.
 * Plus d'améliorations chimique
 * Correction pour Nemeth :
 
-	* Added "omission" rules
-	* Added some rules for English Language Indicators
-	* Added more cases where the Mulitpurpose indicator is needed
-	* Fixes related to Nemeth and punctuation
+	* Ajout de règles "omission"
+	* Ajout de quelques règles pour les indicateurs de langue anglaise
+	* Ajout de plus de cas où l'indicateur polyvalent est nécessaire
+	* Correctifs liés au code Nemeth et à la ponctuation
 
 ### Version 0.2
 * Beaucoup de correctifs de bogues
