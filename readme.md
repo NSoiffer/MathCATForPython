@@ -32,6 +32,12 @@ MathCAT's rules for speech are not yet as extensive as MathPlayer's rules althou
 
 ## MathCAT Update Log
 
+### Version 0.6.10
+
+* Update manifest to indicate compatibility with 2025.1, no external changes
+* Because of internal NVDA changes to some speech engines, you may need to tweak MathCAT's "PauseFactor" setting
+* Internal improvements to type hints and doc strings thanks to @seanbudd and @RyanMcCleary
+
 ### Version 0.6.9
 
 * Update manifest to indicate compatibility with 2025.1
