@@ -225,6 +225,7 @@ class UserInterface(MathCATgui.MathCATPreferencesDialog):
 			"mt": "bil-Malti",
 			"my": "Myanmasa",
 			"na": "Dorerin Naoero",
+			"nb": "Norsk (nynorsk)",
 			"ne": "नेपाली",
 			"ng": "Oshiwambo",
 			"nl": "Nederlands",
