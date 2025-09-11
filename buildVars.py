@@ -32,7 +32,7 @@ addon_info = {
         and other translations are in progress.""",
 	),
 	# version
-	"addon_version": "0.7.0-rc.6",
+	"addon_version": "0.7.1-rc.1",
 	# Author(s)
 	"addon_author": "Neil Soiffer <soiffer@alum.mit.edu>",
 	# URL for the add-on documentation support
@@ -44,7 +44,7 @@ addon_info = {
 	# Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)
 	"addon_minimumNVDAVersion": "2025.1",
 	# Last NVDA version supported/tested (e.g. "2018.4.0", ideally more recent than minimum version)
-	"addon_lastTestedNVDAVersion": "2025.2",
+	"addon_lastTestedNVDAVersion": "2025.3",
 	# Add-on update channel (default is None, denoting stable releases,
 	# and for development releases, use "dev".)
 	# Do not change unless you know what you are doing!

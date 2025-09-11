@@ -32,6 +32,14 @@ MathCAT's rules for speech are not yet as extensive as MathPlayer's rules althou
 
 ## MathCAT Update Log
 
+### Version 0.7.1
+
+* Added German translation. There is still more work to do on this, but I'm told it is usable.
+* Added Norwegian translation
+* Changed some character wording ("if and only if", "implies", "triangle")
+* Fix problems with the zip files and regional variants. This should allow en-gb and zh-tw to be available.
+* Fixed bugs in navigating in character mode. The bug fix is a bit of a design change. Character navigation mode has always meant to be a low level way of discovering all the symbols in the math, even if they are not spoken. Simple mode was described as being like character mode, but you need to explicitly zoom into any 2D structure such as a fraction or root. However, in the past, simple mode didn't always let you see all the characters and spoke using a semantic interpretation. This change makes simple mode be literal, just as character mode is literal. Enhanced mode continues to offer a semantic means of navigating an expression.
+
 ### Version 0.6.10
 
 * Update manifest to indicate compatibility with 2025.1, no external changes
