@@ -32,13 +32,30 @@ MathCAT's rules for speech are not yet as extensive as MathPlayer's rules althou
 
 ## MathCAT Update Log
 
-### Version 0.7.1
+### Version 0.7.2
 
 * Added German translation. There is still more work to do on this, but I'm told it is usable.
 * Added Norwegian translation
+* Improved reading of "neuter" units
 * Changed some character wording ("if and only if", "implies", "triangle")
 * Fix problems with the zip files and regional variants. This should allow en-gb and zh-tw to be available.
-* Fixed bugs in navigating in character mode. The bug fix is a bit of a design change. Character navigation mode has always meant to be a low level way of discovering all the symbols in the math, even if they are not spoken. Simple mode was described as being like character mode, but you need to explicitly zoom into any 2D structure such as a fraction or root. However, in the past, simple mode didn't always let you see all the characters and spoke using a semantic interpretation. This change makes simple mode be literal, just as character mode is literal. Enhanced mode continues to offer a semantic means of navigating an expression.
+* Fixed bugs in navigating in character mode and simple mode.
+* Changed the names of some characters to be more semantic (e.g., "long double left right arrow" is not "if and only if").
+* Add some "literal" (not semantic) names for characters for LiteralSpeak and navigation.
+* Fixed some bugs dealing with "intent"
+* Fix a bug with generating id's that could cause a crash once every 36^4 times
+* Add another heuristic to prevent something from being a potential function (when the potential function name appears within the argument)
+* Fixed reading of a degree symbol followed by "F" or "C".
+* Corrected the rule for what is allowed for "intent"
+* Improved the inference rules for units (supports "mi" if it is marked as "normal")
+* Fixed a navigation bug with log, ln, and lg
+* Improved error messages -- these should aid in reporting problems in speech and navigation
+* Improved speech for fractions that involve units ("meters *per* second")
+* Many improvements to the recognition of Chemistry
+* Fixed a Nemeth bug where a script end and baseline indicator were emitted when neither should have been present.
+* Added varepsilon character to UEB
+* Fixed off-by-one error when computing what to highlight in braille.
+* Add definitions for "ⅆ", "ⅇ", "ⅈ" to braille codes
 
 ### Version 0.6.10
 
