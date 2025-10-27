@@ -6,7 +6,7 @@
 
 [package]
 name = "MathCatForPython"
-version = "0.7.2"
+version = "0.7.4-beta.1"
 authors = ["Neil Soiffer <soiffer@alum.mit.edu>"]
 edition = "2018"
 resolver = "2"    # allows different build dependency features
@@ -21,7 +21,7 @@ name = "libmathcat_py"
 crate-type = ["cdylib"]
 
 [dependencies.mathcat]
-version = "=0.7.2"
+version = "=0.7"
 # for testing MathCAT without having to publish a new version (change two occurrences)
 # path = "../MathCAT/"
 
@@ -30,9 +30,9 @@ version = "0.22"
 features = ["extension-module", "abi3"]
 
 [build-dependencies]
-zip = { version = "5.1", default-features = false, features = ["bzip2"] }
-mathcat = {version = "=0.7.2", features = ["include-zip"]}     # for building, we want the zip files so we can include them separately
-# mathcat = { path = "../MathCAT/", features = ["include-zip"]}     # for building, we want the zip files so we can include them separately
+zip = { version = "6.0", default-features = false, features = ["bzip2"] }
+mathcat = {version = "=0.7", features = ["include-zip"]}     # for building, we want the zip files so we can include them separately
+mat?hcat = { path = "../MathCAT/", features = ["include-zip"]}     # for building, we want the zip files so we can include them separately
 # for testing MathCAT without having to publish a new version (change two occurrences)
 
 
