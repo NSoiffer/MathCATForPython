@@ -63,6 +63,16 @@ def test():
 
 	mathml = "<math><mfrac> <mn>1</mn> <mi>X</mi> </mfrac> </math>"
 	setMathMLForMathCAT(mathml)
+
+	languages = libmathcat.GetSupportedLanguages()
+	if "en" not in languages:
+		sys.exit(f"Supported languages does not include 'en': {languages}")
+	speech_styles = libmathcat.GetSupportedSpeechStyles("en")
+	if "SimpleSpeak" not in speech_styles or "ClearSpeak" not in speech_styles:
+		sys.exit(f"Supported speech styles does not include 'SimpleSpeak' and/or 'ClearSpeak': {speech_styles}")
+	braille_codes = libmathcat.GetSupportedBrailleCodes()
+	if "UEB" not in braille_codes or "Nemeth" not in braille_codes:
+		sys.exit(f"Supported languages does not include 'UEB' and/or 'Nemeth': {braille_codes}")
 	speech = getSpeech()
 	if speech != "1 over  cap x":
 		sys.exit(f"MathML: {mathml}\nSpeech: '{speech}'")

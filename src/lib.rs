@@ -65,6 +65,24 @@ pub fn GetVersion(_py: Python) -> PyResult<String> {
 }
 
 #[pyfunction]
+/// Returns a list of all supported languages (["en", "es", ...])
+pub fn GetSupportedLanguages(_py: Python) -> PyResult<Vec<String>> {  // type in Python is list[str]
+    return Ok( get_supported_languages() )
+}
+
+#[pyfunction]
+/// Returns a list of all supported speech styles given a language (["ClearSpeak", "SimpleSpeak", ...])
+pub fn GetSupportedSpeechStyles(_py: Python, lang: String) -> PyResult<Vec<String>> {  // type in Python is list[str]
+    return Ok( get_supported_speech_styles(lang) );
+}
+
+#[pyfunction]
+/// Returns a list of all supported braille codes (["UEB", "Nemeth", ...])
+pub fn GetSupportedBrailleCodes(_py: Python) -> PyResult<Vec<String>> {  // type in Python is list[str]
+    return Ok( get_supported_braille_codes() );
+}
+
+#[pyfunction]
 /// Get the spoken text of the MathML that was set.
 /// The speech takes into account any AT or user preferences.
 pub fn GetSpokenText(_py: Python) -> PyResult<String> {
@@ -160,6 +178,9 @@ fn libmathcat_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(SetRulesDir, m)?)?;
     m.add_function(wrap_pyfunction!(SetMathML, m)?)?;
     m.add_function(wrap_pyfunction!(GetVersion, m)?)?;
+    m.add_function(wrap_pyfunction!(GetSupportedLanguages, m)?)?;
+    m.add_function(wrap_pyfunction!(GetSupportedSpeechStyles, m)?)?;
+    m.add_function(wrap_pyfunction!(GetSupportedBrailleCodes, m)?)?;
     m.add_function(wrap_pyfunction!(GetSpokenText, m)?)?;
     m.add_function(wrap_pyfunction!(SetPreference, m)?)?;
     m.add_function(wrap_pyfunction!(GetPreference, m)?)?;
