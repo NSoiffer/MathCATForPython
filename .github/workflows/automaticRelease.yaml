@@ -96,7 +96,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: 3.13
           architecture: 'x64'
       - name: Build Rust Library
         run: |
@@ -109,7 +109,7 @@ jobs:
         uses: thedoctor0/zip-release@0.7.5
         with:
           type: 'zip'
-          filename: '../libmathcat_py-64-3.11-win.zip'
+          filename: '../libmathcat_py-64-3.13-win.zip'
           directory: 'Example'
           path: 'libmathcat_py.pyd'
       - name: test the build
@@ -119,8 +119,8 @@ jobs:
       - name: Upload 64 bit pyd file
         uses: actions/upload-artifact@v4
         with:
-          name: libmathcat_py-64-3.11-win.zip
-          path: libmathcat_py-64-3.11-win.zip
+          name: libmathcat_py-64-3.13-win.zip
+          path: libmathcat_py-64-3.13-win.zip
           compression-level: 0
           retention-days: 1
 
@@ -133,7 +133,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: 3.13
           architecture: 'x64'
       - name: Build Rust Library
         run: |
@@ -151,14 +151,14 @@ jobs:
         uses: thedoctor0/zip-release@0.7.5
         with:
           type: 'zip'
-          filename: '../libmathcat_py-64-3.11-linux.zip'
+          filename: '../libmathcat_py-64-3.13-linux.zip'
           directory: 'Example'
           path: 'libmathcat_py.so'
       - name: Upload 64 bit pyd file
         uses: actions/upload-artifact@v4
         with:
-          name: libmathcat_py-64-3.11-linux.zip
-          path: libmathcat_py-64-3.11-linux.zip
+          name: libmathcat_py-64-3.13-linux.zip
+          path: libmathcat_py-64-3.13-linux.zip
           compression-level: 0
           retention-days: 1
 
@@ -231,11 +231,11 @@ jobs:
     - name: Download 64 bit build
       uses: actions/download-artifact@v4
       with:
-        name: libmathcat_py-64-3.11-win.zip
+        name: libmathcat_py-64-3.13-win.zip
     - name: Download 64 bit linux build
       uses: actions/download-artifact@v4
       with:
-        name: libmathcat_py-64-3.11-linux.zip
+        name: libmathcat_py-64-3.13-linux.zip
     - name: download the addon
       uses: actions/download-artifact@v4
       with:
@@ -251,6 +251,6 @@ jobs:
         files: |
           *.nvda-addon
           libmathcat_py-32-3.11-win.zip
-          libmathcat_py-64-3.11-win.zip
-          libmathcat_py-64-3.11-linux.zip
+          libmathcat_py-64-3.13-win.zip
+          libmathcat_py-64-3.13-linux.zip
           Rules.zip
