@@ -1,10 +1,14 @@
 # MathCAT
 
 * Author: Neil Soiffer
-* NVDA compatibility: 2018.1 or later (untested in earlier versions)
+* NVDA compatibility: 2025.1 or later (switching to a more modern Python makes it incompatible with earlier versions of NVDA)
 * Download [stable version][1]
 
-MathCAT is designed to eventually replace MathPlayer because MathPlayer is no longer supported. MathCAT generates speech and braille from MathML. The speech for math produced by MathCAT is enhanced with prosody so that it sounds more natural. The speech can be navigated in three modes using the same commands as MathPlayer. In addition, the navigation node is indicated on a braille display. Both Nemeth and UEB technical are supported.
+MathCAT is designed to eventually replace MathPlayer because MathPlayer is no longer supported. MathCAT generates speech and braille from MathML. The speech for math produced by MathCAT is enhanced with prosody so that it sounds more natural. The speech can be navigated in three modes using the same commands as MathPlayer. In addition, the navigation node is indicated on a braille display.
+
+MathCAT supports speech for the following languages: English, German, Spanish, Finnish, Indonesian, Norwegian, Swedish, Vietnamese, and Chinese (Traditional)
+
+MathCAT supports the following braille codes: Nemeth, UEB Technical, CMU (Spanish, Portuguese), Finish, Swedish, Vietnamese, LaTeX (German rules), ASCIIMath (German rules, Finnish rules)
 
 MathCAT has a number of configuration options that control speech, navigation, and braille.
 Many of these can be set in the MathCAT settings dialog (found NVDA Preferences menu).
@@ -13,24 +17,34 @@ The documentation includes a link to [a table listing all of the navigation comm
 
 Note: MathCAT is a general library for generating speech and braille from MathML. It is used by other AT projects besides NVDA. For information on the MathCAT project in general, see the main [MathCAT Documentation page](https://nsoiffer.github.io/MathCAT).
 
-
 Who should use MathCAT:
 
-* Those who use the following spoken or braille Languages:
-  * Languages: Chinese (Taiwan), English, Finnish, Indonesian, Spannish, Swedish, Vietnamese
-  * Braille: CMU (Portugese, Spanish), Finnish AsciiMath, LaTeX (as used in German braille), Nemeth, Swedish, UEB, Vietnamese
+* Those who use one of the supported languages or braille codes.
 * Those who need high quality Nemeth braille (MathPlayer's Nemeth is based on liblouis' Nemeth generation which has a number of significant bugs that are technically difficult to fix).
-* Those who want to try out the latest technology and are willing to help by reporting bugs
 * Those who use Eloquence as a voice
+* Those who are reading PDF or HTML documents whose source is LaTeX that has turned on tagging. Those documents make use of a new MathML feature for expressing author intents, which can improve speech.
 
 Who should NOT use MathCAT:
 
 * Anyone who uses MathPlayer with a language that is not yet supported by MathCAT and are not comfortable with speech in one of the supported languages.
 * Anyone who prefers Access8Math to MathPlayer (for speech or other features)
 
-MathCAT's rules for speech are not yet as extensive as MathPlayer's rules although they are getting close -- that may be another reason to stick with MathPlayer. MathCAT is being used as a testbed for ideas for MathML 4 that allow authors to express their intent so that ambiguous notations can be spoken correctly and not guessed at. I have held off on adding too many rules since the architecture of MathCAT is centered around using and inferring author intent and these are not fully settled yet.
-
 ## MathCAT Update Log
+
+### Version 0.7.5
+
+#### Bug Fixes and Enhancements
+
+* Fixed bug in MathCAT dialog that prevented proper selection of Norwegian
+* Fixed bug in German translation for division involving units (=> "pro")
+* If MathML is directly embedded inside of a MathML leaf element, it will be spoken well.
+* Improved Chemistry so that if the intent property `:chemical-formula` is used, it is inherited and overrides heuristics to determine if something is a chemical formula. For example, "A=B" will now speak "=" as "double bond" If some parent is marked with `intent=':chemical-formula'`.
+* For ASCIIMath, added translations for chars with umlauts and also for ß (goes to "ss" because there is no defined ASCIIMath encoding for it)
+* Added literal speech for"×", "", "‼", and "/" to English.
+
+#### API Additions
+
+* Added calls for `GetSupportedLanguages`, `GetSupportedSpeechStyles`, and `GetSupportedBrailleCodes`.
 
 ### Version 0.7.2
 
