@@ -40,7 +40,7 @@ Who should NOT use MathCAT:
 * If MathML is directly embedded inside of a MathML leaf element, it will be spoken well.
 * Improved Chemistry so that if the intent property `:chemical-formula` is used, it is inherited and overrides heuristics to determine if something is a chemical formula. For example, "A=B" will now speak "=" as "double bond" If some parent is marked with `intent=':chemical-formula'`.
 * For ASCIIMath, added translations for chars with umlauts and also for ß (goes to "ss" because there is no defined ASCIIMath encoding for it)
-* Added literal speech for"×", "", "‼", and "/" to English.
+* Added literal speech for"×", "‼", and "/" to English.
 
 #### API Additions
 
