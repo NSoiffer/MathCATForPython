@@ -50,8 +50,10 @@ jobs:
           compression-level: 0
           retention-days: 1
 
-  rust-32:
-    name: Build 32 bit windows pyd file
+  rust-32-and-64:
+    # running both 32 and 64 bit builds sequentially because they both use the same "Example" dir
+    # for testing and that can result in conflicts
+    name: Build 32 and 64 bit windows pyd file
     runs-on: windows-latest  # needs to run on windows because of bzip2
     steps:
       - name: Checkout code
@@ -67,7 +69,7 @@ jobs:
       - name: Setup Example dir
         run: |
           cp target/i686-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
-          Move-item -Force addon/globalPlugins/MathCAT/Rules Example
+          mv addon/globalPlugins/MathCAT/Rules Example
       - name: test the build
         run: |
           cd Example
@@ -87,12 +89,6 @@ jobs:
           compression-level: 0
           retention-days: 1
 
-  rust-64:
-    name: Build 64 bit windows pyd file
-    runs-on: windows-latest  # needs to run on windows because of bzip2
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -104,7 +100,7 @@ jobs:
       - name: Setup Example dir
         run: |
           cp target/x86_64-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
-          Move-item -Force addon/globalPlugins/MathCAT/Rules Example
+          # no need to move the Rules dir again -- it is already there
       - name: create zip file for pyd file -- this allows the name to indicate arch, python version, etc., but unzipped it is correctly named
         uses: thedoctor0/zip-release@0.7.5
         with:
@@ -184,7 +180,7 @@ jobs:
     - name: Set up addons dir
       run: |
         unzip libmathcat_py-32-3.11-win.zip
-        mv -f libmathcat_py.pyd Rules.zip addon/globalPlugins/MathCAT
+        mv libmathcat_py.pyd Rules.zip addon/globalPlugins/MathCAT
         cd addon/globalPlugins/MathCAT
         sed 's/^import wx\.xrc/# import wx.xrc/' --in-place MathCATgui.py  # fix wx file
         unzip Rules.zip
