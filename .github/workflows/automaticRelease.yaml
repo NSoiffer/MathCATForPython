@@ -67,7 +67,7 @@ jobs:
       - name: Setup Example dir
         run: |
           cp target/i686-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
-          mv addon/globalPlugins/MathCAT/Rules Example
+          mv -f addon/globalPlugins/MathCAT/Rules Example
       - name: test the build
         run: |
           cd Example
@@ -104,7 +104,7 @@ jobs:
       - name: Setup Example dir
         run: |
           cp target/x86_64-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
-          mv addon/globalPlugins/MathCAT/Rules Example
+          mv -f addon/globalPlugins/MathCAT/Rules Example
       - name: create zip file for pyd file -- this allows the name to indicate arch, python version, etc., but unzipped it is correctly named
         uses: thedoctor0/zip-release@0.7.5
         with:
@@ -184,7 +184,7 @@ jobs:
     - name: Set up addons dir
       run: |
         unzip libmathcat_py-32-3.11-win.zip
-        mv libmathcat_py.pyd Rules.zip addon/globalPlugins/MathCAT
+        mv -f libmathcat_py.pyd Rules.zip addon/globalPlugins/MathCAT
         cd addon/globalPlugins/MathCAT
         sed 's/^import wx\.xrc/# import wx.xrc/' --in-place MathCATgui.py  # fix wx file
         unzip Rules.zip
