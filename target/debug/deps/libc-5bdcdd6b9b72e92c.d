@@ -1,0 +1,11 @@
+C:\Users\neils\MathCATForPython\target\debug\deps\libc-5bdcdd6b9b72e92c.d: C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\lib.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\macros.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\primitives.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\windows\mod.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\windows\msvc\mod.rs
+
+C:\Users\neils\MathCATForPython\target\debug\deps\liblibc-5bdcdd6b9b72e92c.rlib: C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\lib.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\macros.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\primitives.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\windows\mod.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\windows\msvc\mod.rs
+
+C:\Users\neils\MathCATForPython\target\debug\deps\liblibc-5bdcdd6b9b72e92c.rmeta: C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\lib.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\macros.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\primitives.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\windows\mod.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\windows\msvc\mod.rs
+
+C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\lib.rs:
+C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\macros.rs:
+C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\primitives.rs:
+C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\windows\mod.rs:
+C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\libc-0.2.171\src\windows\msvc\mod.rs:
