@@ -1,0 +1,10 @@
+C:\Users\neils\MathCATForPython\target\debug\deps\crc32fast-ecad2ee336a2a3cc.d: C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\lib.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\baseline.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\combine.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\specialized\mod.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\table.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\specialized\pclmulqdq.rs
+
+C:\Users\neils\MathCATForPython\target\debug\deps\libcrc32fast-ecad2ee336a2a3cc.rmeta: C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\lib.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\baseline.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\combine.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\specialized\mod.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\table.rs C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\specialized\pclmulqdq.rs
+
+C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\lib.rs:
+C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\baseline.rs:
+C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\combine.rs:
+C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\specialized\mod.rs:
+C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\table.rs:
+C:\Users\neils\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\crc32fast-1.4.2\src\specialized\pclmulqdq.rs:

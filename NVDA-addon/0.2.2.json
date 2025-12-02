@@ -1,0 +1,29 @@
+{
+	"addonId": "MathCAT",
+	"displayName": "MathCAT: speech and braille from MathML",
+	"URL": "",
+	"description": "\n\t\tMathCAT is a replacement for MathPlayer which has been discontinued.\n\t\tIt provides speech and braille support, and also supports MathPlayer's three modes of navigation.\n\t\tThe speech quality is not quite as good as MathPlayer's speech yet,\n\t\tbut the braille support is much better and includes both Nemeth and UEB Technical.\n\t\tTranslations to languages other than English are in progress.\n\t\t",
+	"sha256": "017a2817b54de419eef2dcac125e67210941b87e65556ba83670fea69f59bb2c",
+	"homepage": "https://nsoiffer.github.io/MathCAT/",
+	"addonVersionName": "0.2.5",
+	"addonVersionNumber": {
+		"major": 0,
+		"minor": 2,
+		"patch": 5
+	},
+	"minNVDAVersion": {
+		"major": 2018,
+		"minor": 1,
+		"patch": 0
+	},
+	"lastTestedVersion": {
+		"major": 2023,
+		"minor": 1,
+		"patch": 0
+	},
+	"channel": "stable",
+	"publisher": "",
+	"sourceURL": "https://github.com/NSoiffer/MathCATForPython",
+	"license": "MIT and GPL 2",
+	"licenseURL": "https://raw.githubusercontent.com/NSoiffer/MathCAT/main/LICENSE"
+}
