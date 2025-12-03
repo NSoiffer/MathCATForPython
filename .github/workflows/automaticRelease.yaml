@@ -70,7 +70,7 @@ jobs:
         run: |
           cp target/i686-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
           #  Example/Rules should not exist, but I was getting errors from "mv" saying it did
-          rmdir /s /q Example/Rules
+          rm addon/globalPlugins/MathCAT/Rules -Recurse -Force -ErrorAction SilentlyContinue
           mv addon/globalPlugins/MathCAT/Rules Example
       - name: test the build
         run: |
