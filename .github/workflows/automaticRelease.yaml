@@ -69,6 +69,8 @@ jobs:
       - name: Setup Example dir
         run: |
           cp target/i686-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
+          #  Example/Rules should not exist, but I was getting errors from "mv" saying it did
+          rmdir /s /q Example/Rules
           mv addon/globalPlugins/MathCAT/Rules Example
       - name: test the build
         run: |
@@ -138,8 +140,7 @@ jobs:
         run: |
           # don't know why it is "liblib...". For consistency with other versions, it is renamed.
           cp target/x86_64-unknown-linux-gnu/release/liblibmathcat_py.so Example/libmathcat_py.so
-          # I've started getting errors files already existing, so "-Force" is used
-          cp -Recurse -Force addon/globalPlugins/MathCAT/Rules Example
+          mv addon/globalPlugins/MathCAT/Rules Example
       - name: test build
         run: |
           cd Example
