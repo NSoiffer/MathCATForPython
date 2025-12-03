@@ -1,5 +1,6 @@
 addon/doc/*.css
 addon/doc/en/
+target/
 *_docHandler.py
 *.html
 manifest.ini
