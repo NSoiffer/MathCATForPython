@@ -136,9 +136,10 @@ jobs:
           cargo build --target x86_64-unknown-linux-gnu --release
       - name: Setup Example dir
         run: |
-          # don't know why it is "liblib...". For consistancy with other versions, it is renamed.
+          # don't know why it is "liblib...". For consistency with other versions, it is renamed.
           cp target/x86_64-unknown-linux-gnu/release/liblibmathcat_py.so Example/libmathcat_py.so
-          cp -r addon/globalPlugins/MathCAT/Rules Example
+          # I've started getting errors files already existing, so "-Force" is used
+          cp -Recurse -Force addon/globalPlugins/MathCAT/Rules Example
       - name: test build
         run: |
           cd Example
