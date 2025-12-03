@@ -50,10 +50,8 @@ jobs:
           compression-level: 0
           retention-days: 1
 
-  rust-32-and-64:
-    # running both 32 and 64 bit builds sequentially because they both use the same "Example" dir
-    # for testing and that can result in conflicts
-    name: Build 32 and 64 bit windows pyd file
+  rust-32:
+    name: Build 32 bit windows pyd file
     runs-on: windows-latest  # needs to run on windows because of bzip2
     steps:
       - name: Checkout code
@@ -69,8 +67,6 @@ jobs:
       - name: Setup Example dir
         run: |
           cp target/i686-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
-          #  Example/Rules should not exist, but I was getting errors from "mv" saying it did
-          rm Example/Rules -Recurse -Force -ErrorAction SilentlyContinue
           mv addon/globalPlugins/MathCAT/Rules Example
       - name: test the build
         run: |
@@ -91,6 +87,12 @@ jobs:
           compression-level: 0
           retention-days: 1
 
+  rust-64:
+    name: Build 64 bit windows pyd file
+    runs-on: windows-latest  # needs to run on windows because of bzip2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -102,7 +104,7 @@ jobs:
       - name: Setup Example dir
         run: |
           cp target/x86_64-pc-windows-msvc/release/libmathcat_py.dll Example/libmathcat_py.pyd
-          # no need to move the Rules dir again -- it is already there
+          mv addon/globalPlugins/MathCAT/Rules Example
       - name: create zip file for pyd file -- this allows the name to indicate arch, python version, etc., but unzipped it is correctly named
         uses: thedoctor0/zip-release@0.7.5
         with:
@@ -138,9 +140,9 @@ jobs:
           cargo build --target x86_64-unknown-linux-gnu --release
       - name: Setup Example dir
         run: |
-          # don't know why it is "liblib...". For consistency with other versions, it is renamed.
+          # don't know why it is "liblib...". For consistancy with other versions, it is renamed.
           cp target/x86_64-unknown-linux-gnu/release/liblibmathcat_py.so Example/libmathcat_py.so
-          mv addon/globalPlugins/MathCAT/Rules Example
+          cp -r addon/globalPlugins/MathCAT/Rules Example
       - name: test build
         run: |
           cd Example
@@ -163,7 +165,7 @@ jobs:
   build-addon:
     name: build-addon
     continue-on-error: false
-    needs: [l10n, zip-rules, rust-32-and-64]
+    needs: [l10n, zip-rules, rust-32]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -211,7 +213,7 @@ jobs:
   pre-release:
     name: Pre Release
     continue-on-error: false
-    needs: [zip-rules, rust-32-and-64, linux-64, build-addon]
+    needs: [zip-rules, rust-32, rust-64, linux-64, build-addon]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
