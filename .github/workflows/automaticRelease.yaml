@@ -161,7 +161,7 @@ jobs:
   build-addon:
     name: build-addon
     continue-on-error: false
-    needs: [l10n, zip-rules, rust-32]
+    needs: [l10n, zip-rules, rust-32-and-64]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -209,7 +209,7 @@ jobs:
   pre-release:
     name: Pre Release
     continue-on-error: false
-    needs: [zip-rules, rust-32, rust-64, linux-64, build-addon]
+    needs: [zip-rules, rust-32-and-64, linux-64, build-addon]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
